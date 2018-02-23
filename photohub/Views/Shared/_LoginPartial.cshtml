@@ -1,0 +1,40 @@
+@using Microsoft.AspNetCore.Identity
+@using photohub.Models
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <a class="navbar-item" title="search" href="/Home/Index">
+        Friends tape
+    </a>
+    <div class="navbar-item has-dropdown is-hoverable">
+        <span class="navbar-link">
+            Create
+        </span>
+        <div class="navbar-dropdown is-boxed">
+            <a class="navbar-item" href="/Photos/Create">
+                Photo
+            </a>
+            <a class="navbar-item" href="/Giveaways/Create">
+                Giveaway
+            </a>
+        </div>
+    </div>
+    <a class="navbar-item" title="search" href="/Home/Search">
+        Search
+    </a>
+    <a class="navbar-item" title="@UserManager.GetUserName(User)" href="/Users/Details/@UserManager.GetUserName(User)">
+        My page
+    </a>
+}
+else
+{
+    <a id="registerLink" class="navbar-item is-active" href="/Account/Register" title="Sign up">
+        Sign up
+    </a>
+    <a id="registerLink" class="navbar-item" href="/Account/Login" title="Log in">
+        Log in
+    </a>
+}

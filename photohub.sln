@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2036
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoHub.WEB", "photohub\PhotoHub.WEB.csproj", "{E56E2AB1-7453-42DF-A0B8-5EABDA7BD4AE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoHub.DAL", "DAL\PhotoHub.DAL.csproj", "{091497C7-923D-464D-9E6E-466954F35443}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoHub.BLL", "BLL\PhotoHub.BLL.csproj", "{2613FD9D-DA63-4155-817B-4FB5C4BC7281}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E56E2AB1-7453-42DF-A0B8-5EABDA7BD4AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E56E2AB1-7453-42DF-A0B8-5EABDA7BD4AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E56E2AB1-7453-42DF-A0B8-5EABDA7BD4AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E56E2AB1-7453-42DF-A0B8-5EABDA7BD4AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{091497C7-923D-464D-9E6E-466954F35443}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{091497C7-923D-464D-9E6E-466954F35443}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{091497C7-923D-464D-9E6E-466954F35443}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{091497C7-923D-464D-9E6E-466954F35443}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2613FD9D-DA63-4155-817B-4FB5C4BC7281}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2613FD9D-DA63-4155-817B-4FB5C4BC7281}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2613FD9D-DA63-4155-817B-4FB5C4BC7281}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2613FD9D-DA63-4155-817B-4FB5C4BC7281}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0A64700E-31BB-4537-B56B-7F1BD6A3DF61}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,69 @@
+﻿@using System.Collections.Generic
+@using System.Linq
+@using Microsoft.AspNetCore.Http
+@using PhotoHub.DAL.Entities
+@using Microsoft.AspNetCore.Http.Authentication
+@model LoginViewModel
+@inject SignInManager<ApplicationUser> SignInManager
+
+@{
+    ViewBag.Title = "Log in";
+    ViewBag.Keywords = "Log in";
+    ViewBag.Description = "Log in page on PhotoHub";
+}
+
+<form action="/Account/Login" method="post" style="margin-bottom: 5px;">
+    @Html.AntiForgeryToken()
+
+    <div class="field">
+        <label asp-for="UserName" class="label"></label>
+        <div class="control">
+            <input asp-for="UserName" class="input" placeholder="Login" required>
+        </div>
+        <span asp-validation-for="UserName" class="help is-danger"></span>
+    </div>
+
+    <div class="field">
+        <label asp-for="Password" class="label"></label>
+        <div class="control">
+            <input asp-for="Password" type="password" class="input" placeholder="Password" required>
+        </div>
+        <span asp-validation-for="Password" class="help is-danger"></span>
+    </div>
+
+    <div class="field">
+        <div class="control">
+            <label asp-for="RememberMe" class="checkbox">
+                <input asp-for="RememberMe" />
+                @Html.DisplayNameFor(m => m.RememberMe)
+            </label>
+        </div>
+    </div>
+
+    <div class="field has-text-centered">
+        <button type="submit" class="button is-link">@ViewBag.Title</button>
+    </div>
+    <div class="field has-text-centered">
+        <a asp-action="ForgotPassword" class="button is-light">Forgot your password?</a>
+    </div>
+    <div class="field has-text-centered">
+        <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" class="button is-light">Register as a new user?</a>
+    </div>
+</form>
+
+@{
+    var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+    if (loginProviders.Count != 0)
+    {
+        <form asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+            <div>
+                <p>
+                    @foreach (var provider in loginProviders)
+                    {
+                        <button type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.Name</button>
+                    }
+                </p>
+            </div>
+        </form>
+    }
+}

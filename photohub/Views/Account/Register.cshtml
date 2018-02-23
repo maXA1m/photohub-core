@@ -1,0 +1,47 @@
+﻿@model RegisterViewModel
+@using PhotoHub.DAL.Entities
+@{
+    ViewBag.Title = "Sign up";
+    ViewBag.Keywords = "Sign up";
+    ViewBag.Description = "Sign up Page on PhotoHub";
+}
+
+<form action="/Account/Register" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="field">
+        <label asp-for="UserName" class="label"></label>
+        <div class="control">
+            <input asp-for="UserName" type="text" class="input" placeholder="Login" required>
+        </div>
+        <span asp-validation-for="UserName" class="help is-danger"></span>
+    </div>
+
+    <div class="field">
+        <label asp-for="Email" class="label"></label>
+        <div class="control">
+            <input asp-for="Email" type="email" class="input" placeholder="Email" required>
+        </div>
+        <span asp-validation-for="Email" class="help is-danger"></span>
+    </div>
+
+    <div class="field">
+        <label asp-for="Password" class="label"></label>
+        <div class="control">
+            <input asp-for="Password" type="password" class="input" placeholder="Password" name="Password" id="Password" required>
+        </div>
+        <span asp-validation-for="Password" class="help is-danger"></span>
+    </div>
+
+    <div class="field">
+        <label asp-for="ConfirmPassword" class="label"></label>
+        <div class="control">
+            <input asp-for="ConfirmPassword" type="password" class="input" placeholder="Confirm password" name="ConfirmPassword" id="ConfirmPassword" required>
+        </div>
+        <span asp-validation-for="ConfirmPassword" class="help is-danger"></span>
+    </div>
+
+    <div class="field has-text-centered">
+        <button type="submit" class="button is-link">@ViewBag.Title</button>
+    </div>
+</form>

@@ -1,0 +1,5 @@
+User-Agent: *
+Disallow: /Manage/*
+Disallow: /Account/*
+Disallow: /Users/Index
+Disallow: /Roles/*
