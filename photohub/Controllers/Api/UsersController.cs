@@ -27,7 +27,7 @@ namespace PhotoHub.WEB.Controllers.Api
             return UserDTOMapper.ToUserViewModels(await _usersService.GetAllAsync(page, _getAllPageSize));
         }
         
-        [HttpGet, Route("{userName}")]
+        [HttpGet, Route("details/{userName}")]
         public UserDetailsViewModel Get(string userName)
         {
             return UserDTOMapper.ToUserDetailsViewModel(_usersService.Get(userName));

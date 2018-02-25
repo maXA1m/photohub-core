@@ -73,7 +73,7 @@
             }
         },
         fetchUser() {
-            this.$http.get(`/api/users/${this.detailsUserName}`).then(response => response.json()).then(json => {
+            this.$http.get(`/api/users/details/${this.detailsUserName}`).then(response => response.json()).then(json => {
                 this.user = json;
             },
             error => {
@@ -204,6 +204,10 @@
                     this.commenting = false;
                     nanobar.go(0);
                 });
+            }
+            else {
+                nanobar.go(0);
+                this.commenting = false;
             }
         },
         deleteComment(comment) {

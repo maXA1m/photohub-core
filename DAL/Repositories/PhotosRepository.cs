@@ -23,22 +23,24 @@ namespace PhotoHub.DAL.Repositories
         {
             return _context.Photos
                     .Include(p => p.Owner)
+                    .Include(p => p.Filter)
                     .Include(p => p.Comments)
                         .ThenInclude(c => c.Owner)
                     .Include(p => p.Likes)
                         .ThenInclude(l => l.Owner)
-                    .OrderBy(p => p.Date)
+                    .OrderByDescending(p => p.Date)
                     .Skip(page * pageSize).Take(pageSize);
         }
         public async Task<IEnumerable<Photo>> GetAllAsync(int page, int pageSize)
         {
             return await _context.Photos
                             .Include(p => p.Owner)
+                            .Include(p => p.Filter)
                             .Include(p => p.Comments)
                                 .ThenInclude(c => c.Owner)
                             .Include(p => p.Likes)
                                 .ThenInclude(l => l.Owner)
-                            .OrderBy(p => p.Date)
+                            .OrderByDescending(p => p.Date)
                             .Skip(page * pageSize).Take(pageSize).ToListAsync();
         }
 
@@ -46,22 +48,24 @@ namespace PhotoHub.DAL.Repositories
         {
             return _context.Photos
                     .Include(p => p.Owner)
+                    .Include(p => p.Filter)
                     .Include(p => p.Comments)
                         .ThenInclude(c => c.Owner)
                     .Include(p => p.Likes)
                         .ThenInclude(l => l.Owner)
-                    .OrderBy(p => p.Date)
+                    .OrderByDescending(p => p.Date)
                     .Where(p => p.Id == id).FirstOrDefault();
         }
         public async Task<Photo> GetAsync(int id)
         {
             return await _context.Photos
                             .Include(p => p.Owner)
+                            .Include(p => p.Filter)
                             .Include(p => p.Comments)
                                 .ThenInclude(c => c.Owner)
                             .Include(p => p.Likes)
                                 .ThenInclude(l => l.Owner)
-                            .OrderBy(p => p.Date)
+                            .OrderByDescending(p => p.Date)
                             .Where(p => p.Id == id).FirstOrDefaultAsync();
         }
 
@@ -69,11 +73,12 @@ namespace PhotoHub.DAL.Repositories
         {
             return _context.Photos
                     .Include(p => p.Owner)
+                    .Include(p => p.Filter)
                     .Include(p => p.Comments)
                         .ThenInclude(c => c.Owner)
                     .Include(p => p.Likes)
                         .ThenInclude(l => l.Owner)
-                    .OrderBy(p => p.Date)
+                    .OrderByDescending(p => p.Date)
                     .Where(predicate);
         }
 

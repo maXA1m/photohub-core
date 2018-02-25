@@ -1,4 +1,4 @@
-﻿@model photohub.Models.Photo
+﻿@model PhotoHub.WEB.ViewModels.PhotoViewModel
 
 @{
     ViewBag.Title = "Photo #" + Model.Id;
@@ -58,7 +58,7 @@
 
             <footer class="card-footer">
                 <div class="content" style="width: 100%;">
-                    <div class="content" style="overflow-x: hidden; overflow-y: auto; max-height: 500px; padding: 2% 2% 2% 2%;" v-if="post.comments.length">
+                    <div class="content" style="overflow-x: hidden; overflow-y: auto; max-height: 300px; padding: 2% 2% 2% 2%;" v-if="post.comments.length">
                         <div class="media" v-for="comment in post.comments">
                             <div class="media-left is-flex is-flex-column">
                                 <a v-bind:href="`/Users/Details/${comment.owner.userName}`" class="has-text-black" v-bind:title="comment.owner.userName"><b>{{ comment.owner.userName }}</b></a>
@@ -77,9 +77,9 @@
                     @if (User.Identity.IsAuthenticated)
                     {
                         <div class="control" style="margin: 15px 15px 0 15px">
-                            <textarea class="textarea" id="comment" type="text"></textarea>
+                            <input class="input" id="comment" type="text" placeholder="Comment photo" v-on:keyup.enter="comment">
                             <div class="is-flex is-flex-centered" style="margin: 10px 0 10px 0">
-                                <button class="button is-link" v-bind:class="{'is-loading': commenting}" v-on:click="comment">Comment</button>
+                                <button class="button is-primary" v-bind:class="{'is-loading': commenting}" v-on:click="comment">Comment</button>
                             </div>
                         </div>
                     }

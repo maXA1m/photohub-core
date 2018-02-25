@@ -1,4 +1,4 @@
-﻿@model photohub.Models.ApplicationUser
+﻿@model PhotoHub.WEB.ViewModels.UserViewModel
 
 @{
     ViewBag.Title = "New photo";
@@ -48,7 +48,7 @@
             @foreach (var filter in ViewBag.Filters)
             {
                 <div class="has-margin-10px is-unselectable">
-                    <input class="is-display-none" id="@("filterId" + @filter.Id )" type="radio" name="FilterId" value="@filter.Id" v-on:click="pickFilter('@filter.Name')" @( filter.Id == 1 ? "checked" : "" ) />
+                    <input class="is-display-none" id="@("filterId" + @filter.Id )" type="radio" name="Filter" value="@filter.Name" v-on:click="pickFilter('@filter.Name')" @( filter.Id == 1 ? "checked" : "" ) />
                     <label for="@("filterId" + @filter.Id )" class="is-paddingless">
                         <figure class="filter @filter.Name is-paddingless is-marginless">
                             <img v-bind:src="path" alt="@filter.Name filter" class="image is-96x96">
@@ -72,7 +72,7 @@
 
         <footer class="card-footer">
             <div class="card-footer-item">
-                <button type="submit" class="button is-link is-uppercase" v-bind:class="{'is-loading': submited}"  v-on:click="submit">create</button>
+                <button type="submit" class="button is-primary is-uppercase" v-bind:class="{'is-loading': submited}"  v-on:click="submit">create</button>
             </div>
         </footer>
     </div>

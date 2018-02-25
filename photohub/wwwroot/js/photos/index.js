@@ -150,6 +150,10 @@
                     nanobar.go(0);
                 });
             }
+            else {
+                nanobar.go(0);
+                this.commenting = false;
+            }
         },
         deleteComment(comment) {
             if (comment.owner.userName == this.currentAppUserName) {

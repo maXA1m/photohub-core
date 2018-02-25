@@ -1,4 +1,4 @@
-﻿@model photohub.Models.Photo
+﻿@model PhotoHub.WEB.ViewModels.PhotoViewModel
 
 @{
     ViewBag.Title = "Edit photo #" + Model.Id;
@@ -15,8 +15,6 @@
 
     <input type="hidden" id="Id" name="Id" value="@Model.Id" />
     <input type="hidden" id="Path" name="Path" value="@Model.Path" />
-    <input type="hidden" id="OwnerId" name="OwnerId" value="@Model.OwnerId" />
-    <input type="hidden" id="PhotoViewId" name="PhotoViewId" value="@Model.PhotoViewId" />
 
     <div class="card is-responsive">
         <header class="card-header">
@@ -32,11 +30,11 @@
             </figure>
         </div>
 
-        <div class="is-flex is-flex-row is-flex-centered is-flex-wrap" id="container-filters" data-current-filter-name="@Model.Filter.Name">
+        <div class="is-flex is-flex-row is-flex-centered is-flex-wrap" id="container-filters" data-current-filter-name="@Model.Filter">
             @foreach (var filter in ViewBag.Filters)
             {
                 <div class="has-margin-10px is-unselectable">
-                    <input class="is-display-none" id="@("filterId" + @filter.Id )" type="radio" name="FilterId" value="@filter.Id" v-on:click="pickFilter('@filter.Name')" @( filter.Id == Model.FilterId ? "checked" : "" ) />
+                    <input class="is-display-none" id="@("filterId" + @filter.Id )" type="radio" name="Filter" value="@filter.Name" v-on:click="pickFilter('@filter.Name')" @( filter.Name == Model.Filter ? "checked" : "" ) />
                     <label for="@("filterId" + @filter.Id )" class="is-paddingless">
                         <figure class="filter @filter.Name is-paddingless is-marginless">
                             <img src="~/data/photos/@Model.Owner.UserName/@Model.Path" alt="@filter.Name filter" class="image is-96x96">
@@ -60,7 +58,7 @@
 
         <footer class="card-footer">
             <div class="card-footer-item">
-                <button type="submit" class="button is-link is-uppercase" v-bind:class="{'is-loading': submited}" v-on:keyup.enter="submit" v-on:click="submit">edit</button>
+                <button type="submit" class="button is-primary is-uppercase" v-bind:class="{'is-loading': submited}" v-on:keyup.enter="submit" v-on:click="submit">edit</button>
             </div>
         </footer>
     </div>

@@ -1,4 +1,4 @@
-﻿@model photohub.Models.ApplicationUser
+﻿@model PhotoHub.WEB.ViewModels.UserDetailsViewModel
 
 @{
     ViewBag.Title = Model.UserName;
@@ -110,7 +110,7 @@
         </div>
     </div>
 
-    @if (User.Identity.IsAuthenticated && ViewBag.IsBlocked)
+    @if (User.Identity.IsAuthenticated && Model.Blocked)
     {
         <div class="is-flex" style="align-items: center; flex-direction: column;" v-cloak>
             <p class="has-text-centered">You are blocked by @Model.UserName</p>
@@ -220,9 +220,9 @@
                     </section>
                     <footer class="modal-card-foot is-flex is-flex-centered is-flex-wrap">
                         <div class="control" v-if="currentAppUserName" style="width: 100%;">
-                            <textarea class="textarea" id="comment" type="text"></textarea>
+                            <input class="input" id="comment" type="text" placeholder="Comment photo" v-on:keyup.enter="comment">
                         </div>
-                        <button class="button is-link" v-bind:class="{'is-loading': commenting}" style="margin-top: 5px;" v-if="currentAppUserName" v-on:click="comment">Comment</button>
+                        <button class="button is-primary" v-bind:class="{'is-loading': commenting}" style="margin-top: 5px;" v-if="currentAppUserName" v-on:click="comment">Comment</button>
                         <button class="button" style="margin-top: 5px;" v-on:click="closeComments">Cancel</button>
                     </footer>
                 </div>

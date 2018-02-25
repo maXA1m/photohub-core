@@ -3478,11 +3478,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\maxmi\\Desktop\\photohub-n-layer\\BLL\\PhotoHub.BLL.csproj",
+      "projectUniqueName": "C:\\Users\\maxmi\\Desktop\\photohub-core\\BLL\\PhotoHub.BLL.csproj",
       "projectName": "PhotoHub.BLL",
-      "projectPath": "C:\\Users\\maxmi\\Desktop\\photohub-n-layer\\BLL\\PhotoHub.BLL.csproj",
+      "projectPath": "C:\\Users\\maxmi\\Desktop\\photohub-core\\BLL\\PhotoHub.BLL.csproj",
       "packagesPath": "C:\\Users\\maxmi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\maxmi\\Desktop\\photohub-n-layer\\BLL\\obj\\",
+      "outputPath": "C:\\Users\\maxmi\\Desktop\\photohub-core\\BLL\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -3501,8 +3501,8 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "C:\\Users\\maxmi\\Desktop\\photohub-n-layer\\DAL\\PhotoHub.DAL.csproj": {
-              "projectPath": "C:\\Users\\maxmi\\Desktop\\photohub-n-layer\\DAL\\PhotoHub.DAL.csproj"
+            "C:\\Users\\maxmi\\Desktop\\photohub-core\\DAL\\PhotoHub.DAL.csproj": {
+              "projectPath": "C:\\Users\\maxmi\\Desktop\\photohub-core\\DAL\\PhotoHub.DAL.csproj"
             }
           }
         }

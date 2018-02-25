@@ -14,16 +14,16 @@
             <input class="input" type="text" v-on:keyup.enter="handleSearch" v-model="searchString" placeholder="Enter login or email" required>
         </p>
         <p class="control">
-            <button class="button is-link" v-bind:class="{'is-loading': incallback}" v-on:submit.prevent="handleSearch" v-on:submit="handleSearch" v-on:click="handleSearch">
+            <button class="button is-primary" v-bind:class="{'is-loading': incallback}" v-on:submit.prevent="handleSearch" v-on:submit="handleSearch" v-on:click="handleSearch">
                 Search
             </button>
         </p>
     </div>
 
 
-    <div class="container">
-        <div class="notification is-flex is-flex-centered is-flex-wrap" style="justify-content: space-between !important; width: 100%;" v-for="user in users">
-            <a v-bind:href="`/Users/Details/${user.userName}`" class="button is-light is-flex is-flex-centered" style="justify-content: space-between !important; height: 100%;">
+    <div class="container" style="margin-top: 40px;">
+        <div class="is-flex is-flex-centered is-flex-wrap search-element" style="justify-content: space-between !important; width: 100%;" v-for="user in users">
+            <a v-bind:href="`/Users/Details/${user.userName}`" class="button is-white is-flex is-flex-centered" style="justify-content: space-between !important; height: 100%;">
                 <img class="image is-64x64 is-circle" v-bind:src="`/data/avatars/${user.userName}/${user.avatar}`" v-bind:alt="user.userName" style="margin-right: 7px;"/>
                 <span>{{user.userName}}</span>
             </a>

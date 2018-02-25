@@ -32,7 +32,7 @@ namespace PhotoHub.BLL.Services
             }
         }
 
-        public List<FilterDTO> Filters => FilterMapper.ToFilterDTOs(_unitOfWork.Filters.GetAll(1, 14));
+        public List<FilterDTO> Filters => FilterMapper.ToFilterDTOs(_unitOfWork.Filters.GetAll(0, 14));
 
         public PhotosService(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
         {
@@ -74,7 +74,7 @@ namespace PhotoHub.BLL.Services
                     )));
                 }
 
-                PhotoMapper.ToPhotoDTO(
+                photoDTOs.Add(PhotoMapper.ToPhotoDTO(
                     photo,
                     _unitOfWork.Likes.Find(l => l.OwnerId == currentUser.Id && l.PhotoId == photo.Id).FirstOrDefault() != null,
                     UserMapper.ToUserDTO(
@@ -84,7 +84,7 @@ namespace PhotoHub.BLL.Services
                         _unitOfWork.Blockings.Find(b => b.BlockedUserId == photo.OwnerId && b.UserId == currentUser.Id).FirstOrDefault() != null
                     ),
                     likes,
-                    comments);
+                    comments));
             }
 
             return photoDTOs;
@@ -123,7 +123,7 @@ namespace PhotoHub.BLL.Services
                     )));
                 }
 
-                PhotoMapper.ToPhotoDTO(
+                photoDTOs.Add(PhotoMapper.ToPhotoDTO(
                     photo,
                     _unitOfWork.Likes.Find(l => l.OwnerId == currentUser.Id && l.PhotoId == photo.Id).FirstOrDefault() != null, 
                     UserMapper.ToUserDTO(
@@ -133,7 +133,7 @@ namespace PhotoHub.BLL.Services
                         _unitOfWork.Blockings.Find(b => b.BlockedUserId == photo.OwnerId && b.UserId == currentUser.Id).FirstOrDefault() != null
                     ),
                     likes, 
-                    comments);
+                    comments));
             }
 
             return photoDTOs;
@@ -274,7 +274,7 @@ namespace PhotoHub.BLL.Services
                     )));
                 }
 
-                PhotoMapper.ToPhotoDTO(
+                photoDTOs.Add(PhotoMapper.ToPhotoDTO(
                     photo,
                     _unitOfWork.Likes.Find(l => l.OwnerId == currentUser.Id && l.PhotoId == photo.Id).FirstOrDefault() != null,
                     UserMapper.ToUserDTO(
@@ -284,7 +284,7 @@ namespace PhotoHub.BLL.Services
                         _unitOfWork.Blockings.Find(b => b.BlockedUserId == photo.OwnerId && b.UserId == currentUser.Id).FirstOrDefault() != null
                     ),
                     likes,
-                    comments);
+                    comments));
             }
 
             return photoDTOs;
@@ -325,7 +325,7 @@ namespace PhotoHub.BLL.Services
                     )));
                 }
 
-                PhotoMapper.ToPhotoDTO(
+                photoDTOs.Add(PhotoMapper.ToPhotoDTO(
                     photo,
                     _unitOfWork.Likes.Find(l => l.OwnerId == currentUser.Id && l.PhotoId == photo.Id).FirstOrDefault() != null,
                     UserMapper.ToUserDTO(
@@ -335,7 +335,7 @@ namespace PhotoHub.BLL.Services
                         _unitOfWork.Blockings.Find(b => b.BlockedUserId == photo.OwnerId && b.UserId == currentUser.Id).FirstOrDefault() != null
                     ),
                     likes,
-                    comments);
+                    comments));
             }
 
             return photoDTOs;
@@ -374,7 +374,7 @@ namespace PhotoHub.BLL.Services
                     )));
                 }
 
-                PhotoMapper.ToPhotoDTO(
+                photoDTOs.Add(PhotoMapper.ToPhotoDTO(
                     photo,
                     _unitOfWork.Likes.Find(l => l.OwnerId == currentUser.Id && l.PhotoId == photo.Id).FirstOrDefault() != null,
                     UserMapper.ToUserDTO(
@@ -384,7 +384,7 @@ namespace PhotoHub.BLL.Services
                         _unitOfWork.Blockings.Find(b => b.BlockedUserId == photo.OwnerId && b.UserId == currentUser.Id).FirstOrDefault() != null
                     ),
                     likes,
-                    comments);
+                    comments));
             }
 
             return photoDTOs;

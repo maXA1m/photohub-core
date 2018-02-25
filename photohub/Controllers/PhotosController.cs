@@ -89,7 +89,7 @@ namespace PhotoHub.WEB.Controllers
                 ViewBag.LikesCount = photo.Likes.Count;
                 ViewBag.Filters = FilterDTOMapper.ToFilterViewModels(_photosService.Filters);
 
-                return View(photo);
+                return View(PhotoDTOMapper.ToPhotoViewModel(photo));
             }
 
             return RedirectToAction("Details", "Photos", new { id = photo.Id });
