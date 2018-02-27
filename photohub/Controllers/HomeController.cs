@@ -10,7 +10,7 @@ namespace PhotoHub.WEB.Controllers
     {
         public HomeController() { }
 
-        [Authorize, Route("")]
+        [Route("")]
         public IActionResult Index()
         {
             if (User.Identity.IsAuthenticated)
