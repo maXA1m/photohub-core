@@ -18,8 +18,8 @@ namespace PhotoHub.WEB.Mappers
                 Email = giveaway.Email,
                 Avatar = giveaway.Avatar,
                 About = giveaway.About,
-                DateStart = giveaway.DateStart.ToString(),
-                DateEnd = giveaway.DateEnd.ToString()
+                DateStart = giveaway.DateStart.Day.ToString() + '.' + giveaway.DateStart.Month.ToString() + '.' + giveaway.DateStart.Year.ToString(),
+                DateEnd = giveaway.DateEnd.Day.ToString() + '.' + giveaway.DateEnd.Month.ToString() + '.' + giveaway.DateEnd.Year.ToString()
             };
         }
 
@@ -36,8 +36,8 @@ namespace PhotoHub.WEB.Mappers
                     Email = giveaway.Email,
                     Avatar = giveaway.Avatar,
                     About = giveaway.About,
-                    DateStart = giveaway.DateStart.ToString(),
-                    DateEnd = giveaway.DateEnd.ToString()
+                    DateStart = giveaway.DateStart.Day.ToString() + '.' + giveaway.DateStart.Month.ToString() + '.' + giveaway.DateStart.Year.ToString(),
+                    DateEnd = giveaway.DateEnd.Day.ToString() + '.' + giveaway.DateEnd.Month.ToString() + '.' + giveaway.DateEnd.Year.ToString()
                 });
             }
 
@@ -53,8 +53,8 @@ namespace PhotoHub.WEB.Mappers
                 Email = giveaway.Email,
                 Avatar = giveaway.Avatar,
                 About = giveaway.About,
-                DateStart = giveaway.DateStart.ToString(),
-                DateEnd = giveaway.DateEnd.ToString(),
+                DateStart = giveaway.DateStart.Day.ToString() + '.' + giveaway.DateStart.Month.ToString() + '.' + giveaway.DateStart.Year.ToString(),
+                DateEnd = giveaway.DateEnd.Day.ToString() + '.' + giveaway.DateEnd.Month.ToString() + '.' + giveaway.DateEnd.Year.ToString(),
                 Winners = UserDTOMapper.ToUserViewModels(giveaway.Winners),
                 Participants = UserDTOMapper.ToUserViewModels(giveaway.Participants),
                 Owners = UserDTOMapper.ToUserViewModels(giveaway.Owners)
@@ -74,8 +74,8 @@ namespace PhotoHub.WEB.Mappers
                     Email = giveaway.Email,
                     Avatar = giveaway.Avatar,
                     About = giveaway.About,
-                    DateStart = giveaway.DateStart.ToString(),
-                    DateEnd = giveaway.DateEnd.ToString(),
+                    DateStart = giveaway.DateStart.Day.ToString() + '.' + giveaway.DateStart.Month.ToString() + '.' + giveaway.DateStart.Year.ToString(),
+                    DateEnd = giveaway.DateEnd.Day.ToString() + '.' + giveaway.DateEnd.Month.ToString() + '.' + giveaway.DateEnd.Year.ToString(),
                     Winners = UserDTOMapper.ToUserViewModels(giveaway.Winners),
                     Participants = UserDTOMapper.ToUserViewModels(giveaway.Participants),
                     Owners = UserDTOMapper.ToUserViewModels(giveaway.Owners)

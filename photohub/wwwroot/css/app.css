@@ -1,5 +1,6 @@
 ﻿::selection {
-    background-color: #00d1b2;
+    background: #aaa;
+    /*background-color: rgba(0, 209, 178, 1);*/
     color: #fff;
 }
 
@@ -10,7 +11,7 @@
 body {
     padding-top: 40px;
     min-height: 100vh;
-    font-family: 'Open Sans';
+    /*font-family: ;*/
 }
 
 .card {

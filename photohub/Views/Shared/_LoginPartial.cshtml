@@ -6,27 +6,27 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <a class="navbar-item" title="search" href="/Home/Index">
-        Friends tape
+    <a class="navbar-item" title="Updates" href="/">
+        Updates
     </a>
     <div class="navbar-item has-dropdown is-hoverable">
         <span class="navbar-link">
             Create
         </span>
         <div class="navbar-dropdown is-boxed">
-            <a class="navbar-item" href="/Photos/Create">
+            <a class="navbar-item" href="/Photos/Create" title="Create photo">
                 Photo
             </a>
-            <a class="navbar-item" href="/Giveaways/Create">
+            <a class="navbar-item" href="/Giveaways/Create" title="Create giveaway">
                 Giveaway
             </a>
         </div>
     </div>
-    <a class="navbar-item" title="search" href="/Home/Search">
+    <a class="navbar-item" title="Search" href="/Search">
         Search
     </a>
-    <a class="navbar-item" title="@UserManager.GetUserName(User)" href="/Users/Details/@UserManager.GetUserName(User)">
-        My page
+    <a class="navbar-item" title="@UserManager.GetUserName(User)" href="/Users/@UserManager.GetUserName(User)">
+        Profile
     </a>
 }
 else

@@ -27,13 +27,13 @@ namespace PhotoHub.WEB.Controllers
             _environment = environment;
         }
 
-        [HttpGet, Route("Photos/Index")]
+        [HttpGet, Route("Photos")]
         public ViewResult Index()
         {
             return View();
         }
         
-        [HttpGet, Route("Photos/Details/{id}")]
+        [HttpGet, Route("Photos/{id}")]
         public async Task<ActionResult> Details(int id)
         {
             PhotoViewModel photo = PhotoDTOMapper.ToPhotoViewModel(await _photosService.GetAsync(id));

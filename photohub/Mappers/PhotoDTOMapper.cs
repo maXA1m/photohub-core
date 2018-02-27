@@ -15,7 +15,8 @@ namespace PhotoHub.WEB.Mappers
                 Filter = photo.Filter,
                 Description = photo.Description,
                 Liked = photo.Liked,
-                Date = photo.Date.ToString(),
+                //Date = photo.Date.ToString(),
+                Date = photo.Date.Day.ToString() + '.' + photo.Date.Month.ToString() + '.' + photo.Date.Year.ToString(),
                 Owner = UserDTOMapper.ToUserViewModel(photo.Owner),
 
                 Likes = LikesDTOMapper.ToLikeViewModels(photo.Likes),
@@ -36,7 +37,7 @@ namespace PhotoHub.WEB.Mappers
                     Filter = photo.Filter,
                     Description = photo.Description,
                     Liked = photo.Liked,
-                    Date = photo.Date.ToString(),
+                    Date = photo.Date.Day.ToString() + '.' + photo.Date.Month.ToString() + '.' + photo.Date.Year.ToString(),
                     Owner = UserDTOMapper.ToUserViewModel(photo.Owner),
 
                     Likes = LikesDTOMapper.ToLikeViewModels(photo.Likes),

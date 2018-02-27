@@ -148,8 +148,12 @@
                     this.message.text = 'error while sending comment';
                     this.message.status = 'error';
                     this.commenting = false;
-                    nanobar.go(100);
+                    nanobar.go(0);
                 });
+            }
+            else {
+                nanobar.go(0);
+                this.commenting = false;
             }
         },
         deleteComment(comment) {

@@ -51,7 +51,9 @@ namespace PhotoHub.DAL.Repositories
 
         public IEnumerable<Following> Find(Func<Following, bool> predicate)
         {
-            return _context.Followings.Where(predicate);
+            return _context.Followings
+                            .Include(c => c.FollowedUser)
+                            .Include(c => c.User).Where(predicate);
         }
         public void Create(Following item)
         {

@@ -47,7 +47,6 @@
             if (!this.giveawaysFetch.incallback && this.giveawaysFetch.page > -1) {
 
                 this.giveawaysFetch.incallback = true;
-                nanobar.go(40);
 
                 this.$http.get(`/api/giveaways/${this.detailsUserName}/${this.giveawaysFetch.page}`).then(response => response.json()).then(json => {
 
@@ -59,13 +58,11 @@
                         for (let giveaway in json)
                             this.giveaways.push(json[giveaway]);
                     }
-
-                    nanobar.go(100);
+                    
                     this.giveawaysFetch.incallback = false;
                     this.giveawaysFetch.page++;
                 },
                 error => {
-                    nanobar.go(0);
                     this.giveawaysFetch.incallback = false;
                     this.message.text = 'error while fetching photos';
                     this.message.status = 'error';
@@ -73,7 +70,7 @@
             }
         },
         fetchUser() {
-            this.$http.get(`/api/users/${this.detailsUserName}`).then(response => response.json()).then(json => {
+            this.$http.get(`/api/users/details/${this.detailsUserName}`).then(response => response.json()).then(json => {
                 this.user = json;
             },
             error => {
@@ -87,7 +84,7 @@
                 this.postsFetch.incallback = true;
                 nanobar.go(40);
 
-                this.$http.get(`/api/photos/${this.detailsUserName}/${this.postsFetch.page}`).then(response => response.json()).then(json => {
+                this.$http.get(`/api/photos/user/${this.detailsUserName}/${this.postsFetch.page}`).then(response => response.json()).then(json => {
 
                     if (this.posts == null)
                         this.posts = json;
@@ -202,8 +199,12 @@
                     this.message.text = 'error while sending comment';
                     this.message.status = 'error';
                     this.commenting = false;
-                    nanobar.go(100);
+                    nanobar.go(0);
                 });
+            }
+            else {
+                nanobar.go(0);
+                this.commenting = false;
             }
         },
         deleteComment(comment) {
@@ -224,7 +225,7 @@
         },
         copyToClipboard(id) {
             const copyTextArea = document.createElement('textarea');
-            copyTextArea.value = `http://photohub.azurewebsites.net/Photos/Details/${id}`;
+            copyTextArea.value = `http://photohub.azurewebsites.net/Photos/${id}`;
             document.body.appendChild(copyTextArea);
             copyTextArea.select();
 

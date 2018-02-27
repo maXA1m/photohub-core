@@ -19,5 +19,7 @@ namespace PhotoHub.WEB.ViewModels
         public bool Followed { get; set; }
         [JsonProperty("blocked")]
         public bool Blocked { get; set; }
+        [JsonProperty("iBlocked")]
+        public bool IBlocked { get; set; }
     }
 }

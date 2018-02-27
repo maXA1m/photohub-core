@@ -8,7 +8,7 @@ namespace PhotoHub.BLL.Mappers
 {
     public static class UserMapper
     {
-        public static UserDTO ToUserDTO(ApplicationUser user, bool confirmed, bool followed, bool blocked)
+        public static UserDTO ToUserDTO(ApplicationUser user, bool confirmed, bool followed, bool blocked, bool iBlocked)
         {
             return new UserDTO()
             {
@@ -18,11 +18,12 @@ namespace PhotoHub.BLL.Mappers
                 Date = user.Date,
                 Confirmed = confirmed,
                 Followed = followed,
-                Blocked = blocked
+                Blocked = blocked,
+                IBlocked = iBlocked
             };
     }
 
-        public static UserDetailsDTO ToUserDetailsDTO(ApplicationUser user, bool confirmed, bool followed, bool blocked, ICollection<UserDTO> followings, ICollection<UserDTO> followers)
+        public static UserDetailsDTO ToUserDetailsDTO(ApplicationUser user, bool confirmed, bool followed, bool blocked, bool iBlocked, ICollection<UserDTO> followings, ICollection<UserDTO> followers)
         {
             return new UserDetailsDTO()
             {
@@ -34,8 +35,9 @@ namespace PhotoHub.BLL.Mappers
                 Confirmed = confirmed,
                 Followed = followed,
                 Blocked = blocked,
+                IBlocked = iBlocked,
                 Followings = followings,
-                Followers = followers
+                Followers = followers,
             };
         }
     }

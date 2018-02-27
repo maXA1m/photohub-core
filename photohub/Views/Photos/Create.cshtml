@@ -16,8 +16,8 @@
     <div class="card is-responsive">
         <header class="card-header">
             <p class="card-header-title">
-                <a class="has-text-grey-darker has-text-left has-text-justified" href="/Users/Details/@Model.UserName" title="@Model.UserName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" src="~/data/avatars/@Model.UserName/@Model.Avatar" alt="@Model.UserName" /></a>
-                <a class="has-text-grey-darker has-text-left has-text-justified" href="/Users/Details/@Model.UserName" title="@Model.UserName">@Model.UserName</a>
+                <a class="has-text-grey-darker has-text-left has-text-justified" href="/Users/@Model.UserName" title="@Model.UserName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" src="~/data/avatars/@Model.UserName/@Model.Avatar" alt="@Model.UserName" /></a>
+                <a class="has-text-grey-darker has-text-left has-text-justified" href="/Users/@Model.UserName" title="@Model.UserName">@Model.UserName</a>
             </p>
         </header>
 
@@ -49,7 +49,7 @@
             {
                 <div class="has-margin-10px is-unselectable">
                     <input class="is-display-none" id="@("filterId" + @filter.Id )" type="radio" name="Filter" value="@filter.Name" v-on:click="pickFilter('@filter.Name')" @( filter.Id == 1 ? "checked" : "" ) />
-                    <label for="@("filterId" + @filter.Id )" class="is-paddingless">
+                    <label for="@("filterId" + @filter.Id )" class="is-paddingless" title="@filter.Name">
                         <figure class="filter @filter.Name is-paddingless is-marginless">
                             <img v-bind:src="path" alt="@filter.Name filter" class="image is-96x96">
                         </figure>
@@ -65,14 +65,14 @@
             </div>
 
             <div class="content">
-                <a class="button is-danger"><i class="fas fa-heart"></i></a>
+                <a class="button is-danger" title="Dislike"><i class="fas fa-heart"></i></a>
                 <a class="button button is-danger is-outlined is-unselectable">3</a>
             </div>
         </div>
 
         <footer class="card-footer">
             <div class="card-footer-item">
-                <button type="submit" class="button is-primary is-uppercase" v-bind:class="{'is-loading': submited}"  v-on:click="submit">create</button>
+                <button type="submit" class="button is-primary is-uppercase" v-bind:class="{'is-loading': submited}"  v-on:click="submit" title="Create photo">create</button>
             </div>
         </footer>
     </div>

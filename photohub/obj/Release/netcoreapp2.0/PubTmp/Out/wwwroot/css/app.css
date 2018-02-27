@@ -1,8 +1,7 @@
 ﻿::selection {
-    background: #ccc;
-    color: #333;
-    text-shadow: none;
-    text-decoration: none;
+    background: #aaa;
+    /*background-color: rgba(0, 209, 178, 1);*/
+    color: #fff;
 }
 
 [v-cloak] {
@@ -12,16 +11,27 @@
 body {
     padding-top: 40px;
     min-height: 100vh;
-    font-family: 'Open Sans';
+    /*font-family: ;*/
 }
 
+.card {
+    margin-bottom: 50px !important;
+    border-radius: 7px;
+    box-shadow: 0 0 50px 0 rgba(0, 0, 0, .07);
+}
+
+.search-element {
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 7px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, .05);
+}
 
 /*.is-unscrollabble {
     margin: 0;
     height: 100%;
     overflow: hidden;
 }*/
-
 .is-card-image {
     transition: all 0.3s cubic-bezier(.25,.8,.25,1) !important;
 }
@@ -37,7 +47,7 @@ body {
 .is-responsive {
     width: 100%;
 }
-@media screen and (min-width: 1408px) {
+@media screen and (min-width: 1280px) {
     .is-responsive {
         width: 55%;
     }
@@ -80,6 +90,7 @@ body {
     -o-transition: transform .4s;
     transition: transform .4s;
     transition: transform .4s, -webkit-transform .4s;
+    box-shadow: 0 0 60px 0 rgba(0, 0, 0, .07);
 }
 
 .is-hidden-navbar {
@@ -90,22 +101,20 @@ body {
 
 /*nanobar*/
 .bar {
-    background: #276CDA;
+    background: #00d1b2;
 }
 
 /* filter picker */
-input[name="FilterId"] + label img {
-
+input[name="Filter"] + label figure {
+    overflow: hidden;
+    border-radius: 7px !important;
+    transition: all ease-in-out .3s;
 }
 
-input[name="FilterId"]:hover + label img {
-    border: 5px solid #276CDA;
-    border-radius: 4px;
-}
-
-input[name="FilterId"]:checked + label img {
-    border: 5px solid #276CDA;
-    border-radius: 4px;
+input[name="Filter"]:hover + label figure,
+input[name="Filter"]:checked + label figure{
+    box-shadow: 0 0 60px 0 rgba(0, 0, 0, .15);
+    transform: translateY(-7px);
 }
 
 /* basic styles */

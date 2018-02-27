@@ -1,6 +1,6 @@
 ﻿@{
-    ViewBag.Title = "Friends tape";
-    ViewBag.Keywords = "Friends tape,Search for People,Users,comments,likes";
+    ViewBag.Title = "Updates";
+    ViewBag.Keywords = "Search for People,Users,comments,likes";
     ViewBag.Description = "Home page on PhotoHub";
 }
 
@@ -13,8 +13,8 @@
     <div class="card is-responsive" v-if="posts.length > 0" v-for="post in posts" style="margin-bottom: 30px;" v-cloak>
         <header class="card-header">
             <p class="card-header-title">
-                <a class="has-text-grey-darker has-text-left has-text-justified" v-bind:href="`/Users/Details/${post.owner.userName}`" v-bind:title="post.owner.userName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" v-bind:src="`/data/avatars/${post.owner.userName}/${post.owner.avatar}`" v-bind:alt="post.owner.userName" /></a>
-                <a class="has-text-grey-darker has-text-left has-text-justified" v-bind:href="`/Users/Details/${post.owner.userName}`" v-bind:title="post.owner.userName">{{post.owner.userName}}</a>
+                <a class="has-text-grey-darker has-text-left has-text-justified" v-bind:href="`/Users/${post.owner.userName}`" v-bind:title="post.owner.userName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" v-bind:src="`/data/avatars/${post.owner.userName}/${post.owner.avatar}`" v-bind:alt="post.owner.userName" /></a>
+                <a class="has-text-grey-darker has-text-left has-text-justified" v-bind:href="`/Users/${post.owner.userName}`" v-bind:title="post.owner.userName">{{post.owner.userName}}</a>
             </p>
 
             <div class="card-header-icon">
@@ -44,13 +44,13 @@
             </div>
 
             <div class="content">
-                <button class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-on:click="post.liked?dislike(post):like(post)" v-if="currentAppUserName"><i class="fa-heart" v-bind:class="post.liked?'fas':'far'"></i></button>
-                <button v-if="post.likes.length > 0" class="button is-danger is-outlined is-unselectable" v-on:click="showLikes(post)">{{ post.likes.length }}</button>
+                <button class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-bind:title="post.liked?'Dislike':'Like'" v-on:click="post.liked?dislike(post):like(post)" v-if="currentAppUserName"><i class="fa-heart" v-bind:class="post.liked?'fas':'far'"></i></button>
+                <button v-if="post.likes.length > 0" class="button is-danger is-outlined is-unselectable" v-on:click="showLikes(post)" title="Likes list">{{ post.likes.length }}</button>
             </div>
         </div>
 
         <footer class="card-footer">
-            <a class="card-footer-item is-uppercase has-text-grey-darker" v-on:click="showComments(post)">comments<span class="tag is-light" v-if="post.comments.length > 0" style="margin: 0 0 0 3px;">{{ post.comments.length }}</span></a>
+            <a class="card-footer-item is-uppercase has-text-grey-darker" v-on:click="showComments(post)" title="Comments">comments<span class="tag is-light" v-if="post.comments.length > 0" style="margin: 0 0 0 3px;">{{ post.comments.length }}</span></a>
         </footer>
     </div>
 
@@ -65,7 +65,7 @@
             <section class="modal-card-body" style="overflow-x: hidden; overflow-y: auto;">
                 <div class="media" v-for="like in current.likes">
                     <div class="media-left">
-                        <a v-bind:href="`/Users/Details/${like.owner.userName}`" class="has-text-black" v-bind:title="like.owner.userName"><b>{{ like.owner.userName }}</b></a>
+                        <a v-bind:href="`/Users/${like.owner.userName}`" class="has-text-black" v-bind:title="like.owner.userName"><b>{{ like.owner.userName }}</b></a>
                     </div>
 
                     <div class="media-content">
@@ -95,7 +95,7 @@
                 <div class="content" style="overflow-x: hidden; overflow-y: auto;">
                     <div class="media" v-for="comment in current.comments">
                         <div class="media-left is-flex is-flex-column">
-                            <a v-bind:href="`/Users/Details/${comment.owner.userName}`" class="has-text-black" v-bind:title="comment.owner.userName"><b>{{ comment.owner.userName }}</b></a>
+                            <a v-bind:href="`/Users/${comment.owner.userName}`" class="has-text-black" v-bind:title="comment.owner.userName"><b>{{ comment.owner.userName }}</b></a>
                             <small class="has-text-grey">{{ comment.date }}</small>
                         </div>
 
@@ -113,8 +113,8 @@
                 <div class="control" v-if="currentAppUserName" style="width: 100%;">
                     <input class="input" id="comment" type="text" placeholder="Comment photo" v-on:keyup.enter="comment">
                 </div>
-                <button class="button is-primary" v-bind:class="{'is-loading': commenting}" style="margin-top: 5px;" v-if="currentAppUserName" v-on:click="comment">Comment</button>
-                <button class="button" style="margin-top: 5px;" v-on:click="closeComments">Cancel</button>
+                <button class="button is-primary" v-bind:class="{'is-loading': commenting}" title="Comment photo" style="margin-top: 5px;" v-if="currentAppUserName" v-on:click="comment">Comment</button>
+                <button class="button" style="margin-top: 5px;" v-on:click="closeComments" title="Close window">Cancel</button>
             </footer>
         </div>
     </div>
@@ -124,7 +124,7 @@
         <div class="modal-background" v-on:click="closeOptions"></div>
         <div class="content is-flex is-flex-column">
             <a class="button is-large is-white has-text-grey-darker" title="Copy link to Clipboard" v-on:click="copyToClipboard(current.$id)" style="margin-bottom: 5px;">Copy link to Clipboard</a>
-            <a class="button is-large is-white has-text-grey-darker" title="Go to photo" v-bind:href="`/Photos/Details/${current.$id}`" style="margin-bottom: 5px;">Go to photo</a>
+            <a class="button is-large is-white has-text-grey-darker" title="Go to photo" v-bind:href="`/Photos/${current.$id}`" style="margin-bottom: 5px;">Go to photo</a>
             <a class="button is-large is-white has-text-grey-darker" title="Close" v-on:click="closeOptions">Close</a>
         </div>
     </div>
@@ -133,7 +133,7 @@
     <div class="is-flex is-flex-centered is-flex-column" v-if="!posts.length" v-cloak>
         <p class="has-text-centered has-text-weight-light has-text-weight-semibold is-size-5" style="margin-bottom: 10px;">You have no followings, follow on someone to view his new photos!</p>
         <p class="has-text-centered has-text-weight-light is-size-5" style="margin-bottom: 10px;">You can find friends by our search</p>
-        <p class="has-text-centered"><a class="button is-warning is-medium" href="/Home/Search" title="Search for People">Search for People</a></p>
+        <p class="has-text-centered"><a class="button is-warning is-medium" href="/Search" title="Search for People">Search for People</a></p>
     </div>
 
     <button class="button is-uppercase is-responsive" v-bind:class="{'is-loading': incallback}" v-on:click="fetchPhotos" v-if="!this.postsLoaded && posts.length > 0 && posts.length%6 == 0">Load More</button>

@@ -40,7 +40,7 @@ namespace PhotoHub.WEB.Controllers.Api
             return PhotoDTOMapper.ToPhotoViewModels(_photosService.GetPhotosHome(page, _getHomePageSize));
         }
         
-        [HttpGet, Route("{userName}/{page}")]
+        [HttpGet, Route("user/{userName}/{page}")]
         public List<PhotoViewModel> GetForUser(int page, string userName)
         {
             return PhotoDTOMapper.ToPhotoViewModels(_photosService.GetForUser(page, userName, _getForUserPageSize));

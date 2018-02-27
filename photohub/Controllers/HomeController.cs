@@ -10,26 +10,22 @@ namespace PhotoHub.WEB.Controllers
     {
         public HomeController() { }
 
-        [Authorize]
+        [Authorize, Route("")]
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Cover()
-        {
             if (User.Identity.IsAuthenticated)
-                return Redirect("/Home/Index");
+                return View();
 
-            return View();
+            return View("Cover");
         }
 
-        [Authorize]
+        [Authorize, Route("Search")]
         public IActionResult Search()
         {
             return View();
         }
 
+        [Route("About")]
         public IActionResult About()
         {
             return View();

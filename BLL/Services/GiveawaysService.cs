@@ -26,7 +26,8 @@ namespace PhotoHub.BLL.Services
                     user,
                     _unitOfWork.Confirmations.Find(c => c.UserId == user.Id).FirstOrDefault() != null,
                     _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id && f.UserId == user.Id).FirstOrDefault() != null,
-                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.Id && b.UserId == user.Id).FirstOrDefault() != null
+                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.Id && b.UserId == user.Id).FirstOrDefault() != null,
+                            _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.Id && b.UserId == user.Id).FirstOrDefault() != null
                 );
             }
         }
@@ -72,7 +73,8 @@ namespace PhotoHub.BLL.Services
                     user.User,
                     _unitOfWork.Confirmations.Find(c => c.UserId == user.UserId).FirstOrDefault() != null,
                     _unitOfWork.Followings.Find(f => f.FollowedUserId == user.UserId && f.UserId == currentUser.Id).FirstOrDefault() != null,
-                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.UserId && b.UserId == currentUser.Id).FirstOrDefault() != null
+                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.UserId && b.UserId == currentUser.Id).FirstOrDefault() != null,
+                            _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == currentUser.Id).FirstOrDefault() != null
                 ));
             }
 
@@ -83,7 +85,8 @@ namespace PhotoHub.BLL.Services
                     user.Owner,
                     _unitOfWork.Confirmations.Find(c => c.UserId == user.OwnerId).FirstOrDefault() != null,
                     _unitOfWork.Followings.Find(f => f.FollowedUserId == user.OwnerId && f.UserId == currentUser.Id).FirstOrDefault() != null,
-                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.OwnerId && b.UserId == currentUser.Id).FirstOrDefault() != null
+                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.OwnerId && b.UserId == currentUser.Id).FirstOrDefault() != null,
+                            _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == currentUser.Id).FirstOrDefault() != null
                 ));
             }
 
@@ -94,7 +97,8 @@ namespace PhotoHub.BLL.Services
                     user.User,
                     _unitOfWork.Confirmations.Find(c => c.UserId == user.UserId).FirstOrDefault() != null,
                     _unitOfWork.Followings.Find(f => f.FollowedUserId == user.UserId && f.UserId == currentUser.Id).FirstOrDefault() != null,
-                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.UserId && b.UserId == currentUser.Id).FirstOrDefault() != null
+                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.UserId && b.UserId == currentUser.Id).FirstOrDefault() != null,
+                            _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == currentUser.Id).FirstOrDefault() != null
                 ));
             }
 
@@ -112,7 +116,8 @@ namespace PhotoHub.BLL.Services
                     user.User,
                     _unitOfWork.Confirmations.Find(c => c.UserId == user.UserId).FirstOrDefault() != null,
                     _unitOfWork.Followings.Find(f => f.FollowedUserId == user.UserId && f.UserId == currentUser.Id).FirstOrDefault() != null,
-                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.UserId && b.UserId == currentUser.Id).FirstOrDefault() != null
+                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.UserId && b.UserId == currentUser.Id).FirstOrDefault() != null,
+                            _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == currentUser.Id).FirstOrDefault() != null
                 ));
             }
 
@@ -123,7 +128,8 @@ namespace PhotoHub.BLL.Services
                     user.Owner,
                     _unitOfWork.Confirmations.Find(c => c.UserId == user.OwnerId).FirstOrDefault() != null,
                     _unitOfWork.Followings.Find(f => f.FollowedUserId == user.OwnerId && f.UserId == currentUser.Id).FirstOrDefault() != null,
-                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.OwnerId && b.UserId == currentUser.Id).FirstOrDefault() != null
+                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.OwnerId && b.UserId == currentUser.Id).FirstOrDefault() != null,
+                            _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == currentUser.Id).FirstOrDefault() != null
                 ));
             }
 
@@ -134,7 +140,8 @@ namespace PhotoHub.BLL.Services
                     user.User,
                     _unitOfWork.Confirmations.Find(c => c.UserId == user.UserId).FirstOrDefault() != null,
                     _unitOfWork.Followings.Find(f => f.FollowedUserId == user.UserId && f.UserId == currentUser.Id).FirstOrDefault() != null,
-                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.UserId && b.UserId == currentUser.Id).FirstOrDefault() != null
+                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.UserId && b.UserId == currentUser.Id).FirstOrDefault() != null,
+                            _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == currentUser.Id).FirstOrDefault() != null
                 ));
             }
 

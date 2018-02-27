@@ -25,6 +25,7 @@ namespace PhotoHub.BLL.Services
                     user,
                     _unitOfWork.Confirmations.Find(c => c.UserId == user.Id).FirstOrDefault() != null,
                     _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id && f.UserId == user.Id).FirstOrDefault() != null,
+                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.Id && b.UserId == user.Id).FirstOrDefault() != null,
                     _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.Id && b.UserId == user.Id).FirstOrDefault() != null
                 );
             }
@@ -48,7 +49,8 @@ namespace PhotoHub.BLL.Services
                     user,
                     _unitOfWork.Confirmations.Find(c => c.UserId == user.Id).FirstOrDefault() != null,
                     _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id && f.UserId == currentUser.Id).FirstOrDefault() != null,
-                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.Id && b.UserId == currentUser.Id).FirstOrDefault() != null
+                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.Id && b.UserId == currentUser.Id).FirstOrDefault() != null,
+                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == user.Id).FirstOrDefault() != null
                 ));
             }
 
@@ -66,7 +68,8 @@ namespace PhotoHub.BLL.Services
                     user,
                     _unitOfWork.Confirmations.Find(c => c.UserId == user.Id).FirstOrDefault() != null,
                     _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id && f.UserId == currentUser.Id).FirstOrDefault() != null,
-                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.Id && b.UserId == currentUser.Id).FirstOrDefault() != null
+                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.Id && b.UserId == currentUser.Id).FirstOrDefault() != null,
+                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == user.Id).FirstOrDefault() != null
                 ));
             }
 
@@ -84,20 +87,22 @@ namespace PhotoHub.BLL.Services
             foreach (Following following in _unitOfWork.Followings.Find(f => f.UserId == user.Id))
             {
                 followings.Add(UserMapper.ToUserDTO(
-                    user,
+                    following.FollowedUser,
                     _unitOfWork.Confirmations.Find(c => c.UserId == following.FollowedUserId).FirstOrDefault() != null,
+                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == user.Id).FirstOrDefault() != null,
                     _unitOfWork.Followings.Find(f => f.FollowedUserId == following.FollowedUserId && f.UserId == currentUser.Id).FirstOrDefault() != null,
-                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == following.FollowedUserId && b.UserId == currentUser.Id).FirstOrDefault() != null
+                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == user.Id).FirstOrDefault() != null
                 ));
             }
 
             foreach (Following follower in _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id))
             {
                 followers.Add(UserMapper.ToUserDTO(
-                    user,
+                    follower.User,
                     _unitOfWork.Confirmations.Find(c => c.UserId == follower.UserId).FirstOrDefault() != null,
                     _unitOfWork.Followings.Find(f => f.FollowedUserId == follower.UserId && f.UserId == currentUser.Id).FirstOrDefault() != null,
-                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == follower.UserId && b.UserId == currentUser.Id).FirstOrDefault() != null
+                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == follower.UserId && b.UserId == currentUser.Id).FirstOrDefault() != null,
+                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == user.Id).FirstOrDefault() != null
                 ));
             }
 
@@ -106,6 +111,7 @@ namespace PhotoHub.BLL.Services
                 _unitOfWork.Confirmations.Find(c => c.UserId == user.Id).FirstOrDefault() != null,
                 _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id && f.UserId == currentUser.Id).FirstOrDefault() != null,
                 _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.Id && b.UserId == currentUser.Id).FirstOrDefault() != null,
+                _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == user.Id).FirstOrDefault() != null,
                 followings,
                 followers
             );
@@ -131,7 +137,8 @@ namespace PhotoHub.BLL.Services
                     user,
                     _unitOfWork.Confirmations.Find(c => c.UserId == user.Id).FirstOrDefault() != null,
                     _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id && f.UserId == currentUser.Id).FirstOrDefault() != null,
-                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.Id && b.UserId == currentUser.Id).FirstOrDefault() != null
+                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.Id && b.UserId == currentUser.Id).FirstOrDefault() != null,
+                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == user.Id).FirstOrDefault() != null
                 ));
             }
 
@@ -235,7 +242,7 @@ namespace PhotoHub.BLL.Services
         {
             ApplicationUser currentUser = CurrentUser;
             ApplicationUser blockedUser = _unitOfWork.Users.Find(u => u.UserName == block).FirstOrDefault();
-            BlackList blocking = _unitOfWork.Blockings.Find(b => b.UserId == currentUser.Id && b.BlockedUserId == currentUser.Id).FirstOrDefault();
+            BlackList blocking = _unitOfWork.Blockings.Find(b => b.UserId == currentUser.Id && b.BlockedUserId == blockedUser.Id).FirstOrDefault();
 
             if (currentUser != null && blockedUser != null && currentUser.UserName != block && blocking != null)
             {
@@ -247,7 +254,7 @@ namespace PhotoHub.BLL.Services
         {
             ApplicationUser currentUser = CurrentUser;
             ApplicationUser blockedUser = _unitOfWork.Users.Find(u => u.UserName == block).FirstOrDefault();
-            BlackList blocking = _unitOfWork.Blockings.Find(b => b.UserId == currentUser.Id && b.BlockedUserId == currentUser.Id).FirstOrDefault();
+            BlackList blocking = _unitOfWork.Blockings.Find(b => b.UserId == currentUser.Id && b.BlockedUserId == blockedUser.Id).FirstOrDefault();
 
             if (currentUser != null && blockedUser != null && currentUser.UserName != block && blocking != null)
             {

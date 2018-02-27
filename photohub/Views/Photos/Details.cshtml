@@ -15,8 +15,8 @@
         <div class="card is-responsive">
             <header class="card-header">
                 <p class="card-header-title">
-                    <a class="has-text-grey-darker has-text-left has-text-justified" href="/Users/Details/@Model.Owner.UserName" title="@Model.Owner.UserName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" src="/data/avatars/@Model.Owner.UserName/@Model.Owner.Avatar" alt="@Model.Owner.UserName" /></a>
-                    <a class="has-text-grey-darker has-text-left has-text-justified" href="/Users/Details/@Model.Owner.UserName" title="@Model.Owner.UserName">@Model.Owner.UserName</a>
+                    <a class="has-text-grey-darker has-text-left has-text-justified" href="/Users/@Model.Owner.UserName" title="@Model.Owner.UserName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" src="/data/avatars/@Model.Owner.UserName/@Model.Owner.Avatar" alt="@Model.Owner.UserName" /></a>
+                    <a class="has-text-grey-darker has-text-left has-text-justified" href="/Users/@Model.Owner.UserName" title="@Model.Owner.UserName">@Model.Owner.UserName</a>
                 </p>
                 @if (Model.Owner.UserName == User.Identity.Name)
                 {
@@ -50,9 +50,9 @@
                 <div class="content">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <button class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-on:click="post.liked?dislike():like()" v-if="currentAppUserName"><i class="fa-heart" v-bind:class="post.liked?'fas':'far'"></i></button>
+                        <button class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-on:click="post.liked?dislike():like()" v-bind:title="post.liked?'Dislike':'Like'" v-if="currentAppUserName"><i class="fa-heart" v-bind:class="post.liked?'fas':'far'"></i></button>
                     }
-                    <button v-if="post.likes.length > 0" class="button is-danger is-outlined is-unselectable" v-on:click="modalLikes()">{{ post.likes.length }}</button>
+                    <button v-if="post.likes.length > 0" class="button is-danger is-outlined is-unselectable" v-on:click="modalLikes()" title="Likes list">{{ post.likes.length }}</button>
                 </div>
             </div>
 
@@ -61,7 +61,7 @@
                     <div class="content" style="overflow-x: hidden; overflow-y: auto; max-height: 300px; padding: 2% 2% 2% 2%;" v-if="post.comments.length">
                         <div class="media" v-for="comment in post.comments">
                             <div class="media-left is-flex is-flex-column">
-                                <a v-bind:href="`/Users/Details/${comment.owner.userName}`" class="has-text-black" v-bind:title="comment.owner.userName"><b>{{ comment.owner.userName }}</b></a>
+                                <a v-bind:href="`/Users/${comment.owner.userName}`" class="has-text-black" v-bind:title="comment.owner.userName"><b>{{ comment.owner.userName }}</b></a>
                                 <small class="has-text-grey">{{ comment.date }}</small>
                             </div>
 
@@ -79,7 +79,7 @@
                         <div class="control" style="margin: 15px 15px 0 15px">
                             <input class="input" id="comment" type="text" placeholder="Comment photo" v-on:keyup.enter="comment">
                             <div class="is-flex is-flex-centered" style="margin: 10px 0 10px 0">
-                                <button class="button is-primary" v-bind:class="{'is-loading': commenting}" v-on:click="comment">Comment</button>
+                                <button class="button is-primary" v-bind:class="{'is-loading': commenting}" v-on:click="comment" title="Comment photo">Comment</button>
                             </div>
                         </div>
                     }
@@ -99,7 +99,7 @@
             <section class="modal-card-body" style="overflow-x: hidden; overflow-y: auto;">
                 <div class="media" v-for="like in post.likes">
                     <div class="media-left">
-                        <a v-bind:href="`/Users/Details/${like.owner.userName}`" class="has-text-black" v-bind:title="like.owner.userName"><b>{{ like.owner.userName }}</b></a>
+                        <a v-bind:href="`/Users/${like.owner.userName}`" class="has-text-black" v-bind:title="like.owner.userName"><b>{{ like.owner.userName }}</b></a>
                     </div>
 
                     <div class="media-content">

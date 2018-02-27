@@ -13,10 +13,12 @@ namespace PhotoHub.WEB.Mappers
                 UserName = user.UserName,
                 Email = user.Email,
                 Avatar = user.Avatar,
-                Date = user.Date.ToString(),
+                //Date = user.Date.ToString(),
+                Date = user.Date.Day.ToString() + '.' + user.Date.Month.ToString() + '.' + user.Date.Year.ToString(),
                 Confirmed = user.Confirmed,
                 Followed = user.Followed,
-                Blocked = user.Blocked
+                Blocked = user.Blocked,
+                IBlocked = user.IBlocked
             };
         }
         public static List<UserViewModel> ToUserViewModels(IEnumerable<UserDTO> users)
@@ -30,10 +32,11 @@ namespace PhotoHub.WEB.Mappers
                     UserName = user.UserName,
                     Email = user.Email,
                     Avatar = user.Avatar,
-                    Date = user.Date.ToString(),
+                    Date = user.Date.Day.ToString() + '.' + user.Date.Month.ToString() + '.' + user.Date.Year.ToString(),
                     Confirmed = user.Confirmed,
                     Followed = user.Followed,
-                    Blocked = user.Blocked
+                    Blocked = user.Blocked,
+                    IBlocked = user.IBlocked
                 });
             }
 
@@ -48,10 +51,11 @@ namespace PhotoHub.WEB.Mappers
                 Email = user.Email,
                 Avatar = user.Avatar,
                 About = user.About,
-                Date = user.Date.ToString(),
+                Date = user.Date.Day.ToString() + '.' + user.Date.Month.ToString() + '.' + user.Date.Year.ToString(),
                 Confirmed = user.Confirmed,
                 Followed = user.Followed,
                 Blocked = user.Blocked,
+                IBlocked = user.IBlocked,
                 Followings = ToUserViewModels(user.Followings),
                 Followers = ToUserViewModels(user.Followers),
             };
@@ -68,10 +72,11 @@ namespace PhotoHub.WEB.Mappers
                     Email = user.Email,
                     Avatar = user.Avatar,
                     About = user.About,
-                    Date = user.Date.ToString(),
+                    Date = user.Date.Day.ToString() + '.' + user.Date.Month.ToString() + '.' + user.Date.Year.ToString(),
                     Confirmed = user.Confirmed,
                     Followed = user.Followed,
                     Blocked = user.Blocked,
+                    IBlocked = user.IBlocked,
                     Followings = ToUserViewModels(user.Followings),
                     Followers = ToUserViewModels(user.Followers),
                 });
