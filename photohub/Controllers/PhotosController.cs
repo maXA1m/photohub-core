@@ -63,6 +63,10 @@ namespace PhotoHub.WEB.Controllers
 
                 fileName = Path.Combine(_environment.WebRootPath, "data/photos") + $@"/{User.Identity.Name}/{fileName}";
 
+                string dir = Path.Combine(_environment.WebRootPath, "data/photos") + $@"/{User.Identity.Name}";
+                if (!Directory.Exists(dir))
+                    Directory.CreateDirectory(dir);
+
                 using (FileStream fs = System.IO.File.Create(fileName))
                 {
                     await file.CopyToAsync(fs);
