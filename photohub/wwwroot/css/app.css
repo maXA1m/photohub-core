@@ -17,14 +17,14 @@ body {
 .card {
     margin-bottom: 50px !important;
     border-radius: 7px;
-    box-shadow: 0 0 50px 0 rgba(0, 0, 0, .07);
+    box-shadow: 0 0 50px 0 rgba(0, 0, 0, .17);
 }
 
 .search-element {
     padding: 15px;
     margin: 20px 0;
     border-radius: 7px;
-    box-shadow: 0 0 20px 0 rgba(0, 0, 0, .05);
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, .15);
 }
 
 /*.is-unscrollabble {
@@ -90,7 +90,7 @@ body {
     -o-transition: transform .4s;
     transition: transform .4s;
     transition: transform .4s, -webkit-transform .4s;
-    box-shadow: 0 0 60px 0 rgba(0, 0, 0, .07);
+    box-shadow: 0 0 60px 0 rgba(0, 0, 0, .17);
 }
 
 .is-hidden-navbar {
@@ -113,7 +113,7 @@ input[name="Filter"] + label figure {
 
 input[name="Filter"]:hover + label figure,
 input[name="Filter"]:checked + label figure{
-    box-shadow: 0 0 60px 0 rgba(0, 0, 0, .15);
+    box-shadow: 0 0 60px 0 rgba(0, 0, 0, .25);
     transform: translateY(-7px);
 }
 

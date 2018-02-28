@@ -535,9 +535,8 @@ namespace PhotoHub.BLL.Services
                 Filter flt = _unitOfWork.Filters.Find(f => f.Name == filter).FirstOrDefault();
                 if (flt != null)
                     photo.FilterId = flt.Id;
-
-                if (description != null)
-                    photo.Description = description;
+                
+                photo.Description = description;
 
                 _unitOfWork.Photos.Update(photo);
                 await _unitOfWork.SaveAsync();
