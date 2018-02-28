@@ -2,7 +2,6 @@
 @using PhotoHub.WEB.ViewModels
 
 @inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
 
 @if (SignInManager.IsSignedIn(User))
 {
@@ -14,27 +13,27 @@
             Create
         </span>
         <div class="navbar-dropdown is-boxed">
-            <a class="navbar-item" href="/Photos/Create" title="Create photo">
+            <a class="navbar-item" href="/photos/create" title="Create photo">
                 Photo
             </a>
-            <a class="navbar-item" href="/Giveaways/Create" title="Create giveaway">
+            @*<a class="navbar-item" href="/giveaways/create" title="Create giveaway">
                 Giveaway
-            </a>
+            </a>*@
         </div>
     </div>
-    <a class="navbar-item" title="Search" href="/Search">
+    <a class="navbar-item" title="Search" href="/search">
         Search
     </a>
-    <a class="navbar-item" title="@UserManager.GetUserName(User)" href="/Users/@UserManager.GetUserName(User)">
+    <a class="navbar-item" title="@User.Identity.Name" href="/users/@User.Identity.Name">
         Profile
     </a>
 }
 else
 {
-    <a id="registerLink" class="navbar-item is-active" href="/Account/Register" title="Sign up">
+    <a id="registerLink" class="navbar-item is-active" href="/account/register" title="Sign up">
         Sign up
     </a>
-    <a id="registerLink" class="navbar-item" href="/Account/Login" title="Log in">
+    <a id="registerLink" class="navbar-item" href="/account/login" title="Log in">
         Log in
     </a>
 }

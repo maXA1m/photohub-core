@@ -19,13 +19,13 @@ namespace PhotoHub.WEB.Controllers
             return View("Cover");
         }
 
-        [Authorize, Route("Search")]
+        [Authorize, Route("search")]
         public IActionResult Search()
         {
             return View();
         }
 
-        [Route("About")]
+        [Route("about")]
         public IActionResult About()
         {
             return View();

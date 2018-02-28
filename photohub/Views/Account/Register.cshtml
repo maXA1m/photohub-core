@@ -1,12 +1,13 @@
 ﻿@model RegisterViewModel
 @using PhotoHub.DAL.Entities
+
 @{
     ViewBag.Title = "Sign up";
     ViewBag.Keywords = "Sign up";
     ViewBag.Description = "Sign up Page on PhotoHub";
 }
 
-<form action="/Account/Register" method="post">
+<form action="/account/register" method="post">
     @Html.AntiForgeryToken()
 
     <div class="field">

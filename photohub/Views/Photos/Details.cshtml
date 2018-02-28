@@ -15,8 +15,8 @@
         <div class="card is-responsive">
             <header class="card-header">
                 <p class="card-header-title">
-                    <a class="has-text-grey-darker has-text-left has-text-justified" href="/Users/@Model.Owner.UserName" title="@Model.Owner.UserName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" src="/data/avatars/@Model.Owner.UserName/@Model.Owner.Avatar" alt="@Model.Owner.UserName" /></a>
-                    <a class="has-text-grey-darker has-text-left has-text-justified" href="/Users/@Model.Owner.UserName" title="@Model.Owner.UserName">@Model.Owner.UserName</a>
+                    <a class="has-text-grey-darker has-text-left has-text-justified" href="/users/@Model.Owner.UserName" title="@Model.Owner.UserName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" src="@( Model.Owner.Avatar != null ? String.Format("/data/avatars/{0}/{1}", Model.Owner.UserName, Model.Owner.Avatar) : "/images/defaults/def-user-logo.png" )" alt="@Model.Owner.UserName" /></a>
+                    <a class="has-text-grey-darker has-text-left has-text-justified" href="/users/@Model.Owner.UserName" title="@Model.Owner.UserName">@Model.Owner.UserName</a>
                 </p>
                 @if (Model.Owner.UserName == User.Identity.Name)
                 {
@@ -52,7 +52,7 @@
                     {
                         <button class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-on:click="post.liked?dislike():like()" v-bind:title="post.liked?'Dislike':'Like'" v-if="currentAppUserName"><i class="fa-heart" v-bind:class="post.liked?'fas':'far'"></i></button>
                     }
-                    <button v-if="post.likes.length > 0" class="button is-danger is-outlined is-unselectable" v-on:click="modalLikes()" title="Likes list">{{ post.likes.length }}</button>
+                    <button v-if="post.likes.length > 0" class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-on:click="modalLikes()" title="Likes list">{{ post.likes.length }}</button>
                 </div>
             </div>
 
@@ -61,7 +61,7 @@
                     <div class="content" style="overflow-x: hidden; overflow-y: auto; max-height: 300px; padding: 2% 2% 2% 2%;" v-if="post.comments.length">
                         <div class="media" v-for="comment in post.comments">
                             <div class="media-left is-flex is-flex-column">
-                                <a v-bind:href="`/Users/${comment.owner.userName}`" class="has-text-black" v-bind:title="comment.owner.userName"><b>{{ comment.owner.userName }}</b></a>
+                                <a v-bind:href="`/users/${comment.owner.userName}`" class="has-text-black" v-bind:title="comment.owner.userName"><b>{{ comment.owner.userName }}</b></a>
                                 <small class="has-text-grey">{{ comment.date }}</small>
                             </div>
 
@@ -99,7 +99,7 @@
             <section class="modal-card-body" style="overflow-x: hidden; overflow-y: auto;">
                 <div class="media" v-for="like in post.likes">
                     <div class="media-left">
-                        <a v-bind:href="`/Users/${like.owner.userName}`" class="has-text-black" v-bind:title="like.owner.userName"><b>{{ like.owner.userName }}</b></a>
+                        <a v-bind:href="`/users/${like.owner.userName}`" class="has-text-black" v-bind:title="like.owner.userName"><b>{{ like.owner.userName }}</b></a>
                     </div>
 
                     <div class="media-content">
@@ -121,10 +121,10 @@
     <div class="modal" v-bind:class="{'is-active': modals.optionActive}">
         <div class="modal-background" v-on:click="modalOptions"></div>
         <div class="content is-flex is-flex-column">
-            <form action="/Photos/Delete/@Model.Id" method="post" style="width: 270px;">
+            <form action="/photos/delete/@Model.Id" method="post" style="width: 270px;">
                 <button type="submit" class="button is-large is-danger" style="margin-bottom: 5px; width: 270px;">Delete</button>
             </form>
-            <a class="button is-large is-white has-text-grey-darker" href="/Photos/Edit/@Model.Id" title="Edit photo" style="margin-bottom: 5px;">Edit</a>
+            <a class="button is-large is-white has-text-grey-darker" href="/photos/edit/@Model.Id" title="Edit photo" style="margin-bottom: 5px;">Edit</a>
             <a class="button is-large is-white has-text-grey-darker" title="Close" v-on:click="modalOptions">Close</a>
         </div>
     </div>

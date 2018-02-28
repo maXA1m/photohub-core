@@ -10,7 +10,7 @@
     <script defer src="~/js/photos/edit.js"></script>
 }
 
-<form action="/Photos/Edit/@Model.Id" class="is-flex is-flex-row is-flex-centered is-flex-wrap" method="POST" id="photosEdit" enctype="multipart/form-data">
+<form action="/photos/edit/@Model.Id" class="is-flex is-flex-row is-flex-centered is-flex-wrap" method="POST" id="photosEdit" enctype="multipart/form-data">
     @Html.AntiForgeryToken()
 
     <input type="hidden" id="Id" name="Id" value="@Model.Id" />
@@ -19,8 +19,8 @@
     <div class="card is-responsive">
         <header class="card-header">
             <p class="card-header-title">
-                <a class="has-text-grey-darker has-text-left has-text-justified" href="/Users/@Model.Owner.UserName" title="@Model.Owner.UserName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" src="/data/avatars/@Model.Owner.UserName/@Model.Owner.Avatar" alt="@Model.Owner.UserName" /></a>
-                <a class="has-text-grey-darker has-text-left has-text-justified" href="/Users/@Model.Owner.UserName" title="@Model.Owner.UserName">@Model.Owner.UserName</a>
+                <a class="has-text-grey-darker has-text-left has-text-justified" href="/users/@Model.Owner.UserName" title="@Model.Owner.UserName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" src="@( Model.Owner.Avatar != null ? String.Format("/data/avatars/{0}/{1}", Model.Owner.UserName, Model.Owner.Avatar) : "/images/defaults/def-user-logo.png" )" alt="@Model.Owner.UserName" /></a>
+                <a class="has-text-grey-darker has-text-left has-text-justified" href="/users/@Model.Owner.UserName" title="@Model.Owner.UserName">@Model.Owner.UserName</a>
             </p>
         </header>
 
@@ -52,7 +52,7 @@
 
             <div class="content">
                 <a class="button is-danger" title="Dislike"><i class="fas fa-heart"></i></a>
-                <a class="button button is-danger is-outlined is-unselectable">@ViewBag.LikesCount</a>
+                <a class="button button is-danger is-unselectable">@ViewBag.LikesCount</a>
             </div>
         </div>
 

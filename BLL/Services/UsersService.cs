@@ -8,6 +8,7 @@ using PhotoHub.DAL.Entities;
 using PhotoHub.BLL.Interfaces;
 using PhotoHub.BLL.DTO;
 using PhotoHub.BLL.Mappers;
+using Microsoft.AspNetCore.Identity;
 
 namespace PhotoHub.BLL.Services
 {
@@ -261,6 +262,53 @@ namespace PhotoHub.BLL.Services
                 await _unitOfWork.Blockings.DeleteAsync(blocking.Id);
                 await _unitOfWork.SaveAsync();
             }
+        }
+
+        public ApplicationUser Create(string userName, string email, string password)
+        {
+            PasswordHasher<ApplicationUser> passwordHasher = new PasswordHasher<ApplicationUser>();
+            ApplicationUser user = new ApplicationUser
+            {
+                UserName = userName,
+                Email = email,
+                PhoneNumberConfirmed = false,
+                EmailConfirmed = false,
+                NormalizedEmail = email.ToUpper(),
+                NormalizedUserName = userName.ToUpper(),
+                Date = DateTime.Now.Date,
+                LockoutEnabled = true,
+                TwoFactorEnabled = false
+            };
+
+            user.PasswordHash = passwordHasher.HashPassword(user, password);
+
+            _unitOfWork.Users.Create(user);
+            _unitOfWork.Save();
+
+            return user;
+        }
+        public async Task<ApplicationUser> CreateAsync(string userName, string email, string password)
+        {
+            PasswordHasher<ApplicationUser> passwordHasher = new PasswordHasher<ApplicationUser>();
+            ApplicationUser user = new ApplicationUser
+            {
+                UserName = userName,
+                Email = email,
+                PhoneNumberConfirmed = false,
+                EmailConfirmed = false,
+                NormalizedEmail = email.ToUpper(),
+                NormalizedUserName = userName.ToUpper(),
+                Date = DateTime.Now.Date,
+                LockoutEnabled = true,
+                TwoFactorEnabled = false
+            };
+
+            user.PasswordHash = passwordHasher.HashPassword(user, password);
+
+            await _unitOfWork.Users.CreateAsync(user);
+            await _unitOfWork.SaveAsync();
+
+            return user;
         }
 
         public void Dispose()

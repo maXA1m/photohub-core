@@ -15,7 +15,7 @@
         <div style="">
             <div style="margin: 70px 0 70px 0; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;" v-bind:class="user.confirmed == true ? 'confirmed' : ''">
                 <div style="width: 100%; display: flex; flex-wrap: wrap; flex-direction: row; justify-content: space-around; align-items: center;">
-                    <img v-bind:src="`/data/avatars/${user.userName}/${user.avatar}`" v-bind:alt="user.userName" class="is-circle has-tiny-shadow image" style="width: 200px;">
+                    <img v-bind:src="user.avatar?`/data/avatars/${user.userName}/${user.avatar}`:`/images/defaults/def-user-logo.png`" v-bind:alt="user.userName" class="is-circle has-tiny-shadow image" style="width: 200px;">
                     <div style="">
                         <h3 class="has-text-centered is-uppercase is-paddingless is-marginless is-size-3">About</h3>
                         <p class="has-text-centered is-size-4">{{ user.about == null ? " About section is empty" : user.about }}</p>
@@ -36,12 +36,12 @@
                             }
                             else
                             {
-                                <a href="/Manage/Index" class="button is-primary" title="Manage Account">Manage Account</a>
+                                <a href="/manage/index" class="button is-primary" title="Manage Account">Manage Account</a>
                             }
                         }
                         else
                         {
-                            <a class="button is-link" href="/Account/Login" title="Log In to Follow">Log In to Follow</a>
+                            <a class="button is-link" href="/account/login" title="Log In to Follow">Log In to Follow</a>
                         }
                     </div>
                 </div>
@@ -69,11 +69,11 @@
                 </header>
                 <section class="modal-card-body" style="overflow-x: hidden; overflow-y: auto;">
                     <div class="notification is-flex is-flex-centered is-flex-wrap" style="justify-content: space-between !important; width: 100%;" v-for="user in user.followers">
-                        <a v-bind:href="`/Users/${user.userName}`" class="button is-light is-flex is-flex-centered" v-bind:title="user.userName" style="justify-content: space-between !important; height: 100%;">
-                            <img class="image is-64x64 is-circle" v-bind:src="`/data/avatars/${user.userName}/${user.avatar}`" v-bind:alt="user.userName" style="margin-right: 7px;" />
+                        <a v-bind:href="`/users/${user.userName}`" class="button is-light is-flex is-flex-centered" v-bind:title="user.userName" style="justify-content: space-between !important; height: 100%;">
+                            <img class="image is-64x64 is-circle" v-bind:src="user.avatar?`/data/avatars/${user.userName}/${user.avatar}`:`/images/defaults/def-user-logo.png`" v-bind:alt="user.userName" style="margin-right: 7px;" />
                             <span>{{user.userName}}</span>
                         </a>
-                        <a href="/Account/Login" title="Log In to Follow" class="button is-link" v-else><i class="fas fa-sign-in-alt"></i></a>
+                        <a href="/account/login" title="Log In to Follow" class="button is-link" v-else><i class="fas fa-sign-in-alt"></i></a>
                     </div>
                 </section>
                 <footer class="modal-card-foot">
@@ -92,11 +92,11 @@
                 </header>
                 <section class="modal-card-body" style="overflow-x: hidden; overflow-y: auto;">
                     <div class="notification is-flex is-flex-centered is-flex-wrap" style="justify-content: space-between !important; width: 100%;" v-for="user in user.followings">
-                        <a v-bind:href="`/Users/${user.userName}`" class="button is-light is-flex is-flex-centered" v-bind:title="user.userName" style="justify-content: space-between !important; height: 100%;">
-                            <img class="image is-64x64 is-circle" v-bind:src="`/data/avatars/${user.userName}/${user.avatar}`" v-bind:alt="user.userName" style="margin-right: 7px;" />
+                        <a v-bind:href="`/users/${user.userName}`" class="button is-light is-flex is-flex-centered" v-bind:title="user.userName" style="justify-content: space-between !important; height: 100%;">
+                            <img class="image is-64x64 is-circle" v-bind:src="user.avatar?`/data/avatars/${user.userName}/${user.avatar}`:`/images/defaults/def-user-logo.png`" v-bind:alt="user.userName" style="margin-right: 7px;" />
                             <span>{{user.userName}}</span>
                         </a>
-                        <a href="/Account/Login" title="Log In to Follow" class="button is-link" v-else><i class="fas fa-sign-in-alt"></i></a>
+                        <a href="/account/login" title="Log In to Follow" class="button is-link" v-else><i class="fas fa-sign-in-alt"></i></a>
                     </div>
                 </section>
                 <footer class="modal-card-foot">
@@ -109,7 +109,7 @@
     @if (User.Identity.IsAuthenticated && Model.IBlocked)
     {
         <div class="is-flex" style="align-items: center; flex-direction: column;" v-cloak>
-            <p class="has-text-centered">You are blocked by @Model.UserName</p>
+            <p class="has-text-centered is-size-2">You are blocked by @Model.UserName</p>
         </div>
     }
     else
@@ -118,8 +118,8 @@
             <div class="card is-responsive" v-for="post in posts" style="margin-bottom: 30px;" v-cloak>
                 <header class="card-header">
                     <p class="card-header-title">
-                        <a class="has-text-grey-darker has-text-left has-text-justified" v-bind:href="`/Users/${post.owner.userName}`" v-bind:title="post.owner.userName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" v-bind:src="`/data/avatars/${post.owner.userName}/${post.owner.avatar}`" v-bind:alt="post.owner.userName" /></a>
-                        <a class="has-text-grey-darker has-text-left has-text-justified" v-bind:href="`/Users/${post.owner.userName}`" v-bind:title="post.owner.userName">{{post.owner.userName}}</a>
+                        <a class="has-text-grey-darker has-text-left has-text-justified" v-bind:href="`/users/${post.owner.userName}`" v-bind:title="post.owner.userName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" v-bind:src="post.owner.avatar?`/data/avatars/${post.owner.userName}/${post.owner.avatar}`:`/images/defaults/def-user-logo.png`" v-bind:alt="post.owner.userName" /></a>
+                        <a class="has-text-grey-darker has-text-left has-text-justified" v-bind:href="`/users/${post.owner.userName}`" v-bind:title="post.owner.userName">{{post.owner.userName}}</a>
                     </p>
 
                     <div class="card-header-icon">
@@ -150,7 +150,7 @@
 
                     <div class="content">
                         <button class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-bind:title="post.liked?'Dislike':'Like'" v-on:click="post.liked?dislike(post):like(post)" v-if="currentAppUserName"><i class="fa-heart" v-bind:class="post.liked?'fas':'far'" aria-hidden="true"></i></button>
-                        <button v-if="post.likes.length > 0" class="button is-danger is-outlined is-unselectable" v-on:click="showLikes(post)" title="Likes list">{{ post.likes.length }}</button>
+                        <button v-if="post.likes.length > 0" class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-on:click="showLikes(post)" title="Likes list">{{ post.likes.length }}</button>
                     </div>
                 </div>
 
@@ -170,7 +170,7 @@
                     <section class="modal-card-body" style="overflow-x: hidden; overflow-y: auto;">
                         <div class="media" v-for="like in current.likes">
                             <div class="media-left">
-                                <a v-bind:href="`/Users/${like.owner.userName}`" class="has-text-black" v-bind:title="like.owner.userName"><b>{{ like.owner.userName }}</b></a>
+                                <a v-bind:href="`/users/${like.owner.userName}`" class="has-text-black" v-bind:title="like.owner.userName"><b>{{ like.owner.userName }}</b></a>
                             </div>
 
                             <div class="media-content">
@@ -200,7 +200,7 @@
                         <div class="content" style="overflow-x: hidden; overflow-y: auto;">
                             <div class="media" v-for="comment in current.comments">
                                 <div class="media-left is-flex is-flex-column">
-                                    <a v-bind:href="`/Users/${comment.owner.userName}`" class="has-text-black" v-bind:title="comment.owner.userName"><b>{{ comment.owner.userName }}</b></a>
+                                    <a v-bind:href="`/users/${comment.owner.userName}`" class="has-text-black" v-bind:title="comment.owner.userName"><b>{{ comment.owner.userName }}</b></a>
                                     <small class="has-text-grey">{{ comment.date }}</small>
                                 </div>
 
@@ -229,7 +229,7 @@
                 <div class="modal-background" v-on:click="closeOptions"></div>
                 <div class="content is-flex is-flex-column">
                     <a class="button is-large is-white has-text-grey-darker" title="Copy link to Clipboard" v-on:click="copyToClipboard(current.$id)" style="margin-bottom: 5px;">Copy link to Clipboard</a>
-                    <a class="button is-large is-white has-text-grey-darker" title="Go to photo" v-bind:href="`/Photos/${current.$id}`" style="margin-bottom: 5px;">Go to photo</a>
+                    <a class="button is-large is-white has-text-grey-darker" title="Go to photo" v-bind:href="`/photos/${current.$id}`" style="margin-bottom: 5px;">Go to photo</a>
                     <a class="button is-large is-white has-text-grey-darker" title="Close" v-on:click="closeOptions">Close</a>
                 </div>
             </div>
@@ -237,7 +237,7 @@
             <button class="button is-uppercase is-responsive" v-bind:class="{'is-loading': incallback}" v-on:click="fetchPhotos" v-if="!postsFetch.postsLoaded && posts.length > 0 && posts.length%4 == 0">Load More</button>
         </div>
         <div class="is-flex" style="align-items: center; flex-direction: column;" v-else v-cloak>
-            <p class="has-text-centered">User has no photos</p>
+            <p class="has-text-centered is-size-2">User has no photos</p>
         </div>
     }
 </div>

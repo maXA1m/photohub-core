@@ -14,7 +14,7 @@ namespace PhotoHub.WEB.Controllers
             _usersService = usersService;
         }
         
-        [HttpGet, Route("Users/{userName}")]
+        [HttpGet, Route("users/{userName}")]
         public ActionResult Details(string userName)
         {
             UserViewModel user = UserDTOMapper.ToUserDetailsViewModel(_usersService.Get(userName));

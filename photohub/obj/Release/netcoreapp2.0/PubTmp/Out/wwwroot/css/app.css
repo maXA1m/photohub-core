@@ -33,11 +33,7 @@ body {
     overflow: hidden;
 }*/
 
-.is-card-image {
-    height: auto !important;
-    width: 100% !important;
-}
-
+.is-card-image, 
 .is-card-image img {
     height: auto !important;
     width: 100% !important;
@@ -122,7 +118,7 @@ input[name="Filter"]:checked + label figure{
 
 /* basic styles */
 .has-tiny-shadow {
-    box-shadow: 0 0 70px 0 rgba(0, 0, 0, .23);
+    box-shadow: 0 0 40px 0 rgba(0, 0, 0, .53);
 }
 
 .has-bold-shadow {

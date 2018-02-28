@@ -27,13 +27,13 @@ namespace PhotoHub.WEB.Controllers
             _environment = environment;
         }
 
-        [HttpGet, Route("Photos")]
+        [HttpGet, Route("photos")]
         public ViewResult Index()
         {
             return View();
         }
         
-        [HttpGet, Route("Photos/{id}")]
+        [HttpGet, Route("photos/{id}")]
         public async Task<ActionResult> Details(int id)
         {
             PhotoViewModel photo = PhotoDTOMapper.ToPhotoViewModel(await _photosService.GetAsync(id));
@@ -44,7 +44,7 @@ namespace PhotoHub.WEB.Controllers
             return View(photo);
         }
         
-        [Authorize, HttpGet, Route("Photos/Create")]
+        [Authorize, HttpGet, Route("photos/create")]
         public ActionResult Create()
         {
             ViewBag.Filters = FilterDTOMapper.ToFilterViewModels(_photosService.Filters);
@@ -52,7 +52,7 @@ namespace PhotoHub.WEB.Controllers
             return View(UserDTOMapper.ToUserViewModel(_photosService.CurrentUserDTO));
         }
         
-        [Authorize, HttpPost, ValidateAntiForgeryToken, Route("Photos/Create")]
+        [Authorize, HttpPost, ValidateAntiForgeryToken, Route("photos/create")]
         public async Task<ActionResult> Create([Bind("Description, Filter")] PhotoViewModel photo, IFormFile file)
         {
             if (ModelState.IsValid && file.Length > 0)
@@ -77,7 +77,7 @@ namespace PhotoHub.WEB.Controllers
             return RedirectToAction("Index");
         }
         
-        [Authorize, HttpGet, Route("Photos/Edit/{id}")]
+        [Authorize, HttpGet, Route("photos/edit/{id}")]
         public async Task<ActionResult> Edit(int id)
         {
             UserDTO user = _photosService.CurrentUserDTO;
@@ -95,7 +95,7 @@ namespace PhotoHub.WEB.Controllers
             return RedirectToAction("Details", "Photos", new { id = photo.Id });
         }
         
-        [Authorize, HttpPost, ValidateAntiForgeryToken, Route("Photos/Edit/{id}")]
+        [Authorize, HttpPost, ValidateAntiForgeryToken, Route("photos/edit/{id}")]
         public async Task<ActionResult> Edit([Bind("Id,Filter,Description")] PhotoViewModel photo)
         {
             if (ModelState.IsValid)
@@ -104,7 +104,7 @@ namespace PhotoHub.WEB.Controllers
             return RedirectToAction("Details", "Photos", new { id = photo.Id });
         }
         
-        [Authorize, HttpPost, Route("Photos/Delete/{id}")]
+        [Authorize, HttpPost, Route("photos/delete/{id}")]
         public async Task<ActionResult> Delete(int id)
         {
             UserViewModel user = UserDTOMapper.ToUserViewModel(_photosService.CurrentUserDTO);
@@ -120,7 +120,7 @@ namespace PhotoHub.WEB.Controllers
                 await _photosService.DeleteAsync(id);
             }
 
-            return RedirectToAction("Details", "Users", new { id = user.UserName });
+            return RedirectToAction("Details", "Users", new { userName = user.UserName });
         }
 
         protected override void Dispose(bool disposing)

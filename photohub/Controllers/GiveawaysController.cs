@@ -25,13 +25,13 @@ namespace PhotoHub.WEB.Controllers
             _environment = environment;
         }
 
-        [HttpGet, Route("Giveaways")]
+        [HttpGet, Route("giveaways")]
         public ActionResult Index()
         {
             return View();
         }
         
-        [HttpGet, Route("Giveaways/Details/{id}")]
+        [HttpGet, Route("giveaways/{id}")]
         public ActionResult Details(int id)
         {
             ViewBag.CurrentUser = UserDTOMapper.ToUserViewModel(_giveawaysService.CurrentUserDTO);  
@@ -39,13 +39,13 @@ namespace PhotoHub.WEB.Controllers
             return View(_giveawaysService.Get(id));
         }
         
-        [Authorize, HttpGet, Route("Giveaways/Create")]
+        [Authorize, HttpGet, Route("giveaways/create")]
         public ActionResult Create()
         {
             return View();
         }
 
-        [Authorize, HttpPost, ValidateAntiForgeryToken, Route("Giveaways/Create")]
+        [Authorize, HttpPost, ValidateAntiForgeryToken, Route("giveaways/create")]
         public async Task<ActionResult> Create([Bind("Name,Email,About")] GiveawayViewModel giveaway, List<IFormFile> files)
         {
             if (ModelState.IsValid)
@@ -73,13 +73,13 @@ namespace PhotoHub.WEB.Controllers
             return RedirectToAction("Index");
         }
         
-        [Authorize, HttpGet, Route("Giveaways/Edit/{id}")]
+        [Authorize, HttpGet, Route("giveaways/edit/{id}")]
         public async Task<ActionResult> Edit(int id)
         {
             return View(GiveawaysDTOMapper.ToGiveawayDetailsViewModel(await _giveawaysService.GetAsync(id)));
         }
 
-        [Authorize, HttpPost, ValidateAntiForgeryToken, Route("Giveaways/Edit/{id}")]
+        [Authorize, HttpPost, ValidateAntiForgeryToken, Route("giveaways/edit/{id}")]
         public async Task<ActionResult> Edit([Bind("Id,Name,Email,About")] GiveawayViewModel giveaway, List<IFormFile> files)
         {
             if (ModelState.IsValid)
@@ -107,7 +107,7 @@ namespace PhotoHub.WEB.Controllers
             return View(giveaway);
         }
         
-        [Authorize, HttpPost, ValidateAntiForgeryToken, Route("Giveaways/Delete/{id}")]
+        [Authorize, HttpPost, ValidateAntiForgeryToken, Route("giveaways/delete/{id}")]
         public async Task<ActionResult> Delete(int id)
         {
             await _giveawaysService.DeleteAsync(id);
@@ -115,7 +115,7 @@ namespace PhotoHub.WEB.Controllers
             return RedirectToAction("Index");
         }
         
-        [Authorize, HttpPost, Route("Giveaways/Enter")]
+        [Authorize, HttpPost, Route("giveaways/enter")]
         public async Task<ActionResult> Enter(int id)
         {
             await _giveawaysService.EnterAsync(id);
@@ -123,7 +123,7 @@ namespace PhotoHub.WEB.Controllers
             return RedirectToAction("Details", "Giveaways", new { id });
         }
         
-        [Authorize, HttpPost, Route("Giveaways/Leave")]
+        [Authorize, HttpPost, Route("Giveaways/leave")]
         public async Task<ActionResult> Leave(int id)
         {
             await _giveawaysService.LeaveAsync(id);
