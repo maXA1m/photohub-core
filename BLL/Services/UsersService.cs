@@ -277,7 +277,8 @@ namespace PhotoHub.BLL.Services
                 NormalizedUserName = userName.ToUpper(),
                 Date = DateTime.Now.Date,
                 LockoutEnabled = true,
-                TwoFactorEnabled = false
+                TwoFactorEnabled = false,
+                SecurityStamp = userName.GetHashCode().ToString()
             };
 
             user.PasswordHash = passwordHasher.HashPassword(user, password);
@@ -300,7 +301,8 @@ namespace PhotoHub.BLL.Services
                 NormalizedUserName = userName.ToUpper(),
                 Date = DateTime.Now.Date,
                 LockoutEnabled = true,
-                TwoFactorEnabled = false
+                TwoFactorEnabled = false,
+                SecurityStamp = userName.GetHashCode().ToString()
             };
 
             user.PasswordHash = passwordHasher.HashPassword(user, password);
