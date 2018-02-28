@@ -30,7 +30,7 @@
 
         <div class="card-content">
             <div class="media">
-                <div class="media-left">
+                <div class="media-left is-doted-end">
                     {{post.description}}
                 </div>
 
@@ -57,7 +57,7 @@
     <!-- Modal Likes -->
     <div class="modal" v-bind:class="{'is-active': modals.likeActive}" v-if="posts.length > 0 && current">
         <div class="modal-background" v-on:click="closeLikes"></div>
-        <div class="modal-card" style="max-height: 95%; min-height: 500px;">
+        <div class="modal-card modal-card-custom">
             <header class="modal-card-head">
                 <p class="modal-card-title is-uppercase">likes</p>
                 <button class="delete" aria-label="close" v-on:click="closeLikes"></button>
@@ -65,7 +65,7 @@
             <section class="modal-card-body" style="overflow-x: hidden; overflow-y: auto;">
                 <div class="media" v-for="like in current.likes">
                     <div class="media-left">
-                        <a v-bind:href="`/users/${like.owner.userName}`" class="has-text-black" v-bind:title="like.owner.userName"><b>{{ like.owner.userName }}</b></a>
+                        <a v-bind:href="`/users/${like.owner.userName}`" class="has-text-black is-doted-end" v-bind:title="like.owner.userName"><b>{{ like.owner.userName }}</b></a>
                     </div>
 
                     <div class="media-content">
@@ -86,7 +86,7 @@
     <!-- Modal Comments -->
     <div class="modal" v-bind:class="{'is-active': modals.commentActive}" v-if="posts.length > 0 && current">
         <div class="modal-background" v-on:click="closeComments"></div>
-        <div class="modal-card" style="max-height: 95%; min-height: 500px;">
+        <div class="modal-card modal-card-custom">
             <header class="modal-card-head">
                 <p class="modal-card-title is-uppercase">comments</p>
                 <button class="delete" aria-label="close" v-on:click="closeComments"></button>
@@ -99,7 +99,7 @@
                             <small class="has-text-grey">{{ comment.date }}</small>
                         </div>
 
-                        <div class="media-content">
+                        <div class="media-content is-doted-end" v-bind:title="comment.text">
                             {{comment.text}}
                         </div>
 

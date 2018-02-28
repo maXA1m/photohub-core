@@ -14,6 +14,11 @@ body {
     /*font-family: ;*/
 }
 
+.modal-card-custom {
+    max-height: 95% !important;
+    min-height: 500px !important;
+}
+
 .card {
     margin-bottom: 50px !important;
     border-radius: 7px;
@@ -33,10 +38,25 @@ body {
     overflow: hidden;
 }*/
 
-.is-card-image, 
+.follower-modal-button {
+    height: 120px;
+    margin-bottom: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.is-card-image,
 .is-card-image img {
     height: auto !important;
     width: 100% !important;
+}
+
+.is-doted-end {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .is-circle {

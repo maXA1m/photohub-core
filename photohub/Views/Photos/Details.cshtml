@@ -65,7 +65,7 @@
                                 <small class="has-text-grey">{{ comment.date }}</small>
                             </div>
 
-                            <div class="media-content">
+                            <div class="media-content is-doted-end" v-bind:title="comment.text">
                                 {{comment.text}}
                             </div>
 
@@ -91,7 +91,7 @@
     <!-- Modal Likes -->
     <div class="modal" v-bind:class="{'is-active': modals.likeActive}">
         <div class="modal-background" v-on:click="modalLikes"></div>
-        <div class="modal-card" style="max-height: 95%; min-height: 500px;">
+        <div class="modal-card modal-card-custom">
             <header class="modal-card-head">
                 <p class="modal-card-title is-uppercase">Likes</p>
                 <button class="delete" aria-label="close" v-on:click="modalLikes"></button>
@@ -99,7 +99,7 @@
             <section class="modal-card-body" style="overflow-x: hidden; overflow-y: auto;">
                 <div class="media" v-for="like in post.likes">
                     <div class="media-left">
-                        <a v-bind:href="`/users/${like.owner.userName}`" class="has-text-black" v-bind:title="like.owner.userName"><b>{{ like.owner.userName }}</b></a>
+                        <a v-bind:href="`/users/${like.owner.userName}`" class="has-text-black is-doted-end" v-bind:title="like.owner.userName"><b>{{ like.owner.userName }}</b></a>
                     </div>
 
                     <div class="media-content">
