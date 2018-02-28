@@ -27,7 +27,7 @@
             </header>
 
             <div class="card-image is-unselectable" v-on:dblclick="like">
-                <figure class="image is-square filter" v-bind:class="post.filter" style="margin: 0;">
+                <figure class="is-card-image filter" v-bind:class="post.filter" style="margin: 0;">
                     <img src="/data/photos/@Model.Owner.UserName/@Model.Path" v-bind:alt="post.filter">
                 </figure>
             </div>

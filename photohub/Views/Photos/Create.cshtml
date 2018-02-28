@@ -22,7 +22,7 @@
         </header>
 
         <div class="card-image">
-            <figure class="image is-square filter" v-bind:class="filter">
+            <figure class="is-card-image filter" v-bind:class="filter">
                 <img v-bind:src="path" v-bind:alt="name">
             </figure>
         </div>
@@ -61,7 +61,7 @@
 
         <div class="card-content">
             <div class="content">
-                <input class="input" type="text" v-on:keyup.enter="submit" placeholder="Description" name="Description" id="Description">
+                <input class="input" type="text" placeholder="Description" name="Description" id="Description">
             </div>
 
             <div class="content">

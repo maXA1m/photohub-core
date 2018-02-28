@@ -25,7 +25,7 @@
         </header>
 
         <div class="card-image">
-            <figure class="image is-square filter" v-bind:class="filter">
+            <figure class="is-card-image filter" v-bind:class="filter">
                 <img src="/data/photos/@Model.Owner.UserName/@Model.Path" id="file-img" alt="Edit photo">
             </figure>
         </div>
@@ -47,7 +47,7 @@
 
         <div class="card-content">
             <div class="content">
-                <input class="input" type="text" v-on:keyup.enter="submit" placeholder="Description" name="Description" id="Description" value="@Model.Description">
+                <input class="input" type="text" placeholder="Description" name="Description" id="Description" value="@Model.Description">
             </div>
 
             <div class="content">

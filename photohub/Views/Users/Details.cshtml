@@ -15,7 +15,7 @@
         <div style="">
             <div style="margin: 70px 0 70px 0; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;" v-bind:class="user.confirmed == true ? 'confirmed' : ''">
                 <div style="width: 100%; display: flex; flex-wrap: wrap; flex-direction: row; justify-content: space-around; align-items: center;">
-                    <img v-bind:src="`/data/avatars/${user.userName}/${user.avatar}`" v-bind:alt="user.userName" class="is-circle image" style="width: 200px;">
+                    <img v-bind:src="`/data/avatars/${user.userName}/${user.avatar}`" v-bind:alt="user.userName" class="is-circle has-tiny-shadow image" style="width: 200px;">
                     <div style="">
                         <h3 class="has-text-centered is-uppercase is-paddingless is-marginless is-size-3">About</h3>
                         <p class="has-text-centered is-size-4">{{ user.about == null ? " About section is empty" : user.about }}</p>
@@ -128,7 +128,7 @@
                 </header>
 
                 <div class="card-image is-unselectable" v-on:dblclick="like(post)">
-                    <figure class="image is-square filter" v-bind:class="post.filter">
+                    <figure class="is-card-image filter" v-bind:class="post.filter">
                         <img v-bind:src="`/data/photos/${post.owner.userName}/${post.path}`" v-bind:alt="`${post.owner.userName} photo with filter`">
                     </figure>
                 </div>
