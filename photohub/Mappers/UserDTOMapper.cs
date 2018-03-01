@@ -1,5 +1,6 @@
 ﻿using PhotoHub.BLL.DTO;
 using PhotoHub.WEB.ViewModels;
+using System;
 using System.Collections.Generic;
 
 namespace PhotoHub.WEB.Mappers
@@ -12,8 +13,7 @@ namespace PhotoHub.WEB.Mappers
             {
                 UserName = user.UserName,
                 Email = user.Email,
-                Avatar = user.Avatar,
-                //Date = user.Date.ToString(),
+                Avatar = user.Avatar != null ? String.Format("/data/avatars/{0}/{1}", user.UserName, user.Avatar) : "/images/defaults/def-user-logo.png",
                 Date = user.Date.Day.ToString() + '.' + user.Date.Month.ToString() + '.' + user.Date.Year.ToString(),
                 Confirmed = user.Confirmed,
                 Followed = user.Followed,
@@ -31,7 +31,7 @@ namespace PhotoHub.WEB.Mappers
                 {
                     UserName = user.UserName,
                     Email = user.Email,
-                    Avatar = user.Avatar,
+                    Avatar = user.Avatar != null ? String.Format("/data/avatars/{0}/{1}", user.UserName, user.Avatar) : "/images/defaults/def-user-logo.png",
                     Date = user.Date.Day.ToString() + '.' + user.Date.Month.ToString() + '.' + user.Date.Year.ToString(),
                     Confirmed = user.Confirmed,
                     Followed = user.Followed,
@@ -49,8 +49,8 @@ namespace PhotoHub.WEB.Mappers
             {
                 UserName = user.UserName,
                 Email = user.Email,
-                Avatar = user.Avatar,
-                About = user.About,
+                Avatar = user.Avatar != null ? String.Format("/data/avatars/{0}/{1}", user.UserName, user.Avatar) : "/images/defaults/def-user-logo.png",
+                About = user.About != null ? user.About : "About section is empty",
                 Date = user.Date.Day.ToString() + '.' + user.Date.Month.ToString() + '.' + user.Date.Year.ToString(),
                 Confirmed = user.Confirmed,
                 Followed = user.Followed,
@@ -70,8 +70,8 @@ namespace PhotoHub.WEB.Mappers
                 {
                     UserName = user.UserName,
                     Email = user.Email,
-                    Avatar = user.Avatar,
-                    About = user.About,
+                    Avatar = user.Avatar != null ? String.Format("/data/avatars/{0}/{1}", user.UserName, user.Avatar) : "/images/defaults/def-user-logo.png",
+                    About = user.About != null ? user.About : "About section is empty",
                     Date = user.Date.Day.ToString() + '.' + user.Date.Month.ToString() + '.' + user.Date.Year.ToString(),
                     Confirmed = user.Confirmed,
                     Followed = user.Followed,

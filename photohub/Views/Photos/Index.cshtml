@@ -13,7 +13,7 @@
     <div class="card is-responsive" v-for="post in posts" style="margin-bottom: 30px;" v-cloak>
         <header class="card-header">
             <p class="card-header-title">
-                <a class="has-text-grey-darker has-text-left has-text-justified" v-bind:href="`/users/${post.owner.userName}`" v-bind:title="post.owner.userName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" v-bind:src="post.owner.avatar?`/data/avatars/${post.owner.userName}/${post.owner.avatar}`:`/images/defaults/def-user-logo.png`" v-bind:alt="post.owner.userName"/></a>
+                <a class="has-text-grey-darker has-text-left has-text-justified" v-bind:href="`/users/${post.owner.userName}`" v-bind:title="post.owner.userName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" v-bind:src="post.owner.avatar" v-bind:alt="post.owner.userName"/></a>
                 <a class="has-text-grey-darker has-text-left has-text-justified" v-bind:href="`/users/${post.owner.userName}`" v-bind:title="post.owner.userName">{{post.owner.userName}}</a>
             </p>
 

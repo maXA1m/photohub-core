@@ -15,10 +15,10 @@
         <div style="">
             <div style="margin: 70px 0 70px 0; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;" v-bind:class="user.confirmed == true ? 'confirmed' : ''">
                 <div style="width: 100%; display: flex; flex-wrap: wrap; flex-direction: row; justify-content: space-around; align-items: center;">
-                    <img v-bind:src="user.avatar?`/data/avatars/${user.userName}/${user.avatar}`:`/images/defaults/def-user-logo.png`" v-bind:alt="user.userName" class="is-circle has-tiny-shadow image" style="width: 200px;">
+                    <img v-bind:src="user.avatar" v-bind:alt="user.userName" class="is-circle has-tiny-shadow image" style="width: 200px;">
                     <div style="">
                         <h3 class="has-text-centered is-uppercase is-paddingless is-marginless is-size-3">About</h3>
-                        <p class="has-text-centered is-size-4">{{ user.about == null ? " About section is empty" : user.about }}</p>
+                        <p class="has-text-centered is-size-4">{{ user.about }}</p>
                     </div>
                 </div>
                 <div style="margin: 30px 0 30px 0; width: 100%; display: flex; flex-direction: row; justify-content: space-around; align-items: center; flex-wrap: wrap;">
@@ -69,7 +69,7 @@
                 </header>
                 <section class="modal-card-body" style="overflow-x: hidden; overflow-y: auto;">
                     <a class="button is-light follower-modal-button" v-bind:href="`/users/${user.userName}`" v-bind:title="user.userName" v-for="user in user.followers">
-                        <img class="image is-96x96 is-circle" v-bind:src="user.avatar?`/data/avatars/${user.userName}/${user.avatar}`:`/images/defaults/def-user-logo.png`" v-bind:alt="user.userName">
+                        <img class="image is-96x96 is-circle" v-bind:src="user.avatar" v-bind:alt="user.userName">
                         <p class="is-size-5 is-doted-end">{{user.userName}}</p>
                     </a>
                 </section>
@@ -89,7 +89,7 @@
                 </header>
                 <section class="modal-card-body" style="overflow-x: hidden; overflow-y: auto;">
                     <a class="button is-light follower-modal-button" v-bind:href="`/users/${user.userName}`" v-bind:title="user.userName" v-for="user in user.followings">
-                        <img class="image is-96x96 is-circle" v-bind:src="user.avatar?`/data/avatars/${user.userName}/${user.avatar}`:`/images/defaults/def-user-logo.png`" v-bind:alt="user.userName">
+                        <img class="image is-96x96 is-circle" v-bind:src="user.avatar" v-bind:alt="user.userName">
                         <p class="is-size-5 is-doted-end">{{user.userName}}</p>
                     </a>
                 </section>
@@ -112,7 +112,7 @@
             <div class="card is-responsive" v-for="post in posts" style="margin-bottom: 30px;" v-cloak>
                 <header class="card-header">
                     <p class="card-header-title">
-                        <a class="has-text-grey-darker has-text-left has-text-justified" v-bind:href="`/users/${post.owner.userName}`" v-bind:title="post.owner.userName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" v-bind:src="post.owner.avatar?`/data/avatars/${post.owner.userName}/${post.owner.avatar}`:`/images/defaults/def-user-logo.png`" v-bind:alt="post.owner.userName" /></a>
+                        <a class="has-text-grey-darker has-text-left has-text-justified" v-bind:href="`/users/${post.owner.userName}`" v-bind:title="post.owner.userName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" v-bind:src="post.owner.avatar" v-bind:alt="post.owner.userName" /></a>
                         <a class="has-text-grey-darker has-text-left has-text-justified" v-bind:href="`/users/${post.owner.userName}`" v-bind:title="post.owner.userName">{{post.owner.userName}}</a>
                     </p>
 

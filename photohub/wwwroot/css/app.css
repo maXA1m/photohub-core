@@ -1,5 +1,5 @@
 ﻿::selection {
-    background: #aaa;
+    background: #999;
     /*background-color: rgba(0, 209, 178, 1);*/
     color: #fff;
 }
@@ -64,11 +64,11 @@ body {
 }
 
 .is-responsive {
-    width: 100%;
+    width: 100vw;
 }
 @media screen and (min-width: 1280px) {
     .is-responsive {
-        width: 55%;
+        width: 40vw;
     }
 }
 
@@ -116,6 +116,7 @@ body {
     -webkit-transform: translateY(-100%);
     -ms-transform: translateY(-100%);
     transform: translateY(-100%);
+    box-shadow: none;
 }
 
 /*nanobar*/

@@ -16,7 +16,7 @@
     <div class="card is-responsive">
         <header class="card-header">
             <p class="card-header-title">
-                <a class="has-text-grey-darker has-text-left has-text-justified" href="/users/@Model.UserName" title="@Model.UserName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" src="@( Model.Avatar != null ? String.Format("/data/avatars/{0}/{1}", Model.UserName, Model.Avatar) : "/images/defaults/def-user-logo.png" )" alt="@Model.UserName" /></a>
+                <a class="has-text-grey-darker has-text-left has-text-justified" href="/users/@Model.UserName" title="@Model.UserName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" src="@Model.Avatar" alt="@Model.UserName" /></a>
                 <a class="has-text-grey-darker has-text-left has-text-justified" href="/users/@Model.UserName" title="@Model.UserName">@Model.UserName</a>
             </p>
         </header>

@@ -24,7 +24,7 @@
     <div class="container" style="margin-top: 40px;">
         <div class="is-flex is-flex-centered is-flex-wrap search-element" style="justify-content: space-between !important; width: 100%;" v-for="user in users">
             <a v-bind:href="`/users/${user.userName}`" class="button is-white is-flex is-flex-centered" v-bind:title="user.userName" style="justify-content: space-between !important; height: 100%;">
-                <img class="image is-64x64 is-circle" v-bind:src="user.avatar?`/data/avatars/${user.userName}/${user.avatar}`:`/images/defaults/def-user-logo.png`" v-bind:alt="user.userName" style="margin-right: 7px;"/>
+                <img class="image is-64x64 is-circle" v-bind:src="user.avatar" v-bind:alt="user.userName" style="margin-right: 7px;"/>
                 <span class="is-doted-end is-size-5">{{user.userName}}</span>
             </a>
             <button class="button" v-bind:title="user.followed?'Unfollow':'Follow'" v-bind:class="user.followed?'is-danger':'is-primary'" v-on:click="user.followed?disfollow(user):follow(user)"><i class="fas fa-user-plus" v-bind:class="user.followed?'fa-user-times':'fa-user-plus'"></i></button>

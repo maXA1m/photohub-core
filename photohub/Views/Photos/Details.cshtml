@@ -15,7 +15,7 @@
         <div class="card is-responsive">
             <header class="card-header">
                 <p class="card-header-title">
-                    <a class="has-text-grey-darker has-text-left has-text-justified" href="/users/@Model.Owner.UserName" title="@Model.Owner.UserName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" src="@( Model.Owner.Avatar != null ? String.Format("/data/avatars/{0}/{1}", Model.Owner.UserName, Model.Owner.Avatar) : "/images/defaults/def-user-logo.png" )" alt="@Model.Owner.UserName" /></a>
+                    <a class="has-text-grey-darker has-text-left has-text-justified" href="/users/@Model.Owner.UserName" title="@Model.Owner.UserName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" src="@Model.Owner.Avatar" alt="@Model.Owner.UserName" /></a>
                     <a class="has-text-grey-darker has-text-left has-text-justified" href="/users/@Model.Owner.UserName" title="@Model.Owner.UserName">@Model.Owner.UserName</a>
                 </p>
                 @if (Model.Owner.UserName == User.Identity.Name)
