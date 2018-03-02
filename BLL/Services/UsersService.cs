@@ -85,37 +85,70 @@ namespace PhotoHub.BLL.Services
             List<UserDTO> followings = new List<UserDTO>();
             List<UserDTO> followers = new List<UserDTO>();
 
-            foreach (Following following in _unitOfWork.Followings.Find(f => f.UserId == user.Id))
+            if(currentUser == null)
             {
-                followings.Add(UserMapper.ToUserDTO(
-                    following.FollowedUser,
-                    _unitOfWork.Confirmations.Find(c => c.UserId == following.FollowedUserId).FirstOrDefault() != null,
+                foreach (Following following in _unitOfWork.Followings.Find(f => f.UserId == user.Id))
+                {
+                    followings.Add(UserMapper.ToUserDTO(
+                        following.FollowedUser,
+                        _unitOfWork.Confirmations.Find(c => c.UserId == following.FollowedUserId).FirstOrDefault() != null,
+                        false, false, false
+                    ));
+                }
+
+                foreach (Following follower in _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id))
+                {
+                    followers.Add(UserMapper.ToUserDTO(
+                        follower.User,
+                        _unitOfWork.Confirmations.Find(c => c.UserId == follower.UserId).FirstOrDefault() != null,
+                        false, false, false
+                    ));
+                }
+
+                return UserMapper.ToUserDetailsDTO(
+                    user,
+                    _unitOfWork.Confirmations.Find(c => c.UserId == user.Id).FirstOrDefault() != null,
+                    false,
+                    false,
+                    false,
+                    followings,
+                    followers
+                );
+            }
+            else
+            {
+                foreach (Following following in _unitOfWork.Followings.Find(f => f.UserId == user.Id))
+                {
+                    followings.Add(UserMapper.ToUserDTO(
+                        following.FollowedUser,
+                        _unitOfWork.Confirmations.Find(c => c.UserId == following.FollowedUserId).FirstOrDefault() != null,
+                        _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == user.Id).FirstOrDefault() != null,
+                        _unitOfWork.Followings.Find(f => f.FollowedUserId == following.FollowedUserId && f.UserId == currentUser.Id).FirstOrDefault() != null,
+                        _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == user.Id).FirstOrDefault() != null
+                    ));
+                }
+
+                foreach (Following follower in _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id))
+                {
+                    followers.Add(UserMapper.ToUserDTO(
+                        follower.User,
+                        _unitOfWork.Confirmations.Find(c => c.UserId == follower.UserId).FirstOrDefault() != null,
+                        _unitOfWork.Followings.Find(f => f.FollowedUserId == follower.UserId && f.UserId == currentUser.Id).FirstOrDefault() != null,
+                        _unitOfWork.Blockings.Find(b => b.BlockedUserId == follower.UserId && b.UserId == currentUser.Id).FirstOrDefault() != null,
+                        _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == user.Id).FirstOrDefault() != null
+                    ));
+                }
+
+                return UserMapper.ToUserDetailsDTO(
+                    user,
+                    _unitOfWork.Confirmations.Find(c => c.UserId == user.Id).FirstOrDefault() != null,
+                    _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id && f.UserId == currentUser.Id).FirstOrDefault() != null,
+                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.Id && b.UserId == currentUser.Id).FirstOrDefault() != null,
                     _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == user.Id).FirstOrDefault() != null,
-                    _unitOfWork.Followings.Find(f => f.FollowedUserId == following.FollowedUserId && f.UserId == currentUser.Id).FirstOrDefault() != null,
-                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == user.Id).FirstOrDefault() != null
-                ));
+                    followings,
+                    followers
+                );
             }
-
-            foreach (Following follower in _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id))
-            {
-                followers.Add(UserMapper.ToUserDTO(
-                    follower.User,
-                    _unitOfWork.Confirmations.Find(c => c.UserId == follower.UserId).FirstOrDefault() != null,
-                    _unitOfWork.Followings.Find(f => f.FollowedUserId == follower.UserId && f.UserId == currentUser.Id).FirstOrDefault() != null,
-                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == follower.UserId && b.UserId == currentUser.Id).FirstOrDefault() != null,
-                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == user.Id).FirstOrDefault() != null
-                ));
-            }
-
-            return UserMapper.ToUserDetailsDTO(
-                user,
-                _unitOfWork.Confirmations.Find(c => c.UserId == user.Id).FirstOrDefault() != null,
-                _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id && f.UserId == currentUser.Id).FirstOrDefault() != null,
-                _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.Id && b.UserId == currentUser.Id).FirstOrDefault() != null,
-                _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == user.Id).FirstOrDefault() != null,
-                followings,
-                followers
-            );
         }
 
         public IEnumerable<UserDTO> Search(int page, string search, int pageSize)
