@@ -17,7 +17,7 @@
     },
     methods: {
         search() {
-            if (!this.incallback && this.page > -1) {
+            if (!this.incallback && this.page > -1 && !this.usersLoaded) {
 
                 this.incallback = true;
                 nanobar.go(40);

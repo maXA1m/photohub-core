@@ -183,7 +183,7 @@
             this.closeOptions();
         },
         autoFetchPhotos() {
-            if (!this.postsLoaded && this.posts.length % 6 == 0 && document.documentElement.scrollTop == document.documentElement.scrollHeight - window.innerHeight)
+            if (!this.postsLoaded && this.posts.length % 8 == 0 && document.documentElement.scrollTop == document.documentElement.scrollHeight - window.innerHeight)
                 this.fetchPhotos();
         },
 
