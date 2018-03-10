@@ -1,16 +1,16 @@
-﻿@using photohub.Views.Manage
+﻿@using PhotoHub.DAL.Entities
 @inject SignInManager<ApplicationUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
 
-<ul class="nav nav-pills nav-stacked">
-    <li class="@ManageNavPages.IndexNavClass(ViewContext)"><a asp-action="Index">Profile</a></li>
-    <li class="@ManageNavPages.ChangePasswordNavClass(ViewContext)"><a asp-action="ChangePassword">Password</a></li>
+<nav class="is-flex is-flex-centered is-flex-wrap" style="margin-bottom: 50px;">
+    <a asp-action="Index" class="button is-rounded is-light">Profile</a>
+    <a asp-action="ChangePassword" class="button is-rounded is-light">Password</a>
     @if (hasExternalLogins)
     {
-        <li class="@ManageNavPages.ExternalLoginsNavClass(ViewContext)"><a asp-action="ExternalLogins">External logins</a></li>
+        <a asp-action="ExternalLogins" class="button is-rounded is-light">External logins</a>
     }
-    <li class="@ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)"><a asp-action="TwoFactorAuthentication">Two-factor authentication</a></li>
-</ul>
+    <a @*asp-action="TwoFactorAuthentication"*@ class="button is-rounded is-light" disabled>Two-factor authentication</a>
+</nav>
 

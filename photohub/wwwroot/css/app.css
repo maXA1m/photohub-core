@@ -1,5 +1,5 @@
 ﻿::selection {
-    background: #999;
+    background: rgba(100, 100, 100, .4);
     /*background-color: rgba(0, 209, 178, 1);*/
     color: #fff;
 }

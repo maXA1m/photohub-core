@@ -4,7 +4,10 @@ namespace PhotoHub.WEB.ViewModels.Manage
 {
     public class IndexViewModel
     {
+        [Required]
         public string Username { get; set; }
+
+        public string About { get; set; }
 
         public bool IsEmailConfirmed { get; set; }
 

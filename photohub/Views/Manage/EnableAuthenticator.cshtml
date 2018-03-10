@@ -4,7 +4,6 @@
     ViewData.AddActivePage(ManageNavPages.TwoFactorAuthentication);
 }
 
-<h4>@ViewData["Title"]</h4>
 <div>
     <p>To use an authenticator app go through the following steps:</p>
     <ol class="list">
@@ -46,7 +45,3 @@
         </li>
     </ol>
 </div>
-
-@section Scripts {
-    @await Html.PartialAsync("_ValidationScriptsPartial")
-}

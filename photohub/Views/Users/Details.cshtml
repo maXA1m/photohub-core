@@ -23,16 +23,16 @@
                 </div>
                 <div style="margin: 30px 0 30px 0; width: 100%; display: flex; flex-direction: row; justify-content: space-around; align-items: center; flex-wrap: wrap;">
                     <div style="margin-bottom: 15px;">
-                        <button class="button" v-on:click="showFollowers" title="Followers">{{ user.followers.length }} followers</button>
-                        <button class="button" v-on:click="showFollowings" title="Followings">{{ user.followings.length }} followings</button>
+                        <button class="button is-white" v-on:click="showFollowers" title="Followers">{{ user.followers.length }} followers</button>
+                        <button class="button is-white" v-on:click="showFollowings" title="Followings">{{ user.followings.length }} followings</button>
                     </div>
                     <div style="margin-bottom: 15px;">
                         @if (User.Identity.IsAuthenticated)
                         {
                             if (User.Identity.Name != Model.UserName)
                             {
-                                <button class="button" v-bind:title="user.followed?'Unfollow':'Follow'" v-bind:class="user.followed?'is-danger':'is-primary'" v-on:click="user.followed?disfollow():follow()"><i class="fas" v-bind:class="user.followed?'fa-user-times':'fa-user-plus'"></i> {{user.followed?'Unfollow':'Follow'}}</button>
-                                <button class="button is-dark" v-bind:title="user.blocked?'Unblock':'Block'" v-on:click="user.blocked?disblock():block()"><i class="fas fa-ban"></i> {{user.blocked?'Unblock':'Block'}}</button>
+                                <button class="button" v-bind:title="user.followed?'Unfollow':'Follow'" v-bind:class="user.followed?'is-danger':'is-primary'" v-on:click="user.followed?disfollow():follow()">{{user.followed?'Unfollow':'Follow'}}</button>
+                                <button class="button is-dark" v-bind:title="user.blocked?'Unblock':'Block'" v-on:click="user.blocked?disblock():block()">{{user.blocked?'Unblock':'Block'}}</button>
                             }
                             else
                             {
@@ -117,7 +117,7 @@
                     </p>
 
                     <div class="card-header-icon">
-                        <a class="button" title="show options" v-on:click="showOptions(post)"><i class="fa fa-bars" aria-hidden="true"></i></a>
+                        <a class="button is-white" title="show options" v-on:click="showOptions(post)"><i class="fa fa-bars" aria-hidden="true"></i></a>
                     </div>
                 </header>
 
@@ -228,7 +228,7 @@
                 </div>
             </div>
 
-            <button class="button is-uppercase is-responsive" v-bind:class="{'is-loading': incallback}" v-on:click="fetchPhotos" v-if="!postsFetch.postsLoaded && posts.length > 0 && posts.length%4 == 0">Load More</button>
+            <button class="button is-uppercase is-responsive" v-bind:class="{'is-loading': postsFetch.incallback}" v-on:click="fetchPhotos" v-if="!postsFetch.postsLoaded && posts.length > 0 && posts.length%4 == 0">Load More</button>
         </div>
         <div class="is-flex" style="align-items: center; flex-direction: column;" v-else v-cloak>
             <p class="has-text-centered is-size-2">User has no photos</p>

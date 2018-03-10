@@ -422,6 +422,8 @@ namespace PhotoHub.BLL.Services
             foreach (var follow in followings)
                 photos.AddRange(_unitOfWork.Photos.Find(p => p.OwnerId == follow.FollowedUserId));
 
+            photos.Sort((p, p2) => p2.Date.CompareTo(p.Date));
+
             List<PhotoDTO> photoDTOs = new List<PhotoDTO>(pageSize);
 
             foreach (Photo photo in photos)

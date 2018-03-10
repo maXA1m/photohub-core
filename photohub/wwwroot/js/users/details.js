@@ -79,7 +79,7 @@
             });
         },
         fetchPhotos() {
-            if (!this.postsFetch.incallback && this.postsFetch.page > -1) {
+            if (!this.postsFetch.incallback && this.postsFetch.page > -1 && !this.postsFetch.loaded) {
 
                 this.postsFetch.incallback = true;
                 nanobar.go(40);
@@ -235,7 +235,7 @@
             this.closeOptions();
         },
         autoFetchPhotos() {
-            if (!this.postsLoaded && this.posts.length % 6 == 0 && document.documentElement.scrollTop == document.documentElement.scrollHeight - window.innerHeight)
+            if (!this.postsLoaded && this.posts.length % 4 == 0 && document.documentElement.scrollTop == document.documentElement.scrollHeight - window.innerHeight)
                 this.fetchPhotos();
         },
 

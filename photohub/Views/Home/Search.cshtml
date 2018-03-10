@@ -21,7 +21,7 @@
     </div>
 
 
-    <div class="container" style="margin-top: 40px;">
+    <div class="container is-flex is-flex-centered is-flex-column" style="margin-top: 40px;">
         <div class="is-flex is-flex-centered is-flex-wrap search-element" style="justify-content: space-between !important; width: 100%;" v-for="user in users">
             <a v-bind:href="`/users/${user.userName}`" class="button is-white is-flex is-flex-centered" v-bind:title="user.userName" style="justify-content: space-between !important; height: 100%;">
                 <img class="image is-64x64 is-circle" v-bind:src="user.avatar" v-bind:alt="user.userName" style="margin-right: 7px;"/>
@@ -29,6 +29,6 @@
             </a>
             <button class="button" v-bind:title="user.followed?'Unfollow':'Follow'" v-bind:class="user.followed?'is-danger':'is-primary'" v-on:click="user.followed?disfollow(user):follow(user)"><i class="fas fa-user-plus" v-bind:class="user.followed?'fa-user-times':'fa-user-plus'"></i></button>
         </div>
-        <button class="button is-uppercase is-responsive" v-bind:class="{'is-loading': incallback}" v-on:click="search" v-if="!this.usersLoaded && users.length > 0 && users.length%12 == 0">Load More</button>
+        <button class="button is-uppercase is-responsive" v-bind:class="{'is-loading': incallback}" v-on:click="search" v-if="!usersLoaded && users.length > 0 && users.length%12 == 0">Load More</button>
     </div>
 </div>

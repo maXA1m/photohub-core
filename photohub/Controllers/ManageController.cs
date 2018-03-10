@@ -50,9 +50,7 @@ namespace PhotoHub.WEB.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
-            {
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
 
             var model = new IndexViewModel
             {
@@ -71,14 +69,18 @@ namespace PhotoHub.WEB.Controllers
         public async Task<IActionResult> Index(IndexViewModel model)
         {
             if (!ModelState.IsValid)
-            {
                 return View(model);
-            }
 
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
-            {
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+
+            var userName = user.UserName;
+            if (model.Username != userName)
+            {
+                var setNameResult = await _userManager.SetUserNameAsync(user, model.Username);
+                if (!setNameResult.Succeeded)
+                    throw new ApplicationException($"Unexpected error occurred setting user name for user with ID '{user.Id}'.");
             }
 
             var email = user.Email;
@@ -86,9 +88,7 @@ namespace PhotoHub.WEB.Controllers
             {
                 var setEmailResult = await _userManager.SetEmailAsync(user, model.Email);
                 if (!setEmailResult.Succeeded)
-                {
                     throw new ApplicationException($"Unexpected error occurred setting email for user with ID '{user.Id}'.");
-                }
             }
 
             var phoneNumber = user.PhoneNumber;
@@ -96,9 +96,13 @@ namespace PhotoHub.WEB.Controllers
             {
                 var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, model.PhoneNumber);
                 if (!setPhoneResult.Succeeded)
-                {
                     throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
-                }
+            }
+
+            if (!String.IsNullOrEmpty(model.About))
+            {
+                user.About = model.About;
+                await _userManager.UpdateAsync(user);
             }
 
             StatusMessage = "Your profile has been updated";

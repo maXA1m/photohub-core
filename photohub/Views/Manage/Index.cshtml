@@ -1,45 +1,53 @@
 ﻿@model IndexViewModel
 @{
-    ViewData["Title"] = "Profile";
+    ViewBag.Title = "Profile";
     ViewData.AddActivePage(ManageNavPages.Index);
 }
 
-<h4>@ViewData["Title"]</h4>
-@Html.Partial("_StatusMessage", Model.StatusMessage)
-<div class="row">
-    <div class="col-md-6">
-        <form method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Username"></label>
-                <input asp-for="Username" class="form-control" disabled />
-            </div>
-            <div class="form-group">
-                <label asp-for="Email"></label>
-                @if (Model.IsEmailConfirmed)
-                {
-                    <div class="input-group">
-                        <input asp-for="Email" class="form-control" />
-                        <span class="input-group-addon" aria-hidden="true"><span class="glyphicon glyphicon-ok text-success"></span></span>
-                    </div>
-                }
-                else
-                {
-                    <input asp-for="Email" class="form-control" />
-                    <button asp-action="SendVerificationEmail" class="btn btn-link">Send verification email</button>
-                }
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhoneNumber"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-            <button type="submit" class="btn btn-default">Save</button>
-        </form>
-    </div>
-</div>
+<form method="post">
+    <div asp-validation-summary="All" class="has-text-danger"></div>
 
-@section Scripts {
-    @await Html.PartialAsync("_ValidationScriptsPartial")
-}
+    <div class="field">
+        <label asp-for="Username" class="label"></label>
+        <div class="control">
+            <input asp-for="Username" class="input" />
+        </div>
+    </div>
+
+    <div class="field">
+        <label asp-for="About" class="label"></label>
+        <div class="control">
+            <textarea asp-for="About" class="textarea"></textarea>
+        </div>
+    </div>
+
+    <div class="field">
+        <label asp-for="Email" class="label"></label>
+        <div class="control">
+            <input asp-for="Email" class="input" />
+        </div>
+        @if (Model.IsEmailConfirmed)
+        {
+            <p class="help is-success">Verified</p>
+        }
+        <p asp-validation-for="Email" class="help is-danger"></p>
+        @if (!Model.IsEmailConfirmed)
+        {
+            <div class="has-text-centered">
+                <button asp-action="SendVerificationEmail" class="button is-link" title="Send verification email">Send verification email</button>
+            </div>
+        }
+    </div>
+
+    <div class="field">
+        <label asp-for="PhoneNumber" class="label"></label>
+        <div class="control">
+            <input asp-for="PhoneNumber" class="input" />
+        </div>
+        <p asp-validation-for="PhoneNumber" class="help is-danger"></p>
+    </div>
+
+    <div class="field has-text-centered">
+        <button type="submit" class="button is-primary" title="Save">Save</button>
+    </div>
+</form>

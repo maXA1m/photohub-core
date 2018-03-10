@@ -1,9 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using PhotoHub.WEB.ViewModels
 
-@inject SignInManager<ApplicationUser> SignInManager
-
-@if (SignInManager.IsSignedIn(User))
+@if (User.Identity.IsAuthenticated)
 {
     <a class="navbar-item" title="Updates" href="/">
         Updates

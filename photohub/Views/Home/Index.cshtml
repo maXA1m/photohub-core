@@ -18,7 +18,7 @@
             </p>
 
             <div class="card-header-icon">
-                <a class="button" title="show options" v-on:click="showOptions(post)"><i class="fas fa-bars"></i></a>
+                <a class="button is-white" title="show options" v-on:click="showOptions(post)"><i class="fas fa-bars"></i></a>
             </div>
         </header>
 
@@ -136,5 +136,5 @@
         <p class="has-text-centered"><a class="button is-warning is-medium" href="/search" title="Search for People">Search for People</a></p>
     </div>
 
-    <button class="button is-uppercase is-responsive" v-bind:class="{'is-loading': incallback}" v-on:click="fetchPhotos" v-if="!this.postsLoaded && posts.length > 0 && posts.length%6 == 0">Load More</button>
+    <button class="button is-uppercase is-responsive" v-bind:class="{'is-loading': incallback}" v-on:click="fetchPhotos" v-if="!postsLoaded && posts.length > 0 && posts.length%8 == 0">Load More</button>
 </div>
