@@ -34,7 +34,7 @@
         @if (!Model.IsEmailConfirmed)
         {
             <div class="has-text-centered">
-                <button asp-action="SendVerificationEmail" class="button is-link" title="Send verification email">Send verification email</button>
+                <button asp-action="SendVerificationEmail" class="button is-light" title="Send verification email">Send verification email</button>
             </div>
         }
     </div>
@@ -48,6 +48,6 @@
     </div>
 
     <div class="field has-text-centered">
-        <button type="submit" class="button is-primary" title="Save">Save</button>
+        <button type="submit" class="button is-warning" title="Save">Save</button>
     </div>
 </form>

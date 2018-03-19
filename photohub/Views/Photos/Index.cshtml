@@ -56,11 +56,11 @@
     
     <!-- Modal Likes -->
     <div class="modal" v-bind:class="{'is-active': modals.likeActive}" v-if="current">
-        <div class="modal-background" v-on:click="closeLikes"></div>
+        <div class="modal-background modal-custom-background" v-on:click="closeLikes"></div>
         <div class="modal-card modal-card-custom">
             <header class="modal-card-head">
                 <p class="modal-card-title is-uppercase">likes</p>
-                <button class="delete" aria-label="close" v-on:click="closeLikes"></button>
+                <a class="close-button" v-on:click="closeLikes" title="Close modal"><i class="fas fa-times"></i></a>
             </header>
             <section class="modal-card-body" style="overflow-x: hidden; overflow-y: auto;">
                 <div class="media" v-for="like in current.likes">
@@ -77,19 +77,16 @@
                     </div>
                 </div>
             </section>
-            <footer class="modal-card-foot">
-                <button class="button" v-on:click="closeLikes">Cancel</button>
-            </footer>
         </div>
     </div>
     
     <!-- Modal Comments -->
     <div class="modal" v-bind:class="{'is-active': modals.commentActive}" v-if="current">
-        <div class="modal-background" v-on:click="closeComments"></div>
+        <div class="modal-background modal-custom-background" v-on:click="closeComments"></div>
         <div class="modal-card modal-card-custom">
             <header class="modal-card-head">
                 <p class="modal-card-title is-uppercase">comments</p>
-                <button class="delete" aria-label="close" v-on:click="closeComments"></button>
+                <a class="close-button" v-on:click="closeComments" title="Close modal"><i class="fas fa-times"></i></a>
             </header>
             <section class="modal-card-body">
                 <div class="content" style="overflow-x: hidden; overflow-y: auto;">
@@ -104,24 +101,23 @@
                         </div>
 
                         <div class="media-right" v-if="comment.$id && currentAppUserName == comment.owner.userName">
-                            <button class="delete" v-on:click="deleteComment(comment)"></button>
+                            <a class="close-button" v-on:click="deleteComment(comment)" title="Delete comment"><i class="fas fa-trash"></i></a>
                         </div>
                     </div>
                 </div>
             </section>
-            <footer class="modal-card-foot is-flex is-flex-centered is-flex-wrap">
+            <footer class="modal-card-foot is-flex is-flex-centered is-flex-wrap"  v-if="currentAppUserName">
                 <div class="control" v-if="currentAppUserName" style="width: 100%;">
                     <input class="input" id="comment" type="text" placeholder="Comment photo" v-on:keyup.enter="comment">
                 </div>
-                <button class="button is-primary" v-bind:class="{'is-loading': commenting}" style="margin-top: 5px;" title="Comment photo" v-if="currentAppUserName" v-on:click="comment">Comment</button>
-                <button class="button" style="margin-top: 5px;" v-on:click="closeComments" title="Close window">Cancel</button>
+                <button class="button is-warning" v-bind:class="{'is-loading': commenting}" style="margin-top: 5px;" title="Comment photo" v-if="currentAppUserName" v-on:click="comment">Comment</button>
             </footer>
         </div>
     </div>      
     
     <!-- Modal Options -->
     <div class="modal" v-bind:class="{'is-active': modals.optionActive}" v-if="current">
-        <div class="modal-background" v-on:click="closeOptions"></div>
+        <div class="modal-background modal-custom-background" v-on:click="closeOptions"></div>
         <div class="content is-flex is-flex-column">
             <a class="button is-large is-white has-text-grey-darker" title="Copy link to Clipboard" v-on:click="copyToClipboard(current.$id)" style="margin-bottom: 5px;">Copy link to Clipboard</a>
             <a class="button is-large is-white has-text-grey-darker" title="Go to photo" v-bind:href="`/photos/${current.$id}`" style="margin-bottom: 5px;">Go to photo</a>

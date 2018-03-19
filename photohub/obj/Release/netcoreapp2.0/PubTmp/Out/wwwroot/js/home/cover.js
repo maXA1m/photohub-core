@@ -24,7 +24,7 @@ particlesJS("particles-js", {
         },
         "color":
         {
-            "value": "#00d1b2"
+            "value": "#FCDC59"
         },
         "shape":
         {
@@ -32,7 +32,7 @@ particlesJS("particles-js", {
             "stroke":
             {
                 "width": 0,
-                "color": "#00d1b2"
+                "color": "#FCDC59"
             },
             "polygon":
             {
@@ -67,7 +67,7 @@ particlesJS("particles-js", {
         {
             "enable": true,
             "distance": 150,
-            "color": "#00d1b2",
+            "color": "#FCDC59",
             "opacity": 0.4,
             "width": 1
         },

@@ -8,27 +8,24 @@
     <script defer src="~/js/home/search.js"></script>
 }
 
-<div id="search" v-cloak>
-    <div class="field is-grouped">
+<div id="search" class="container is-flex is-flex-centered is-flex-column" v-cloak>
+    <div class="field is-grouped" id="search-field">
         <p class="control is-expanded">
-            <input class="input" type="text" v-on:keyup.enter="handleSearch" v-model="searchString" placeholder="Enter login or email" required>
+            <input class="input" type="text" v-on:keyup.enter="handleSearch" v-model="searchString" placeholder="Enter login" required>
         </p>
         <p class="control">
-            <button class="button is-primary" title="Search" v-bind:class="{'is-loading': incallback}" v-on:submit.prevent="handleSearch" v-on:submit="handleSearch" v-on:click="handleSearch">
+            <button class="button is-warning" title="Search" v-bind:class="{'is-loading': incallback}" v-on:submit.prevent="handleSearch" v-on:submit="handleSearch" v-on:click="handleSearch">
                 Search
             </button>
         </p>
     </div>
 
-
-    <div class="container is-flex is-flex-centered is-flex-column" style="margin-top: 40px;">
-        <div class="is-flex is-flex-centered is-flex-wrap search-element" style="justify-content: space-between !important; width: 100%;" v-for="user in users">
-            <a v-bind:href="`/users/${user.userName}`" class="button is-white is-flex is-flex-centered" v-bind:title="user.userName" style="justify-content: space-between !important; height: 100%;">
-                <img class="image is-64x64 is-circle" v-bind:src="user.avatar" v-bind:alt="user.userName" style="margin-right: 7px;"/>
-                <span class="is-doted-end is-size-5">{{user.userName}}</span>
-            </a>
-            <button class="button" v-bind:title="user.followed?'Unfollow':'Follow'" v-bind:class="user.followed?'is-danger':'is-primary'" v-on:click="user.followed?disfollow(user):follow(user)"><i class="fas fa-user-plus" v-bind:class="user.followed?'fa-user-times':'fa-user-plus'"></i></button>
-        </div>
-        <button class="button is-uppercase is-responsive" v-bind:class="{'is-loading': incallback}" v-on:click="search" v-if="!usersLoaded && users.length > 0 && users.length%12 == 0">Load More</button>
+    <div class="is-flex is-flex-centered is-flex-wrap search-element" style="justify-content: space-between !important; width: 100%;" v-for="user in users">
+        <a v-bind:href="`/users/${user.userName}`" class="button is-white is-flex is-flex-centered" v-bind:title="user.userName" style="justify-content: space-between !important; height: 100%;">
+            <img class="image is-64x64 is-circle" v-bind:src="user.avatar" v-bind:alt="user.userName" style="margin-right: 7px;"/>
+            <span class="is-doted-end is-size-5">{{user.userName}}</span>
+        </a>
+        <button class="button" v-bind:title="user.followed?'Unfollow':'Follow'" v-bind:class="user.followed?'is-danger':'is-warning'" v-on:click="user.followed?disfollow(user):follow(user)"><i class="fas fa-user-plus" v-bind:class="user.followed?'fa-user-times':'fa-user-plus'"></i></button>
     </div>
+    <button class="button is-uppercase is-responsive" v-bind:class="{'is-loading': incallback}" v-on:click="search" v-if="!usersLoaded && users.length > 0 && users.length%12 == 0">Load More</button>
 </div>

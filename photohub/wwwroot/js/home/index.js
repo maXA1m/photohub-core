@@ -174,7 +174,7 @@
         },
         copyToClipboard(id) {
             const copyTextArea = document.createElement('textarea');
-            copyTextArea.value = `http://photohub.azurewebsites.net/photos/${id}`;
+            copyTextArea.value = `https://photohub.azurewebsites.net/photos/${id}`;
             document.body.appendChild(copyTextArea);
             copyTextArea.select();
 

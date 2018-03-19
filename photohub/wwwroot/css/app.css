@@ -1,43 +1,103 @@
-﻿::selection {
-    background: rgba(100, 100, 100, .4);
+﻿/*  Changes text selection styles  */
+::selection {
+    background: rgba(252, 220, 89, .85);
     /*background-color: rgba(0, 209, 178, 1);*/
-    color: #fff;
+    color: #333;
 }
 
+/*  Styles for unloaded vue js components  */
 [v-cloak] {
     display: none;
 }
 
-body {
+/*  Styles for document, body element  */
+body,
+html {
     padding-top: 40px;
     min-height: 100vh;
-    /*font-family: ;*/
+}
+
+/*  Custom styles for modal  */
+.modal-custom-background {
+    background: rgba(0, 0, 0, .85) !important;
 }
 
 .modal-card-custom {
     max-height: 95% !important;
     min-height: 500px !important;
+    border-radius: 5px !important;
 }
 
+.modal-card-custom .modal-card-head {
+    background: #fff !important;
+    color: #333 !important;
+}
+
+.modal-card-custom .modal-card-head p {
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.modal-card-custom .modal-card-foot {
+    background: #fff !important;
+    color: #333 !important;
+}
+
+@media (max-width: 768px) {
+    .modal-card-custom {
+        height: 98vh !important;
+        width: 98vw !important;
+    }
+}
+
+/*  Styles for photo cards  */
 .card {
+    max-width: none !important;
     margin-bottom: 50px !important;
     border-radius: 7px;
     box-shadow: 0 0 50px 0 rgba(0, 0, 0, .17);
+    transition: all ease .3s;
+}
+
+.card:hover {
+    box-shadow: 0 0 50px 0 rgba(0, 0, 0, .27);
+}
+
+/*  Styles for search-card on search page  */
+#search-field {
+    max-width: 98vw;
+    width: 60vw !important;
 }
 
 .search-element {
     padding: 15px;
     margin: 20px 0;
+    max-width: 98vw;
+    width: 60vw !important;
     border-radius: 7px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, .15);
+    transition: all ease .3s;
 }
 
-/*.is-unscrollabble {
-    margin: 0;
-    height: 100%;
-    overflow: hidden;
-}*/
+.search-element:hover {
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, .30);
+}
 
+.search-element a {
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    max-width: 70%;
+}
+
+@media (max-width: 768px) {
+    .search-element, 
+    #search-field {
+        width: 96vw !important;
+    }
+}
+
+/*  Styles for follower button in Followers/Followings modal on user page  */
 .follower-modal-button {
     height: 120px;
     margin-bottom: 5px;
@@ -47,58 +107,70 @@ body {
     width: 100%;
 }
 
+/*  Styles for image inside photo card  */
 .is-card-image,
 .is-card-image img {
     height: auto !important;
     width: 100% !important;
 }
 
+/*  Make 3 dots in end of too long text  */
 .is-doted-end {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
 }
 
+/*  Make element circle  */
 .is-circle {
     border-radius: 50%;
 }
 
+/*  Responsive width 100% of screen  */
 .is-responsive {
-    width: 100vw;
+    width: 96vw !important;
 }
+
+/*  Minimal width is HD  */
 @media screen and (min-width: 1280px) {
+    /*  Responsive width 40% of screen  */
     .is-responsive {
-        width: 40vw;
+        width: 40vw !important;
     }
 }
 
+/*  Add 10px margin to element  */
 .has-margin-10px {
     margin: 10px !important;
 }
 
-/*      FlexBox styles      */
+/*  Makes element invisible  */
 .is-display-none {
     display: none !important;
 }
 
+/*  Align inner elements center  !flexbox parameter!  */
 .is-flex-centered {
     justify-content: center !important;
     align-items: center !important;
 }
 
+/*  Wrap elements if fill container  !flexbox parameter!  */
 .is-flex-wrap {
     flex-wrap: wrap !important;
 }
 
+/*  Flex direction column  !flexbox parameter!  */
 .is-flex-column {
     flex-direction: column !important;
 }
 
+/*  Flex direction row  !flexbox parameter!  */
 .is-flex-row {
     flex-direction: row !important;
 }
 
-/***  Navbar effects  ***/
+/*  Navbar styles  */
 .navbar {
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
@@ -112,6 +184,7 @@ body {
     box-shadow: 0 0 60px 0 rgba(0, 0, 0, .17);
 }
 
+/*  Hide navbar  */
 .is-hidden-navbar {
     -webkit-transform: translateY(-100%);
     -ms-transform: translateY(-100%);
@@ -119,12 +192,12 @@ body {
     box-shadow: none;
 }
 
-/*nanobar*/
+/*  Nanobar style  */
 .bar {
-    background: #00d1b2;
+    background: #FCDC59;
 }
 
-/* filter picker */
+/*  Filter picker styles  */
 input[name="Filter"] + label figure {
     overflow: hidden;
     border-radius: 7px !important;
@@ -137,11 +210,71 @@ input[name="Filter"]:checked + label figure{
     transform: translateY(-7px);
 }
 
-/* basic styles */
+/*  CSS classes for add shadow  */
 .has-tiny-shadow {
-    box-shadow: 0 0 40px 0 rgba(0, 0, 0, .53);
+    box-shadow: 0 0 40px 0 rgba(0, 0, 0, .27);
 }
 
 .has-bold-shadow {
     box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+/*  Remove any text transformations  */
+.has-text-transform-none {
+    text-transform: none !important;
+}
+
+@media (max-width: 768px) {
+    /*  Makes text smaller on tablets or phones  */
+    .adaptive-header {
+        font-size: 1.2vw !important;
+    }
+}
+
+/*  Styles for user panel  */
+#main-user-panel {
+    margin: 70px 0 70px 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#user-about-panel {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#user-follow-panel {
+    margin: 30px 0 30px 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    #user-about-panel div {
+        width: 100vw;
+    }
+
+    #user-follow-panel div {
+        width: 100vw;
+    }
+}
+
+/*  Styles for close button  */
+.close-button,
+.close-button:hover,
+.close-button:focus {
+    font-size: 1.5rem;
+    color: #333;
 }

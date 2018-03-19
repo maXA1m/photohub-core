@@ -157,9 +157,7 @@ namespace PhotoHub.BLL.Services
             IEnumerable<ApplicationUser> users = _unitOfWork.Users.Find(u => 
                 u.UserName != currentUser.UserName && 
                 (   
-                    String.IsNullOrEmpty(search) || 
-                    u.Email.ToLower().Contains(search.ToLower()) ||
-                    u.UserName.ToLower().Contains(search.ToLower())
+                    String.IsNullOrEmpty(search) || u.UserName.ToLower().Contains(search.ToLower())
                 )
             ).Skip(page * pageSize).Take(pageSize);
 

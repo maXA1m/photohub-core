@@ -70,7 +70,7 @@
                             </div>
 
                             <div class="media-right" v-if="comment.$id && currentAppUserName == comment.owner.userName">
-                                <button class="delete" v-on:click="deleteComment(comment)"></button>
+                                <a class="close-button" v-on:click="deleteComment(comment)" title="Delete comment"><i class="fas fa-trash"></i></a>
                             </div>
                         </div>
                     </div>
@@ -79,7 +79,7 @@
                         <div class="control" style="margin: 15px 15px 0 15px">
                             <input class="input" id="comment" type="text" placeholder="Comment photo" v-on:keyup.enter="comment">
                             <div class="is-flex is-flex-centered" style="margin: 10px 0 10px 0">
-                                <button class="button is-primary" v-bind:class="{'is-loading': commenting}" v-on:click="comment" title="Comment photo">Comment</button>
+                                <button class="button is-warning" v-bind:class="{'is-loading': commenting}" v-on:click="comment" title="Comment photo">Comment</button>
                             </div>
                         </div>
                     }
@@ -90,11 +90,11 @@
 
     <!-- Modal Likes -->
     <div class="modal" v-bind:class="{'is-active': modals.likeActive}">
-        <div class="modal-background" v-on:click="modalLikes"></div>
+        <div class="modal-background modal-custom-background" v-on:click="modalLikes"></div>
         <div class="modal-card modal-card-custom">
             <header class="modal-card-head">
                 <p class="modal-card-title is-uppercase">Likes</p>
-                <button class="delete" aria-label="close" v-on:click="modalLikes"></button>
+                <a class="close-button" v-on:click="modalLikes" title="Close modal"><i class="fas fa-times"></i></a>
             </header>
             <section class="modal-card-body" style="overflow-x: hidden; overflow-y: auto;">
                 <div class="media" v-for="like in post.likes">
@@ -111,15 +111,12 @@
                     </div>
                 </div>
             </section>
-            <footer class="modal-card-foot">
-                <button class="button" v-on:click="modalLikes">Cancel</button>
-            </footer>
         </div>
     </div>
 
     <!-- Modal Options -->
     <div class="modal" v-bind:class="{'is-active': modals.optionActive}">
-        <div class="modal-background" v-on:click="modalOptions"></div>
+        <div class="modal-background modal-custom-background" v-on:click="modalOptions"></div>
         <div class="content is-flex is-flex-column">
             <form action="/photos/delete/@Model.Id" method="post" style="width: 270px;">
                 <button type="submit" class="button is-large is-danger" style="margin-bottom: 5px; width: 270px;">Delete</button>
