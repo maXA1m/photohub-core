@@ -31,7 +31,7 @@
                         {
                             if (User.Identity.Name != Model.UserName)
                             {
-                                <button class="button" v-bind:title="user.followed?'Unfollow':'Follow'" v-bind:class="user.followed?'is-danger':'is-warning'" v-on:click="user.followed?disfollow():follow()">{{user.followed?'Unfollow':'Follow'}}</button>
+                                <button class="button" v-bind:title="user.followed?'Unfollow':'Follow'" v-bind:class="{'is-warning': !user.followed}" v-on:click="user.followed?disfollow():follow()">{{user.followed?'Unfollow':'Follow'}}</button>
                                 <button class="button is-dark" v-bind:title="user.blocked?'Unblock':'Block'" v-on:click="user.blocked?disblock():block()">{{user.blocked?'Unblock':'Block'}}</button>
                             }
                             else
@@ -68,8 +68,8 @@
                     <a class="close-button" v-on:click="closeFollowers" title="Close modal"><i class="fas fa-times"></i></a>
                 </header>
                 <section class="modal-card-body" style="overflow-x: hidden; overflow-y: auto;">
-                    <a class="button is-light follower-modal-button" v-bind:href="`/users/${user.userName}`" v-bind:title="user.userName" v-for="user in user.followers">
-                        <img class="image is-96x96 is-circle" v-bind:src="user.avatar" v-bind:alt="user.userName">
+                    <a class="button is-white follower-modal-button" v-bind:href="`/users/${user.userName}`" v-bind:title="user.userName" v-for="user in user.followers">
+                        <img class="image is-64x64 is-circle" v-bind:src="user.avatar" v-bind:alt="user.userName">
                         <p class="is-size-5 is-doted-end">{{user.userName}}</p>
                     </a>
                 </section>
@@ -85,8 +85,8 @@
                     <a class="close-button" v-on:click="closeFollowings" title="Close modal"><i class="fas fa-times"></i></a>
                 </header>
                 <section class="modal-card-body" style="overflow-x: hidden; overflow-y: auto;">
-                    <a class="button is-light follower-modal-button" v-bind:href="`/users/${user.userName}`" v-bind:title="user.userName" v-for="user in user.followings">
-                        <img class="image is-96x96 is-circle" v-bind:src="user.avatar" v-bind:alt="user.userName">
+                    <a class="button is-white follower-modal-button" v-bind:href="`/users/${user.userName}`" v-bind:title="user.userName" v-for="user in user.followings">
+                        <img class="image is-64x64 is-circle" v-bind:src="user.avatar" v-bind:alt="user.userName">
                         <p class="is-size-5 is-doted-end">{{user.userName}}</p>
                     </a>
                 </section>
@@ -139,12 +139,10 @@
                     <div class="content">
                         <button class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-bind:title="post.liked?'Dislike':'Like'" v-on:click="post.liked?dislike(post):like(post)" v-if="currentAppUserName"><i class="fa-heart" v-bind:class="post.liked?'fas':'far'" aria-hidden="true"></i></button>
                         <button v-if="post.likes.length > 0" class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-on:click="showLikes(post)" title="Likes list">{{ post.likes.length }}</button>
+                        <button class="button is-light comment-button" v-on:click="showComments(post)" title="Comments"><i class="fas fa-comment"></i></button>
+                        <button class="button is-light" v-on:click="showComments(post)" title="Comments" v-if="post.comments.length > 0">{{ post.comments.length }}</button>
                     </div>
                 </div>
-
-                <footer class="card-footer">
-                    <a class="card-footer-item is-uppercase has-text-grey-darker" v-on:click="showComments(post)" title="Comments">comments<span class="tag is-light" v-if="post.comments.length > 0" style="margin: 0 0 0 3px;">{{ post.comments.length }}</span></a>
-                </footer>
             </div>
 
             <!-- Modal Likes -->

@@ -12,8 +12,7 @@ namespace PhotoHub.WEB.Mappers
             {
                 Id = comment.Id,
                 Text = comment.Text,
-                //Date = comment.Date.ToString(),
-                Date = comment.Date.Day.ToString() + '.' + comment.Date.Month.ToString() + '.' + comment.Date.Year.ToString(),
+                Date = comment.Date.ToString("MMMM dd, yyyy"),
                 Owner = UserDTOMapper.ToUserViewModel(comment.Owner)
             };
         }
@@ -28,7 +27,7 @@ namespace PhotoHub.WEB.Mappers
                 {
                     Id = comment.Id,
                     Text = comment.Text,
-                    Date = comment.Date.Day.ToString() + '.' + comment.Date.Month.ToString() + '.' + comment.Date.Year.ToString(),
+                    Date = comment.Date.ToString("MMMM dd, yyyy"),
                     Owner = UserDTOMapper.ToUserViewModel(comment.Owner)
                 });
             }

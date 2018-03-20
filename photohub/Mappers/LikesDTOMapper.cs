@@ -11,8 +11,7 @@ namespace PhotoHub.WEB.Mappers
             return new LikeViewModel()
             {
                 Id = like.Id,
-                //Date = like.Date.ToString(),
-                Date = like.Date.Day.ToString() + '.' + like.Date.Month.ToString() + '.' + like.Date.Year.ToString(),
+                Date = like.Date.ToString("MMMM dd, yyyy"),
                 Owner = UserDTOMapper.ToUserViewModel(like.Owner)
             };
         }
@@ -26,7 +25,7 @@ namespace PhotoHub.WEB.Mappers
                 likeViewModels.Add(new LikeViewModel()
                 {
                     Id = like.Id,
-                    Date = like.Date.Day.ToString() + '.' + like.Date.Month.ToString() + '.' + like.Date.Year.ToString(),
+                    Date = like.Date.ToString("MMMM dd, yyyy"),
                     Owner = UserDTOMapper.ToUserViewModel(like.Owner)
                 });
             }

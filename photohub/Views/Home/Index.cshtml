@@ -46,12 +46,10 @@
             <div class="content">
                 <button class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-bind:title="post.liked?'Dislike':'Like'" v-on:click="post.liked?dislike(post):like(post)" v-if="currentAppUserName"><i class="fa-heart" v-bind:class="post.liked?'fas':'far'"></i></button>
                 <button v-if="post.likes.length > 0" class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-on:click="showLikes(post)" title="Likes list">{{ post.likes.length }}</button>
+                <button class="button is-light comment-button" v-on:click="showComments(post)" title="Comments"><i class="fas fa-comment"></i></button>
+                <button class="button is-light" v-on:click="showComments(post)" title="Comments" v-if="post.comments.length > 0">{{ post.comments.length }}</button>
             </div>
         </div>
-
-        <footer class="card-footer">
-            <a class="card-footer-item is-uppercase has-text-grey-darker" v-on:click="showComments(post)" title="Comments">comments<span class="tag is-light" v-if="post.comments.length > 0" style="margin: 0 0 0 3px;">{{ post.comments.length }}</span></a>
-        </footer>
     </div>
 
     <!-- Modal Likes -->

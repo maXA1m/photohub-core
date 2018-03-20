@@ -9,7 +9,7 @@
 
     <title>@ViewBag.Title &#8729; PhotoHub</title>
 
-    <meta name="theme-color" content="#00d1b2">
+    <meta name="theme-color" content="#FCDC59">
 
     <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
     <link rel="icon" type="image/png" href="/favicon-24x24.png" sizes="24x24">
@@ -20,13 +20,10 @@
     <link rel="icon" type="image/png" href="/favicon-512x512.png" sizes="512x512">
 
     <link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="~/css/filters.css" media="none" onload="if(media!='all')media='all'">
-    <noscript><link rel="stylesheet" href="~/css/filters.css"></noscript>
-
-    <link rel="stylesheet" href="~/css/app.css" media="none" onload="if(media!='all')media='all'">
-    <noscript><link rel="stylesheet" href="~/css/app.css"></noscript>
+    <link href="~/css/filters.css" rel="stylesheet" />
+    <link href="~/css/app.css" rel="stylesheet" />
 
     @RenderSection("Styles", required: false)
 
@@ -37,6 +34,7 @@
     <script defer src="~/js/app.js"></script>
 
     @RenderSection("Scripts", required: false)
+
 </head>
 <body id="body" data-app-user="@( User.Identity.IsAuthenticated ? User.Identity.Name : "" )">
 
@@ -80,5 +78,6 @@
             </div>
         </div>
     </footer>
+
 </body>
 </html>
