@@ -16,13 +16,16 @@ namespace PhotoHub.BLL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly UsersMapper _usersMapper;
+        private readonly UsersDetailsMapper _usersDetailsMapper;
+
         public ApplicationUser CurrentUser => _unitOfWork.Users.Find(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name).FirstOrDefault();
         public UserDTO CurrentUserDTO {
             get
             {
                 ApplicationUser user = CurrentUser;
 
-                return UserMapper.ToUserDTO(
+                return _usersMapper.Map(
                     user,
                     _unitOfWork.Confirmations.Find(c => c.UserId == user.Id).FirstOrDefault() != null,
                     _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id && f.UserId == user.Id).FirstOrDefault() != null,
@@ -36,6 +39,8 @@ namespace PhotoHub.BLL.Services
         {
             _unitOfWork = unitOfWork;
             _httpContextAccessor = httpContextAccessor;
+            _usersMapper = new UsersMapper();
+            _usersDetailsMapper = new UsersDetailsMapper();
         }
 
         public IEnumerable<UserDTO> GetAll(int page, int pageSize)
@@ -46,26 +51,7 @@ namespace PhotoHub.BLL.Services
 
             foreach (ApplicationUser user in users)
             {
-                userDTOs.Add(UserMapper.ToUserDTO(
-                    user,
-                    _unitOfWork.Confirmations.Find(c => c.UserId == user.Id).FirstOrDefault() != null,
-                    _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id && f.UserId == currentUser.Id).FirstOrDefault() != null,
-                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.Id && b.UserId == currentUser.Id).FirstOrDefault() != null,
-                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == user.Id).FirstOrDefault() != null
-                ));
-            }
-
-            return userDTOs;
-        }
-        public async Task<IEnumerable<UserDTO>> GetAllAsync(int page, int pageSize)
-        {
-            ApplicationUser currentUser = CurrentUser;
-            IEnumerable<ApplicationUser> users = await _unitOfWork.Users.GetAllAsync(page, pageSize);
-            List<UserDTO> userDTOs = new List<UserDTO>(users.Count());
-
-            foreach (ApplicationUser user in users)
-            {
-                userDTOs.Add(UserMapper.ToUserDTO(
+                userDTOs.Add(_usersMapper.Map(
                     user,
                     _unitOfWork.Confirmations.Find(c => c.UserId == user.Id).FirstOrDefault() != null,
                     _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id && f.UserId == currentUser.Id).FirstOrDefault() != null,
@@ -89,7 +75,7 @@ namespace PhotoHub.BLL.Services
             {
                 foreach (Following following in _unitOfWork.Followings.Find(f => f.UserId == user.Id))
                 {
-                    followings.Add(UserMapper.ToUserDTO(
+                    followings.Add(_usersMapper.Map(
                         following.FollowedUser,
                         _unitOfWork.Confirmations.Find(c => c.UserId == following.FollowedUserId).FirstOrDefault() != null,
                         false, false, false
@@ -98,14 +84,14 @@ namespace PhotoHub.BLL.Services
 
                 foreach (Following follower in _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id))
                 {
-                    followers.Add(UserMapper.ToUserDTO(
+                    followers.Add(_usersMapper.Map(
                         follower.User,
                         _unitOfWork.Confirmations.Find(c => c.UserId == follower.UserId).FirstOrDefault() != null,
                         false, false, false
                     ));
                 }
 
-                return UserMapper.ToUserDetailsDTO(
+                return _usersDetailsMapper.Map(
                     user,
                     _unitOfWork.Confirmations.Find(c => c.UserId == user.Id).FirstOrDefault() != null,
                     false,
@@ -119,7 +105,7 @@ namespace PhotoHub.BLL.Services
             {
                 foreach (Following following in _unitOfWork.Followings.Find(f => f.UserId == user.Id))
                 {
-                    followings.Add(UserMapper.ToUserDTO(
+                    followings.Add(_usersMapper.Map(
                         following.FollowedUser,
                         _unitOfWork.Confirmations.Find(c => c.UserId == following.FollowedUserId).FirstOrDefault() != null,
                         _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == user.Id).FirstOrDefault() != null,
@@ -130,7 +116,7 @@ namespace PhotoHub.BLL.Services
 
                 foreach (Following follower in _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id))
                 {
-                    followers.Add(UserMapper.ToUserDTO(
+                    followers.Add(_usersMapper.Map(
                         follower.User,
                         _unitOfWork.Confirmations.Find(c => c.UserId == follower.UserId).FirstOrDefault() != null,
                         _unitOfWork.Followings.Find(f => f.FollowedUserId == follower.UserId && f.UserId == currentUser.Id).FirstOrDefault() != null,
@@ -139,7 +125,7 @@ namespace PhotoHub.BLL.Services
                     ));
                 }
 
-                return UserMapper.ToUserDetailsDTO(
+                return _usersDetailsMapper.Map(
                     user,
                     _unitOfWork.Confirmations.Find(c => c.UserId == user.Id).FirstOrDefault() != null,
                     _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id && f.UserId == currentUser.Id).FirstOrDefault() != null,
@@ -151,13 +137,37 @@ namespace PhotoHub.BLL.Services
             }
         }
 
+        public IEnumerable<UserDTO> GetBlocked(int page, int pageSize)
+        {
+            ApplicationUser currentUser = CurrentUser;
+            IEnumerable<BlackList> blacklists = _unitOfWork.Blockings.Find(b => b.UserId == currentUser.Id);
+            List<ApplicationUser> users = new List<ApplicationUser>();
+
+            foreach(var blocking in blacklists)
+                users.Add(blocking.BlockedUser);
+
+            List<UserDTO> userDTOs = new List<UserDTO>(pageSize);
+            foreach (ApplicationUser user in users)
+            {
+                userDTOs.Add(_usersMapper.Map(
+                    user,
+                    _unitOfWork.Confirmations.Find(c => c.UserId == user.Id).FirstOrDefault() != null,
+                    _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id && f.UserId == currentUser.Id).FirstOrDefault() != null,
+                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.Id && b.UserId == currentUser.Id).FirstOrDefault() != null,
+                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == user.Id).FirstOrDefault() != null
+                ));
+            }
+
+            return userDTOs;
+        }
+
         public IEnumerable<UserDTO> Search(int page, string search, int pageSize)
         {
             ApplicationUser currentUser = CurrentUser;
             IEnumerable<ApplicationUser> users = _unitOfWork.Users.Find(u => 
                 u.UserName != currentUser.UserName && 
                 (   
-                    String.IsNullOrEmpty(search) || u.UserName.ToLower().Contains(search.ToLower())
+                    String.IsNullOrEmpty(search) || u.UserName.ToLower().Contains(search.ToLower()) || u.RealName.ToLower().Contains(search.ToLower())
                 )
             ).Skip(page * pageSize).Take(pageSize);
 
@@ -165,7 +175,7 @@ namespace PhotoHub.BLL.Services
 
             foreach(ApplicationUser user in users)
             {
-                userDTOs.Add(UserMapper.ToUserDTO(
+                userDTOs.Add(_usersMapper.Map(
                     user,
                     _unitOfWork.Confirmations.Find(c => c.UserId == user.Id).FirstOrDefault() != null,
                     _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id && f.UserId == currentUser.Id).FirstOrDefault() != null,
@@ -242,7 +252,7 @@ namespace PhotoHub.BLL.Services
             ApplicationUser currentUser = CurrentUser;
             ApplicationUser blockedUser = _unitOfWork.Users.Find(u => u.UserName == block).FirstOrDefault();
 
-            if (currentUser != null && blockedUser != null && currentUser.UserName != block && _unitOfWork.Blockings.Find(b => b.UserId == currentUser.Id && b.BlockedUserId == currentUser.Id).FirstOrDefault() == null)
+            if (currentUser != null && blockedUser != null && currentUser.UserName != block && _unitOfWork.Blockings.Find(b => b.UserId == currentUser.Id && b.BlockedUserId == block).FirstOrDefault() == null)
             {
                 _unitOfWork.Blockings.Create(new BlackList()
                 {
@@ -258,7 +268,7 @@ namespace PhotoHub.BLL.Services
             ApplicationUser currentUser = CurrentUser;
             ApplicationUser blockedUser = _unitOfWork.Users.Find(u => u.UserName == block).FirstOrDefault();
 
-            if (currentUser != null && blockedUser != null && currentUser.UserName != block && _unitOfWork.Blockings.Find(b => b.UserId == currentUser.Id && b.BlockedUserId == currentUser.Id).FirstOrDefault() == null)
+            if (currentUser != null && blockedUser != null && currentUser.UserName != block && _unitOfWork.Blockings.Find(b => b.UserId == currentUser.Id && b.BlockedUserId == block).FirstOrDefault() == null)
             {
                 await _unitOfWork.Blockings.CreateAsync(new BlackList()
                 {
@@ -342,6 +352,71 @@ namespace PhotoHub.BLL.Services
             await _unitOfWork.SaveAsync();
 
             return user;
+        }
+
+        public void Edit(string userName, string realName, string phoneNumber, string email, string about)
+        {
+            ApplicationUser user = _unitOfWork.Users.Find(u => u.UserName == userName).FirstOrDefault();
+            if (user != null)
+            {
+                if (!String.IsNullOrEmpty(realName) && user.RealName != realName)
+                {
+                    user.RealName = realName;
+                    _unitOfWork.Users.Update(user);
+                }
+
+                if (!String.IsNullOrEmpty(email) && user.Email != email)
+                {
+                    user.Email = email;
+                    _unitOfWork.Users.Update(user);
+                }
+
+                if (!String.IsNullOrEmpty(phoneNumber) && user.PhoneNumber != phoneNumber)
+                {
+                    user.PhoneNumber = phoneNumber;
+                    _unitOfWork.Users.Update(user);
+                }
+
+                if (!String.IsNullOrEmpty(about) && user.About != about)
+                {
+                    user.About = about;
+                    _unitOfWork.Users.Update(user);
+                }
+
+                _unitOfWork.Save();
+            }
+        }
+        public async Task EditAsync(string userName, string realName, string phoneNumber, string email, string about)
+        {
+            ApplicationUser user = _unitOfWork.Users.Find(u => u.UserName == userName).FirstOrDefault();
+            if (user != null)
+            {
+                if (!String.IsNullOrEmpty(realName) && user.RealName != realName)
+                {
+                    user.RealName = realName;
+                    _unitOfWork.Users.Update(user);
+                }
+
+                if (!String.IsNullOrEmpty(email) && user.Email != email)
+                {
+                    user.Email = email;
+                    _unitOfWork.Users.Update(user);
+                }
+
+                if (!String.IsNullOrEmpty(phoneNumber) && user.PhoneNumber != phoneNumber)
+                {
+                    user.PhoneNumber = phoneNumber;
+                    _unitOfWork.Users.Update(user);
+                }
+
+                if (!String.IsNullOrEmpty(about) && user.About != about)
+                {
+                    user.About = about;
+                    _unitOfWork.Users.Update(user);
+                }
+
+                await _unitOfWork.SaveAsync();
+            }
         }
 
         public void Dispose()

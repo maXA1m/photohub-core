@@ -7,7 +7,6 @@ namespace PhotoHub.DAL.Interfaces
     public interface IRepository<T> where T : class
     {
         IEnumerable<T> GetAll(int page, int pageSize);
-        Task<IEnumerable<T>> GetAllAsync(int page, int pageSize);
 
         T Get(int id);
         Task<T> GetAsync(int id);

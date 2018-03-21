@@ -13,7 +13,8 @@
         },
         modals: {
             likeActive: false,
-            optionActive: false
+            optionActive: false,
+            metadataActive: false
         }
     },
     created() {
@@ -152,6 +153,48 @@
                     this.message.status = 'error';
                 });
             }
+        },
+
+        bookmark() {
+            if (!this.currentAppUserName)
+                return -1;
+
+            if (!this.post.bookmarked) {
+                this.post.bookmarked = true;
+
+                this.$http.post(`/api/photos/bookmark/${this.post.$id}`).then(response => {
+
+                }, response => {
+                    this.message.text = 'error while bookmarking';
+                    this.message.status = 'error';
+
+                    this.post.bookmarked = false;
+                });
+            }
+        },
+        disbookmark() {
+            if (!this.currentAppUserName)
+                return -1;
+
+            if (this.post.bookmarked) {
+                this.post.bookmarked = false;
+
+                this.$http.post(`/api/photos/dismiss/bookmark/${this.post.$id}`).then(response => {
+
+                }, response => {
+                    this.message.text = 'error while dismising bookmark';
+                    this.message.status = 'error';
+
+                    this.post.bookmarked = true;
+                });
+            }
+        },
+
+        showMetadata() {
+            this.modals.metadataActive = true;
+        },
+        closeMetadata() {
+            this.modals.metadataActive = false;
         },
 
         modalLikes() {

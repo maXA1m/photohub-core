@@ -20,11 +20,17 @@ namespace PhotoHub.WEB.Controllers
     {
         private readonly IPhotosService _photosService;
         private readonly IHostingEnvironment _environment;
+        private readonly UsersMapper _usersMapper;
+        private readonly FiltersMapper _filtersMapper;
+        private readonly PhotosMapper _photosMapper;
 
         public PhotosController(IPhotosService photosService, IHostingEnvironment environment)
         {
             _photosService = photosService;
             _environment = environment;
+            _usersMapper = new UsersMapper();
+            _filtersMapper = new FiltersMapper();
+            _photosMapper = new PhotosMapper();
         }
 
         [HttpGet, Route("photos")]
@@ -36,10 +42,10 @@ namespace PhotoHub.WEB.Controllers
         [HttpGet, Route("photos/{id}")]
         public async Task<ActionResult> Details(int id)
         {
-            PhotoViewModel photo = PhotoDTOMapper.ToPhotoViewModel(await _photosService.GetAsync(id));
+            PhotoViewModel photo = _photosMapper.Map(await _photosService.GetAsync(id));
 
             if (User.Identity.IsAuthenticated)
-                ViewBag.CurrentUser = UserDTOMapper.ToUserViewModel(_photosService.CurrentUserDTO);
+                ViewBag.CurrentUser = _usersMapper.Map(_photosService.CurrentUserDTO);
 
             return View(photo);
         }
@@ -47,9 +53,9 @@ namespace PhotoHub.WEB.Controllers
         [Authorize, HttpGet, Route("photos/create")]
         public ActionResult Create()
         {
-            ViewBag.Filters = FilterDTOMapper.ToFilterViewModels(_photosService.Filters);
+            ViewBag.Filters = _filtersMapper.MapRange(_photosService.Filters);
 
-            return View(UserDTOMapper.ToUserViewModel(_photosService.CurrentUserDTO));
+            return View(_usersMapper.Map(_photosService.CurrentUserDTO));
         }
         
         [Authorize, HttpPost, ValidateAntiForgeryToken, Route("photos/create")]
@@ -73,7 +79,13 @@ namespace PhotoHub.WEB.Controllers
                     await fs.FlushAsync();
                 }
 
-                int pid = await _photosService.CreateAsync(photo.Filter, photo.Description, photo.Path);
+                string manufacturer = null;
+                string model = null;
+                string iso = null;
+                string exposure = null;
+                string aperture = null;
+
+                int pid = await _photosService.CreateAsync(photo.Filter, photo.Description, photo.Path, manufacturer, model, iso, exposure, aperture);
 
                 return RedirectToAction("Details", "Photos", new { id = pid });
             }
@@ -90,10 +102,10 @@ namespace PhotoHub.WEB.Controllers
 
             if(photo != null && user != null && user.UserName == photo.Owner.UserName)
             {
-                ViewBag.LikesCount = photo.Likes.Count;
-                ViewBag.Filters = FilterDTOMapper.ToFilterViewModels(_photosService.Filters);
+                ViewBag.LikesCount = photo.Likes.Count();
+                ViewBag.Filters = _filtersMapper.MapRange(_photosService.Filters);
 
-                return View(PhotoDTOMapper.ToPhotoViewModel(photo));
+                return View(_photosMapper.Map(photo));
             }
 
             return RedirectToAction("Details", "Photos", new { id = photo.Id });
@@ -111,7 +123,7 @@ namespace PhotoHub.WEB.Controllers
         [Authorize, HttpPost, Route("photos/delete/{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            UserViewModel user = UserDTOMapper.ToUserViewModel(_photosService.CurrentUserDTO);
+            UserViewModel user = _usersMapper.Map(_photosService.CurrentUserDTO);
 
             PhotoDTO photo = await _photosService.GetAsync(id);
 

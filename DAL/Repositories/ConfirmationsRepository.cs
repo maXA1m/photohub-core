@@ -26,13 +26,6 @@ namespace PhotoHub.DAL.Repositories
                             .Include(c => c.User)
                             .Skip(page * pageSize).Take(pageSize);
         }
-        public async Task<IEnumerable<Confirmed>> GetAllAsync(int page, int pageSize)
-        {
-            return await _context.Confirmed
-                            .Include(c => c.Admin)
-                            .Include(c => c.User)
-                            .Skip(page * pageSize).Take(pageSize).ToListAsync();
-        }
 
         public Confirmed Get(int id)
         {

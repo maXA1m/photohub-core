@@ -24,6 +24,7 @@ namespace PhotoHub.WEB.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly UrlEncoder _urlEncoder;
+        private readonly IUsersService _usersService;
 
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
         private const string RecoveryCodesKey = nameof(RecoveryCodesKey);
@@ -33,13 +34,15 @@ namespace PhotoHub.WEB.Controllers
           SignInManager<ApplicationUser> signInManager,
           IEmailSender emailSender,
           ILogger<ManageController> logger,
-          UrlEncoder urlEncoder)
+          UrlEncoder urlEncoder,
+          IUsersService usersService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
             _urlEncoder = urlEncoder;
+            _usersService = usersService;
         }
 
         [TempData]
@@ -54,8 +57,10 @@ namespace PhotoHub.WEB.Controllers
 
             var model = new IndexViewModel
             {
+                RealName = user.RealName,
                 Username = user.UserName,
                 Email = user.Email,
+                About = user.About,
                 PhoneNumber = user.PhoneNumber,
                 IsEmailConfirmed = user.EmailConfirmed,
                 StatusMessage = StatusMessage
@@ -71,40 +76,22 @@ namespace PhotoHub.WEB.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-
-            var email = user.Email;
-            if (model.Email != email)
-            {
-                var setEmailResult = await _userManager.SetEmailAsync(user, model.Email);
-                if (!setEmailResult.Succeeded)
-                    throw new ApplicationException($"Unexpected error occurred setting email for user with ID '{user.Id}'.");
-            }
-
-            var phoneNumber = user.PhoneNumber;
-            if (model.PhoneNumber != phoneNumber)
-            {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, model.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
-                    throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
-            }
-
-            if (!String.IsNullOrEmpty(model.About))
-            {
-                user.About = model.About;
-                await _userManager.UpdateAsync(user);
-            }
-
-            //if (!String.IsNullOrEmpty(model.RealName))
-            //{
-            //    user.RealName = model.RealName;
-            //    await _userManager.UpdateAsync(user);
-            //}
+            await _usersService.EditAsync(User.Identity.Name, model.RealName, model.PhoneNumber, model.Email, model.About);
 
             StatusMessage = "Your profile has been updated";
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public IActionResult Bookmarks()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Blocklist()
+        {
+            return View();
         }
 
         [HttpPost]

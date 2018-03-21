@@ -14,6 +14,8 @@ namespace PhotoHub.BLL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly UsersMapper _usersMapper;
+
         public ApplicationUser CurrentUser => _unitOfWork.Users.Find(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name).FirstOrDefault();
         public UserDTO CurrentUserDTO
         {
@@ -21,7 +23,7 @@ namespace PhotoHub.BLL.Services
             {
                 ApplicationUser user = CurrentUser;
 
-                return UserMapper.ToUserDTO(
+                return _usersMapper.Map(
                     user,
                     _unitOfWork.Confirmations.Find(c => c.UserId == user.Id).FirstOrDefault() != null,
                     _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id && f.UserId == user.Id).FirstOrDefault() != null,
@@ -35,6 +37,7 @@ namespace PhotoHub.BLL.Services
         {
             _unitOfWork = unitOfWork;
             _httpContextAccessor = httpContextAccessor;
+            _usersMapper = new UsersMapper();
         }
 
         public int? Add(int photoId, string text)

@@ -11,7 +11,6 @@ namespace PhotoHub.BLL.Interfaces
         List<FilterDTO> Filters { get; }
 
         IEnumerable<PhotoDTO> GetAll(int page, int pageSize);
-        Task<IEnumerable<PhotoDTO>> GetAllAsync(int page, int pageSize);
 
         PhotoDTO Get(int id);
         Task<PhotoDTO> GetAsync(int id);
@@ -20,16 +19,16 @@ namespace PhotoHub.BLL.Interfaces
 
         IEnumerable<PhotoDTO> GetForUser(int page, string userName, int pageSize);
 
-        IEnumerable<PhotoDTO> GetForGiveaway(int page, int giveawayId, int pageSize);
+        IEnumerable<PhotoDTO> GetBookmarks(int page, int pageSize);
 
-        void RemoveFromGiveaway(int id);
-        Task RemoveFromGiveawayAsync(int id);
+        void Bookmark(int id);
+        Task BookmarkAsync(int id);
 
-        void AddToGiveaway(int giveawayId, int id);
-        Task AddToGiveawayAsync(int giveawayId, int id);
+        void DismissBookmark(int id);
+        Task DismissBookmarkAsync(int id);
 
-        int Create(string filter, string description, string path);
-        Task<int> CreateAsync(string filter, string description, string path);
+        int Create(string filter, string description, string path, string manufacturer, string model, string iso, string exposure, string aperture);
+        ValueTask<int> CreateAsync(string filter, string description, string path, string manufacturer, string model, string iso, string exposure, string aperture);
 
         void Edit(int id, string filter, string description);
         Task EditAsync(int id, string filter, string description);

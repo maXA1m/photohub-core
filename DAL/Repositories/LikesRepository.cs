@@ -24,10 +24,6 @@ namespace PhotoHub.DAL.Repositories
         {
             return _context.Likes.Include(l => l.Owner).Skip(page * pageSize).Take(pageSize);
         }
-        public async Task<IEnumerable<Like>> GetAllAsync(int page, int pageSize)
-        {
-            return await _context.Likes.Include(l => l.Owner).Skip(page * pageSize).Take(pageSize).ToListAsync();
-        }
 
         public Like Get(int id)
         {

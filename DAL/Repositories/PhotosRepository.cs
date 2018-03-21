@@ -31,18 +31,6 @@ namespace PhotoHub.DAL.Repositories
                     .OrderByDescending(p => p.Date)
                     .Skip(page * pageSize).Take(pageSize);
         }
-        public async Task<IEnumerable<Photo>> GetAllAsync(int page, int pageSize)
-        {
-            return await _context.Photos
-                            .Include(p => p.Owner)
-                            .Include(p => p.Filter)
-                            .Include(p => p.Comments)
-                                .ThenInclude(c => c.Owner)
-                            .Include(p => p.Likes)
-                                .ThenInclude(l => l.Owner)
-                            .OrderByDescending(p => p.Date)
-                            .Skip(page * pageSize).Take(pageSize).ToListAsync();
-        }
 
         public Photo Get(int id)
         {

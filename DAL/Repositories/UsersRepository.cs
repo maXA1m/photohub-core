@@ -24,10 +24,6 @@ namespace PhotoHub.DAL.Repositories
         {
             return _context.Users.Skip(page * pageSize).Take(pageSize);
         }
-        public async Task<IEnumerable<ApplicationUser>> GetAllAsync(int page, int pageSize)
-        {
-            return await _context.Users.Skip(page * pageSize).Take(pageSize).ToListAsync();
-        }
 
         public ApplicationUser Get(int id)
         {

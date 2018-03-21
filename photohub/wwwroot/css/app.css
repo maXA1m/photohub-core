@@ -32,6 +32,27 @@ html {
     width: 270px !important;
 }
 
+/*  Metadata styles  */
+.modal-card-body-metadata {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-card-body-metadata div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.modal-card-body-metadata p {
+    color: #333;
+    font-size: 1.3rem;
+}
+
 .modal-card-custom {
     max-height: 95% !important;
     min-height: 500px !important;
@@ -70,10 +91,33 @@ html {
         border-radius: 0 !important;
     }
 
+    /*  Metadata card styles  */
+    .modal-card-custom-metadata {
+        position: absolute !important;
+        bottom: 0 !important;
+        min-height: 0 !important;
+        height: 60vh !important;
+    }
+
+    .modal-card-custom-metadata .modal-card-head {
+        display: none !important;
+    }
+
+    .modal-card-body-metadata div {
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+    }
+
+    .modal-card-body-metadata p {
+        font-size: 1.15rem;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
     /*  Modal option background styles  */
     .modal-custom-background,
     .modal-options-background {
-        background: rgba(0, 0, 0, .65) !important;
+        background: rgba(0, 0, 0, .7) !important;
     }
 
     /*  Modal option mobile styles  */

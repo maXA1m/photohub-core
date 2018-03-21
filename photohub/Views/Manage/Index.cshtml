@@ -16,17 +16,17 @@
         </div>
     </div>
 
-    @*<div class="field">
+    <div class="field">
         <label asp-for="RealName" class="label"></label>
         <div class="control">
             <input asp-for="RealName" class="input" />
         </div>
-    </div>*@
+    </div>
 
     <div class="field">
         <label asp-for="About" class="label"></label>
         <div class="control">
-            <textarea asp-for="About" class="textarea"></textarea>
+            <textarea asp-for="About" class="textarea">@Model.About</textarea>
         </div>
     </div>
 

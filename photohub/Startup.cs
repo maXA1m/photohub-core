@@ -74,7 +74,6 @@ namespace PhotoHub.WEB
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<ICommentsService, CommentsService>();
-            services.AddScoped<IGiveawaysService, GiveawaysService>();
             services.AddScoped<ILikesService, LikesService>();
             services.AddScoped<IPhotosService, PhotosService>();
             services.AddScoped<IUsersService, UsersService>();

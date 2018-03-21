@@ -26,13 +26,6 @@ namespace PhotoHub.DAL.Repositories
                             .Include(c => c.User)
                             .Skip(page * pageSize).Take(pageSize);
         }
-        public async Task<IEnumerable<BlackList>> GetAllAsync(int page, int pageSize)
-        {
-            return await _context.BlackLists
-                            .Include(c => c.BlockedUser)
-                            .Include(c => c.User)
-                            .Skip(page * pageSize).Take(pageSize).ToListAsync();
-        }
 
         public BlackList Get(int id)
         {
@@ -51,7 +44,10 @@ namespace PhotoHub.DAL.Repositories
 
         public IEnumerable<BlackList> Find(Func<BlackList, bool> predicate)
         {
-            return _context.BlackLists.Where(predicate);
+            return _context.BlackLists
+                    .Include(c => c.BlockedUser)
+                    .Include(c => c.User)
+                    .Where(predicate);
         }
 
         public void Create(BlackList item)

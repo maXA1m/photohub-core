@@ -6,7 +6,7 @@ namespace PhotoHub.BLL.DTO
     {
         public string About { get; set; }
 
-        public ICollection<UserDTO> Followings { get; set; }
-        public ICollection<UserDTO> Followers { get; set; }
+        public IEnumerable<UserDTO> Followings { get; set; }
+        public IEnumerable<UserDTO> Followers { get; set; }
     }
 }

@@ -11,7 +11,7 @@
 <div id="search" class="container is-flex is-flex-centered is-flex-column" v-cloak>
     <div class="field is-grouped" id="search-field">
         <p class="control is-expanded">
-            <input class="input" type="text" v-on:keyup.enter="handleSearch" v-model="searchString" placeholder="Enter login" required>
+            <input class="input" type="text" v-on:keyup.enter="handleSearch" v-model="searchString" placeholder="Enter login or name" required>
         </p>
         <p class="control">
             <button class="button is-warning" title="Search" v-bind:class="{'is-loading': incallback}" v-on:submit.prevent="handleSearch" v-on:submit="handleSearch" v-on:click="handleSearch">

@@ -37,23 +37,13 @@
                             else
                             {
                                 <a href="/manage/index" class="button is-warning" title="Manage Account">Manage Account</a>
+                                <a href="/manage/bookmarks" class="button is-light" title="Show bookmarks"><i class="fas fa-bookmark"></i></a>
                             }
                         }
                         else
                         {
                             <a class="button is-warning" href="/account/login" title="Log In to Follow">Log In to Follow</a>
                         }
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-light d-flex flex-column flex-wrap justify-content-center align-items-center rounded user-data-container width-75p margin-top-30px" v-if="giveaways.length > 0">
-                <h5 class="text-center">Giveaways</h5>
-                <div class="bg-light d-flex flex-row flex-wrap justify-content-center align-items-center">
-                    <div class="width-100px" v-for="giveaway in giveaways">
-                        <a class="btn btn-warning" v-bind:href="`/Giveaways/Details/${giveaway.$id}`" v-bind:title="giveaway.Name">
-                            <img class="width-100px" v-bind:src="`/data/giveaways/${giveaway.owner.userName}/${giveaway.avatar}`" v-bind:alt="giveaway.name" />
-                        </a>
                     </div>
                 </div>
             </div>
@@ -145,8 +135,8 @@
                             <button class="button is-light" v-on:click="showComments(post)" title="Comments" v-if="post.comments.length > 0">{{ post.comments.length }}</button>
                         </div>
                         <div>
-                            <button class="button is-white" title="Show metadata"><i class="fab fa-medapps"></i></button>
-                            <button class="button is-white bookmark-button" title="Save to bookmarks" v-if="currentAppUserName"><i class="far fa-bookmark"></i></button>
+                            <button class="button is-white" title="Show metadata" v-on:click="showMetadata(post)"><i class="fab fa-medapps"></i></button>
+                            <button class="button bookmark-button" v-bind:class="post.bookmarked?'is-light':'is-white'" title="Save to bookmarks" v-if="currentAppUserName" v-on:click="post.bookmarked?disbookmark(post):bookmark(post)"><i class="fa-bookmark" v-bind:class="post.bookmarked?'fas':'far'"></i></button>
                         </div>
                     </div>
                 </div>
@@ -220,6 +210,43 @@
                     <a class="button is-large is-white has-text-grey-darker" title="Copy link to Clipboard" v-on:click="copyToClipboard(current.$id)">Copy link to Clipboard</a>
                     <a class="button is-large is-white has-text-grey-darker" title="Go to photo" v-bind:href="`/photos/${current.$id}`">Go to photo</a>
                     <a class="button is-large is-white has-text-grey-darker" title="Close" v-on:click="closeOptions">Close</a>
+                </div>
+            </div>
+
+            <!-- Modal Metadata -->
+            <div class="modal" v-bind:class="{'is-active': modals.metadataActive}" v-if="posts.length > 0 && current">
+                <div class="modal-background modal-custom-background" v-on:click="closeMetadata"></div>
+                <div class="modal-card modal-card-custom modal-card-custom-metadata">
+                    <header class="modal-card-head">
+                        <p class="modal-card-title is-uppercase">metadata</p>
+                        <a class="close-button" v-on:click="closeMetadata" title="Close modal"><i class="fas fa-times"></i></a>
+                    </header>
+                    <section class="modal-card-body modal-card-body-metadata" style="overflow-x: hidden; overflow-y: auto;">
+                        <div>
+                            <p>Manufacturer</p>
+                            <p>{{current.manufacturer}}</p>
+                        </div>
+                        <div>
+                            <p>Model</p>
+                            <p>{{current.model}}</p>
+                        </div>
+                        <div>
+                            <p>ISO</p>
+                            <p>{{current.iso}}</p>
+                        </div>
+                        <div>
+                            <p>Exposure</p>
+                            <p>{{current.exposure}}</p>
+                        </div>
+                        <div>
+                            <p>Aperture</p>
+                            <p>{{current.aperture}}</p>
+                        </div>
+                        <div>
+                            <p>Filter</p>
+                            <p>{{current.filter}}</p>
+                        </div>
+                    </section>
                 </div>
             </div>
 

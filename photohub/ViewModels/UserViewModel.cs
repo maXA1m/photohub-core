@@ -5,6 +5,8 @@ namespace PhotoHub.WEB.ViewModels
 {
     public class UserViewModel
     {
+        [JsonProperty("realName")]
+        public string RealName { get; set; }
         [JsonProperty("userName")]
         public string UserName { get; set; }
         [JsonProperty("email")]

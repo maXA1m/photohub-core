@@ -42,6 +42,7 @@ namespace PhotoHub.DAL.Migrations
                     PasswordHash = table.Column<string>(nullable: true),
                     PhoneNumber = table.Column<string>(nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    RealName = table.Column<string>(nullable: true),
                     SecurityStamp = table.Column<string>(nullable: true),
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     UserName = table.Column<string>(maxLength: 256, nullable: true)
@@ -62,37 +63,6 @@ namespace PhotoHub.DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Filters", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Giveaways",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    About = table.Column<string>(nullable: true),
-                    Avatar = table.Column<string>(nullable: true),
-                    DateEnd = table.Column<DateTime>(nullable: false),
-                    DateStart = table.Column<DateTime>(nullable: false),
-                    Email = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Giveaways", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PhotoViews",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Count = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PhotoViews", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -280,122 +250,22 @@ namespace PhotoHub.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BlackListsGiveaway",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    BlockedGiveawayId = table.Column<int>(nullable: false),
-                    UserId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BlackListsGiveaway", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_BlackListsGiveaway_Giveaways_BlockedGiveawayId",
-                        column: x => x.BlockedGiveawayId,
-                        principalTable: "Giveaways",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BlackListsGiveaway_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "GiveawayOwners",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    GiveawayId = table.Column<int>(nullable: false),
-                    OwnerId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GiveawayOwners", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_GiveawayOwners_Giveaways_GiveawayId",
-                        column: x => x.GiveawayId,
-                        principalTable: "Giveaways",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_GiveawayOwners_AspNetUsers_OwnerId",
-                        column: x => x.OwnerId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Participants",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    GiveawayId = table.Column<int>(nullable: false),
-                    UserId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Participants", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Participants_Giveaways_GiveawayId",
-                        column: x => x.GiveawayId,
-                        principalTable: "Giveaways",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Participants_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Winners",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    GiveawayId = table.Column<int>(nullable: false),
-                    UserId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Winners", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Winners_Giveaways_GiveawayId",
-                        column: x => x.GiveawayId,
-                        principalTable: "Giveaways",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Winners_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Photos",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Aperture = table.Column<string>(nullable: true),
+                    CountViews = table.Column<int>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     Description = table.Column<string>(nullable: true),
+                    Exposure = table.Column<string>(nullable: true),
                     FilterId = table.Column<int>(nullable: false),
-                    GiveawayId = table.Column<int>(nullable: true),
+                    Iso = table.Column<string>(nullable: true),
+                    Manufacturer = table.Column<string>(nullable: true),
+                    Model = table.Column<string>(nullable: true),
                     OwnerId = table.Column<string>(nullable: true),
-                    Path = table.Column<string>(nullable: true),
-                    PhotoViewId = table.Column<int>(nullable: false)
+                    Path = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -407,23 +277,37 @@ namespace PhotoHub.DAL.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Photos_Giveaways_GiveawayId",
-                        column: x => x.GiveawayId,
-                        principalTable: "Giveaways",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Photos_AspNetUsers_OwnerId",
                         column: x => x.OwnerId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Bookmarks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    PhotoId = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bookmarks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Photos_PhotoViews_PhotoViewId",
-                        column: x => x.PhotoViewId,
-                        principalTable: "PhotoViews",
+                        name: "FK_Bookmarks_Photos_PhotoId",
+                        column: x => x.PhotoId,
+                        principalTable: "Photos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Bookmarks_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -531,13 +415,13 @@ namespace PhotoHub.DAL.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BlackListsGiveaway_BlockedGiveawayId",
-                table: "BlackListsGiveaway",
-                column: "BlockedGiveawayId");
+                name: "IX_Bookmarks_PhotoId",
+                table: "Bookmarks",
+                column: "PhotoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BlackListsGiveaway_UserId",
-                table: "BlackListsGiveaway",
+                name: "IX_Bookmarks_UserId",
+                table: "Bookmarks",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -571,16 +455,6 @@ namespace PhotoHub.DAL.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GiveawayOwners_GiveawayId",
-                table: "GiveawayOwners",
-                column: "GiveawayId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GiveawayOwners_OwnerId",
-                table: "GiveawayOwners",
-                column: "OwnerId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Likes_OwnerId",
                 table: "Likes",
                 column: "OwnerId");
@@ -591,44 +465,14 @@ namespace PhotoHub.DAL.Migrations
                 column: "PhotoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Participants_GiveawayId",
-                table: "Participants",
-                column: "GiveawayId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Participants_UserId",
-                table: "Participants",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Photos_FilterId",
                 table: "Photos",
                 column: "FilterId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Photos_GiveawayId",
-                table: "Photos",
-                column: "GiveawayId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Photos_OwnerId",
                 table: "Photos",
                 column: "OwnerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Photos_PhotoViewId",
-                table: "Photos",
-                column: "PhotoViewId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Winners_GiveawayId",
-                table: "Winners",
-                column: "GiveawayId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Winners_UserId",
-                table: "Winners",
-                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -652,7 +496,7 @@ namespace PhotoHub.DAL.Migrations
                 name: "BlackLists");
 
             migrationBuilder.DropTable(
-                name: "BlackListsGiveaway");
+                name: "Bookmarks");
 
             migrationBuilder.DropTable(
                 name: "Comments");
@@ -664,16 +508,7 @@ namespace PhotoHub.DAL.Migrations
                 name: "Followings");
 
             migrationBuilder.DropTable(
-                name: "GiveawayOwners");
-
-            migrationBuilder.DropTable(
                 name: "Likes");
-
-            migrationBuilder.DropTable(
-                name: "Participants");
-
-            migrationBuilder.DropTable(
-                name: "Winners");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -685,13 +520,7 @@ namespace PhotoHub.DAL.Migrations
                 name: "Filters");
 
             migrationBuilder.DropTable(
-                name: "Giveaways");
-
-            migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "PhotoViews");
         }
     }
 }

@@ -9,9 +9,10 @@ namespace PhotoHub.BLL.Interfaces
     public interface IUsersService : IDisposable, IReturnUser
     {
         IEnumerable<UserDTO> GetAll(int page, int pageSize);
-        Task<IEnumerable<UserDTO>> GetAllAsync(int page, int pageSize);
 
         UserDetailsDTO Get(string userName);
+
+        IEnumerable<UserDTO> GetBlocked(int page, int pageSize);
 
         IEnumerable<UserDTO> Search(int page, string search, int pageSize);
 
@@ -29,5 +30,8 @@ namespace PhotoHub.BLL.Interfaces
 
         ApplicationUser Create(string userName, string email, string password);
         Task<ApplicationUser> CreateAsync(string userName, string email, string password);
+
+        void Edit(string userName, string realName, string phoneNumber, string email, string about);
+        Task EditAsync(string userName, string realName, string phoneNumber, string email, string about);
     }
 }

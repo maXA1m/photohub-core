@@ -15,6 +15,11 @@ namespace PhotoHub.BLL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly UsersMapper _usersMapper;
+        private readonly FiltersMapper _filtersMapper;
+        private readonly PhotosMapper _photosMapper;
+        private readonly LikesMapper _likesMapper;
+        private readonly CommentsMapper _commentsMapper;
 
         public ApplicationUser CurrentUser => _unitOfWork.Users.Find(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name).FirstOrDefault();
         public UserDTO CurrentUserDTO
@@ -23,7 +28,7 @@ namespace PhotoHub.BLL.Services
             {
                 ApplicationUser user = CurrentUser;
 
-                return UserMapper.ToUserDTO(
+                return _usersMapper.Map(
                     user,
                     _unitOfWork.Confirmations.Find(c => c.UserId == user.Id).FirstOrDefault() != null,
                     _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id && f.UserId == user.Id).FirstOrDefault() != null,
@@ -33,12 +38,17 @@ namespace PhotoHub.BLL.Services
             }
         }
 
-        public List<FilterDTO> Filters => FilterMapper.ToFilterDTOs(_unitOfWork.Filters.GetAll(0, 14));
+        public List<FilterDTO> Filters => _filtersMapper.MapRange(_unitOfWork.Filters.GetAll(0, 14));
 
         public PhotosService(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
         {
             _unitOfWork = unitOfWork;
             _httpContextAccessor = httpContextAccessor;
+            _usersMapper = new UsersMapper();
+            _filtersMapper = new FiltersMapper();
+            _photosMapper = new PhotosMapper();
+            _commentsMapper = new CommentsMapper();
+            _likesMapper = new LikesMapper();
         }
 
         public IEnumerable<PhotoDTO> GetAll(int page, int pageSize)
@@ -55,8 +65,8 @@ namespace PhotoHub.BLL.Services
                     List<LikeDTO> likes = new List<LikeDTO>(photo.Likes.Count);
                     foreach (Like like in photo.Likes)
                     {
-                        likes.Add(LikeMapper.ToLikeDTO(like,
-                            UserMapper.ToUserDTO(
+                        likes.Add(_likesMapper.Map(like,
+                            _usersMapper.Map(
                                 like.Owner,
                                 _unitOfWork.Confirmations.Find(c => c.UserId == like.OwnerId).FirstOrDefault() != null,
                                 false, false, false
@@ -66,19 +76,20 @@ namespace PhotoHub.BLL.Services
                     List<CommentDTO> comments = new List<CommentDTO>(photo.Comments.Count);
                     foreach (Comment comment in photo.Comments)
                     {
-                        comments.Add(CommentMapper.ToCommentDTO(
+                        comments.Add(_commentsMapper.Map(
                             comment,
-                            UserMapper.ToUserDTO(
+                            _usersMapper.Map(
                                 comment.Owner,
                                 _unitOfWork.Confirmations.Find(c => c.UserId == comment.OwnerId).FirstOrDefault() != null,
                                 false, false, false
                         )));
                     }
 
-                    photoDTOs.Add(PhotoMapper.ToPhotoDTO(
+                    photoDTOs.Add(_photosMapper.Map(
                         photo,
                         false,
-                        UserMapper.ToUserDTO(
+                        false,
+                        _usersMapper.Map(
                             photo.Owner,
                             _unitOfWork.Confirmations.Find(c => c.UserId == photo.OwnerId).FirstOrDefault() != null,
                             false, false, false
@@ -94,8 +105,8 @@ namespace PhotoHub.BLL.Services
                     List<LikeDTO> likes = new List<LikeDTO>(photo.Likes.Count);
                     foreach (Like like in photo.Likes)
                     {
-                        likes.Add(LikeMapper.ToLikeDTO(like,
-                            UserMapper.ToUserDTO(
+                        likes.Add(_likesMapper.Map(like,
+                            _usersMapper.Map(
                                 like.Owner,
                                 _unitOfWork.Confirmations.Find(c => c.UserId == like.OwnerId).FirstOrDefault() != null,
                                 _unitOfWork.Followings.Find(f => f.FollowedUserId == like.OwnerId && f.UserId == currentUser.Id).FirstOrDefault() != null,
@@ -107,9 +118,9 @@ namespace PhotoHub.BLL.Services
                     List<CommentDTO> comments = new List<CommentDTO>(photo.Comments.Count);
                     foreach (Comment comment in photo.Comments)
                     {
-                        comments.Add(CommentMapper.ToCommentDTO(
+                        comments.Add(_commentsMapper.Map(
                             comment,
-                            UserMapper.ToUserDTO(
+                            _usersMapper.Map(
                                 comment.Owner,
                                 _unitOfWork.Confirmations.Find(c => c.UserId == comment.OwnerId).FirstOrDefault() != null,
                                 _unitOfWork.Followings.Find(f => f.FollowedUserId == comment.OwnerId && f.UserId == currentUser.Id).FirstOrDefault() != null,
@@ -118,104 +129,11 @@ namespace PhotoHub.BLL.Services
                         )));
                     }
 
-                    photoDTOs.Add(PhotoMapper.ToPhotoDTO(
+                    photoDTOs.Add(_photosMapper.Map(
                         photo,
                         _unitOfWork.Likes.Find(l => l.OwnerId == currentUser.Id && l.PhotoId == photo.Id).FirstOrDefault() != null,
-                        UserMapper.ToUserDTO(
-                            photo.Owner,
-                            _unitOfWork.Confirmations.Find(c => c.UserId == photo.OwnerId).FirstOrDefault() != null,
-                            _unitOfWork.Followings.Find(f => f.FollowedUserId == photo.OwnerId && f.UserId == currentUser.Id).FirstOrDefault() != null,
-                            _unitOfWork.Blockings.Find(b => b.BlockedUserId == photo.OwnerId && b.UserId == currentUser.Id).FirstOrDefault() != null,
-                                _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == currentUser.Id).FirstOrDefault() != null
-                        ),
-                        likes,
-                        comments));
-                }
-            }
-
-            return photoDTOs;
-        }
-        public async Task<IEnumerable<PhotoDTO>> GetAllAsync(int page, int pageSize)
-        {
-            ApplicationUser currentUser = CurrentUser;
-            IEnumerable<Photo> photos = await _unitOfWork.Photos.GetAllAsync(page, pageSize);
-
-            List<PhotoDTO> photoDTOs = new List<PhotoDTO>(pageSize);
-
-            if (currentUser == null)
-            {
-                foreach (Photo photo in photos)
-                {
-                    List<LikeDTO> likes = new List<LikeDTO>(photo.Likes.Count);
-                    foreach (Like like in photo.Likes)
-                    {
-                        likes.Add(LikeMapper.ToLikeDTO(like,
-                            UserMapper.ToUserDTO(
-                                like.Owner,
-                                _unitOfWork.Confirmations.Find(c => c.UserId == like.OwnerId).FirstOrDefault() != null,
-                                false, false, false
-                        )));
-                    }
-
-                    List<CommentDTO> comments = new List<CommentDTO>(photo.Comments.Count);
-                    foreach (Comment comment in photo.Comments)
-                    {
-                        comments.Add(CommentMapper.ToCommentDTO(
-                            comment,
-                            UserMapper.ToUserDTO(
-                                comment.Owner,
-                                _unitOfWork.Confirmations.Find(c => c.UserId == comment.OwnerId).FirstOrDefault() != null,
-                                false, false, false
-                        )));
-                    }
-
-                    photoDTOs.Add(PhotoMapper.ToPhotoDTO(
-                        photo,
-                        false,
-                        UserMapper.ToUserDTO(
-                            photo.Owner,
-                            _unitOfWork.Confirmations.Find(c => c.UserId == photo.OwnerId).FirstOrDefault() != null,
-                            false, false, false
-                        ),
-                        likes,
-                        comments));
-                }
-            }
-            else
-            {
-                foreach (Photo photo in photos)
-                {
-                    List<LikeDTO> likes = new List<LikeDTO>(photo.Likes.Count);
-                    foreach (Like like in photo.Likes)
-                    {
-                        likes.Add(LikeMapper.ToLikeDTO(like,
-                            UserMapper.ToUserDTO(
-                                like.Owner,
-                                _unitOfWork.Confirmations.Find(c => c.UserId == like.OwnerId).FirstOrDefault() != null,
-                                _unitOfWork.Followings.Find(f => f.FollowedUserId == like.OwnerId && f.UserId == currentUser.Id).FirstOrDefault() != null,
-                                _unitOfWork.Blockings.Find(b => b.BlockedUserId == like.OwnerId && b.UserId == currentUser.Id).FirstOrDefault() != null,
-                                _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == currentUser.Id).FirstOrDefault() != null
-                        )));
-                    }
-
-                    List<CommentDTO> comments = new List<CommentDTO>(photo.Comments.Count);
-                    foreach (Comment comment in photo.Comments)
-                    {
-                        comments.Add(CommentMapper.ToCommentDTO(
-                            comment,
-                            UserMapper.ToUserDTO(
-                                comment.Owner,
-                                _unitOfWork.Confirmations.Find(c => c.UserId == comment.OwnerId).FirstOrDefault() != null,
-                                _unitOfWork.Followings.Find(f => f.FollowedUserId == comment.OwnerId && f.UserId == currentUser.Id).FirstOrDefault() != null,
-                                _unitOfWork.Blockings.Find(b => b.BlockedUserId == comment.OwnerId && b.UserId == currentUser.Id).FirstOrDefault() != null,
-                                _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == currentUser.Id).FirstOrDefault() != null
-                        )));
-                    }
-
-                    photoDTOs.Add(PhotoMapper.ToPhotoDTO(
-                        photo,
-                        _unitOfWork.Likes.Find(l => l.OwnerId == currentUser.Id && l.PhotoId == photo.Id).FirstOrDefault() != null,
-                        UserMapper.ToUserDTO(
+                        _unitOfWork.Bookmarks.Find(b => b.UserId == currentUser.Id && b.PhotoId == photo.Id).FirstOrDefault() != null,
+                        _usersMapper.Map(
                             photo.Owner,
                             _unitOfWork.Confirmations.Find(c => c.UserId == photo.OwnerId).FirstOrDefault() != null,
                             _unitOfWork.Followings.Find(f => f.FollowedUserId == photo.OwnerId && f.UserId == currentUser.Id).FirstOrDefault() != null,
@@ -235,9 +153,8 @@ namespace PhotoHub.BLL.Services
             ApplicationUser currentUser = CurrentUser;
             Photo photo = _unitOfWork.Photos.Get(id);
 
-            PhotoView photoView = _unitOfWork.PhotoViews.Get(photo.PhotoViewId);
-            photoView.Count++;
-            _unitOfWork.PhotoViews.Update(photoView);
+            photo.CountViews++;
+            _unitOfWork.Photos.Update(photo);
             _unitOfWork.Save();
 
             if(currentUser == null)
@@ -245,8 +162,8 @@ namespace PhotoHub.BLL.Services
                 List<LikeDTO> likes = new List<LikeDTO>(photo.Likes.Count);
                 foreach (Like like in photo.Likes)
                 {
-                    likes.Add(LikeMapper.ToLikeDTO(like,
-                        UserMapper.ToUserDTO(
+                    likes.Add(_likesMapper.Map(like,
+                        _usersMapper.Map(
                             like.Owner,
                             _unitOfWork.Confirmations.Find(c => c.UserId == like.OwnerId).FirstOrDefault() != null,
                             false, false, false
@@ -256,19 +173,20 @@ namespace PhotoHub.BLL.Services
                 List<CommentDTO> comments = new List<CommentDTO>(photo.Comments.Count);
                 foreach (Comment comment in photo.Comments)
                 {
-                    comments.Add(CommentMapper.ToCommentDTO(
+                    comments.Add(_commentsMapper.Map(
                         comment,
-                        UserMapper.ToUserDTO(
+                        _usersMapper.Map(
                             comment.Owner,
                             _unitOfWork.Confirmations.Find(c => c.UserId == comment.OwnerId).FirstOrDefault() != null,
                             false, false, false
                     )));
                 }
 
-                return PhotoMapper.ToPhotoDTO(
+                return _photosMapper.Map(
                             photo,
                             false,
-                            UserMapper.ToUserDTO(
+                            false,
+                            _usersMapper.Map(
                                 photo.Owner,
                                 _unitOfWork.Confirmations.Find(c => c.UserId == photo.OwnerId).FirstOrDefault() != null,
                                 false, false, false
@@ -282,8 +200,8 @@ namespace PhotoHub.BLL.Services
                 List<LikeDTO> likes = new List<LikeDTO>(photo.Likes.Count);
                 foreach (Like like in photo.Likes)
                 {
-                    likes.Add(LikeMapper.ToLikeDTO(like,
-                        UserMapper.ToUserDTO(
+                    likes.Add(_likesMapper.Map(like,
+                        _usersMapper.Map(
                             like.Owner,
                             _unitOfWork.Confirmations.Find(c => c.UserId == like.OwnerId).FirstOrDefault() != null,
                             _unitOfWork.Followings.Find(f => f.FollowedUserId == like.OwnerId && f.UserId == currentUser.Id).FirstOrDefault() != null,
@@ -295,9 +213,9 @@ namespace PhotoHub.BLL.Services
                 List<CommentDTO> comments = new List<CommentDTO>(photo.Comments.Count);
                 foreach (Comment comment in photo.Comments)
                 {
-                    comments.Add(CommentMapper.ToCommentDTO(
+                    comments.Add(_commentsMapper.Map(
                         comment,
-                        UserMapper.ToUserDTO(
+                        _usersMapper.Map(
                             comment.Owner,
                             _unitOfWork.Confirmations.Find(c => c.UserId == comment.OwnerId).FirstOrDefault() != null,
                             _unitOfWork.Followings.Find(f => f.FollowedUserId == comment.OwnerId && f.UserId == currentUser.Id).FirstOrDefault() != null,
@@ -306,10 +224,11 @@ namespace PhotoHub.BLL.Services
                     )));
                 }
 
-                return PhotoMapper.ToPhotoDTO(
+                return _photosMapper.Map(
                             photo,
                             _unitOfWork.Likes.Find(l => l.OwnerId == currentUser.Id && l.PhotoId == photo.Id).FirstOrDefault() != null,
-                            UserMapper.ToUserDTO(
+                            _unitOfWork.Bookmarks.Find(b => b.UserId == currentUser.Id && b.PhotoId == photo.Id).FirstOrDefault() != null,
+                            _usersMapper.Map(
                                 photo.Owner,
                                 _unitOfWork.Confirmations.Find(c => c.UserId == photo.OwnerId).FirstOrDefault() != null,
                                 _unitOfWork.Followings.Find(f => f.FollowedUserId == photo.OwnerId && f.UserId == currentUser.Id).FirstOrDefault() != null,
@@ -326,18 +245,17 @@ namespace PhotoHub.BLL.Services
             ApplicationUser currentUser = CurrentUser;
             Photo photo =  await _unitOfWork.Photos.GetAsync(id);
 
-            PhotoView photoView = await _unitOfWork.PhotoViews.GetAsync(photo.PhotoViewId);
-            photoView.Count++;
-            _unitOfWork.PhotoViews.Update(photoView);
+            photo.CountViews++;
+            _unitOfWork.Photos.Update(photo);
             await _unitOfWork.SaveAsync();
 
-            if(currentUser == null)
+            if (currentUser == null)
             {
                 List<LikeDTO> likes = new List<LikeDTO>(photo.Likes.Count);
                 foreach (Like like in photo.Likes)
                 {
-                    likes.Add(LikeMapper.ToLikeDTO(like,
-                        UserMapper.ToUserDTO(
+                    likes.Add(_likesMapper.Map(like,
+                        _usersMapper.Map(
                             like.Owner,
                             _unitOfWork.Confirmations.Find(c => c.UserId == like.OwnerId).FirstOrDefault() != null,
                             false, false, false
@@ -347,19 +265,20 @@ namespace PhotoHub.BLL.Services
                 List<CommentDTO> comments = new List<CommentDTO>(photo.Comments.Count);
                 foreach (Comment comment in photo.Comments)
                 {
-                    comments.Add(CommentMapper.ToCommentDTO(
+                    comments.Add(_commentsMapper.Map(
                         comment,
-                        UserMapper.ToUserDTO(
+                        _usersMapper.Map(
                             comment.Owner,
                             _unitOfWork.Confirmations.Find(c => c.UserId == comment.OwnerId).FirstOrDefault() != null,
                             false, false, false
                     )));
                 }
 
-                return PhotoMapper.ToPhotoDTO(
+                return _photosMapper.Map(
                             photo,
                             false,
-                            UserMapper.ToUserDTO(
+                            false,
+                            _usersMapper.Map(
                                 photo.Owner,
                                 _unitOfWork.Confirmations.Find(c => c.UserId == photo.OwnerId).FirstOrDefault() != null,
                                 false, false, false
@@ -373,8 +292,8 @@ namespace PhotoHub.BLL.Services
                 List<LikeDTO> likes = new List<LikeDTO>(photo.Likes.Count);
                 foreach (Like like in photo.Likes)
                 {
-                    likes.Add(LikeMapper.ToLikeDTO(like,
-                        UserMapper.ToUserDTO(
+                    likes.Add(_likesMapper.Map(like,
+                        _usersMapper.Map(
                             like.Owner,
                             _unitOfWork.Confirmations.Find(c => c.UserId == like.OwnerId).FirstOrDefault() != null,
                             _unitOfWork.Followings.Find(f => f.FollowedUserId == like.OwnerId && f.UserId == currentUser.Id).FirstOrDefault() != null,
@@ -386,9 +305,9 @@ namespace PhotoHub.BLL.Services
                 List<CommentDTO> comments = new List<CommentDTO>(photo.Comments.Count);
                 foreach (Comment comment in photo.Comments)
                 {
-                    comments.Add(CommentMapper.ToCommentDTO(
+                    comments.Add(_commentsMapper.Map(
                         comment,
-                        UserMapper.ToUserDTO(
+                        _usersMapper.Map(
                             comment.Owner,
                             _unitOfWork.Confirmations.Find(c => c.UserId == comment.OwnerId).FirstOrDefault() != null,
                             _unitOfWork.Followings.Find(f => f.FollowedUserId == comment.OwnerId && f.UserId == currentUser.Id).FirstOrDefault() != null,
@@ -397,10 +316,11 @@ namespace PhotoHub.BLL.Services
                     )));
                 }
 
-                return PhotoMapper.ToPhotoDTO(
+                return _photosMapper.Map(
                             photo,
                             _unitOfWork.Likes.Find(l => l.OwnerId == currentUser.Id && l.PhotoId == photo.Id).FirstOrDefault() != null,
-                            UserMapper.ToUserDTO(
+                            _unitOfWork.Bookmarks.Find(b => b.UserId == currentUser.Id && b.PhotoId == photo.Id).FirstOrDefault() != null,
+                            _usersMapper.Map(
                                 photo.Owner,
                                 _unitOfWork.Confirmations.Find(c => c.UserId == photo.OwnerId).FirstOrDefault() != null,
                                 _unitOfWork.Followings.Find(f => f.FollowedUserId == photo.OwnerId && f.UserId == currentUser.Id).FirstOrDefault() != null,
@@ -420,8 +340,11 @@ namespace PhotoHub.BLL.Services
             List<Photo> photos = new List<Photo>();
 
             foreach (var follow in followings)
+            {
                 photos.AddRange(_unitOfWork.Photos.Find(p => p.OwnerId == follow.FollowedUserId));
+            }
 
+            photos.Skip(page * pageSize).Take(pageSize);
             photos.Sort((p, p2) => p2.Date.CompareTo(p.Date));
 
             List<PhotoDTO> photoDTOs = new List<PhotoDTO>(pageSize);
@@ -431,8 +354,8 @@ namespace PhotoHub.BLL.Services
                 List<LikeDTO> likes = new List<LikeDTO>(photo.Likes.Count);
                 foreach (Like like in photo.Likes)
                 {
-                    likes.Add(LikeMapper.ToLikeDTO(like,
-                        UserMapper.ToUserDTO(
+                    likes.Add(_likesMapper.Map(like,
+                        _usersMapper.Map(
                             like.Owner,
                             _unitOfWork.Confirmations.Find(c => c.UserId == like.OwnerId).FirstOrDefault() != null,
                             _unitOfWork.Followings.Find(f => f.FollowedUserId == like.OwnerId && f.UserId == currentUser.Id).FirstOrDefault() != null,
@@ -444,9 +367,9 @@ namespace PhotoHub.BLL.Services
                 List<CommentDTO> comments = new List<CommentDTO>(photo.Comments.Count);
                 foreach (Comment comment in photo.Comments)
                 {
-                    comments.Add(CommentMapper.ToCommentDTO(
+                    comments.Add(_commentsMapper.Map(
                         comment,
-                        UserMapper.ToUserDTO(
+                        _usersMapper.Map(
                             comment.Owner,
                             _unitOfWork.Confirmations.Find(c => c.UserId == comment.OwnerId).FirstOrDefault() != null,
                             _unitOfWork.Followings.Find(f => f.FollowedUserId == comment.OwnerId && f.UserId == currentUser.Id).FirstOrDefault() != null,
@@ -455,10 +378,11 @@ namespace PhotoHub.BLL.Services
                     )));
                 }
 
-                photoDTOs.Add(PhotoMapper.ToPhotoDTO(
+                photoDTOs.Add(_photosMapper.Map(
                     photo,
                     _unitOfWork.Likes.Find(l => l.OwnerId == currentUser.Id && l.PhotoId == photo.Id).FirstOrDefault() != null,
-                    UserMapper.ToUserDTO(
+                    _unitOfWork.Bookmarks.Find(b => b.UserId == currentUser.Id && b.PhotoId == photo.Id).FirstOrDefault() != null,
+                    _usersMapper.Map(
                         photo.Owner,
                         _unitOfWork.Confirmations.Find(c => c.UserId == photo.OwnerId).FirstOrDefault() != null,
                         _unitOfWork.Followings.Find(f => f.FollowedUserId == photo.OwnerId && f.UserId == currentUser.Id).FirstOrDefault() != null,
@@ -471,12 +395,13 @@ namespace PhotoHub.BLL.Services
 
             return photoDTOs;
         }
+
         public IEnumerable<PhotoDTO> GetForUser(int page, string userName, int pageSize)
         {
             ApplicationUser currentUser = CurrentUser;
             ApplicationUser user = _unitOfWork.Users.Find(u => u.UserName == userName).FirstOrDefault();
 
-            List<Photo> photos = _unitOfWork.Photos.Find(p => p.OwnerId == user.Id).Skip(page * pageSize).Take(pageSize).ToList();
+            IEnumerable<Photo> photos = _unitOfWork.Photos.Find(p => p.OwnerId == user.Id).Skip(page * pageSize).Take(pageSize);
 
             List<PhotoDTO> photoDTOs = new List<PhotoDTO>(pageSize);
 
@@ -487,8 +412,8 @@ namespace PhotoHub.BLL.Services
                     List<LikeDTO> likes = new List<LikeDTO>(photo.Likes.Count);
                     foreach (Like like in photo.Likes)
                     {
-                        likes.Add(LikeMapper.ToLikeDTO(like,
-                            UserMapper.ToUserDTO(
+                        likes.Add(_likesMapper.Map(like,
+                            _usersMapper.Map(
                                 like.Owner,
                                 _unitOfWork.Confirmations.Find(c => c.UserId == like.OwnerId).FirstOrDefault() != null,
                                 false, false, false
@@ -498,19 +423,20 @@ namespace PhotoHub.BLL.Services
                     List<CommentDTO> comments = new List<CommentDTO>(photo.Comments.Count);
                     foreach (Comment comment in photo.Comments)
                     {
-                        comments.Add(CommentMapper.ToCommentDTO(
+                        comments.Add(_commentsMapper.Map(
                             comment,
-                            UserMapper.ToUserDTO(
+                            _usersMapper.Map(
                                 comment.Owner,
                                 _unitOfWork.Confirmations.Find(c => c.UserId == comment.OwnerId).FirstOrDefault() != null,
                                 false, false, false
                         )));
                     }
 
-                    photoDTOs.Add(PhotoMapper.ToPhotoDTO(
+                    photoDTOs.Add(_photosMapper.Map(
                         photo,
                         false,
-                        UserMapper.ToUserDTO(
+                        false,
+                        _usersMapper.Map(
                             photo.Owner,
                             _unitOfWork.Confirmations.Find(c => c.UserId == photo.OwnerId).FirstOrDefault() != null,
                             false, false, false
@@ -526,8 +452,8 @@ namespace PhotoHub.BLL.Services
                     List<LikeDTO> likes = new List<LikeDTO>(photo.Likes.Count);
                     foreach (Like like in photo.Likes)
                     {
-                        likes.Add(LikeMapper.ToLikeDTO(like,
-                            UserMapper.ToUserDTO(
+                        likes.Add(_likesMapper.Map(like,
+                            _usersMapper.Map(
                                 like.Owner,
                                 _unitOfWork.Confirmations.Find(c => c.UserId == like.OwnerId).FirstOrDefault() != null,
                                 _unitOfWork.Followings.Find(f => f.FollowedUserId == like.OwnerId && f.UserId == currentUser.Id).FirstOrDefault() != null,
@@ -539,9 +465,9 @@ namespace PhotoHub.BLL.Services
                     List<CommentDTO> comments = new List<CommentDTO>(photo.Comments.Count);
                     foreach (Comment comment in photo.Comments)
                     {
-                        comments.Add(CommentMapper.ToCommentDTO(
+                        comments.Add(_commentsMapper.Map(
                             comment,
-                            UserMapper.ToUserDTO(
+                            _usersMapper.Map(
                                 comment.Owner,
                                 _unitOfWork.Confirmations.Find(c => c.UserId == comment.OwnerId).FirstOrDefault() != null,
                                 _unitOfWork.Followings.Find(f => f.FollowedUserId == comment.OwnerId && f.UserId == currentUser.Id).FirstOrDefault() != null,
@@ -550,10 +476,11 @@ namespace PhotoHub.BLL.Services
                         )));
                     }
 
-                    photoDTOs.Add(PhotoMapper.ToPhotoDTO(
+                    photoDTOs.Add(_photosMapper.Map(
                         photo,
                         _unitOfWork.Likes.Find(l => l.OwnerId == currentUser.Id && l.PhotoId == photo.Id).FirstOrDefault() != null,
-                        UserMapper.ToUserDTO(
+                        _unitOfWork.Bookmarks.Find(b => b.UserId == currentUser.Id && b.PhotoId == photo.Id).FirstOrDefault() != null,
+                        _usersMapper.Map(
                             photo.Owner,
                             _unitOfWork.Confirmations.Find(c => c.UserId == photo.OwnerId).FirstOrDefault() != null,
                             _unitOfWork.Followings.Find(f => f.FollowedUserId == photo.OwnerId && f.UserId == currentUser.Id).FirstOrDefault() != null,
@@ -567,10 +494,18 @@ namespace PhotoHub.BLL.Services
 
             return photoDTOs;
         }
-        public IEnumerable<PhotoDTO> GetForGiveaway(int page, int giveawayId, int pageSize)
+
+        public IEnumerable<PhotoDTO> GetBookmarks(int page, int pageSize)
         {
             ApplicationUser currentUser = CurrentUser;
-            List<Photo> photos = _unitOfWork.Photos.Find(p => p.GiveawayId == giveawayId).Skip(page * pageSize).Take(pageSize).ToList();
+            IEnumerable<Bookmark> bookmarks = _unitOfWork.Bookmarks.Find(b => b.UserId == currentUser.Id);
+            List<Photo> photos = new List<Photo>();
+
+            foreach (var bookmark in bookmarks)
+                photos.Add(bookmark.Photo);
+
+            photos.Skip(page * pageSize).Take(pageSize);
+            photos.Sort((p, p2) => p2.Date.CompareTo(p.Date));
 
             List<PhotoDTO> photoDTOs = new List<PhotoDTO>(pageSize);
 
@@ -579,8 +514,8 @@ namespace PhotoHub.BLL.Services
                 List<LikeDTO> likes = new List<LikeDTO>(photo.Likes.Count);
                 foreach (Like like in photo.Likes)
                 {
-                    likes.Add(LikeMapper.ToLikeDTO(like,
-                        UserMapper.ToUserDTO(
+                    likes.Add(_likesMapper.Map(like,
+                        _usersMapper.Map(
                             like.Owner,
                             _unitOfWork.Confirmations.Find(c => c.UserId == like.OwnerId).FirstOrDefault() != null,
                             _unitOfWork.Followings.Find(f => f.FollowedUserId == like.OwnerId && f.UserId == currentUser.Id).FirstOrDefault() != null,
@@ -592,9 +527,9 @@ namespace PhotoHub.BLL.Services
                 List<CommentDTO> comments = new List<CommentDTO>(photo.Comments.Count);
                 foreach (Comment comment in photo.Comments)
                 {
-                    comments.Add(CommentMapper.ToCommentDTO(
+                    comments.Add(_commentsMapper.Map(
                         comment,
-                        UserMapper.ToUserDTO(
+                        _usersMapper.Map(
                             comment.Owner,
                             _unitOfWork.Confirmations.Find(c => c.UserId == comment.OwnerId).FirstOrDefault() != null,
                             _unitOfWork.Followings.Find(f => f.FollowedUserId == comment.OwnerId && f.UserId == currentUser.Id).FirstOrDefault() != null,
@@ -603,10 +538,11 @@ namespace PhotoHub.BLL.Services
                     )));
                 }
 
-                photoDTOs.Add(PhotoMapper.ToPhotoDTO(
+                photoDTOs.Add(_photosMapper.Map(
                     photo,
                     _unitOfWork.Likes.Find(l => l.OwnerId == currentUser.Id && l.PhotoId == photo.Id).FirstOrDefault() != null,
-                    UserMapper.ToUserDTO(
+                    _unitOfWork.Bookmarks.Find(b => b.UserId == currentUser.Id && b.PhotoId == photo.Id).FirstOrDefault() != null,
+                    _usersMapper.Map(
                         photo.Owner,
                         _unitOfWork.Confirmations.Find(c => c.UserId == photo.OwnerId).FirstOrDefault() != null,
                         _unitOfWork.Followings.Find(f => f.FollowedUserId == photo.OwnerId && f.UserId == currentUser.Id).FirstOrDefault() != null,
@@ -620,96 +556,102 @@ namespace PhotoHub.BLL.Services
             return photoDTOs;
         }
 
-        public void RemoveFromGiveaway(int id)
+        public void Bookmark(int id)
         {
-            Photo photo = _unitOfWork.Photos.Get(id);
+            ApplicationUser currentUser = CurrentUser;
+            Photo bookmarkedPhoto = _unitOfWork.Photos.Find(p => p.Id == id).FirstOrDefault();
 
-            if (photo != null)
+            if (currentUser != null && bookmarkedPhoto != null && _unitOfWork.Bookmarks.Find(b => b.UserId == currentUser.Id && b.PhotoId == id).FirstOrDefault() == null)
             {
-                photo.GiveawayId = null;
-                _unitOfWork.Photos.Update(photo);
+                _unitOfWork.Bookmarks.Create(new Bookmark()
+                {
+                    UserId = currentUser.Id,
+                    PhotoId = bookmarkedPhoto.Id
+                });
 
                 _unitOfWork.Save();
             }
         }
-        public async Task RemoveFromGiveawayAsync(int id)
+        public async Task BookmarkAsync(int id)
         {
-            Photo photo = await _unitOfWork.Photos.GetAsync(id);
+            ApplicationUser currentUser = CurrentUser;
+            Photo bookmarkedPhoto = _unitOfWork.Photos.Find(p => p.Id == id).FirstOrDefault();
 
-            if(photo != null)
+            if (currentUser != null && bookmarkedPhoto != null && _unitOfWork.Bookmarks.Find(b => b.UserId == currentUser.Id && b.PhotoId == id).FirstOrDefault() == null)
             {
-                photo.GiveawayId = null;
-                _unitOfWork.Photos.Update(photo);
+                _unitOfWork.Bookmarks.Create(new Bookmark()
+                {
+                    UserId = currentUser.Id,
+                    PhotoId = bookmarkedPhoto.Id
+                });
 
                 await _unitOfWork.SaveAsync();
             }
         }
 
-        public void AddToGiveaway(int giveawayId, int id)
+        public void DismissBookmark(int id)
         {
-            Photo photo = _unitOfWork.Photos.Get(id);
-            Giveaway giveaway = _unitOfWork.Giveaways.Get(giveawayId);
+            ApplicationUser currentUser = CurrentUser;
+            Photo bookmarkedPhoto = _unitOfWork.Photos.Find(p => p.Id == id).FirstOrDefault();
+            Bookmark bookmark = _unitOfWork.Bookmarks.Find(b => b.UserId == currentUser.Id && b.PhotoId == id).FirstOrDefault();
 
-            if (photo != null && giveaway != null)
+            if (currentUser != null && bookmarkedPhoto != null && bookmark != null)
             {
-                photo.GiveawayId = giveaway.Id;
-                _unitOfWork.Photos.Update(photo);
-
+                _unitOfWork.Bookmarks.Delete(bookmark.Id);
                 _unitOfWork.Save();
             }
         }
-        public async Task AddToGiveawayAsync(int giveawayId, int id)
+        public async Task DismissBookmarkAsync(int id)
         {
-            Photo photo = await _unitOfWork.Photos.GetAsync(id);
-            Giveaway giveaway = await _unitOfWork.Giveaways.GetAsync(giveawayId);
+            ApplicationUser currentUser = CurrentUser;
+            Photo bookmarkedPhoto = _unitOfWork.Photos.Find(p => p.Id == id).FirstOrDefault();
+            Bookmark bookmark = _unitOfWork.Bookmarks.Find(b => b.UserId == currentUser.Id && b.PhotoId == id).FirstOrDefault();
 
-            if(photo != null && giveaway != null)
+            if (currentUser != null && bookmarkedPhoto != null && bookmark != null)
             {
-                photo.GiveawayId = giveaway.Id;
-                _unitOfWork.Photos.Update(photo);
-
+                await _unitOfWork.Bookmarks.DeleteAsync(bookmark.Id);
                 await _unitOfWork.SaveAsync();
             }
         }
 
-        public int Create(string filter, string description, string path)
+        public int Create(string filter, string description, string path, string manufacturer, string model, string iso, string exposure, string aperture)
         {
             Photo photo = new Photo()
             {
                 FilterId = _unitOfWork.Filters.Find(f => f.Name == filter).FirstOrDefault().Id,
                 Description = description,
                 Path = path,
-                OwnerId = CurrentUser.Id
+                OwnerId = CurrentUser.Id,
+                CountViews = 0,
+
+                Manufacturer = manufacturer,
+                Model = model,
+                Iso = iso,
+                Exposure = exposure,
+                Aperture = aperture
             };
-
-            PhotoView pv = new PhotoView() { Count = 0 };
-
-            _unitOfWork.PhotoViews.Create(pv);
-            _unitOfWork.Save();
-
-            photo.PhotoViewId = pv.Id;
 
             _unitOfWork.Photos.Create(photo);
             _unitOfWork.Save();
 
             return photo.Id;
         }
-        public async Task<int> CreateAsync(string filter, string description, string path)
+        public async ValueTask<int> CreateAsync(string filter, string description, string path, string manufacturer, string model, string iso, string exposure, string aperture)
         {
             Photo photo = new Photo()
             {
                 FilterId = _unitOfWork.Filters.Find(f => f.Name == filter).FirstOrDefault().Id,
                 Description = description,
                 Path = path,
-                OwnerId = CurrentUser.Id
+                OwnerId = CurrentUser.Id,
+                CountViews = 0,
+
+                Manufacturer = manufacturer,
+                Model = model,
+                Iso = iso,
+                Exposure = exposure,
+                Aperture = aperture
             };
-
-            PhotoView pv = new PhotoView() { Count = 0 };
-
-            await _unitOfWork.PhotoViews.CreateAsync(pv);
-            await _unitOfWork.SaveAsync();
-
-            photo.PhotoViewId = pv.Id;
 
             await _unitOfWork.Photos.CreateAsync(photo);
             await _unitOfWork.SaveAsync();
@@ -754,22 +696,22 @@ namespace PhotoHub.BLL.Services
         public void Delete(int id)
         {
             Photo photo = _unitOfWork.Photos.Get(id);
-            int pvId = photo.PhotoViewId;
 
-            _unitOfWork.Photos.Delete(photo.Id);
-            _unitOfWork.PhotoViews.Delete(pvId);
-
-            _unitOfWork.Save();
+            if(photo != null)
+            {
+                _unitOfWork.Photos.Delete(photo.Id);
+                _unitOfWork.Save();
+            }
         }
         public async Task DeleteAsync(int id)
         {
             Photo photo = await _unitOfWork.Photos.GetAsync(id);
-            int pvId = photo.PhotoViewId;
 
-            await _unitOfWork.Photos.DeleteAsync(photo.Id);
-            await _unitOfWork.PhotoViews.DeleteAsync(pvId);
-
-            await _unitOfWork.SaveAsync();
+            if(photo != null)
+            {
+                await _unitOfWork.Photos.DeleteAsync(photo.Id);
+                await _unitOfWork.SaveAsync();
+            }
         }
 
         public void Dispose()

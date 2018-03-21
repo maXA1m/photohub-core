@@ -9,7 +9,7 @@ namespace PhotoHub.DAL.Entities
 {
     public class ApplicationUser : IdentityUser
     {
-        //public string RealName { get; set; }
+        public string RealName { get; set; }
         public string Avatar { get; set; }
         public string About { get; set; }
         public DateTime Date { get; set; }

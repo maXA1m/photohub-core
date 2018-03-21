@@ -6,14 +6,8 @@
 
         posts: null,
         user: null,
-        giveaways: null,
 
         postsFetch: {
-            page: 0,
-            incallback: false,
-            loaded: false,
-        },
-        giveawaysFetch: {
             page: 0,
             incallback: false,
             loaded: false,
@@ -29,6 +23,7 @@
             likeActive: false,
             commentActive: false,
             optionActive: false,
+            metadataActive: false,
 
             followings: false,
             followers: false
@@ -36,39 +31,12 @@
     },
     created() {
         this.fetchUser();
-        this.fetchGiveaways();
         this.fetchPhotos();
     },
     mounted() {
         window.addEventListener('scroll', this.autoFetchPhotos);
     },
     methods: {
-        fetchGiveaways() {
-            if (!this.giveawaysFetch.incallback && this.giveawaysFetch.page > -1) {
-
-                this.giveawaysFetch.incallback = true;
-
-                this.$http.get(`/api/giveaways/${this.detailsUserName}/${this.giveawaysFetch.page}`).then(response => response.json()).then(json => {
-
-                    if (this.giveaways == null)
-                        this.giveaways = json;
-                    else if (json.length == 0)
-                        this.giveawaysFetch.loaded = true;
-                    else {
-                        for (let giveaway in json)
-                            this.giveaways.push(json[giveaway]);
-                    }
-                    
-                    this.giveawaysFetch.incallback = false;
-                    this.giveawaysFetch.page++;
-                },
-                error => {
-                    this.giveawaysFetch.incallback = false;
-                    this.message.text = 'error while fetching photos';
-                    this.message.status = 'error';
-                });
-            }
-        },
         fetchUser() {
             this.$http.get(`/api/users/details/${this.detailsUserName}`).then(response => response.json()).then(json => {
                 this.user = json;
@@ -308,6 +276,41 @@
             }
         },
 
+        bookmark(post) {
+            if (!this.currentAppUserName)
+                return -1;
+
+            if (!post.bookmarked) {
+                post.bookmarked = true;
+
+                this.$http.post(`/api/photos/bookmark/${post.$id}`).then(response => {
+
+                }, response => {
+                    this.message.text = 'error while bookmarking';
+                    this.message.status = 'error';
+
+                    post.bookmarked = false;
+                });
+            }
+        },
+        disbookmark(post) {
+            if (!this.currentAppUserName)
+                return -1;
+
+            if (post.bookmarked) {
+                post.bookmarked = false;
+
+                this.$http.post(`/api/photos/dismiss/bookmark/${post.$id}`).then(response => {
+
+                }, response => {
+                    this.message.text = 'error while dismising bookmark';
+                    this.message.status = 'error';
+
+                    post.bookmarked = true;
+                });
+            }
+        },
+
         showFollowings() {
             this.modals.followings = true;
         },
@@ -333,6 +336,11 @@
             this.modals.optionActive = true;
             this.current = post;
         },
+        showMetadata(post) {
+            this.modals.metadataActive = true;
+            this.current = post;
+        },
+
         closeLikes() {
             this.modals.likeActive = false;
         },
@@ -341,6 +349,9 @@
         },
         closeOptions() {
             this.modals.optionActive = false;
+        },
+        closeMetadata() {
+            this.modals.metadataActive = false;
         },
 
         getCurrentDate() {

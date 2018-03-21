@@ -23,10 +23,6 @@ namespace PhotoHub.DAL.Repositories
         {
             return _context.Filters.Skip(page * pageSize).Take(pageSize);
         }
-        public async Task<IEnumerable<Filter>> GetAllAsync(int page, int pageSize)
-        {
-            return await _context.Filters.Skip(page * pageSize).Take(pageSize).ToListAsync();
-        }
 
         public IEnumerable<Filter> Find(Func<Filter, bool> predicate)
         {

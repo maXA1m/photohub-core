@@ -12,6 +12,8 @@ namespace PhotoHub.WEB.Controllers.Api
     public class UsersController : Controller
     {
         private readonly IUsersService _usersService;
+        private readonly UsersDetailsMapper _usersDetailsMapper;
+        private readonly UsersMapper _usersMapper;
 
         private const int _getAllPageSize = 8;
         private const int _getSearchPageSize = 12;
@@ -19,24 +21,33 @@ namespace PhotoHub.WEB.Controllers.Api
         public UsersController(IUsersService usersService)
         {
             _usersService = usersService;
+            _usersDetailsMapper = new UsersDetailsMapper();
+            _usersMapper = new UsersMapper();
         }
 
         [HttpGet, Route("{page}")]
-        public async Task<IEnumerable<UserViewModel>> GetAll(int page)
+        public IEnumerable<UserViewModel> GetAll(int page)
         {
-            return UserDTOMapper.ToUserViewModels(await _usersService.GetAllAsync(page, _getAllPageSize));
+            return _usersMapper.MapRange(_usersService.GetAll(page, _getAllPageSize));
         }
         
         [HttpGet, Route("details/{userName}")]
         public UserDetailsViewModel Get(string userName)
         {
-            return UserDTOMapper.ToUserDetailsViewModel(_usersService.Get(userName));
+            return _usersDetailsMapper.Map(_usersService.Get(userName));
         }
-        
+
+
+        [HttpGet, Route("blocklist/{page}")]
+        public IEnumerable<UserViewModel> GetBlacklist(int page)
+        {
+            return _usersMapper.MapRange(_usersService.GetBlocked(page, _getSearchPageSize));
+        }
+
         [HttpGet, Route("search")]
         public IEnumerable<UserViewModel> Search(int page, string search)
         {
-            return UserDTOMapper.ToUserViewModels(_usersService.Search(page, search, _getSearchPageSize));
+            return _usersMapper.MapRange(_usersService.Search(page, search, _getSearchPageSize));
         }
         
         [Authorize, HttpPost, Route("follow/{follow}")]

@@ -8,16 +8,19 @@ namespace PhotoHub.DAL.Entities
         public string Path { get; set; }
         public string Description { get; set; }
         public DateTime Date { get; set; }
-        public int? GiveawayId { get; set; }
+        public int CountViews { get; set; }
+
+        public string Manufacturer { get; set; }
+        public string Model { get; set; }
+        public string Iso { get; set; }
+        public string Exposure { get; set; }
+        public string Aperture { get; set; }
 
         public string OwnerId { get; set; }
         public ApplicationUser Owner { get; set; }
 
         public int FilterId { get; set; }
         public Filter Filter { get; set; }
-
-        public int PhotoViewId { get; set; }
-        public PhotoView PhotoView { get; set; }
         
         public ICollection<Like> Likes { get; set; }
         public ICollection<Comment> Comments { get; set; }
@@ -26,8 +29,7 @@ namespace PhotoHub.DAL.Entities
         {
             FilterId = 1;
             Date = DateTime.Now;
-
-            GiveawayId = null;
+            CountViews = 0;
         }
     }
 }

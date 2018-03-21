@@ -23,10 +23,6 @@ namespace PhotoHub.DAL.Repositories
         {
             return _context.Comments.Include(c => c.Owner).Skip(page * pageSize).Take(pageSize);
         }
-        public async Task<IEnumerable<Comment>> GetAllAsync(int page, int pageSize)
-        {
-            return await _context.Comments.Include(c => c.Owner).Skip(page * pageSize).Take(pageSize).ToListAsync();
-        }
 
         public IEnumerable<Comment> Find(Func<Comment, bool> predicate)
         {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+
 using PhotoHub.DAL.Entities;
 
 namespace PhotoHub.DAL.Data
@@ -31,6 +32,7 @@ namespace PhotoHub.DAL.Data
         {
             new ApplicationUser()
             {
+                RealName = "Max Mironenko",
                 UserName = "Max_Mironenko",
                 Email = "Max.Mironenko3@gmail.com",
                 Avatar = "user1.jpg",
@@ -38,6 +40,7 @@ namespace PhotoHub.DAL.Data
             },
             new ApplicationUser()
             {
+                RealName = "Bogdan Kashuk",
                 UserName = "Bogdan_Kashuk",
                 Email = "Bogdan.Kashuk@gmail.com",
                 Avatar = "user2.jpg",
@@ -45,6 +48,7 @@ namespace PhotoHub.DAL.Data
             },
             new ApplicationUser()
             {
+                RealName = "Den Natalin",
                 UserName = "Den_Natalin",
                 Email = "Den.Natalin@gmail.com",
                 Avatar = "user3.jpg",
@@ -52,6 +56,7 @@ namespace PhotoHub.DAL.Data
             },
             new ApplicationUser()
             {
+                RealName = "Dima Nabereznii",
                 UserName = "Dima_Nabereznii",
                 Email = "Dima.Nabereznii@gmail.com",
                 Avatar = "user4.png",
@@ -59,6 +64,7 @@ namespace PhotoHub.DAL.Data
             },
             new ApplicationUser()
             {
+                RealName = "Nick Gupal",
                 UserName = "Nick_Gupal",
                 Email = "Nick.Gupal@gmail.com",
                 Avatar = "user5.jpg",
@@ -66,6 +72,7 @@ namespace PhotoHub.DAL.Data
             },
             new ApplicationUser()
             {
+                RealName = "Jeka Karpiv",
                 UserName = "Jeka_Karpiv",
                 Email = "Jeka.Karpiv@gmail.com",
                 Avatar = "user6.jpg",
@@ -74,12 +81,12 @@ namespace PhotoHub.DAL.Data
         };
         List<Photo> _photos = new List<Photo>(6)
         {
-            new Photo { Path = "example1.jpg", FilterId = 7, Description = "First example", PhotoViewId = 1 },
-            new Photo { Path = "example2.jpg", FilterId = 1, Description = "Second example", PhotoViewId = 2 },
-            new Photo { Path = "example3.jpg", FilterId = 8, Description = "Third example", PhotoViewId = 3 },
-            new Photo { Path = "example4.jpg", FilterId = 2, Description = "Fourth example", PhotoViewId = 4 },
-            new Photo { Path = "example5.jpg", FilterId = 9, Description = "Fifth example", PhotoViewId = 5 },
-            new Photo { Path = "example1.jpg", FilterId = 11, Description = "Sixth example", PhotoViewId = 6 }
+            new Photo { Path = "example1.jpg", FilterId = 7, Description = "First example" },
+            new Photo { Path = "example2.jpg", FilterId = 1, Description = "Second example" },
+            new Photo { Path = "example3.jpg", FilterId = 8, Description = "Third example" },
+            new Photo { Path = "example4.jpg", FilterId = 2, Description = "Fourth example" },
+            new Photo { Path = "example5.jpg", FilterId = 9, Description = "Fifth example" },
+            new Photo { Path = "example1.jpg", FilterId = 11, Description = "Sixth example" }
         };
 
         public ApplicationDbContextSeeder(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
@@ -95,10 +102,6 @@ namespace PhotoHub.DAL.Data
             
             foreach (ApplicationUser u in _users)
                 await _userManager.CreateAsync(u, "somehash123A");
-            await _context.SaveChangesAsync();
-
-            for (int i = 0; i < 6; i++)
-                _context.PhotoViews.Add(new PhotoView() { Count = 0 });
             await _context.SaveChangesAsync();
 
             for (int i = 0; i < 6; i++)

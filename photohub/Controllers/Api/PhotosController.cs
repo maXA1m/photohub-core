@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PhotoHub.BLL.Interfaces;
 using PhotoHub.WEB.Mappers;
@@ -11,6 +12,7 @@ namespace PhotoHub.WEB.Controllers.Api
     public class PhotosController : Controller
     {
         private readonly IPhotosService _photosService;
+        private readonly PhotosMapper _photosMapper;
 
         private const int _getAllPageSize = 8;
         private const int _getHomePageSize = 8;
@@ -20,48 +22,49 @@ namespace PhotoHub.WEB.Controllers.Api
         public PhotosController(IPhotosService photosService)
         {
             _photosService = photosService;
+            _photosMapper = new PhotosMapper();
         }
 
         [HttpGet, Route("{page}")]
-        public async Task<List<PhotoViewModel>> GetAll(int page)
+        public IEnumerable<PhotoViewModel> GetAll(int page)
         {
-            return PhotoDTOMapper.ToPhotoViewModels(await _photosService.GetAllAsync(page, _getAllPageSize));
+            return _photosMapper.MapRange(_photosService.GetAll(page, _getAllPageSize));
         }
         
         [HttpGet, Route("details/{id}")]
         public async Task<PhotoViewModel> Get(int id)
         {
-            return PhotoDTOMapper.ToPhotoViewModel(await _photosService.GetAsync(id));
+            return _photosMapper.Map(await _photosService.GetAsync(id));
         }
         
         [HttpGet, Route("home/{page}")]
-        public List<PhotoViewModel> GetPhotosHome(int page)
+        public IEnumerable<PhotoViewModel> GetPhotosHome(int page)
         {
-            return PhotoDTOMapper.ToPhotoViewModels(_photosService.GetPhotosHome(page, _getHomePageSize));
+            return _photosMapper.MapRange(_photosService.GetPhotosHome(page, _getHomePageSize));
         }
         
         [HttpGet, Route("user/{userName}/{page}")]
-        public List<PhotoViewModel> GetForUser(int page, string userName)
+        public IEnumerable<PhotoViewModel> GetForUser(int page, string userName)
         {
-            return PhotoDTOMapper.ToPhotoViewModels(_photosService.GetForUser(page, userName, _getForUserPageSize));
-        }
-        
-        [HttpGet, Route("{giveawayId}/{page}")]
-        public List<PhotoViewModel> GetForGiveaway(int page, int giveawayId)
-        {
-            return PhotoDTOMapper.ToPhotoViewModels(_photosService.GetForGiveaway(page, giveawayId, _getForGiveawayPageSize));
-        }
-        
-        [HttpPost, Route("remove/giveaway/{id}")]
-        public async Task RemoveFromGiveaway(int id)
-        {
-            await _photosService.RemoveFromGiveawayAsync(id);
+            return _photosMapper.MapRange(_photosService.GetForUser(page, userName, _getForUserPageSize));
         }
 
-        [HttpPost, Route("add/{giveawayId}/{id}")]
-        public async Task AddToGiveaway(int giveawayId, int id)
+        [HttpGet, Route("bookmarks/{page}")]
+        public IEnumerable<PhotoViewModel> GetBookmarks(int page)
         {
-            await _photosService.AddToGiveawayAsync(giveawayId, id);
+            return _photosMapper.MapRange(_photosService.GetBookmarks(page, _getForUserPageSize));
+        }
+
+        [Authorize, HttpPost, Route("bookmark/{id}")]
+        public async Task Bookmark(int id)
+        {
+            await _photosService.BookmarkAsync(id);
+        }
+
+        [Authorize, HttpPost, Route("dismiss/bookmark/{id}")]
+        public async Task DismissBookmark(int id)
+        {
+            await _photosService.DismissBookmarkAsync(id);
         }
 
         protected override void Dispose(bool disposing)

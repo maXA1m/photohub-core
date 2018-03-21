@@ -10,15 +10,10 @@ namespace PhotoHub.DAL.Data
         public DbSet<Like> Likes { get; set; }
         public DbSet<BlackList> BlackLists { get; set; }
         public DbSet<Following> Followings { get; set; }
-        public DbSet<PhotoView> PhotoViews { get; set; }
+        public DbSet<Bookmark> Bookmarks { get; set; }
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Filter> Filters { get; set; }
         public DbSet<Confirmed> Confirmed { get; set; }
-        public DbSet<Giveaway> Giveaways { get; set; }
-        public DbSet<GiveawayOwner> GiveawayOwners { get; set; }
-        public DbSet<Winner> Winners { get; set; }
-        public DbSet<Participant> Participants { get; set; }
-        public DbSet<BlackListGiveaway> BlackListsGiveaway { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

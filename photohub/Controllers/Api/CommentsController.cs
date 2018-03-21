@@ -12,8 +12,6 @@ namespace PhotoHub.WEB.Controllers.Api
     {
         private readonly ICommentsService _commentsService;
 
-
-
         public CommentsController(ICommentsService commentsService)
         {
             _commentsService = commentsService;
