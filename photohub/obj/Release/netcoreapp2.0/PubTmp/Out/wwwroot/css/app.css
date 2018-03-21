@@ -14,12 +14,22 @@
 body,
 html {
     padding-top: 40px;
-    min-height: 100vh;
 }
 
 /*  Custom styles for modal  */
-.modal-custom-background {
+.modal-custom-background,
+.modal-options-background {
     background: rgba(0, 0, 0, .85) !important;
+}
+
+.modal-options-content-custom a,
+.modal-options-content-custom button {
+    margin-bottom: 5px;
+    width: 270px !important;
+} 
+
+.modal-options-content-custom form {
+    width: 270px !important;
 }
 
 .modal-card-custom {
@@ -50,7 +60,7 @@ html {
 @media (max-width: 768px) {
     .modal-card-custom {
         border-radius: 0 !important;
-        height: 95vh !important;
+        height: 90vh !important;
         width: 100vw !important;
         margin: 0 !important;
     }
@@ -58,6 +68,39 @@ html {
     .modal-card-custom .modal-card-head,
     .modal-card-custom .modal-card-foot {
         border-radius: 0 !important;
+    }
+
+    /*  Modal option background styles  */
+    .modal-custom-background,
+    .modal-options-background {
+        background: rgba(0, 0, 0, .65) !important;
+    }
+
+    /*  Modal option mobile styles  */
+    .modal-options-content-custom {
+        position: absolute;
+        bottom: 0;
+        width: 100vw !important;
+    }
+
+    .modal-options-content-custom a {
+        padding-top: 30px !important;
+        padding-bottom: 30px !important;
+        border-radius: 0 !important;
+        margin-bottom: 0 !important;
+        width: 100vw !important;
+    }
+    
+    .modal-options-content-custom button {
+        padding-top: 9px !important;
+        padding-bottom: 9px !important;
+        border-radius: 0 !important;
+        margin-bottom: 0 !important;
+        width: 100vw !important;
+    }
+
+    .modal-options-content-custom form {
+        width: 100vw !important;
     }
 
     #primary-container {
@@ -76,8 +119,34 @@ html {
     transition: all ease .3s;
 }
 
+/*  Responsive width 100% of screen  */
+.is-responsive {
+    width: 35vw !important;
+}
+
+/*  Styles for image inside photo card  */
+.is-card-image,
+.is-card-image img {
+    height: 100% !important;
+    width: 100% !important;
+}
+
+/*
 .card:hover {
     box-shadow: 0 0 50px 0 rgba(0, 0, 0, .27);
+}
+*/
+
+.card-button-panel {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+.comment-button,
+.bookmark-button {
+    margin-left: 10px !important;
 }
 
 @media (max-width: 768px) {
@@ -86,6 +155,11 @@ html {
         border-bottom: 1px solid #ddd;
         border-top: 1px solid #ddd;
         border-radius: 0 !important;
+    }
+
+    /*  Responsive width 40% of screen  */
+    .is-responsive {
+        width: 100vw !important;
     }
 }
 
@@ -145,13 +219,6 @@ html {
     width: 100%;
 }
 
-/*  Styles for image inside photo card  */
-.is-card-image,
-.is-card-image img {
-    height: 100% !important;
-    width: 100% !important;
-}
-
 /*  Make 3 dots in end of too long text  */
 .is-doted-end {
     text-overflow: ellipsis;
@@ -162,19 +229,6 @@ html {
 /*  Make element circle  */
 .is-circle {
     border-radius: 50%;
-}
-
-/*  Responsive width 100% of screen  */
-.is-responsive {
-    width: 100vw !important;
-}
-
-/*  Minimal width is HD  */
-@media screen and (min-width: 1280px) {
-    /*  Responsive width 40% of screen  */
-    .is-responsive {
-        width: 40vw !important;
-    }
 }
 
 /*  Add 10px margin to element  */
@@ -342,10 +396,6 @@ input[name="Filter"]:checked + label figure{
     color: #333;
 }
 
-.comment-button {
-    margin-left: 10px !important;
-}
-
 /*  Styles for footer  */
 #footer {
     padding: 30px 0 30px 0;
@@ -356,10 +406,28 @@ input[name="Filter"]:checked + label figure{
     text-align: center !important;
 }
 
+
+/*  Adaptive styles for form  */
+form.adaptive-form {
+    width: 100% !important;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+}
+
+form.adaptive-form div.field {
+    width: 40% !important;
+}
+
 @media (max-width: 768px) {
-    /*  Add paddings for form on mobile  */
     form.adaptive-form {
         padding-right: 3vw !important;
         padding-left: 3vw !important;
+    }
+
+    form.adaptive-form div.field {
+        width: 100% !important;
     }
 }

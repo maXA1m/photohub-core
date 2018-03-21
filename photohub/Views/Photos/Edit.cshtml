@@ -50,9 +50,16 @@
                 <input class="input" type="text" placeholder="Description" name="Description" id="Description" value="@Model.Description">
             </div>
 
-            <div class="content">
-                <a class="button is-danger" title="Dislike"><i class="fas fa-heart"></i></a>
-                <a class="button button is-danger is-unselectable">@ViewBag.LikesCount</a>
+            <div class="content card-button-panel">
+                <div>
+                    <button class="button is-danger is-unselectable" title="Dislike"><i class="fas fa-heart"></i></button>
+                    <a class="button button is-danger is-unselectable">@ViewBag.LikesCount</a>
+                    <button class="button is-light comment-button" title="Comments"><i class="fas fa-comment"></i></button>
+                </div>
+                <div>
+                    <button class="button is-white" title="Show metadata"><i class="fab fa-medapps"></i></button>
+                    <button class="button is-white bookmark-button" title="Save to bookmarks"><i class="far fa-bookmark"></i></button>
+                </div>
             </div>
         </div>
 

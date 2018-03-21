@@ -4,7 +4,9 @@ namespace PhotoHub.WEB.ViewModels.Manage
 {
     public class IndexViewModel
     {
-        [Required]
+        //[Display(Name = "Real name")]
+        //public string RealName { get; set; }
+
         public string Username { get; set; }
 
         public string About { get; set; }

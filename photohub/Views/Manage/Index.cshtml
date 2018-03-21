@@ -5,14 +5,23 @@
 }
 
 <form method="post" class="adaptive-form">
-    <div asp-validation-summary="All" class="has-text-danger"></div>
+    <div class="field">
+        <div asp-validation-summary="All" class="has-text-danger"></div>
+    </div>
 
     <div class="field">
         <label asp-for="Username" class="label"></label>
         <div class="control">
-            <input asp-for="Username" class="input" />
+            <input asp-for="Username" class="input" disabled />
         </div>
     </div>
+
+    @*<div class="field">
+        <label asp-for="RealName" class="label"></label>
+        <div class="control">
+            <input asp-for="RealName" class="input" />
+        </div>
+    </div>*@
 
     <div class="field">
         <label asp-for="About" class="label"></label>
@@ -24,7 +33,7 @@
     <div class="field">
         <label asp-for="Email" class="label"></label>
         <div class="control">
-            <input asp-for="Email" class="input" />
+            <input asp-for="Email" class="input" required />
         </div>
         @if (Model.IsEmailConfirmed)
         {

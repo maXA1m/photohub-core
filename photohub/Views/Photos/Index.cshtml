@@ -43,11 +43,17 @@
                 </div>
             </div>
 
-            <div class="content">
-                <button class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-on:click="post.liked?dislike(post):like(post)" v-bind:title="post.liked?'Dislike':'Like'" v-if="currentAppUserName"><i class="fa-heart" v-bind:class="post.liked?'fas':'far'"></i></button>
-                <button v-if="post.likes.length > 0" class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-on:click="showLikes(post)" title="Likes list">{{ post.likes.length }}</button>
-                <button class="button is-light comment-button" v-on:click="showComments(post)" title="Comments"><i class="fas fa-comment"></i></button>
-                <button class="button is-light" v-on:click="showComments(post)" title="Comments" v-if="post.comments.length > 0">{{ post.comments.length }}</button>
+            <div class="content card-button-panel">
+                <div>
+                    <button class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-on:click="post.liked?dislike(post):like(post)" v-bind:title="post.liked?'Dislike':'Like'" v-if="currentAppUserName"><i class="fa-heart" v-bind:class="post.liked?'fas':'far'"></i></button>
+                    <button v-if="post.likes.length > 0" class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-on:click="showLikes(post)" title="Likes list">{{ post.likes.length }}</button>
+                    <button class="button is-light comment-button" v-on:click="showComments(post)" title="Comments"><i class="fas fa-comment"></i></button>
+                    <button class="button is-light" v-on:click="showComments(post)" title="Comments" v-if="post.comments.length > 0">{{ post.comments.length }}</button>
+                </div>
+                <div>
+                    <button class="button is-white" title="Show metadata"><i class="fab fa-medapps"></i></button>
+                    <button class="button is-white bookmark-button" title="Save to bookmarks" v-if="currentAppUserName"><i class="far fa-bookmark"></i></button>
+                </div>
             </div>
         </div>
     </div>    
@@ -115,10 +121,10 @@
     
     <!-- Modal Options -->
     <div class="modal" v-bind:class="{'is-active': modals.optionActive}" v-if="current">
-        <div class="modal-background modal-custom-background" v-on:click="closeOptions"></div>
-        <div class="content is-flex is-flex-column">
-            <a class="button is-large is-white has-text-grey-darker" title="Copy link to Clipboard" v-on:click="copyToClipboard(current.$id)" style="margin-bottom: 5px;">Copy link to Clipboard</a>
-            <a class="button is-large is-white has-text-grey-darker" title="Go to photo" v-bind:href="`/photos/${current.$id}`" style="margin-bottom: 5px;">Go to photo</a>
+        <div class="modal-background modal-options-background" v-on:click="closeOptions"></div>
+        <div class="content is-flex is-flex-column modal-options-content-custom">
+            <a class="button is-large is-white has-text-grey-darker" title="Copy link to Clipboard" v-on:click="copyToClipboard(current.$id)">Copy link to Clipboard</a>
+            <a class="button is-large is-white has-text-grey-darker" title="Go to photo" v-bind:href="`/photos/${current.$id}`">Go to photo</a>
             <a class="button is-large is-white has-text-grey-darker" title="Close" v-on:click="closeOptions">Close</a>
         </div>
     </div>   

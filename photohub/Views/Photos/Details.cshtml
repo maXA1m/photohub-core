@@ -1,7 +1,7 @@
 ﻿@model PhotoHub.WEB.ViewModels.PhotoViewModel
 
 @{
-    ViewBag.Title = "Photo #" + Model.Id;
+    ViewBag.Title = "Photo";
     ViewBag.Keywords = "Photo #" + Model.Id + ",Like,User,Post,Photo,Filter,Comment,Comments,Edit photo";
     ViewBag.Description = Model.Description;
 }
@@ -47,12 +47,21 @@
                     </div>
                 </div>
 
-                <div class="content">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <button class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-on:click="post.liked?dislike():like()" v-bind:title="post.liked?'Dislike':'Like'" v-if="currentAppUserName"><i class="fa-heart" v-bind:class="post.liked?'fas':'far'"></i></button>
-                    }
-                    <button v-if="post.likes.length > 0" class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-on:click="modalLikes()" title="Likes list">{{ post.likes.length }}</button>
+                <div class="content card-button-panel">
+                    <div>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <button class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-on:click="post.liked?dislike():like()" v-bind:title="post.liked?'Dislike':'Like'" v-if="currentAppUserName"><i class="fa-heart" v-bind:class="post.liked?'fas':'far'"></i></button>
+                        }
+                        <button v-if="post.likes.length > 0" class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-on:click="modalLikes()" title="Likes list">{{ post.likes.length }}</button>
+                    </div>
+                    <div>
+                        <button class="button is-white" title="Show metadata"><i class="fab fa-medapps"></i></button>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <button class="button is-white bookmark-button" title="Save to bookmarks"><i class="far fa-bookmark"></i></button>
+                        }
+                    </div>
                 </div>
             </div>
 
@@ -116,12 +125,12 @@
 
     <!-- Modal Options -->
     <div class="modal" v-bind:class="{'is-active': modals.optionActive}">
-        <div class="modal-background modal-custom-background" v-on:click="modalOptions"></div>
-        <div class="content is-flex is-flex-column">
-            <form action="/photos/delete/@Model.Id" method="post" style="width: 270px;">
-                <button type="submit" class="button is-large is-danger" style="margin-bottom: 5px; width: 270px;">Delete</button>
+        <div class="modal-background modal-options-background" v-on:click="modalOptions"></div>
+        <div class="content is-flex is-flex-column modal-options-content-custom">
+            <form action="/photos/delete/@Model.Id" method="post">
+                <button type="submit" class="button is-large is-danger" title="Delete">Delete</button>
             </form>
-            <a class="button is-large is-white has-text-grey-darker" href="/photos/edit/@Model.Id" title="Edit photo" style="margin-bottom: 5px;">Edit</a>
+            <a class="button is-large is-white has-text-grey-darker" href="/photos/edit/@Model.Id" title="Edit photo">Edit</a>
             <a class="button is-large is-white has-text-grey-darker" title="Close" v-on:click="modalOptions">Close</a>
         </div>
     </div>

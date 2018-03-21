@@ -75,14 +75,6 @@ namespace PhotoHub.WEB.Controllers
             if (user == null)
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
-            var userName = user.UserName;
-            if (model.Username != userName)
-            {
-                var setNameResult = await _userManager.SetUserNameAsync(user, model.Username);
-                if (!setNameResult.Succeeded)
-                    throw new ApplicationException($"Unexpected error occurred setting user name for user with ID '{user.Id}'.");
-            }
-
             var email = user.Email;
             if (model.Email != email)
             {
@@ -104,6 +96,12 @@ namespace PhotoHub.WEB.Controllers
                 user.About = model.About;
                 await _userManager.UpdateAsync(user);
             }
+
+            //if (!String.IsNullOrEmpty(model.RealName))
+            //{
+            //    user.RealName = model.RealName;
+            //    await _userManager.UpdateAsync(user);
+            //}
 
             StatusMessage = "Your profile has been updated";
             return RedirectToAction(nameof(Index));
