@@ -21,10 +21,14 @@
             </p>
         </header>
 
-        <div class="card-image">
+        <div class="card-image" v-if="loaded">
             <figure class="is-card-image filter" v-bind:class="filter">
                 <img v-bind:src="path" v-bind:alt="name">
             </figure>
+        </div>
+
+        <div class="card-image" v-if="!loaded" preloader v-on:click="clickFile">
+            <img src="~/images/defaults/def-photo.png">
         </div>
 
         <div class="has-text-centered" v-bind:class="{'is-display-none': submited}" style="margin-top: 5px;">
@@ -46,28 +50,27 @@
 
         <div class="is-filters-picker is-flex is-flex-row is-flex-centered is-flex-wrap" v-bind:class="{'is-display-none': submited}">
             @foreach (var filter in ViewBag.Filters)
-            {
-                <div class="has-margin-10px is-unselectable">
-                    <input class="is-display-none" id="@("filterId" + @filter.Id )" type="radio" name="Filter" value="@filter.Name" v-on:click="pickFilter('@filter.Name')" @( filter.Id == 1 ? "checked" : "" ) />
-                    <label for="@("filterId" + @filter.Id )" class="is-paddingless" title="@filter.Name">
-                        <figure class="filter @filter.Name is-paddingless is-marginless">
-                            <img v-bind:src="path" alt="@filter.Name filter" class="image is-96x96">
-                        </figure>
-                        <h5 class="has-text-centered has-text-weight-bold">@filter.Name</h5>
-                    </label>
-                </div>
-            }
+        {
+            <div class="has-margin-10px is-unselectable">
+                <input class="is-display-none" id="@("filterId" + @filter.Id )" type="radio" name="Filter" value="@filter.Name" v-on:click="pickFilter('@filter.Name')" @( filter.Id == 1 ? "checked" : "" ) />
+                <label for="@("filterId" + @filter.Id )" class="is-paddingless" title="@filter.Name">
+                    <figure class="filter @filter.Name is-paddingless is-marginless">
+                        <img v-bind:src="path" alt="@filter.Name filter" class="image is-96x96">
+                    </figure>
+                    <h5 class="has-text-centered has-text-weight-bold">@filter.Name</h5>
+                </label>
+            </div>
+    }
         </div>
 
         <div class="card-content">
-            <div class="content">
+            <div class="content" v-bind:class="{'is-display-none': !loaded}">
                 <input class="input" v-bind:class="{'is-display-none': submited}" type="text" placeholder="Description" name="Description" id="Description">
             </div>
 
             <div class="content card-button-panel">
                 <div>
                     <a class="button is-danger is-unselectable" title="Dislike"><i class="fas fa-heart"></i></a>
-                    <a class="button button is-danger is-unselectable">3</a>
                     <a class="button is-light comment-button" title="Comments"><i class="fas fa-comment"></i></a>
                 </div>
                 <div>
@@ -79,7 +82,7 @@
 
         <footer class="card-footer">
             <div class="card-footer-item">
-                <button type="submit" class="button is-warning is-uppercase" v-bind:class="{'is-loading': submited}"  v-on:click="submit" title="Create photo">create</button>
+                <button type="submit" class="button is-warning is-uppercase" v-bind:class="{'is-loading': submited}" v-on:click="submit" title="Create photo">create</button>
             </div>
         </footer>
     </div>

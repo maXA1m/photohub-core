@@ -38,7 +38,7 @@
 </head>
 <body id="body" data-app-user="@( User.Identity.IsAuthenticated ? User.Identity.Name : "" )">
 
-    <nav class="navbar is-unselectable is-fixed-top is-white" v-bind:class="{'is-hidden-navbar': isHidden}" id="navbar">
+    <nav class="navbar is-unselectable is-fixed-top is-white" v-if="width > 768" v-bind:class="{'is-hidden-navbar': isHidden}" id="navbar">
         <div class="container">
             <!-- v-on:dblclick="toTopPage"-->
             <div class="navbar-brand">
@@ -53,10 +53,38 @@
             </div>
             <div class="navbar-menu" v-bind:class="{'is-active': navActive}">
                 <div class="navbar-end">
-                    @await Html.PartialAsync("_LoginPartial")
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a class="navbar-item" title="Updates" href="/">Updates</a>
+                        <a class="navbar-item" title="Create new photo" href="/photos/create">Upload</a>
+                        <a class="navbar-item" title="Search" href="/search">Search</a>
+                        <a class="navbar-item" title="@User.Identity.Name" href="/users/@User.Identity.Name">Profile</a>
+                    }
+                    else
+                    {
+                        <a id="registerLink" class="navbar-item is-active" href="/account/register" title="Sign up">Sign up</a>
+                        <a id="loginLink" class="navbar-item" href="/account/login" title="Log in">Log in</a>
+                    }
                 </div>
             </div>
         </div>
+    </nav>
+
+    <nav class="mobile-navbar" v-if="width <= 768">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <a class="button is-white" href="/photos" title="All photos"><i class="fas fa-home"></i></a>
+            <a class="button is-white" href="/" title="Updates"><i class="fas fa-hand-peace"></i></a>
+            <a class="button is-white" href="/photos/create" title="Create new photo"><i class="fas fa-plus"></i></a>
+            <a class="button is-white" href="/search" title="Search"><i class="fas fa-search"></i></a>
+            <a class="button is-white" href="/users/@User.Identity.Name" title="@User.Identity.Name"><i class="fas fa-user"></i></a>
+        }
+        else
+        {
+            <a id="registerLink" class="button is-white" href="/account/register" title="Sign up"><i class="fas fa-address-book"></i></a>
+            <a class="button is-white" href="/photos" title="All photos"><i class="fas fa-home"></i></a>
+            <a id="loginLink" class="button is-warning" href="/account/login" title="Log in"><i class="fas fa-sign-in-alt"></i></a>
+        }
     </nav>
 
     <main class="section" id="primary-container">

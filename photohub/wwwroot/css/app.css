@@ -1,7 +1,6 @@
 ﻿/*  Changes text selection styles  */
 ::selection {
     background: rgba(252, 220, 89, .85);
-    /*background-color: rgba(0, 209, 178, 1);*/
     color: #333;
 }
 
@@ -14,6 +13,15 @@
 body,
 html {
     padding-top: 40px;
+    padding-bottom: 0;
+}
+
+@media (max-width: 768px){
+    body,
+    html {
+        padding-top: 10px;
+        padding-bottom: 25px;
+    }
 }
 
 /*  Custom styles for modal  */
@@ -53,6 +61,10 @@ html {
     font-size: 1.3rem;
 }
 
+.modal-card-body-metadata a {
+    display: none;
+}
+
 .modal-card-custom {
     max-height: 95% !important;
     min-height: 500px !important;
@@ -80,8 +92,10 @@ html {
 
 @media (max-width: 768px) {
     .modal-card-custom {
+        position: absolute !important;
+        bottom: 50px;
         border-radius: 0 !important;
-        height: 90vh !important;
+        height: 82vh !important;
         width: 100vw !important;
         margin: 0 !important;
     }
@@ -94,13 +108,17 @@ html {
     /*  Metadata card styles  */
     .modal-card-custom-metadata {
         position: absolute !important;
-        bottom: 0 !important;
+        bottom: 50px !important;
         min-height: 0 !important;
         height: 60vh !important;
     }
 
     .modal-card-custom-metadata .modal-card-head {
         display: none !important;
+    }
+
+    .modal-card-body-metadata {
+        padding-bottom: 0 !important;
     }
 
     .modal-card-body-metadata div {
@@ -114,6 +132,17 @@ html {
         margin: 0 !important;
     }
 
+    .modal-card-body-metadata a {
+        display: block !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        margin-bottom: 0 !important;
+        width: 100vw !important;
+        font-size: 1.5rem !important;
+        padding-bottom: 10px !important;
+        border-top: 1px solid #ddd !important;
+    }
+
     /*  Modal option background styles  */
     .modal-custom-background,
     .modal-options-background {
@@ -123,7 +152,7 @@ html {
     /*  Modal option mobile styles  */
     .modal-options-content-custom {
         position: absolute;
-        bottom: 0;
+        bottom: 50px;
         width: 100vw !important;
     }
 
@@ -133,6 +162,7 @@ html {
         border-radius: 0 !important;
         margin-bottom: 0 !important;
         width: 100vw !important;
+        border-top: 1px solid #ddd !important;
     }
     
     .modal-options-content-custom button {
@@ -176,8 +206,17 @@ html {
 }
 
 /*  Styles for unloaded card on create or edit photo pages  */
-.card-loading .card-image {
-    height: 200px !important;
+.card-loading .card-image[preloader] {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 300px !important;
+}
+
+.card-loading .card-image[preloader] img {
+    width: 100px !important;
+    height: auto !important;
 }
 
 .card .file.has-name {
@@ -219,7 +258,7 @@ html {
         border-bottom: 1px solid #ddd;
         border-top: 1px solid #ddd;
         border-radius: 0 !important;
-        margin-bottom: 10px !important;
+        margin-bottom: 25px !important;
     }
 
     /*  Responsive width 40% of screen  */
@@ -341,11 +380,45 @@ html {
     box-shadow: 0 0 60px 0 rgba(0, 0, 0, .17);
 }
 
+/*  Mobile navbar styles  */
+.mobile-navbar {
+    position: fixed;
+    bottom: 0;
+    height: 50px;
+    padding: 0;
+    width: 100vw;
+    background: #fff;
+    z-index: 1000;
+    border-top: 1px solid #ddd;
+
+    /*  Hidden on desktops  */
+    display: none;
+}
+
+.mobile-navbar a {
+    height: 100%;
+    width: 65px;
+    border-radius: 0;
+}
+
 @media (max-width: 768px) {
     .navbar {
         box-shadow: none !important;
         border-bottom: 1px solid #ddd;
         border-radius: 0 !important;
+
+        /*  Hide desktop navbar on mobile  */
+        display: none;
+    }
+
+    /*  Mobile navbar styles  */
+    .mobile-navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: stretch;
+        align-content: stretch;
+        flex-direction: row;
+        flex-wrap: nowrap;
     }
 }
 
@@ -499,6 +572,12 @@ input[name="Filter"]:checked + label figure{
     padding: 30px 0 30px 0;
 }
 
+@media (max-width: 768px) {
+    #footer {
+        display: none;
+    }
+}
+
 /*  Text align center  */
 .has-text-centered {
     text-align: center !important;
@@ -560,6 +639,7 @@ form.adaptive-form div.field {
 /*  Styles for navbar in manage section  */
 #manage-nav {
     justify-content: center;
+    margin-bottom: 50px !important;
 }
 
 @media (max-width: 768px) {
@@ -568,5 +648,19 @@ form.adaptive-form div.field {
         padding-left: 2vw;
         padding-right: 2vw;
         border-bottom: 1px solid #ddd;
+    }
+}
+
+/*  Styles for photo details comments container  */
+#content-photo-details {
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 300px;
+    padding: 4%;
+}
+
+@media (max-width: 768px) {
+    #content-photo-details {
+        padding: 2vh 4vw 2vh 4vw;
     }
 }

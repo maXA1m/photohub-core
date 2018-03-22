@@ -14,18 +14,28 @@ const navbar = new Vue({
         currentTop: 0,
         scrollDelta: 10,
         scrollOffset: 150,
+        width: window.innerWidth || document.body.clientWidth,
         isHidden: false
     },
     created() {
-        window.addEventListener('scroll', this.handleScroll);
+        if(this.width > 768)
+            window.addEventListener('scroll', this.handleScroll);
+
+        window.addEventListener('resize', this.onResize)
     },
     methods: {
         clickNavbar() {
             this.navActive = this.navActive ? false : true;
         },
-        toTopPage() {
-            document.documentElement.scrollTop = 0;
+        onResize() {
+            this.width = window.innerWidth || document.body.clientWidth;
+
+            if (this.width > 768)
+                window.addEventListener('scroll', this.handleScroll);
         },
+        //toTopPage() {
+        //    document.documentElement.scrollTop = 0;
+        //},
         checkSimpleNavigation(currentTop) {
             if (this.previousTop - currentTop > this.scrollDelta)
                 this.isHidden = false;

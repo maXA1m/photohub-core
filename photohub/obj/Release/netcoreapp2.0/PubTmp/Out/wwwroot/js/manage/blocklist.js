@@ -1,4 +1,4 @@
-﻿const search = new Vue({
+﻿const blocklist = new Vue({
     el: '#blocklist',
     data: {
         currentAppUserName: document.querySelector('#body').dataset.appUser,

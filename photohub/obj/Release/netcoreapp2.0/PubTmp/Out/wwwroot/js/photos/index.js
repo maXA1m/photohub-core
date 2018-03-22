@@ -29,7 +29,7 @@
     },
     methods: {
         fetchPhotos() {
-            if (!this.incallback && this.page > -1) {
+            if (!this.incallback && this.page > -1 && !this.postsLoaded) {
 
                 this.incallback = true;
                 nanobar.go(40);

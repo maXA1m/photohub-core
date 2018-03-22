@@ -40,6 +40,9 @@
         pickFilter(filter) {
             this.filter = filter;
         },
+        clickFile() {
+            document.getElementById('file').click();
+        },
         submit() {
             if(this.loaded)
                 this.submited = true;

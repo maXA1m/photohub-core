@@ -29,7 +29,7 @@
     },
     methods: {
         fetchPhotos() {
-            if (!this.incallback && this.page > -1) {
+            if (!this.incallback && this.page > -1 && !this.postsLoaded) {
 
                 this.incallback = true;
                 nanobar.go(40);
@@ -185,7 +185,7 @@
             this.closeOptions();
         },
         autoFetchPhotos() {
-            if (!this.postsLoaded && this.posts.length % 6 == 0 && document.documentElement.scrollTop == document.documentElement.scrollHeight - window.innerHeight)
+            if (!this.postsLoaded && this.posts.length % 8 == 0 && document.documentElement.scrollTop == document.documentElement.scrollHeight - window.innerHeight)
                 this.fetchPhotos();
         },
 

@@ -169,7 +169,7 @@ namespace PhotoHub.BLL.Services
                 (   
                     String.IsNullOrEmpty(search) || u.UserName.ToLower().Contains(search.ToLower()) || (!String.IsNullOrEmpty(u.RealName)?u.RealName.ToLower().Contains(search.ToLower()):false)
                 )
-            ).Skip(page * pageSize).Take(pageSize);
+            ).OrderBy(u => u.Date).Skip(page * pageSize).Take(pageSize);
 
             List<UserDTO> userDTOs = new List<UserDTO>(users.Count());
 
@@ -340,7 +340,7 @@ namespace PhotoHub.BLL.Services
                 EmailConfirmed = false,
                 NormalizedEmail = email.ToUpper(),
                 NormalizedUserName = userName.ToUpper(),
-                Date = DateTime.Now.Date,
+                Date = DateTime.Now,
                 LockoutEnabled = true,
                 TwoFactorEnabled = false,
                 SecurityStamp = userName.GetHashCode().ToString()

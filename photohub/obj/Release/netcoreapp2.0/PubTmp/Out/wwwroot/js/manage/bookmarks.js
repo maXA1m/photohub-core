@@ -1,4 +1,4 @@
-﻿const photos = new Vue({
+﻿const bookmarks = new Vue({
     el: '#bookmarks',
     data: {
         currentAppUserName: document.querySelector('#body').dataset.appUser,

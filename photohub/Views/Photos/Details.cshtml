@@ -19,11 +19,11 @@
                         <a class="has-text-grey-darker has-text-left has-text-justified" href="/users/@Model.Owner.UserName" title="@Model.Owner.UserName">@Model.Owner.UserName</a>
                     </p>
                     @if (Model.Owner.UserName == User.Identity.Name)
-                {
-                    <div class="card-header-icon">
-                        <a class="button is-white" title="show options" v-on:click="modalOptions"><i class="fas fa-bars"></i></a>
-                    </div>
-            }
+                    {
+                        <div class="card-header-icon">
+                            <a class="button is-white" title="show options" v-on:click="modalOptions"><i class="fas fa-bars"></i></a>
+                        </div>
+                    }
                 </header>
 
                 <div class="card-image is-unselectable" v-on:dblclick="like">
@@ -67,7 +67,7 @@
 
                 <footer class="card-footer">
                     <div class="content" style="width: 100%;">
-                        <div class="content" style="overflow-x: hidden; overflow-y: auto; max-height: 300px; padding: 2% 2% 2% 2%;" v-if="post.comments.length">
+                        <div class="content" id="content-photo-details" v-if="post.comments.length">
                             <div class="media" v-for="comment in post.comments">
                                 <div class="media-left is-flex is-flex-column">
                                     <a v-bind:href="`/users/${comment.owner.userName}`" class="has-text-black" v-bind:title="comment.owner.userName"><b>{{ comment.owner.userName }}</b></a>
@@ -168,6 +168,7 @@
                         <p>Filter</p>
                         <p>{{post.filter}}</p>
                     </div>
+                    <a class="button is-white has-text-grey-darker" title="Close modal" v-on:click="closeMetadata">Close</a>
                 </section>
             </div>
         </div>

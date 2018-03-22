@@ -336,16 +336,14 @@ namespace PhotoHub.BLL.Services
         public IEnumerable<PhotoDTO> GetPhotosHome(int page, int pageSize)
         {
             ApplicationUser currentUser = CurrentUser;
-            List<Following> followings = _unitOfWork.Followings.Find(f => f.UserId == currentUser.Id).ToList();
+            IEnumerable<Following> followings = _unitOfWork.Followings.Find(f => f.UserId == currentUser.Id);
             List<Photo> photos = new List<Photo>();
 
             foreach (var follow in followings)
-            {
                 photos.AddRange(_unitOfWork.Photos.Find(p => p.OwnerId == follow.FollowedUserId));
-            }
 
-            photos.Skip(page * pageSize).Take(pageSize);
             photos.Sort((p, p2) => p2.Date.CompareTo(p.Date));
+            photos = photos.Skip(page * pageSize).Take(pageSize).ToList();
 
             List<PhotoDTO> photoDTOs = new List<PhotoDTO>(pageSize);
 

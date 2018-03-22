@@ -17,7 +17,6 @@ namespace PhotoHub.WEB.Controllers.Api
         private const int _getAllPageSize = 8;
         private const int _getHomePageSize = 8;
         private const int _getForUserPageSize = 4;
-        private const int _getForGiveawayPageSize = 4;
 
         public PhotosController(IPhotosService photosService)
         {
