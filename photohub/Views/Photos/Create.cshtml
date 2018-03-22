@@ -13,7 +13,7 @@
 <form action="/photos/create" class="is-flex is-flex-row is-flex-centered is-flex-wrap" method="POST" id="photosCreate" enctype="multipart/form-data">
     @Html.AntiForgeryToken()
 
-    <div class="card is-responsive">
+    <div class="card is-responsive" v-bind:class="{'card-loading': !loaded}">
         <header class="card-header">
             <p class="card-header-title">
                 <a class="has-text-grey-darker has-text-left has-text-justified" href="/users/@Model.UserName" title="@Model.UserName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" src="@Model.Avatar" alt="@Model.UserName" /></a>
@@ -27,7 +27,7 @@
             </figure>
         </div>
 
-        <div class="has-text-centered" style="margin-top: 5px;">
+        <div class="has-text-centered" v-bind:class="{'is-display-none': submited}" style="margin-top: 5px;">
             <div class="file has-name" style="display: inline-block;">
                 <label class="file-label">
                     <input class="file-input" type="file" id="file" name="file" accept="image/*" v-on:change="filePreview($event)" required>
@@ -39,12 +39,12 @@
                             Choose a file…
                         </span>
                     </span>
-                    <span class="file-name">{{name}}</span>
+                    <span class="file-name is-doted-end">{{name}}</span>
                 </label>
             </div>
         </div>
 
-        <div class="is-flex is-flex-row is-flex-centered is-flex-wrap">
+        <div class="is-filters-picker is-flex is-flex-row is-flex-centered is-flex-wrap" v-bind:class="{'is-display-none': submited}">
             @foreach (var filter in ViewBag.Filters)
             {
                 <div class="has-margin-10px is-unselectable">
@@ -61,18 +61,18 @@
 
         <div class="card-content">
             <div class="content">
-                <input class="input" type="text" placeholder="Description" name="Description" id="Description">
+                <input class="input" v-bind:class="{'is-display-none': submited}" type="text" placeholder="Description" name="Description" id="Description">
             </div>
 
             <div class="content card-button-panel">
                 <div>
-                    <button class="button is-danger is-unselectable" title="Dislike"><i class="fas fa-heart"></i></button>
+                    <a class="button is-danger is-unselectable" title="Dislike"><i class="fas fa-heart"></i></a>
                     <a class="button button is-danger is-unselectable">3</a>
-                    <button class="button is-light comment-button" title="Comments"><i class="fas fa-comment"></i></button>
+                    <a class="button is-light comment-button" title="Comments"><i class="fas fa-comment"></i></a>
                 </div>
                 <div>
-                    <button class="button is-white" title="Show metadata"><i class="fab fa-medapps"></i></button>
-                    <button class="button is-white bookmark-button" title="Save to bookmarks"><i class="far fa-bookmark"></i></button>
+                    <a class="button is-white" title="Show metadata"><i class="fab fa-medapps"></i></a>
+                    <a class="button is-white bookmark-button" title="Save to bookmarks"><i class="far fa-bookmark"></i></a>
                 </div>
             </div>
         </div>

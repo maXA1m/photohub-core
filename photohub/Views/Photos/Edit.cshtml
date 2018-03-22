@@ -1,7 +1,7 @@
 ﻿@model PhotoHub.WEB.ViewModels.PhotoViewModel
 
 @{
-    ViewBag.Title = "Edit photo #" + Model.Id;
+    ViewBag.Title = "Edit photo";
     ViewBag.Keywords = "Edit photo #" + Model.Id + "," + Model.Owner.UserName + ",Edit photo,Filters,User,Like,Post";
     ViewBag.Description = "Create new post page on PhotoHub";
 }
@@ -30,7 +30,7 @@
             </figure>
         </div>
 
-        <div class="is-flex is-flex-row is-flex-centered is-flex-wrap" id="container-filters" data-current-filter-name="@Model.Filter">
+        <div class="is-flex is-flex-row is-flex-centered is-flex-wrap" v-bind:class="{'is-display-none': submited}" id="container-filters" data-current-filter-name="@Model.Filter">
             @foreach (var filter in ViewBag.Filters)
             {
                 <div class="has-margin-10px is-unselectable">
@@ -47,18 +47,18 @@
 
         <div class="card-content">
             <div class="content">
-                <input class="input" type="text" placeholder="Description" name="Description" id="Description" value="@Model.Description">
+                <input class="input" v-bind:class="{'is-display-none': submited}" type="text" placeholder="Description" name="Description" id="Description" value="@Model.Description">
             </div>
 
             <div class="content card-button-panel">
                 <div>
-                    <button class="button is-danger is-unselectable" title="Dislike"><i class="fas fa-heart"></i></button>
+                    <a class="button is-danger is-unselectable" title="Dislike"><i class="fas fa-heart"></i></a>
                     <a class="button button is-danger is-unselectable">@ViewBag.LikesCount</a>
-                    <button class="button is-light comment-button" title="Comments"><i class="fas fa-comment"></i></button>
+                    <a class="button is-light comment-button" title="Comments"><i class="fas fa-comment"></i></a>
                 </div>
                 <div>
-                    <button class="button is-white" title="Show metadata"><i class="fab fa-medapps"></i></button>
-                    <button class="button is-white bookmark-button" title="Save to bookmarks"><i class="far fa-bookmark"></i></button>
+                    <a class="button is-white" title="Show metadata"><i class="fab fa-medapps"></i></a>
+                    <a class="button is-white bookmark-button" title="Save to bookmarks"><i class="far fa-bookmark"></i></a>
                 </div>
             </div>
         </div>

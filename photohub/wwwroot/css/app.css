@@ -155,12 +155,38 @@ html {
 }
 
 /*  Styles for photo cards  */
+#posts,
+#bookmarks {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
 .card {
     max-width: none !important;
     margin-bottom: 50px !important;
     border-radius: 7px;
     box-shadow: 0 0 50px 0 rgba(0, 0, 0, .17);
+    margin-bottom: 30px !important;
     transition: all ease .3s;
+}
+
+.card .card-header-title {
+    margin-bottom: 0 !important;
+}
+
+/*  Styles for unloaded card on create or edit photo pages  */
+.card-loading .card-image {
+    height: 200px !important;
+}
+
+.card .file.has-name {
+    max-width: 90vw !important;
+}
+
+.card-loading .is-filters-picker, 
+.card-loading .card-footer {
+    display: none !important;
 }
 
 /*  Responsive width 100% of screen  */
@@ -174,12 +200,6 @@ html {
     height: 100% !important;
     width: 100% !important;
 }
-
-/*
-.card:hover {
-    box-shadow: 0 0 50px 0 rgba(0, 0, 0, .27);
-}
-*/
 
 .card-button-panel {
     display: flex !important;
@@ -199,6 +219,7 @@ html {
         border-bottom: 1px solid #ddd;
         border-top: 1px solid #ddd;
         border-radius: 0 !important;
+        margin-bottom: 10px !important;
     }
 
     /*  Responsive width 40% of screen  */
@@ -282,7 +303,7 @@ html {
 
 /*  Makes element invisible  */
 .is-display-none {
-    display: none;
+    display: none !important;
 }
 
 /*  Align inner elements center  !flexbox parameter!  */
@@ -397,6 +418,22 @@ input[name="Filter"]:checked + label figure{
     align-items: center;
 }
 
+#user-about-panel img {
+    width: 176px;
+}
+
+#user-about-panel .user-name-text {
+    font-size: 1.5rem;
+}
+
+#user-about-panel .user-about-text {
+    font-size: 1.4rem;
+}
+
+#user-about-panel p {
+    font-size: 1.5rem;
+}
+
 #user-about-panel {
     width: 100%;
     display: flex;
@@ -418,13 +455,30 @@ input[name="Filter"]:checked + label figure{
 }
 
 @media (max-width: 768px) {
+    #main-user-panel {
+        border-bottom: 1px solid #ddd;
+    }
+
     #user-about-panel div {
-        width: 100vw;
+
     }
 
     #user-about-panel img {
+        width: 96px;
         box-shadow: none !important;
         border: 1px solid #ddd !important;
+    }
+
+    #user-about-panel h3 {
+        display: none;
+    }
+
+    #user-about-panel .user-name-text {
+        font-size: 1.2rem;
+    }
+
+    #user-about-panel .user-about-text {
+        font-size: 1.1rem;
     }
 
     #user-follow-panel div {
@@ -473,5 +527,46 @@ form.adaptive-form div.field {
 
     form.adaptive-form div.field {
         width: 100% !important;
+    }
+}
+
+/*  Styles for empty container  */
+.empty-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.empty-container p {
+    font-size: 3rem;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .empty-container {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+
+    .empty-container p {
+        font-size: 1.9rem;
+        color: #888;
+    }
+}
+
+/*  Styles for navbar in manage section  */
+#manage-nav {
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    #manage-nav {
+        justify-content: space-between;
+        padding-left: 2vw;
+        padding-right: 2vw;
+        border-bottom: 1px solid #ddd;
     }
 }

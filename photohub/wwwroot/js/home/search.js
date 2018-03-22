@@ -8,6 +8,10 @@
         usersLoaded: false,
         incallback: false,
         page: 0,
+        message: {
+            text: null,
+            status: null
+        }
     },
     mounted() {
         window.addEventListener('scroll', this.autoSearch);

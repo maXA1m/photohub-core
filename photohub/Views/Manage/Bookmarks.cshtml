@@ -6,9 +6,8 @@
     <script defer src="~/js/manage/bookmarks.js"></script>
 }
 
-<div id="bookmarks" class="is-flex" style="align-items: center; flex-direction: column;" v-cloak>
-
-    <div class="card is-responsive" v-for="post in posts" style="margin-bottom: 30px;" v-cloak>
+<div id="bookmarks" class="is-flex" v-cloak>
+    <div class="card is-responsive" v-for="post in posts" v-if="posts != null || posts.length > 0" v-cloak>
         <header class="card-header">
             <p class="card-header-title">
                 <a class="has-text-grey-darker has-text-left has-text-justified" v-bind:href="`/users/${post.owner.userName}`" v-bind:title="post.owner.userName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" v-bind:src="post.owner.avatar" v-bind:alt="post.owner.userName" /></a>
@@ -54,6 +53,11 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Empty -->
+    <div class="empty-container" v-if="posts == null || posts.length <= 0" v-cloak>
+        <p>You have no bookmarks</p>
     </div>
 
     <!-- Modal Likes -->

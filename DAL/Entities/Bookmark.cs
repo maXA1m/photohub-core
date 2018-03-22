@@ -1,4 +1,6 @@
-﻿namespace PhotoHub.DAL.Entities
+﻿using System;
+
+namespace PhotoHub.DAL.Entities
 {
     public class Bookmark : BaseEntity
     {
@@ -7,5 +9,12 @@
 
         public int PhotoId { get; set; }
         public Photo Photo { get; set; }
+
+        public DateTime Date { get; set; }
+
+        public Bookmark()
+        {
+            Date = DateTime.Now;
+        }
     }
 }

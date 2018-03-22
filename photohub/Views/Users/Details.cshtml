@@ -15,10 +15,11 @@
         <div style="">
             <div id="main-user-panel" v-bind:class="user.confirmed == true ? 'confirmed' : ''">
                 <div id="user-about-panel">
-                    <img v-bind:src="user.avatar" v-bind:alt="user.userName" class="is-circle has-tiny-shadow image" style="width: 200px;">
-                    <div>
-                        <h3 class="has-text-centered is-uppercase is-paddingless is-marginless is-size-3 has-text-weight-bold">About</h3>
-                        <p class="has-text-centered is-size-4">{{ user.about }}</p>
+                    <img v-bind:src="user.avatar" v-bind:alt="user.userName" class="is-circle has-tiny-shadow image" />
+                    <div class="has-text-centered">
+                        <h3 class="is-uppercase is-paddingless is-marginless is-size-3 has-text-weight-bold">About</h3>
+                        <p class="user-name-text">{{ user.realName }}</p>
+                        <p class="user-about-text">{{ user.about }}</p>
                     </div>
                 </div>
                 <div id="user-follow-panel">
@@ -86,14 +87,14 @@
 
     @if (User.Identity.IsAuthenticated && Model.IBlocked)
     {
-        <div class="is-flex" style="align-items: center; flex-direction: column;" v-cloak>
-            <p class="has-text-centered is-size-2">You are blocked by @Model.UserName</p>
+        <div class="empty-container" v-cloak>
+            <p>You are blocked</p>
         </div>
     }
     else
     {
-        <div id="posts" class="is-flex" style="align-items: center; flex-direction: column;" v-if="posts.length > 0" v-cloak>
-            <div class="card is-responsive" v-for="post in posts" style="margin-bottom: 30px;" v-cloak>
+        <div id="posts" class="is-flex" v-if="posts.length > 0" v-cloak>
+            <div class="card is-responsive" v-for="post in posts" v-cloak>
                 <header class="card-header">
                     <p class="card-header-title">
                         <a class="has-text-grey-darker has-text-left has-text-justified" v-bind:href="`/users/${post.owner.userName}`" v-bind:title="post.owner.userName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" v-bind:src="post.owner.avatar" v-bind:alt="post.owner.userName" /></a>
@@ -252,8 +253,8 @@
 
             <button class="button is-uppercase is-responsive" v-bind:class="{'is-loading': postsFetch.incallback}" v-on:click="fetchPhotos" v-if="!postsFetch.postsLoaded && posts.length > 0 && posts.length%4 == 0">Load More</button>
         </div>
-        <div class="is-flex" style="align-items: center; flex-direction: column;" v-else v-cloak>
-            <p class="has-text-centered is-size-2">User has no photos</p>
+        <div class="empty-container" v-else v-cloak>
+            <p>User has no photos</p>
         </div>
     }
 </div>

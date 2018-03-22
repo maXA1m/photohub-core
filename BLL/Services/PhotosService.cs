@@ -498,14 +498,14 @@ namespace PhotoHub.BLL.Services
         public IEnumerable<PhotoDTO> GetBookmarks(int page, int pageSize)
         {
             ApplicationUser currentUser = CurrentUser;
-            IEnumerable<Bookmark> bookmarks = _unitOfWork.Bookmarks.Find(b => b.UserId == currentUser.Id);
+            IEnumerable<Bookmark> bookmarks = _unitOfWork.Bookmarks.Find(b => b.UserId == currentUser.Id).OrderByDescending(b => b.Date);
             List<Photo> photos = new List<Photo>();
 
             foreach (var bookmark in bookmarks)
                 photos.Add(bookmark.Photo);
 
             photos.Skip(page * pageSize).Take(pageSize);
-            photos.Sort((p, p2) => p2.Date.CompareTo(p.Date));
+            //photos.Sort((p, p2) => p2.Date.CompareTo(p.Date));
 
             List<PhotoDTO> photoDTOs = new List<PhotoDTO>(pageSize);
 

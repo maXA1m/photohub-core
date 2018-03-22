@@ -164,10 +164,10 @@ namespace PhotoHub.BLL.Services
         public IEnumerable<UserDTO> Search(int page, string search, int pageSize)
         {
             ApplicationUser currentUser = CurrentUser;
-            IEnumerable<ApplicationUser> users = _unitOfWork.Users.Find(u => 
+            var users = _unitOfWork.Users.Find(u => 
                 u.UserName != currentUser.UserName && 
                 (   
-                    String.IsNullOrEmpty(search) || u.UserName.ToLower().Contains(search.ToLower()) || u.RealName.ToLower().Contains(search.ToLower())
+                    String.IsNullOrEmpty(search) || u.UserName.ToLower().Contains(search.ToLower()) || (!String.IsNullOrEmpty(u.RealName)?u.RealName.ToLower().Contains(search.ToLower()):false)
                 )
             ).Skip(page * pageSize).Take(pageSize);
 
