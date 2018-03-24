@@ -26,6 +26,7 @@ namespace PhotoHub.BLL.Mappers
                 Iso = item.Iso,
                 Exposure = item.Exposure,
                 Aperture = item.Aperture,
+                FocalLength = item.FocalLength,
 
                 Owner = null,
                 Likes = null,
@@ -51,6 +52,7 @@ namespace PhotoHub.BLL.Mappers
                 Iso = item.Iso,
                 Exposure = item.Exposure,
                 Aperture = item.Aperture,
+                FocalLength = item.FocalLength,
 
                 Owner = owner,
                 Likes = likes,

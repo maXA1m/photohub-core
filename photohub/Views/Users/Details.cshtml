@@ -10,78 +10,80 @@
     <script defer src="~/js/users/details.js"></script>
 }
 
- <div class="container" id="user" data-user="@Model.UserName" v-cloak>
-    <div style="">
-        <div style="">
-            <div id="main-user-panel" v-bind:class="user.confirmed == true ? 'confirmed' : ''">
-                <div id="user-about-panel">
-                    <img v-bind:src="user.avatar" v-bind:alt="user.userName" class="is-circle has-tiny-shadow image" />
-                    <div class="has-text-centered">
-                        <h3 class="is-uppercase is-paddingless is-marginless is-size-3 has-text-weight-bold">About</h3>
-                        <p class="user-name-text">{{ user.realName }}</p>
-                        <p class="user-about-text">{{ user.about }}</p>
-                    </div>
+ <div class="container" id="user" data-user="@Model.UserName">
+    <article>
+        <div id="main-user-panel" v-bind:class="user.confirmed == true ? 'confirmed' : ''">
+            <div id="user-about-panel">
+                <img v-bind:src="user.avatar" v-bind:alt="user.userName" class="is-circle has-tiny-shadow image" />
+                <div class="has-text-centered">
+                    <h3 class="is-uppercase is-paddingless is-marginless is-size-3 has-text-weight-bold">About</h3>
+                    <p class="user-name-text">{{ user.realName }}</p>
+                    <p class="user-about-text">{{ user.about }}</p>
                 </div>
-                <div id="user-follow-panel">
-                    <div style="margin-bottom: 15px;">
-                        <button class="button is-white" v-on:click="showFollowers" title="Followers">{{ user.followers.length }} followers</button>
-                        <button class="button is-white" v-on:click="showFollowings" title="Followings">{{ user.followings.length }} followings</button>
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        @if (User.Identity.IsAuthenticated)
+            </div>
+            <div id="user-follow-panel">
+                <div style="margin-bottom: 15px;">
+                    <button class="button is-white" v-if="user.followers == null || user.followers.length <= 0" title="Followers">{{ user.followers.length }} followers</button>
+                    <button class="button is-white" v-if="user.followers != null && user.followers.length > 0" v-on:click="showFollowers" title="Followers">{{ user.followers.length }} followers</button>
+                    <button class="button is-white" v-if="user.followings == null || user.followings.length <= 0" title="Followings">{{ user.followings.length }} followings</button>
+                    <button class="button is-white" v-if="user.followings != null && user.followings.length > 0" v-on:click="showFollowings" title="Followings">{{ user.followings.length }} followings</button>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        if (User.Identity.Name != Model.UserName)
                         {
-                            if (User.Identity.Name != Model.UserName)
-                            {
-                                <button class="button" v-bind:title="user.followed?'Unfollow':'Follow'" v-bind:class="{'is-warning': !user.followed}" v-on:click="user.followed?disfollow():follow()">{{user.followed?'Unfollow':'Follow'}}</button>
-                                <button class="button is-dark" v-bind:title="user.blocked?'Unblock':'Block'" v-on:click="user.blocked?disblock():block()">{{user.blocked?'Unblock':'Block'}}</button>
-                            }
-                            else
-                            {
-                                <a href="/manage/index" class="button is-warning" title="Manage Account">Manage Account</a>
-                                <a href="/manage/bookmarks" class="button is-light" title="Show bookmarks"><i class="fas fa-bookmark"></i></a>
-                            }
+                            <button class="button" v-bind:title="user.followed?'Unfollow':'Follow'" v-bind:class="{'is-warning': !user.followed}" v-on:click="user.followed?disfollow():follow()">{{user.followed?'Unfollow':'Follow'}}</button>
+                            <button class="button is-dark" v-bind:title="user.blocked?'Unblock':'Block'" v-on:click="user.blocked?disblock():block()">{{user.blocked?'Unblock':'Block'}}</button>
                         }
                         else
                         {
-                            <a class="button is-warning" href="/account/login" title="Log In to Follow">Log In to Follow</a>
+                            <a href="/manage/index" class="button is-warning" title="Manage Account">Manage Account</a>
+                            <a href="/manage/bookmarks" class="button is-light" title="Show bookmarks"><i class="fas fa-bookmark"></i></a>
                         }
-                    </div>
+                    }
+                    else
+                    {
+                        <a class="button is-warning" href="/account/login" title="Log In to Follow">Log In to Follow</a>
+                    }
                 </div>
             </div>
         </div>
+    </article>
 
-        <!-- Modal Followers -->
-        <div class="modal" v-bind:class="{'is-active': modals.followers}">
-            <div class="modal-background modal-custom-background" v-on:click="closeFollowers"></div>
-            <div class="modal-card modal-card-custom">
-                <header class="modal-card-head">
-                    <p class="modal-card-title is-uppercase">followers</p>
-                    <a class="close-button" v-on:click="closeFollowers" title="Close modal"><i class="fas fa-times"></i></a>
-                </header>
-                <section class="modal-card-body" style="overflow-x: hidden; overflow-y: auto;">
-                    <a class="button is-white follower-modal-button" v-bind:href="`/users/${user.userName}`" v-bind:title="user.userName" v-for="user in user.followers">
-                        <img class="image is-64x64 is-circle" v-bind:src="user.avatar" v-bind:alt="user.userName">
-                        <p class="is-size-5 is-doted-end">{{user.userName}}</p>
-                    </a>
-                </section>
-            </div>
+    <!-- Modal Followers -->
+    <div class="modal" v-bind:class="{'is-active': modals.followers}">
+        <div class="modal-background modal-custom-background" v-on:click="closeFollowers"></div>
+        <div class="modal-card modal-card-custom">
+            <header class="modal-card-head">
+                <p class="modal-card-title is-uppercase">followers</p>
+                <a class="close-button" v-on:click="closeFollowers" title="Close modal"><i class="fas fa-times"></i></a>
+            </header>
+            <section class="modal-card-body">
+                <a class="button is-white follower-modal-button" v-bind:href="`/users/${user.userName}`" v-bind:title="user.userName" v-for="user in user.followers">
+                    <img class="image is-64x64 is-circle" v-bind:src="user.avatar" v-bind:alt="user.userName">
+                    <p class="is-size-5 is-doted-end">{{user.userName}}</p>
+                </a>
+            </section>
+            <a class="button is-white close-modal-mobile-button" title="Close modal" v-on:click="closeFollowers">Close</a>
         </div>
+    </div>
 
-        <!-- Modal Followings -->
-        <div class="modal" v-bind:class="{'is-active': modals.followings}">
-            <div class="modal-background modal-custom-background" v-on:click="closeFollowings"></div>
-            <div class="modal-card modal-card-custom">
-                <header class="modal-card-head">
-                    <p class="modal-card-title is-uppercase">followings</p>
-                    <a class="close-button" v-on:click="closeFollowings" title="Close modal"><i class="fas fa-times"></i></a>
-                </header>
-                <section class="modal-card-body" style="overflow-x: hidden; overflow-y: auto;">
-                    <a class="button is-white follower-modal-button" v-bind:href="`/users/${user.userName}`" v-bind:title="user.userName" v-for="user in user.followings">
-                        <img class="image is-64x64 is-circle" v-bind:src="user.avatar" v-bind:alt="user.userName">
-                        <p class="is-size-5 is-doted-end">{{user.userName}}</p>
-                    </a>
-                </section>
-            </div>
+    <!-- Modal Followings -->
+    <div class="modal" v-bind:class="{'is-active': modals.followings}">
+        <div class="modal-background modal-custom-background" v-on:click="closeFollowings"></div>
+        <div class="modal-card modal-card-custom">
+            <header class="modal-card-head">
+                <p class="modal-card-title is-uppercase">followings</p>
+                <a class="close-button" v-on:click="closeFollowings" title="Close modal"><i class="fas fa-times"></i></a>
+            </header>
+            <section class="modal-card-body">
+                <a class="button is-white follower-modal-button" v-bind:href="`/users/${user.userName}`" v-bind:title="user.userName" v-for="user in user.followings">
+                    <img class="image is-64x64 is-circle" v-bind:src="user.avatar" v-bind:alt="user.userName">
+                    <p class="is-size-5 is-doted-end">{{user.userName}}</p>
+                </a>
+            </section>
+            <a class="button is-white close-modal-mobile-button" title="Close modal" v-on:click="closeFollowings">Close</a>
         </div>
     </div>
 
@@ -94,7 +96,7 @@
     else
     {
         <div id="posts" class="is-flex" v-if="posts.length > 0" v-cloak>
-            <div class="card is-responsive" v-for="post in posts" v-cloak>
+            <article class="card is-responsive" v-for="post in posts">
                 <header class="card-header">
                     <p class="card-header-title">
                         <a class="has-text-grey-darker has-text-left has-text-justified" v-bind:href="`/users/${post.owner.userName}`" v-bind:title="post.owner.userName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" v-bind:src="post.owner.avatar" v-bind:alt="post.owner.userName" /></a>
@@ -141,7 +143,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </article>
 
             <!-- Modal Likes -->
             <div class="modal" v-bind:class="{'is-active': modals.likeActive}" v-if="current">
@@ -151,7 +153,7 @@
                         <p class="modal-card-title is-uppercase">likes</p>
                         <a class="close-button" v-on:click="closeLikes" title="Close modal"><i class="fas fa-times"></i></a>
                     </header>
-                    <section class="modal-card-body" style="overflow-x: hidden; overflow-y: auto;">
+                    <section class="modal-card-body" v-if="current.likes != null && current.likes.length > 0">
                         <div class="media" v-for="like in current.likes">
                             <div class="media-left">
                                 <a v-bind:href="`/users/${like.owner.userName}`" class="has-text-black is-doted-end" v-bind:title="like.owner.userName"><b>{{ like.owner.userName }}</b></a>
@@ -166,6 +168,12 @@
                             </div>
                         </div>
                     </section>
+                    <section class="modal-card-body" style="overflow-x: hidden; overflow-y: auto;" v-if="current.likes == null || current.likes.length <= 0">
+                        <div class="empty-container-modal">
+                            <p>Like it first</p>
+                        </div>
+                    </section>
+                    <a class="button is-white close-modal-mobile-button" title="Close modal" v-on:click="closeLikes">Close</a>
                 </div>
             </div>
 
@@ -177,8 +185,8 @@
                         <p class="modal-card-title is-uppercase">comments</p>
                         <a class="close-button" v-on:click="closeComments" title="Close modal"><i class="fas fa-times"></i></a>
                     </header>
-                    <section class="modal-card-body">
-                        <div class="content" style="overflow-x: hidden; overflow-y: auto;">
+                    <section class="modal-card-body" v-if="current.comments != null && current.comments.length > 0">
+                        <div class="content">
                             <div class="media" v-for="comment in current.comments">
                                 <div class="media-left is-flex is-flex-column">
                                     <a v-bind:href="`/users/${comment.owner.userName}`" class="has-text-black" v-bind:title="comment.owner.userName"><b>{{ comment.owner.userName }}</b></a>
@@ -195,12 +203,18 @@
                             </div>
                         </div>
                     </section>
+                    <section class="modal-card-body" style="overflow-x: hidden; overflow-y: auto;" v-if="current.comments == null || current.comments.length <= 0">
+                        <div class="empty-container-modal">
+                            <p>Comment it first</p>
+                        </div>
+                    </section>
                     <footer class="modal-card-foot is-flex is-flex-centered is-flex-wrap" v-if="currentAppUserName">
                         <div class="control" v-if="currentAppUserName" style="width: 100%;">
                             <input class="input" id="comment" type="text" placeholder="Comment photo" v-on:keyup.enter="comment">
                         </div>
                         <button class="button is-warning" v-bind:class="{'is-loading': commenting}" title="Comment photo" style="margin-top: 5px;" v-if="currentAppUserName" v-on:click="comment">Comment</button>
                     </footer>
+                    <a class="button is-white close-modal-mobile-button" title="Close modal" v-on:click="closeComments">Close</a>
                 </div>
             </div>
 
@@ -222,9 +236,9 @@
                         <p class="modal-card-title is-uppercase">metadata</p>
                         <a class="close-button" v-on:click="closeMetadata" title="Close modal"><i class="fas fa-times"></i></a>
                     </header>
-                    <section class="modal-card-body modal-card-body-metadata" style="overflow-x: hidden; overflow-y: auto;">
+                    <section class="modal-card-body modal-card-body-metadata">
                         <div>
-                            <p>Manufacturer</p>
+                            <p>Brand</p>
                             <p>{{current.manufacturer}}</p>
                         </div>
                         <div>
@@ -242,6 +256,10 @@
                         <div>
                             <p>Aperture</p>
                             <p>{{current.aperture}}</p>
+                        </div>
+                        <div>
+                            <p>Focal length</p>
+                            <p>{{current.focalLength}}</p>
                         </div>
                         <div>
                             <p>Filter</p>

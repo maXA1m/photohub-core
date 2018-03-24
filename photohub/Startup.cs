@@ -79,7 +79,6 @@ namespace PhotoHub.WEB
             services.AddScoped<IUsersService, UsersService>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            //services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
             services.AddMvc();
         }

@@ -21,7 +21,7 @@ namespace PhotoHub.DAL.Repositories
 
         public IEnumerable<Comment> GetAll(int page, int pageSize)
         {
-            return _context.Comments.Include(c => c.Owner).Skip(page * pageSize).Take(pageSize);
+            return _context.Comments.Include(c => c.Owner).OrderBy(c => c.Date).Skip(page * pageSize).Take(pageSize);
         }
 
         public IEnumerable<Comment> Find(Func<Comment, bool> predicate)

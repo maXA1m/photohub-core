@@ -76,7 +76,7 @@ namespace PhotoHub.WEB.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            await _usersService.EditAsync(User.Identity.Name, model.RealName, model.PhoneNumber, model.Email, model.About);
+            await _usersService.EditAsync(User.Identity.Name, model.RealName, model.PhoneNumber, model.Email, model.About, model.WebSite);
 
             StatusMessage = "Your profile has been updated";
             return RedirectToAction(nameof(Index));

@@ -8,7 +8,7 @@
     <script defer src="~/js/home/search.js"></script>
 }
 
-<div id="search" class="container is-flex is-flex-centered is-flex-column" v-cloak>
+<div id="search" class="container is-flex is-flex-centered is-flex-column">
     <div class="field is-grouped" id="search-field">
         <p class="control is-expanded">
             <input class="input" type="text" v-on:keyup.enter="handleSearch" v-model="searchString" placeholder="Enter login or name" required>
@@ -20,7 +20,7 @@
         </p>
     </div>
 
-    <div class="is-flex is-flex-centered is-flex-wrap search-element" v-for="user in users" v-if="users != null || users.length > 0">
+    <div class="is-flex is-flex-centered is-flex-wrap search-element" v-for="user in users" v-if="users != null || users.length > 0" v-cloak>
         <a v-bind:href="`/users/${user.userName}`" class="button is-white is-flex is-flex-centered" v-bind:title="user.userName" style="justify-content: space-between !important; height: 100%;">
             <img class="image is-64x64 is-circle" v-bind:src="user.avatar" v-bind:alt="user.userName" style="margin-right: 7px;"/>
             <span class="is-doted-end is-size-5">{{user.userName}}</span>
@@ -33,5 +33,5 @@
         <p>Can't find user</p>
     </div>
 
-    <button class="button is-uppercase is-responsive" v-bind:class="{'is-loading': incallback}" v-on:click="search" v-if="!usersLoaded && users.length > 0 && users.length%12 == 0">Load More</button>
+    <button class="button is-uppercase is-responsive" v-bind:class="{'is-loading': incallback}" v-on:click="search" v-if="!usersLoaded && users.length > 0 && users.length%12 == 0" v-cloak>Load More</button>
 </div>

@@ -38,7 +38,7 @@
 </head>
 <body id="body" data-app-user="@( User.Identity.IsAuthenticated ? User.Identity.Name : "" )">
 
-    <nav class="navbar is-unselectable is-fixed-top is-white" v-if="width > 768" v-bind:class="{'is-hidden-navbar': isHidden}" id="navbar">
+    <nav class="navbar is-unselectable is-fixed-top is-white" v-if="width > 736" v-bind:class="{'is-hidden-navbar': isHidden}" id="navbar">
         <div class="container">
             <!-- v-on:dblclick="toTopPage"-->
             <div class="navbar-brand">
@@ -70,7 +70,7 @@
         </div>
     </nav>
 
-    <nav class="mobile-navbar" v-if="width <= 768">
+    <nav class="mobile-navbar" v-if="width <= 736">
         @if (User.Identity.IsAuthenticated)
         {
             <a class="button is-white" href="/photos" title="All photos"><i class="fas fa-home"></i></a>
@@ -89,7 +89,7 @@
 
     <main class="section" id="primary-container">
         <div class="container">
-            <h1 class="title is-1 is-spaced is-uppercase has-text-centered has-text-weight-bold is-doted-end" title="@ViewBag.Title">@ViewBag.Title</h1>
+            <h1 class="title is-spaced is-uppercase has-text-centered has-text-weight-bold is-doted-end" title="@ViewBag.Title">@ViewBag.Title</h1>
             @RenderBody()
         </div>
     </main>
@@ -97,15 +97,9 @@
     <footer class="footer" id="footer">
         <div class="container">
             <div class="content has-text-centered">
-                <a class="button" href="https://github.com/maXA1m/photohub-core" title="Href on github" target="_blank">
-                    <span class="icon">
-                        <i class="fab fa-github"></i>
-                    </span>
-                    <span>GitHub</span>
-                </a>
+                Copyright © @DateTime.Now.Year PhotoHub. All rights reserved.
             </div>
         </div>
     </footer>
-
 </body>
 </html>

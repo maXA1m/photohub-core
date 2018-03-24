@@ -24,7 +24,10 @@ namespace PhotoHub.WEB.Mappers
                 Date = item.Date.ToString("MMMM dd, yyyy"),
                 Confirmed = item.Confirmed,
                 Followed = item.Followed,
+                Gender = item.Gender,
+                WebSite = item.WebSite,
                 Blocked = item.Blocked,
+                PrivateAccount = item.PrivateAccount,
                 IBlocked = item.IBlocked,
                 Followings = _usersMapper.MapRange(item.Followings),
                 Followers = _usersMapper.MapRange(item.Followers)
@@ -47,7 +50,10 @@ namespace PhotoHub.WEB.Mappers
                     Date = item.Date.ToString("MMMM dd, yyyy"),
                     Confirmed = item.Confirmed,
                     Followed = item.Followed,
+                    Gender = item.Gender,
+                    WebSite = item.WebSite,
                     Blocked = item.Blocked,
+                    PrivateAccount = item.PrivateAccount,
                     IBlocked = item.IBlocked,
                     Followings = _usersMapper.MapRange(item.Followings),
                     Followers = _usersMapper.MapRange(item.Followers)

@@ -6,8 +6,8 @@
     <script defer src="~/js/manage/blocklist.js"></script>
 }
 
-<div id="blocklist" class="container is-flex is-flex-centered is-flex-column" v-cloak>
-    <div class="is-flex is-flex-centered is-flex-wrap search-element" v-if="users != null || users.length > 0" v-for="user in users">
+<div id="blocklist" class="container is-flex is-flex-centered is-flex-column">
+    <div class="is-flex is-flex-centered is-flex-wrap search-element" v-if="users != null || users.length > 0" v-for="user in users" v-cloak>
         <a v-bind:href="`/users/${user.userName}`" class="button is-white is-flex is-flex-centered" v-bind:title="user.userName" style="justify-content: space-between !important; height: 100%;">
             <img class="image is-64x64 is-circle" v-bind:src="user.avatar" v-bind:alt="user.userName" style="margin-right: 7px;" />
             <span class="is-doted-end is-size-5">{{user.userName}}</span>
@@ -20,7 +20,7 @@
         <p>Blocklist is empty</p>
     </div>
 
-    <button class="button is-uppercase is-responsive" v-bind:class="{'is-loading': incallback}" v-on:click="fetchUsers" v-if="!usersLoaded && users.length > 0 && users.length%12 == 0">Load More</button>
+    <button class="button is-uppercase is-responsive" v-bind:class="{'is-loading': incallback}" v-on:click="fetchUsers" v-if="!usersLoaded && users.length > 0 && users.length%12 == 0" v-cloak>Load More</button>
 </div>
 
 

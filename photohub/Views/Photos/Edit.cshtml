@@ -16,7 +16,7 @@
     <input type="hidden" id="Id" name="Id" value="@Model.Id" />
     <input type="hidden" id="Path" name="Path" value="@Model.Path" />
 
-    <div class="card is-responsive">
+    <article class="card is-responsive">
         <header class="card-header">
             <p class="card-header-title">
                 <a class="has-text-grey-darker has-text-left has-text-justified" href="/users/@Model.Owner.UserName" title="@Model.Owner.UserName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" src="@Model.Owner.Avatar" alt="@Model.Owner.UserName" /></a>
@@ -68,5 +68,5 @@
                 <button type="submit" class="button is-warning is-uppercase" v-bind:class="{'is-loading': submited}" v-on:click="submit" title="Edit photo">edit</button>
             </div>
         </footer>
-    </div>
+    </article>
 </form>

@@ -354,7 +354,7 @@ namespace PhotoHub.BLL.Services
             return user;
         }
 
-        public void Edit(string userName, string realName, string phoneNumber, string email, string about)
+        public void Edit(string userName, string realName, string phoneNumber, string email, string about, string webSite)
         {
             ApplicationUser user = _unitOfWork.Users.Find(u => u.UserName == userName).FirstOrDefault();
             if (user != null)
@@ -380,13 +380,19 @@ namespace PhotoHub.BLL.Services
                 if (!String.IsNullOrEmpty(about) && user.About != about)
                 {
                     user.About = about;
+                    _unitOfWork.Users.Update(user);
+                }
+
+                if (!String.IsNullOrEmpty(webSite) && user.WebSite != webSite)
+                {
+                    user.WebSite = webSite;
                     _unitOfWork.Users.Update(user);
                 }
 
                 _unitOfWork.Save();
             }
         }
-        public async Task EditAsync(string userName, string realName, string phoneNumber, string email, string about)
+        public async Task EditAsync(string userName, string realName, string phoneNumber, string email, string about, string webSite)
         {
             ApplicationUser user = _unitOfWork.Users.Find(u => u.UserName == userName).FirstOrDefault();
             if (user != null)
@@ -412,6 +418,12 @@ namespace PhotoHub.BLL.Services
                 if (!String.IsNullOrEmpty(about) && user.About != about)
                 {
                     user.About = about;
+                    _unitOfWork.Users.Update(user);
+                }
+
+                if (!String.IsNullOrEmpty(webSite) && user.WebSite != webSite)
+                {
+                    user.WebSite = webSite;
                     _unitOfWork.Users.Update(user);
                 }
 
@@ -424,5 +436,9 @@ namespace PhotoHub.BLL.Services
             _unitOfWork.Dispose();
             GC.SuppressFinalize(this);
         }
+
+        #region Map Helpers
+
+        #endregion
     }
 }

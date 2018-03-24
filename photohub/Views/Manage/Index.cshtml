@@ -24,6 +24,13 @@
     </div>
 
     <div class="field">
+        <label asp-for="WebSite" class="label"></label>
+        <div class="control">
+            <input asp-for="WebSite" class="input" />
+        </div>
+    </div>
+
+    <div class="field">
         <label asp-for="About" class="label"></label>
         <div class="control">
             <textarea asp-for="About" class="textarea">@Model.About</textarea>

@@ -13,6 +13,7 @@ namespace PhotoHub.BLL.DTO
         public bool Confirmed { get; set; }
         public bool Followed { get; set; }
         public bool Blocked { get; set; }
+        public bool PrivateAccount { get; set; }
         public bool IBlocked { get; set; }
     }
 }

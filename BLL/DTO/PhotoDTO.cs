@@ -21,6 +21,7 @@ namespace PhotoHub.BLL.DTO
         public string Iso { get; set; }
         public string Exposure { get; set; }
         public string Aperture { get; set; }
+        public string FocalLength { get; set; }
 
         public IEnumerable<LikeDTO> Likes { get; set; }
         public IEnumerable<CommentDTO> Comments { get; set; }

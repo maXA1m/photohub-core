@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using PhotoHub.DAL.Data;
 
 namespace PhotoHub.DAL.Entities
 {
@@ -13,6 +9,9 @@ namespace PhotoHub.DAL.Entities
         public string Avatar { get; set; }
         public string About { get; set; }
         public DateTime Date { get; set; }
+        public string WebSite { get; set; }
+        public string Gender { get; set; }
+        public bool PrivateAccount { get; set; }
 
         public ApplicationUser() : base()
         {

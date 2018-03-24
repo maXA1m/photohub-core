@@ -185,7 +185,13 @@
             this.closeOptions();
         },
         autoFetchPhotos() {
-            if (!this.postsLoaded && this.posts.length % 8 == 0 && document.documentElement.scrollTop == document.documentElement.scrollHeight - window.innerHeight)
+            const scrollTop = document.documentElement.scrollTop;
+            const windowHeight = window.innerHeight;
+            let bodyHeight = document.documentElement.scrollHeight - windowHeight;
+            let scrollPercentage = (scrollTop / bodyHeight);
+
+            // If the scroll is more than 60% from the top, load more content. Load photos
+            if (!this.postsLoaded && this.posts.length % 8 == 0 && scrollPercentage > 0.6)
                 this.fetchPhotos();
         },
 

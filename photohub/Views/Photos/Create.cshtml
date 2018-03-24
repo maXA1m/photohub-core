@@ -13,7 +13,7 @@
 <form action="/photos/create" class="is-flex is-flex-row is-flex-centered is-flex-wrap" method="POST" id="photosCreate" enctype="multipart/form-data">
     @Html.AntiForgeryToken()
 
-    <div class="card is-responsive" v-bind:class="{'card-loading': !loaded}">
+    <article class="card is-responsive" v-bind:class="{'card-loading': !loaded}">
         <header class="card-header">
             <p class="card-header-title">
                 <a class="has-text-grey-darker has-text-left has-text-justified" href="/users/@Model.UserName" title="@Model.UserName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" src="@Model.Avatar" alt="@Model.UserName" /></a>
@@ -85,7 +85,7 @@
                 <button type="submit" class="button is-warning is-uppercase" v-bind:class="{'is-loading': submited}" v-on:click="submit" title="Create photo">create</button>
             </div>
         </footer>
-    </div>
+    </article>
 </form>
 
 

@@ -18,7 +18,7 @@ const navbar = new Vue({
         isHidden: false
     },
     created() {
-        if(this.width > 768)
+        if(this.width > 736)
             window.addEventListener('scroll', this.handleScroll);
 
         window.addEventListener('resize', this.onResize)
@@ -30,7 +30,7 @@ const navbar = new Vue({
         onResize() {
             this.width = window.innerWidth || document.body.clientWidth;
 
-            if (this.width > 768)
+            if (this.width > 736)
                 window.addEventListener('scroll', this.handleScroll);
         },
         //toTopPage() {

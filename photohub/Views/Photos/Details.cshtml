@@ -10,9 +10,9 @@
     <script defer src="~/js/photos/details.js"></script>
 }
 
-    <div class="content" id="photosDetails" data-post-id="@Model.Id" v-cloak>
+    <div class="content" id="photosDetails" data-post-id="@Model.Id">
         <div class="is-flex is-flex-centered">
-            <div class="card is-responsive">
+            <article class="card is-responsive">
                 <header class="card-header">
                     <p class="card-header-title">
                         <a class="has-text-grey-darker has-text-left has-text-justified" href="/users/@Model.Owner.UserName" title="@Model.Owner.UserName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" src="@Model.Owner.Avatar" alt="@Model.Owner.UserName" /></a>
@@ -94,7 +94,7 @@
                 }
                     </div>
                 </footer>
-            </div>
+            </article>
         </div>
 
         <!-- Modal Likes -->
@@ -105,7 +105,7 @@
                     <p class="modal-card-title is-uppercase">Likes</p>
                     <a class="close-button" v-on:click="modalLikes" title="Close modal"><i class="fas fa-times"></i></a>
                 </header>
-                <section class="modal-card-body" style="overflow-x: hidden; overflow-y: auto;">
+                <section class="modal-card-body" v-if="post.likes != null && post.likes.length > 0">
                     <div class="media" v-for="like in post.likes">
                         <div class="media-left">
                             <a v-bind:href="`/users/${like.owner.userName}`" class="has-text-black is-doted-end" v-bind:title="like.owner.userName"><b>{{ like.owner.userName }}</b></a>
@@ -120,6 +120,12 @@
                         </div>
                     </div>
                 </section>
+                <section class="modal-card-body" style="overflow-x: hidden; overflow-y: auto;" v-if="post.likes == null || post.likes.length <= 0">
+                    <div class="empty-container-modal">
+                        <p>Like it first</p>
+                    </div>
+                </section>
+                <a class="button is-white close-modal-mobile-button" title="Close modal" v-on:click="modalLikes">Close</a>
             </div>
         </div>
 
@@ -143,9 +149,9 @@
                     <p class="modal-card-title is-uppercase">metadata</p>
                     <a class="close-button" v-on:click="closeMetadata" title="Close modal"><i class="fas fa-times"></i></a>
                 </header>
-                <section class="modal-card-body modal-card-body-metadata" style="overflow-x: hidden; overflow-y: auto;">
+                <section class="modal-card-body modal-card-body-metadata">
                     <div>
-                        <p>Manufacturer</p>
+                        <p>Brand</p>
                         <p>{{post.manufacturer}}</p>
                     </div>
                     <div>
@@ -163,6 +169,10 @@
                     <div>
                         <p>Aperture</p>
                         <p>{{post.aperture}}</p>
+                    </div>
+                    <div>
+                        <p>Focal length</p>
+                        <p>{{post.focalLength}}</p>
                     </div>
                     <div>
                         <p>Filter</p>

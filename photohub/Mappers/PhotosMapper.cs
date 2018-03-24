@@ -38,6 +38,7 @@ namespace PhotoHub.WEB.Mappers
                 Iso = String.IsNullOrEmpty(item.Iso) ? "Unknown" : item.Iso,
                 Exposure = String.IsNullOrEmpty(item.Exposure) ? "Unknown" : item.Exposure,
                 Aperture = String.IsNullOrEmpty(item.Aperture) ? "Unknown" : item.Aperture,
+                FocalLength = String.IsNullOrEmpty(item.FocalLength) ? "Unknown" : item.FocalLength,
 
                 Likes = _likesMapper.MapRange(item.Likes),
                 Comments = _commentsMapper.MapRange(item.Comments)
@@ -68,6 +69,7 @@ namespace PhotoHub.WEB.Mappers
                     Iso = String.IsNullOrEmpty(item.Iso) ? "Unknown" : item.Iso,
                     Exposure = String.IsNullOrEmpty(item.Exposure) ? "Unknown" : item.Exposure,
                     Aperture = String.IsNullOrEmpty(item.Aperture) ? "Unknown" : item.Aperture,
+                    FocalLength = String.IsNullOrEmpty(item.FocalLength) ? "Unknown" : item.FocalLength,
 
                     Likes = _likesMapper.MapRange(item.Likes),
                     Comments = _commentsMapper.MapRange(item.Comments)

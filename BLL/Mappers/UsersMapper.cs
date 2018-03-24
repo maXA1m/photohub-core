@@ -22,6 +22,7 @@ namespace PhotoHub.BLL.Mappers
                 Confirmed = false,
                 Followed = false,
                 Blocked = false,
+                PrivateAccount = item.PrivateAccount,
                 IBlocked = false
             };
         }
@@ -38,6 +39,7 @@ namespace PhotoHub.BLL.Mappers
                 Confirmed = confirmed,
                 Followed = followed,
                 Blocked = blocked,
+                PrivateAccount = item.PrivateAccount,
                 IBlocked = iBlocked
             };
         }

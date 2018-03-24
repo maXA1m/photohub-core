@@ -41,7 +41,6 @@ namespace PhotoHub.DAL.Repositories
                         .ThenInclude(c => c.Owner)
                     .Include(p => p.Likes)
                         .ThenInclude(l => l.Owner)
-                    .OrderByDescending(p => p.Date)
                     .Where(p => p.Id == id).FirstOrDefault();
         }
         public async Task<Photo> GetAsync(int id)
@@ -53,7 +52,6 @@ namespace PhotoHub.DAL.Repositories
                                 .ThenInclude(c => c.Owner)
                             .Include(p => p.Likes)
                                 .ThenInclude(l => l.Owner)
-                            .OrderByDescending(p => p.Date)
                             .Where(p => p.Id == id).FirstOrDefaultAsync();
         }
 
@@ -66,7 +64,6 @@ namespace PhotoHub.DAL.Repositories
                         .ThenInclude(c => c.Owner)
                     .Include(p => p.Likes)
                         .ThenInclude(l => l.Owner)
-                    .OrderByDescending(p => p.Date)
                     .Where(predicate);
         }
 

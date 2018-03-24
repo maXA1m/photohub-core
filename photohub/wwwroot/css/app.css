@@ -16,11 +16,23 @@ html {
     padding-bottom: 0;
 }
 
-@media (max-width: 768px){
+h1 {
+    font-size: 2.6rem !important;
+    color: #333 !important;
+    margin-bottom: 40px !important;
+}
+
+@media (max-width: 736px) {
     body,
     html {
         padding-top: 10px;
         padding-bottom: 25px;
+    }
+
+    h1 {
+        font-size: 2.3rem !important;
+        margin-bottom: 0;
+        padding: 0;
     }
 }
 
@@ -48,6 +60,10 @@ html {
     align-items: center;
 }
 
+.modal-card-custom .close-modal-mobile-button {
+    display: none;
+}
+
 .modal-card-body-metadata div {
     display: flex;
     flex-direction: row;
@@ -71,6 +87,12 @@ html {
     border-radius: 5px !important;
 }
 
+.modal-card-body,
+.modal-card-body > .content {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
 .modal-card-custom .modal-card-head {
     background: #fff !important;
     color: #333 !important;
@@ -90,14 +112,33 @@ html {
     padding-top: 2vh;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 736px) {
     .modal-card-custom {
         position: absolute !important;
-        bottom: 50px;
+        bottom: 0;
         border-radius: 0 !important;
         height: 82vh !important;
         width: 100vw !important;
         margin: 0 !important;
+        background: rgba(255, 255, 255, .9) !important;
+    }
+
+    .modal-card-custom .modal-card-head {
+        display: none;
+    }
+
+    .modal-card-custom section {
+        border-top: 1px solid #ddd !important;
+    }
+
+    .modal-card-custom .close-modal-mobile-button {
+        display: block;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        border-top: 1px solid #ddd !important;
+        width: 100vw !important;
+        font-size: 1.5rem;
+        color: #333;
     }
 
     .modal-card-custom .modal-card-head,
@@ -108,7 +149,7 @@ html {
     /*  Metadata card styles  */
     .modal-card-custom-metadata {
         position: absolute !important;
-        bottom: 50px !important;
+        bottom: 0 !important;
         min-height: 0 !important;
         height: 60vh !important;
     }
@@ -152,7 +193,7 @@ html {
     /*  Modal option mobile styles  */
     .modal-options-content-custom {
         position: absolute;
-        bottom: 50px;
+        bottom: 0;
         width: 100vw !important;
     }
 
@@ -230,12 +271,13 @@ html {
 
 /*  Responsive width 100% of screen  */
 .is-responsive {
-    width: 35vw !important;
+    width: 534px !important;
 }
 
 /*  Styles for image inside photo card  */
 .is-card-image,
 .is-card-image img {
+    min-height: 150px;
     height: 100% !important;
     width: 100% !important;
 }
@@ -252,7 +294,7 @@ html {
     margin-left: 10px !important;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 736px) {
     .card {
         box-shadow: none !important;
         border-bottom: 1px solid #ddd;
@@ -295,7 +337,7 @@ html {
     max-width: 70%;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 736px) {
     .search-element {
         box-shadow: none !important;
         border-bottom: 1px solid #ddd;
@@ -388,7 +430,7 @@ html {
     padding: 0;
     width: 100vw;
     background: #fff;
-    z-index: 1000;
+    z-index: 10;
     border-top: 1px solid #ddd;
 
     /*  Hidden on desktops  */
@@ -401,7 +443,7 @@ html {
     border-radius: 0;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 736px) {
     .navbar {
         box-shadow: none !important;
         border-bottom: 1px solid #ddd;
@@ -448,7 +490,7 @@ input[name="Filter"]:checked + label figure{
     transform: translateY(-7px);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 736px) {
     input[name="Filter"] + label figure {
         box-shadow: none !important;
         border: 1px solid #ddd !important;
@@ -474,7 +516,7 @@ input[name="Filter"]:checked + label figure{
     text-transform: none !important;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 736px) {
     /*  Makes text smaller on tablets or phones  */
     .adaptive-header {
         font-size: 1.2vw !important;
@@ -527,7 +569,7 @@ input[name="Filter"]:checked + label figure{
     text-align: center;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 736px) {
     #main-user-panel {
         border-bottom: 1px solid #ddd;
     }
@@ -598,7 +640,7 @@ form.adaptive-form div.field {
     width: 40% !important;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 736px) {
     form.adaptive-form {
         padding-right: 3vw !important;
         padding-left: 3vw !important;
@@ -610,13 +652,22 @@ form.adaptive-form div.field {
 }
 
 /*  Styles for empty container  */
-.empty-container {
+.empty-container,
+.empty-container-modal {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+..empty-container {
     margin-top: 30px;
     margin-bottom: 30px;
+}
+
+.empty-container-modal {
+    height: 100% !important;
+    width: 100% !important;
 }
 
 .empty-container p {
@@ -624,13 +675,20 @@ form.adaptive-form div.field {
     color: #333;
 }
 
-@media (max-width: 768px) {
-    .empty-container {
+.empty-container-modal p {
+    font-size: 1.8vw;
+    color: #333;
+}
+
+@media (max-width: 736px) {
+    .empty-container,
+    .empty-container-modal {
         margin-top: 15px;
         margin-bottom: 15px;
     }
 
-    .empty-container p {
+    .empty-container p,
+    .empty-container-modal p {
         font-size: 1.9rem;
         color: #888;
     }
@@ -642,7 +700,7 @@ form.adaptive-form div.field {
     margin-bottom: 50px !important;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 736px) {
     #manage-nav {
         justify-content: space-between;
         padding-left: 2vw;
@@ -659,7 +717,7 @@ form.adaptive-form div.field {
     padding: 4%;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 736px) {
     #content-photo-details {
         padding: 2vh 4vw 2vh 4vw;
     }

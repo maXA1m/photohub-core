@@ -149,6 +149,8 @@ namespace PhotoHub.DAL.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<string>("Gender");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
@@ -165,6 +167,8 @@ namespace PhotoHub.DAL.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<bool>("PrivateAccount");
+
                     b.Property<string>("RealName");
 
                     b.Property<string>("SecurityStamp");
@@ -173,6 +177,8 @@ namespace PhotoHub.DAL.Migrations
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
+
+                    b.Property<string>("WebSite");
 
                     b.HasKey("Id");
 
@@ -331,6 +337,8 @@ namespace PhotoHub.DAL.Migrations
                     b.Property<string>("Exposure");
 
                     b.Property<int>("FilterId");
+
+                    b.Property<string>("FocalLength");
 
                     b.Property<string>("Iso");
 

@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "ec7a75377119ec2d3735ee08702287673662821f"
+    "signature": "fd4ee5c8a9e83e1008635f024acb1a4510cf883d"
   },
   "compilationOptions": {
     "defines": [
@@ -23,6 +23,7 @@
     ".NETCoreApp,Version=v2.0": {
       "PhotoHub.WEB/1.0.0": {
         "dependencies": {
+          "Magick.NET-Q8-AnyCPU": "7.4.3",
           "Microsoft.AspNetCore.All": "2.0.5",
           "Microsoft.NETCore.App": "2.0.0",
           "Newtonsoft.Json": "10.0.3",
@@ -73,6 +74,35 @@
             "rid": "win-x86",
             "assetType": "native"
           }
+        }
+      },
+      "Magick.NET-Q8-AnyCPU/7.4.3": {
+        "dependencies": {
+          "System.Collections.NonGeneric": "4.3.0",
+          "System.Xml.XDocument": "4.3.0",
+          "System.Xml.XPath.XDocument": "4.3.0",
+          "System.Xml.XPath.XmlDocument": "4.3.0",
+          "System.Xml.XmlDocument": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard13/Magick.NET-Q8-AnyCPU.dll": {}
+        },
+        "runtimeTargets": {
+          "runtimes/linux-x64/native/Magick.NET-Q8-x64.Native.dll.so": {
+            "rid": "linux-x64",
+            "assetType": "native"
+          },
+          "runtimes/win7-x64/native/Magick.NET-Q8-x64.Native.dll": {
+            "rid": "win7-x64",
+            "assetType": "native"
+          },
+          "runtimes/win7-x86/native/Magick.NET-Q8-x86.Native.dll": {
+            "rid": "win7-x86",
+            "assetType": "native"
+          }
+        },
+        "compile": {
+          "lib/netstandard13/Magick.NET-Q8-AnyCPU.dll": {}
         }
       },
       "Microsoft.ApplicationInsights/2.4.0": {
@@ -3757,6 +3787,26 @@
           "System.Xml.XPath": "4.3.0"
         }
       },
+      "System.Xml.XPath.XmlDocument/4.3.0": {
+        "dependencies": {
+          "System.Collections": "4.3.0",
+          "System.Globalization": "4.3.0",
+          "System.IO": "4.3.0",
+          "System.Resources.ResourceManager": "4.3.0",
+          "System.Runtime": "4.3.0",
+          "System.Runtime.Extensions": "4.3.0",
+          "System.Threading": "4.3.0",
+          "System.Xml.ReaderWriter": "4.3.0",
+          "System.Xml.XPath": "4.3.0",
+          "System.Xml.XmlDocument": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard1.3/System.Xml.XPath.XmlDocument.dll": {}
+        },
+        "compile": {
+          "ref/netstandard1.3/System.Xml.XPath.XmlDocument.dll": {}
+        }
+      },
       "WindowsAzure.Storage/8.1.4": {
         "dependencies": {
           "Microsoft.Data.OData": "5.8.2",
@@ -3987,6 +4037,13 @@
       "path": "libuv/1.10.0",
       "hashPath": "libuv.1.10.0.nupkg.sha512",
       "runtimeStoreManifestName": "aspnetcore-store-2.0.0-linux-x64.xml;aspnetcore-store-2.0.0-osx-x64.xml;aspnetcore-store-2.0.0-win7-x64.xml;aspnetcore-store-2.0.0-win7-x86.xml"
+    },
+    "Magick.NET-Q8-AnyCPU/7.4.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-RgWDoR7DXIrO71jMe32JxRlgwcHDvDmjAcpwNHuP5WZjbQGjifVlT4PXpwro0LGTRJaEw8rjM2Dcf8SvDWJKhw==",
+      "path": "magick.net-q8-anycpu/7.4.3",
+      "hashPath": "magick.net-q8-anycpu.7.4.3.nupkg.sha512"
     },
     "Microsoft.ApplicationInsights/2.4.0": {
       "type": "package",
@@ -6139,6 +6196,13 @@
       "sha512": "sha512-jw9oHHEIVW53mHY9PgrQa98Xo2IZ0ZjrpdOTmtvk+Rvg4tq7dydmxdNqUvJ5YwjDqhn75mBXWttWjiKhWP53LQ==",
       "path": "system.xml.xpath.xdocument/4.3.0",
       "hashPath": "system.xml.xpath.xdocument.4.3.0.nupkg.sha512"
+    },
+    "System.Xml.XPath.XmlDocument/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-A/uxsWi/Ifzkmd4ArTLISMbfFs6XpRPsXZonrIqyTY70xi8t+mDtvSM5Os0RqyRDobjMBwIDHDL4NOIbkDwf7A==",
+      "path": "system.xml.xpath.xmldocument/4.3.0",
+      "hashPath": "system.xml.xpath.xmldocument.4.3.0.nupkg.sha512"
     },
     "WindowsAzure.Storage/8.1.4": {
       "type": "package",

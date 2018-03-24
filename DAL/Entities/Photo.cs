@@ -15,6 +15,7 @@ namespace PhotoHub.DAL.Entities
         public string Iso { get; set; }
         public string Exposure { get; set; }
         public string Aperture { get; set; }
+        public string FocalLength { get; set; }
 
         public string OwnerId { get; set; }
         public ApplicationUser Owner { get; set; }

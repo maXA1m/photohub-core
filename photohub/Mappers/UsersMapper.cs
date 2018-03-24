@@ -20,6 +20,7 @@ namespace PhotoHub.WEB.Mappers
                 Confirmed = item.Confirmed,
                 Followed = item.Followed,
                 Blocked = item.Blocked,
+                PrivateAccount = item.PrivateAccount,
                 IBlocked = item.IBlocked
             };
         }
@@ -39,6 +40,7 @@ namespace PhotoHub.WEB.Mappers
                     Confirmed = item.Confirmed,
                     Followed = item.Followed,
                     Blocked = item.Blocked,
+                    PrivateAccount = item.PrivateAccount,
                     IBlocked = item.IBlocked
                 });
             }
