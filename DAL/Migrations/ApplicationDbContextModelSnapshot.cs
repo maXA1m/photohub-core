@@ -128,6 +128,18 @@ namespace PhotoHub.DAL.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("PhotoHub.DAL.Entities.Aperture", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Apertures");
+                });
+
             modelBuilder.Entity("PhotoHub.DAL.Entities.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -271,6 +283,18 @@ namespace PhotoHub.DAL.Migrations
                     b.ToTable("Confirmed");
                 });
 
+            modelBuilder.Entity("PhotoHub.DAL.Entities.Exposure", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Exposures");
+                });
+
             modelBuilder.Entity("PhotoHub.DAL.Entities.Filter", b =>
                 {
                     b.Property<int>("Id")
@@ -301,6 +325,18 @@ namespace PhotoHub.DAL.Migrations
                     b.ToTable("Followings");
                 });
 
+            modelBuilder.Entity("PhotoHub.DAL.Entities.ISO", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Isos");
+                });
+
             modelBuilder.Entity("PhotoHub.DAL.Entities.Like", b =>
                 {
                     b.Property<int>("Id")
@@ -326,7 +362,7 @@ namespace PhotoHub.DAL.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Aperture");
+                    b.Property<int>("ApertureId");
 
                     b.Property<int>("CountViews");
 
@@ -334,13 +370,13 @@ namespace PhotoHub.DAL.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<string>("Exposure");
+                    b.Property<int>("ExposureId");
 
                     b.Property<int>("FilterId");
 
-                    b.Property<string>("FocalLength");
+                    b.Property<double>("FocalLength");
 
-                    b.Property<string>("Iso");
+                    b.Property<int>("IsoId");
 
                     b.Property<string>("Manufacturer");
 
@@ -352,7 +388,13 @@ namespace PhotoHub.DAL.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApertureId");
+
+                    b.HasIndex("ExposureId");
+
                     b.HasIndex("FilterId");
+
+                    b.HasIndex("IsoId");
 
                     b.HasIndex("OwnerId");
 
@@ -475,9 +517,24 @@ namespace PhotoHub.DAL.Migrations
 
             modelBuilder.Entity("PhotoHub.DAL.Entities.Photo", b =>
                 {
+                    b.HasOne("PhotoHub.DAL.Entities.Aperture", "Aperture")
+                        .WithMany("Photos")
+                        .HasForeignKey("ApertureId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("PhotoHub.DAL.Entities.Exposure", "Exposure")
+                        .WithMany("Photos")
+                        .HasForeignKey("ExposureId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("PhotoHub.DAL.Entities.Filter", "Filter")
                         .WithMany("Photos")
                         .HasForeignKey("FilterId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("PhotoHub.DAL.Entities.ISO", "Iso")
+                        .WithMany("Photos")
+                        .HasForeignKey("IsoId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("PhotoHub.DAL.Entities.ApplicationUser", "Owner")

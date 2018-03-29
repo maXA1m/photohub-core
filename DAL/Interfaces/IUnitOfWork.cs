@@ -1,12 +1,20 @@
-﻿using PhotoHub.DAL.Entities;
+﻿#region using System
 using System;
 using System.Threading.Tasks;
+#endregion
+
+#region using PhotoHub.DAL
+using PhotoHub.DAL.Entities;
+#endregion
 
 namespace PhotoHub.DAL.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
         IRepository<Photo> Photos { get; }
+        IRepository<Exposure> Exposures { get; }
+        IRepository<Aperture> Apertures { get; }
+        IRepository<ISO> Isos { get; }
         IRepository<ApplicationUser> Users { get; }
         IRepository<Comment> Comments { get; }
         IRepository<Like> Likes { get; }

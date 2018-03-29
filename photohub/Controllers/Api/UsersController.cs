@@ -1,10 +1,14 @@
-﻿using System.Collections.Generic;
+﻿#region using System/Microsoft
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using PhotoHub.WEB.ViewModels;
+#endregion
 using PhotoHub.BLL.Interfaces;
+#region using PhotoHub.WEB
 using PhotoHub.WEB.Mappers;
+using PhotoHub.WEB.ViewModels;
+#endregion
 
 namespace PhotoHub.WEB.Controllers.Api
 {
@@ -12,8 +16,10 @@ namespace PhotoHub.WEB.Controllers.Api
     public class UsersController : Controller
     {
         private readonly IUsersService _usersService;
+        #region private readonly mappers
         private readonly UsersDetailsMapper _usersDetailsMapper;
         private readonly UsersMapper _usersMapper;
+        #endregion
 
         private const int _getAllPageSize = 8;
         private const int _getSearchPageSize = 12;

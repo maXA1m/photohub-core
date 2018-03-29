@@ -1,7 +1,3 @@
-C:\Users\maxmi\Desktop\photohub-core\photohub\obj\Release\netcoreapp2.0\PhotoHub.WEB.csprojResolveAssemblyReference.cache
-C:\Users\maxmi\Desktop\photohub-core\photohub\obj\Release\netcoreapp2.0\PhotoHub.WEB.csproj.CoreCompileInputs.cache
-C:\Users\maxmi\Desktop\photohub-core\photohub\obj\Release\netcoreapp2.0\PhotoHub.WEB.AssemblyInfoInputs.cache
-C:\Users\maxmi\Desktop\photohub-core\photohub\obj\Release\netcoreapp2.0\PhotoHub.WEB.AssemblyInfo.cs
 C:\Users\maxmi\Desktop\photohub-core\photohub\bin\Release\netcoreapp2.0\PhotoHub.WEB.deps.json
 C:\Users\maxmi\Desktop\photohub-core\photohub\bin\Release\netcoreapp2.0\PhotoHub.WEB.runtimeconfig.json
 C:\Users\maxmi\Desktop\photohub-core\photohub\bin\Release\netcoreapp2.0\PhotoHub.WEB.runtimeconfig.dev.json
@@ -11,6 +7,10 @@ C:\Users\maxmi\Desktop\photohub-core\photohub\bin\Release\netcoreapp2.0\PhotoHub
 C:\Users\maxmi\Desktop\photohub-core\photohub\bin\Release\netcoreapp2.0\PhotoHub.DAL.dll
 C:\Users\maxmi\Desktop\photohub-core\photohub\bin\Release\netcoreapp2.0\PhotoHub.BLL.pdb
 C:\Users\maxmi\Desktop\photohub-core\photohub\bin\Release\netcoreapp2.0\PhotoHub.DAL.pdb
+C:\Users\maxmi\Desktop\photohub-core\photohub\obj\Release\netcoreapp2.0\PhotoHub.WEB.csprojResolveAssemblyReference.cache
+C:\Users\maxmi\Desktop\photohub-core\photohub\obj\Release\netcoreapp2.0\PhotoHub.WEB.csproj.CoreCompileInputs.cache
+C:\Users\maxmi\Desktop\photohub-core\photohub\obj\Release\netcoreapp2.0\UserSecretsAssemblyInfo.cs
+C:\Users\maxmi\Desktop\photohub-core\photohub\obj\Release\netcoreapp2.0\PhotoHub.WEB.AssemblyInfoInputs.cache
+C:\Users\maxmi\Desktop\photohub-core\photohub\obj\Release\netcoreapp2.0\PhotoHub.WEB.AssemblyInfo.cs
 C:\Users\maxmi\Desktop\photohub-core\photohub\obj\Release\netcoreapp2.0\PhotoHub.WEB.dll
 C:\Users\maxmi\Desktop\photohub-core\photohub\obj\Release\netcoreapp2.0\PhotoHub.WEB.pdb
-C:\Users\maxmi\Desktop\photohub-core\photohub\obj\Release\netcoreapp2.0\UserSecretsAssemblyInfo.cs

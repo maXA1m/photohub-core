@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore;
+﻿#region using Microsoft
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+#endregion
 
 namespace PhotoHub.WEB
 {

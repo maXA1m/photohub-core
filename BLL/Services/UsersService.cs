@@ -1,14 +1,20 @@
-﻿using System.Linq;
+﻿#region using System/Microsoft
+using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+#endregion
+#region using PhotoHub.DAL
 using PhotoHub.DAL.Interfaces;
 using PhotoHub.DAL.Entities;
+#endregion
+#region using PhotoHub.BLL
 using PhotoHub.BLL.Interfaces;
 using PhotoHub.BLL.DTO;
 using PhotoHub.BLL.Mappers;
-using Microsoft.AspNetCore.Identity;
+#endregion
 
 namespace PhotoHub.BLL.Services
 {
@@ -16,8 +22,10 @@ namespace PhotoHub.BLL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        #region private readonly mappers
         private readonly UsersMapper _usersMapper;
         private readonly UsersDetailsMapper _usersDetailsMapper;
+        #endregion
 
         public ApplicationUser CurrentUser => _unitOfWork.Users.Find(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name).FirstOrDefault();
         public UserDTO CurrentUserDTO {
@@ -98,11 +106,14 @@ namespace PhotoHub.BLL.Services
                     false,
                     false,
                     followings,
-                    followers
+                    followers,
+                    null
                 );
             }
             else
             {
+                List<UserDTO> mutuals = new List<UserDTO>();
+
                 foreach (Following following in _unitOfWork.Followings.Find(f => f.UserId == user.Id))
                 {
                     followings.Add(_usersMapper.Map(
@@ -125,6 +136,23 @@ namespace PhotoHub.BLL.Services
                     ));
                 }
 
+                if(followers.Count > 0)
+                {
+                    foreach (Following follower in _unitOfWork.Followings.Find(f => f.FollowedUserId == currentUser.Id))
+                    {
+                        if (follower.UserId != user.Id && _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id && f.UserId == follower.UserId).FirstOrDefault() != null)
+                        {
+                            mutuals.Add(_usersMapper.Map(
+                                follower.User,
+                                _unitOfWork.Confirmations.Find(c => c.UserId == follower.UserId).FirstOrDefault() != null,
+                                _unitOfWork.Followings.Find(f => f.FollowedUserId == follower.UserId && f.UserId == currentUser.Id).FirstOrDefault() != null,
+                                _unitOfWork.Blockings.Find(b => b.BlockedUserId == follower.UserId && b.UserId == currentUser.Id).FirstOrDefault() != null,
+                                _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == user.Id).FirstOrDefault() != null
+                            ));
+                        }
+                    }
+                }
+
                 return _usersDetailsMapper.Map(
                     user,
                     _unitOfWork.Confirmations.Find(c => c.UserId == user.Id).FirstOrDefault() != null,
@@ -132,7 +160,8 @@ namespace PhotoHub.BLL.Services
                     _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.Id && b.UserId == currentUser.Id).FirstOrDefault() != null,
                     _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == user.Id).FirstOrDefault() != null,
                     followings,
-                    followers
+                    followers,
+                    mutuals
                 );
             }
         }
@@ -164,14 +193,22 @@ namespace PhotoHub.BLL.Services
         public IEnumerable<UserDTO> Search(int page, string search, int pageSize)
         {
             ApplicationUser currentUser = CurrentUser;
-            var users = _unitOfWork.Users.Find(u => 
-                u.UserName != currentUser.UserName && 
-                (   
-                    String.IsNullOrEmpty(search) || u.UserName.ToLower().Contains(search.ToLower()) || (!String.IsNullOrEmpty(u.RealName)?u.RealName.ToLower().Contains(search.ToLower()):false)
-                )
-            ).OrderBy(u => u.Date).Skip(page * pageSize).Take(pageSize);
+            IEnumerable<ApplicationUser> users;
+            if (String.IsNullOrEmpty(search))
+            {
+                users = _unitOfWork.Users.Find(u => u.UserName != currentUser.UserName).OrderByDescending(u => u.Date).Skip(page * pageSize).Take(pageSize);
+            }
+            else
+            {
+                users = _unitOfWork.Users.Find(u =>
+                    u.UserName != currentUser.UserName &&
+                    (
+                        u.UserName.ToLower().Contains(search.ToLower()) || (!String.IsNullOrEmpty(u.RealName) ? u.RealName.ToLower().Contains(search.ToLower()) : false)
+                    )
+                ).OrderBy(u => u.Date).Skip(page * pageSize).Take(pageSize);
+            }
 
-            List<UserDTO> userDTOs = new List<UserDTO>(users.Count());
+            List<UserDTO> userDTOs = new List<UserDTO>();
 
             foreach(ApplicationUser user in users)
             {
@@ -359,7 +396,7 @@ namespace PhotoHub.BLL.Services
             ApplicationUser user = _unitOfWork.Users.Find(u => u.UserName == userName).FirstOrDefault();
             if (user != null)
             {
-                if (!String.IsNullOrEmpty(realName) && user.RealName != realName)
+                if (user.RealName != realName)
                 {
                     user.RealName = realName;
                     _unitOfWork.Users.Update(user);
@@ -371,19 +408,19 @@ namespace PhotoHub.BLL.Services
                     _unitOfWork.Users.Update(user);
                 }
 
-                if (!String.IsNullOrEmpty(phoneNumber) && user.PhoneNumber != phoneNumber)
+                if (user.PhoneNumber != phoneNumber)
                 {
                     user.PhoneNumber = phoneNumber;
                     _unitOfWork.Users.Update(user);
                 }
 
-                if (!String.IsNullOrEmpty(about) && user.About != about)
+                if (user.About != about)
                 {
                     user.About = about;
                     _unitOfWork.Users.Update(user);
                 }
 
-                if (!String.IsNullOrEmpty(webSite) && user.WebSite != webSite)
+                if (user.WebSite != webSite)
                 {
                     user.WebSite = webSite;
                     _unitOfWork.Users.Update(user);
@@ -397,7 +434,7 @@ namespace PhotoHub.BLL.Services
             ApplicationUser user = _unitOfWork.Users.Find(u => u.UserName == userName).FirstOrDefault();
             if (user != null)
             {
-                if (!String.IsNullOrEmpty(realName) && user.RealName != realName)
+                if (user.RealName != realName)
                 {
                     user.RealName = realName;
                     _unitOfWork.Users.Update(user);
@@ -409,19 +446,19 @@ namespace PhotoHub.BLL.Services
                     _unitOfWork.Users.Update(user);
                 }
 
-                if (!String.IsNullOrEmpty(phoneNumber) && user.PhoneNumber != phoneNumber)
+                if (user.PhoneNumber != phoneNumber)
                 {
                     user.PhoneNumber = phoneNumber;
                     _unitOfWork.Users.Update(user);
                 }
 
-                if (!String.IsNullOrEmpty(about) && user.About != about)
+                if (user.About != about)
                 {
                     user.About = about;
                     _unitOfWork.Users.Update(user);
                 }
 
-                if (!String.IsNullOrEmpty(webSite) && user.WebSite != webSite)
+                if (user.WebSite != webSite)
                 {
                     user.WebSite = webSite;
                     _unitOfWork.Users.Update(user);
@@ -436,9 +473,5 @@ namespace PhotoHub.BLL.Services
             _unitOfWork.Dispose();
             GC.SuppressFinalize(this);
         }
-
-        #region Map Helpers
-
-        #endregion
     }
 }

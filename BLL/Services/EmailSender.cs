@@ -1,5 +1,5 @@
-﻿using PhotoHub.BLL.Interfaces;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using PhotoHub.BLL.Interfaces;
 
 namespace PhotoHub.BLL.Services
 {

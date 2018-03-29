@@ -1,8 +1,12 @@
-﻿using PhotoHub.BLL.DTO;
-using PhotoHub.BLL.Interfaces;
-using PhotoHub.WEB.ViewModels;
+﻿#region using System
 using System;
 using System.Collections.Generic;
+#endregion
+#region using PhotoHub.BLL
+using PhotoHub.BLL.DTO;
+using PhotoHub.BLL.Interfaces;
+#endregion
+using PhotoHub.WEB.ViewModels;
 
 namespace PhotoHub.WEB.Mappers
 {
@@ -30,7 +34,8 @@ namespace PhotoHub.WEB.Mappers
                 PrivateAccount = item.PrivateAccount,
                 IBlocked = item.IBlocked,
                 Followings = _usersMapper.MapRange(item.Followings),
-                Followers = _usersMapper.MapRange(item.Followers)
+                Followers = _usersMapper.MapRange(item.Followers),
+                Mutuals = item.Mutuals != null?_usersMapper.MapRange(item.Mutuals):null
             };
         }
 
@@ -56,7 +61,8 @@ namespace PhotoHub.WEB.Mappers
                     PrivateAccount = item.PrivateAccount,
                     IBlocked = item.IBlocked,
                     Followings = _usersMapper.MapRange(item.Followings),
-                    Followers = _usersMapper.MapRange(item.Followers)
+                    Followers = _usersMapper.MapRange(item.Followers),
+                    Mutuals = item.Mutuals != null ? _usersMapper.MapRange(item.Mutuals) : null
                 });
             }
 

@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿#region using System/Microsoft
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+#endregion
 
 namespace PhotoHub.WEB.ViewModels.Manage
 {

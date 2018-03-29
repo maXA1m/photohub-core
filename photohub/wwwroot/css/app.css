@@ -58,6 +58,7 @@ h1 {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    height: auto !important;
 }
 
 .modal-card-custom .close-modal-mobile-button {
@@ -70,6 +71,16 @@ h1 {
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    margin-bottom: 5px;
+}
+
+.modal-card-body-metadata div.select,
+.modal-card-body-metadata input.input{
+    max-width: 150px !important;
+}
+
+.modal-card-body-metadata div.select select {
+    width: 100% !important;
 }
 
 .modal-card-body-metadata p {
@@ -112,6 +123,25 @@ h1 {
     padding-top: 2vh;
 }
 
+#search-buttons-panel {
+    margin-bottom: 10px;
+}
+
+#photos-search-panel {
+    margin-bottom: 30px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    max-width: 98vw;
+    width: 60vw !important;
+}
+
+#photos-search-panel select {
+    width: auto !important;
+}
+
 @media (max-width: 736px) {
     .modal-card-custom {
         position: absolute !important;
@@ -151,7 +181,7 @@ h1 {
         position: absolute !important;
         bottom: 0 !important;
         min-height: 0 !important;
-        height: 60vh !important;
+        height: auto !important;
     }
 
     .modal-card-custom-metadata .modal-card-head {
@@ -222,6 +252,14 @@ h1 {
         padding-top: 0 !important;
         padding-left: 0 !important;
         padding-right: 0 !important;
+    }
+
+    #photos-search-panel {
+        width: 100vw !important;
+    }
+
+    #photos-search-panel select {
+        width: 115px !important;
     }
 }
 
@@ -310,9 +348,10 @@ h1 {
 }
 
 /*  Styles for search-card on search page  */
-#search-field {
+.search-field {
     max-width: 98vw;
     width: 60vw !important;
+    margin-bottom: 10px;
 }
 
 .search-element {
@@ -350,7 +389,7 @@ h1 {
     }
 
     .search-element, 
-    #search-field {
+    .search-field {
         width: 100vw !important;
     }
 }
@@ -545,6 +584,14 @@ input[name="Filter"]:checked + label figure{
     font-size: 1.4rem;
 }
 
+#user-about-panel .user-website-href,
+#user-about-panel .user-website-href:hover,
+#user-about-panel .user-website-href:focus {
+    font-size: 1rem;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
 #user-about-panel p {
     font-size: 1.5rem;
 }
@@ -556,6 +603,22 @@ input[name="Filter"]:checked + label figure{
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
+}
+
+#user-mutual-panel {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-top: 30px;
+    padding-bottom: 10px;
+}
+
+#user-mutual-panel .mutual-friend-button {
+    margin: 2px 5px 2px 5px;
 }
 
 #user-follow-panel {
@@ -594,6 +657,10 @@ input[name="Filter"]:checked + label figure{
 
     #user-about-panel .user-about-text {
         font-size: 1.1rem;
+    }
+
+    #user-about-panel .user-website-href {
+        font-size: 0.8rem;
     }
 
     #user-follow-panel div {

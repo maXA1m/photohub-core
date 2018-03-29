@@ -1,8 +1,12 @@
-﻿using PhotoHub.BLL.DTO;
-using PhotoHub.BLL.Interfaces;
-using PhotoHub.WEB.ViewModels;
+﻿#region using System
 using System;
 using System.Collections.Generic;
+#endregion
+#region using PhotoHub.BLL
+using PhotoHub.BLL.DTO;
+using PhotoHub.BLL.Interfaces;
+#endregion
+using PhotoHub.WEB.ViewModels;
 
 namespace PhotoHub.WEB.Mappers
 {

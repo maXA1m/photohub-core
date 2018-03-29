@@ -1,17 +1,20 @@
-﻿using System;
+﻿#region using System/Microsoft
+using System;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using PhotoHub.BLL.Interfaces;
+#endregion
 using PhotoHub.DAL.Entities;
+using PhotoHub.BLL.Interfaces;
+#region using PhotoHub.WEB
 using PhotoHub.WEB.Extensions;
 using PhotoHub.WEB.ViewModels.Manage;
+#endregion
 
 namespace PhotoHub.WEB.Controllers
 {
@@ -61,6 +64,7 @@ namespace PhotoHub.WEB.Controllers
                 Username = user.UserName,
                 Email = user.Email,
                 About = user.About,
+                WebSite = user.WebSite,
                 PhoneNumber = user.PhoneNumber,
                 IsEmailConfirmed = user.EmailConfirmed,
                 StatusMessage = StatusMessage

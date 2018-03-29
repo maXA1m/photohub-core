@@ -1,9 +1,12 @@
-﻿using System;
+﻿#region using System
+using System;
 using System.Threading.Tasks;
-
+#endregion
+#region using PhotoHub.DAL
+using PhotoHub.DAL.Interfaces;
 using PhotoHub.DAL.Data;
 using PhotoHub.DAL.Entities;
-using PhotoHub.DAL.Interfaces;
+#endregion
 
 namespace PhotoHub.DAL.Repositories
 {
@@ -13,6 +16,9 @@ namespace PhotoHub.DAL.Repositories
 
         private readonly IRepository<ApplicationUser> _usersRepository;
         private readonly IRepository<Photo> _photosRepository;
+        private readonly IRepository<Exposure> _exposuresRepository;
+        private readonly IRepository<Aperture> _aperturesRepository;
+        private readonly IRepository<ISO> _isosRepository;
         private readonly IRepository<Comment> _commentsRepository;
         private readonly IRepository<Like> _likesRepository;
         private readonly IRepository<Following> _followingsRepository;
@@ -34,10 +40,16 @@ namespace PhotoHub.DAL.Repositories
             _confirmationsRepository = new ConfirmationsRepository(context);
             _bookmarksRepository = new BookmarksRepository(context);
             _filtersRepository = new FiltersRepository(context);
+            _exposuresRepository = new ExposureRepository(context);
+            _aperturesRepository = new ApertureRepository(context);
+            _isosRepository = new IsoRepository(context);
         }
 
         public IRepository<ApplicationUser> Users => _usersRepository;
         public IRepository<Photo> Photos => _photosRepository;
+        public IRepository<Exposure> Exposures => _exposuresRepository;
+        public IRepository<Aperture> Apertures => _aperturesRepository;
+        public IRepository<ISO> Isos => _isosRepository;
         public IRepository<Comment> Comments => _commentsRepository;
         public IRepository<Like> Likes => _likesRepository;
         public IRepository<Confirmed> Confirmations => _confirmationsRepository;

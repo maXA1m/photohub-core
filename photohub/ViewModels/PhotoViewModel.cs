@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace PhotoHub.WEB.ViewModels
 {
@@ -36,7 +36,7 @@ namespace PhotoHub.WEB.ViewModels
         [JsonProperty("aperture")]
         public string Aperture { get; set; }
         [JsonProperty("focalLength")]
-        public string FocalLength { get; set; }
+        public double FocalLength { get; set; }
 
         [JsonProperty("likes")]
         public List<LikeViewModel> Likes { get; set; }

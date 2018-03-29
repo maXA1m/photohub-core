@@ -1,12 +1,15 @@
-﻿using System.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿#region using System/Microsoft
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-
-using PhotoHub.DAL.Data;
+#endregion
+#region using PhotoHub.DAL
 using PhotoHub.DAL.Interfaces;
+using PhotoHub.DAL.Data;
 using PhotoHub.DAL.Entities;
+#endregion
 
 namespace PhotoHub.DAL.Repositories
 {

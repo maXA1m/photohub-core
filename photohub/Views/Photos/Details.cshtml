@@ -146,31 +146,31 @@
             <div class="modal-background modal-custom-background" v-on:click="closeMetadata"></div>
             <div class="modal-card modal-card-custom modal-card-custom-metadata">
                 <header class="modal-card-head">
-                    <p class="modal-card-title is-uppercase">metadata</p>
+                    <p class="modal-card-title is-uppercase">info</p>
                     <a class="close-button" v-on:click="closeMetadata" title="Close modal"><i class="fas fa-times"></i></a>
                 </header>
                 <section class="modal-card-body modal-card-body-metadata">
-                    <div>
+                    <div v-if="post.manufacturer != 'Unknown' || post.model != 'Unknown'">
                         <p>Brand</p>
                         <p>{{post.manufacturer}}</p>
                     </div>
-                    <div>
+                    <div v-if="post.manufacturer != 'Unknown' || post.model != 'Unknown'">
                         <p>Model</p>
                         <p>{{post.model}}</p>
                     </div>
-                    <div>
+                    <div v-if="post.iso != 'Unknown' || post.exposure != 'Unknown' || post.aperture != 'Unknown'">
                         <p>ISO</p>
                         <p>{{post.iso}}</p>
                     </div>
-                    <div>
+                    <div v-if="post.iso != 'Unknown' || post.exposure != 'Unknown' || post.aperture != 'Unknown'">
                         <p>Exposure</p>
                         <p>{{post.exposure}}</p>
                     </div>
-                    <div>
+                    <div v-if="post.iso != 'Unknown' || post.exposure != 'Unknown' || post.aperture != 'Unknown'">
                         <p>Aperture</p>
                         <p>{{post.aperture}}</p>
                     </div>
-                    <div>
+                    <div v-if="post.focalLength >= 3">
                         <p>Focal length</p>
                         <p>{{post.focalLength}}</p>
                     </div>

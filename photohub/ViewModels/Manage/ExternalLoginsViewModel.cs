@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿#region using System/Microsoft
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+#endregion
 
 namespace PhotoHub.WEB.ViewModels.Manage
 {

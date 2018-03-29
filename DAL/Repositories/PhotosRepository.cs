@@ -1,12 +1,15 @@
-﻿using System.Linq;
+﻿#region using System/Microsoft
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using System;
-
+#endregion
+#region using PhotoHub.DAL
 using PhotoHub.DAL.Interfaces;
 using PhotoHub.DAL.Data;
 using PhotoHub.DAL.Entities;
+#endregion
 
 namespace PhotoHub.DAL.Repositories
 {
@@ -24,6 +27,9 @@ namespace PhotoHub.DAL.Repositories
             return _context.Photos
                     .Include(p => p.Owner)
                     .Include(p => p.Filter)
+                    .Include(p => p.Aperture)
+                    .Include(p => p.Exposure)
+                    .Include(p => p.Iso)
                     .Include(p => p.Comments)
                         .ThenInclude(c => c.Owner)
                     .Include(p => p.Likes)
@@ -37,6 +43,9 @@ namespace PhotoHub.DAL.Repositories
             return _context.Photos
                     .Include(p => p.Owner)
                     .Include(p => p.Filter)
+                    .Include(p => p.Aperture)
+                    .Include(p => p.Exposure)
+                    .Include(p => p.Iso)
                     .Include(p => p.Comments)
                         .ThenInclude(c => c.Owner)
                     .Include(p => p.Likes)
@@ -48,6 +57,9 @@ namespace PhotoHub.DAL.Repositories
             return await _context.Photos
                             .Include(p => p.Owner)
                             .Include(p => p.Filter)
+                            .Include(p => p.Aperture)
+                            .Include(p => p.Exposure)
+                            .Include(p => p.Iso)
                             .Include(p => p.Comments)
                                 .ThenInclude(c => c.Owner)
                             .Include(p => p.Likes)
@@ -60,6 +72,9 @@ namespace PhotoHub.DAL.Repositories
             return _context.Photos
                     .Include(p => p.Owner)
                     .Include(p => p.Filter)
+                    .Include(p => p.Aperture)
+                    .Include(p => p.Exposure)
+                    .Include(p => p.Iso)
                     .Include(p => p.Comments)
                         .ThenInclude(c => c.Owner)
                     .Include(p => p.Likes)

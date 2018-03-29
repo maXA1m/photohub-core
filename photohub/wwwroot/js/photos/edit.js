@@ -2,7 +2,8 @@
     el: '#photosEdit',
     data: {
         filter: document.querySelector('#container-filters').dataset.currentFilterName,
-        submited: false
+        submited: false,
+        metadataActive: false,
     },
     created() {
 
@@ -16,6 +17,13 @@
         },
         submit() {
             this.submited = true;
-        }
+        },
+
+        showMetadata() {
+            this.metadataActive = true;
+        },
+        closeMetadata() {
+            this.metadataActive = false;
+        },
     }
 });

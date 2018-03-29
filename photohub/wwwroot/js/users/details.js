@@ -19,6 +19,8 @@
             status: null,
             text: null
         },
+        mutualsActive: false,
+        mutuals: null,
         modals: {
             likeActive: false,
             commentActive: false,
@@ -40,6 +42,7 @@
         fetchUser() {
             this.$http.get(`/api/users/details/${this.detailsUserName}`).then(response => response.json()).then(json => {
                 this.user = json;
+                this.mutuals = this.user.mutuals.slice(0, 3);
             },
             error => {
                 this.message.text = 'error while fetching user';
@@ -317,6 +320,10 @@
             }
         },
 
+        showMutuals() {
+            this.mutuals = this.user.mutuals;
+            this.mutualsActive = true;
+        },
         showFollowings() {
             this.modals.followings = true;
         },
@@ -328,6 +335,10 @@
         },
         closeFollowers() {
             this.modals.followers = false;
+        },
+        closeMutuals() {
+            this.mutuals = this.user.mutuals.slice(0, 3);
+            this.mutualsActive = false;
         },
 
         showLikes(post) {

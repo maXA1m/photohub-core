@@ -10,7 +10,7 @@
     <script defer src="~/js/photos/edit.js"></script>
 }
 
-<form action="/photos/edit/@Model.Id" class="is-flex is-flex-row is-flex-centered is-flex-wrap" method="POST" id="photosEdit" enctype="multipart/form-data">
+<form action="/photos/edit/@Model.Id" class="is-flex is-flex-row is-flex-centered is-flex-wrap" method="POST" id="photosEdit">
     @Html.AntiForgeryToken()
 
     <input type="hidden" id="Id" name="Id" value="@Model.Id" />
@@ -57,7 +57,7 @@
                     <a class="button is-light comment-button" title="Comments"><i class="fas fa-comment"></i></a>
                 </div>
                 <div>
-                    <a class="button is-white" title="Show metadata"><i class="fab fa-medapps"></i></a>
+                    <a class="button is-warning" title="Show metadata" v-on:click="showMetadata"><i class="fab fa-medapps"></i></a>
                     <a class="button is-white bookmark-button" title="Save to bookmarks"><i class="far fa-bookmark"></i></a>
                 </div>
             </div>
@@ -69,4 +69,84 @@
             </div>
         </footer>
     </article>
+
+    <!-- Modal Metadata -->
+    <div class="modal" v-bind:class="{'is-active': metadataActive, 'is-display-none': submited}">
+        <div class="modal-background modal-custom-background" v-on:click="closeMetadata"></div>
+        <div class="modal-card modal-card-custom modal-card-custom-metadata">
+            <header class="modal-card-head">
+                <p class="modal-card-title is-uppercase">Info</p>
+                <a class="close-button" v-on:click="closeMetadata" title="Close modal"><i class="fas fa-times"></i></a>
+            </header>
+            <section class="modal-card-body modal-card-body-metadata">
+                <div>
+                    <p>Brand</p>
+                    <p>@Model.Manufacturer</p>
+                </div>
+                <div>
+                    <p>Model</p>
+                    <p>@Model.Model</p>
+                </div>
+                <div>
+                    <p>ISO</p>
+                    <div class="select">
+                        <select id="Iso" name="Iso">
+                            @foreach(IsoViewModel iso in ViewBag.Isos)
+                            {
+                                if(iso.Name == Model.Iso)
+                                {
+                                    <option value="@iso.Name" selected>@iso.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@iso.Name">@iso.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <p>Exposure</p>
+                    <div class="select">
+                        <select id="Exposure" name="Exposure">
+                            @foreach(ExposureViewModel exposure in ViewBag.Exposures)
+                            {
+                                if(exposure.Name == Model.Exposure)
+                                {
+                                    <option value="@exposure.Name" selected>@exposure.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@exposure.Name">@exposure.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <p>Aperture</p>
+                    <div class="select">
+                        <select id="Aperture" name="Aperture">
+                            @foreach(ApertureViewModel aperture in ViewBag.Apertures)
+                            {
+                                if (aperture.Name == Model.Aperture)
+                                {
+                                    <option value="@aperture.Name" selected>@aperture.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@aperture.Name">@aperture.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <p>Focal length</p>
+                    <input class="input" type="text" placeholder="Focal Length mm" name="FocalLength" id="FocaLength" value="@Model.FocalLength">
+                </div>
+                <a class="button is-white has-text-grey-darker" title="Close modal" v-on:click="closeMetadata">Close</a>
+            </section>
+        </div>
+    </div>
 </form>

@@ -1,12 +1,15 @@
-﻿using System;
+﻿#region using System/Microsoft
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-
+#endregion
+#region using PhotoHub.DAL
+using PhotoHub.DAL.Interfaces;
 using PhotoHub.DAL.Data;
 using PhotoHub.DAL.Entities;
-using PhotoHub.DAL.Interfaces;
+#endregion
 
 namespace PhotoHub.DAL.Repositories
 {
@@ -31,6 +34,12 @@ namespace PhotoHub.DAL.Repositories
                         .ThenInclude(p => p.Owner)
                     .Include(b => b.Photo)
                         .ThenInclude(p => p.Filter)
+                    .Include(b => b.Photo)
+                        .ThenInclude(p => p.Aperture)
+                    .Include(b => b.Photo)
+                        .ThenInclude(p => p.Exposure)
+                    .Include(b => b.Photo)
+                        .ThenInclude(p => p.Iso)
                     .Skip(page * pageSize).Take(pageSize);
         }
 
@@ -46,6 +55,12 @@ namespace PhotoHub.DAL.Repositories
                         .ThenInclude(p => p.Owner)
                     .Include(b => b.Photo)
                         .ThenInclude(p => p.Filter)
+                    .Include(b => b.Photo)
+                        .ThenInclude(p => p.Aperture)
+                    .Include(b => b.Photo)
+                        .ThenInclude(p => p.Exposure)
+                    .Include(b => b.Photo)
+                        .ThenInclude(p => p.Iso)
                     .Where(b => b.Id == id).FirstOrDefault();
         }
         public async Task<Bookmark> GetAsync(int id)
@@ -75,6 +90,12 @@ namespace PhotoHub.DAL.Repositories
                         .ThenInclude(p => p.Owner)
                     .Include(b => b.Photo)
                         .ThenInclude(p => p.Filter)
+                    .Include(b => b.Photo)
+                        .ThenInclude(p => p.Aperture)
+                    .Include(b => b.Photo)
+                        .ThenInclude(p => p.Exposure)
+                    .Include(b => b.Photo)
+                        .ThenInclude(p => p.Iso)
                     .Where(predicate);
         }
 

@@ -1,7 +1,12 @@
-﻿using PhotoHub.BLL.DTO;
-using PhotoHub.WEB.ViewModels;
+﻿#region using System
 using System;
 using System.Collections.Generic;
+#endregion
+#region using PhotoHub.BLL
+using PhotoHub.BLL.DTO;
+using PhotoHub.BLL.Interfaces;
+#endregion
+using PhotoHub.WEB.ViewModels;
 
 namespace PhotoHub.WEB.Mappers
 {
@@ -33,12 +38,12 @@ namespace PhotoHub.WEB.Mappers
                 Liked = item.Liked,
                 Bookmarked = item.Bookmarked,
 
-                Manufacturer = String.IsNullOrEmpty(item.Manufacturer)?"Unknown": item.Manufacturer,
+                Manufacturer = String.IsNullOrEmpty(item.Manufacturer) ? "Unknown" : item.Manufacturer,
                 Model = String.IsNullOrEmpty(item.Model) ? "Unknown" : item.Model,
-                Iso = String.IsNullOrEmpty(item.Iso) ? "Unknown" : item.Iso,
-                Exposure = String.IsNullOrEmpty(item.Exposure) ? "Unknown" : item.Exposure,
-                Aperture = String.IsNullOrEmpty(item.Aperture) ? "Unknown" : item.Aperture,
-                FocalLength = String.IsNullOrEmpty(item.FocalLength) ? "Unknown" : item.FocalLength,
+                Iso = item.Iso,
+                Exposure = item.Exposure,
+                Aperture = item.Aperture,
+                FocalLength = item.FocalLength,
 
                 Likes = _likesMapper.MapRange(item.Likes),
                 Comments = _commentsMapper.MapRange(item.Comments)
@@ -66,10 +71,10 @@ namespace PhotoHub.WEB.Mappers
 
                     Manufacturer = String.IsNullOrEmpty(item.Manufacturer) ? "Unknown" : item.Manufacturer,
                     Model = String.IsNullOrEmpty(item.Model) ? "Unknown" : item.Model,
-                    Iso = String.IsNullOrEmpty(item.Iso) ? "Unknown" : item.Iso,
-                    Exposure = String.IsNullOrEmpty(item.Exposure) ? "Unknown" : item.Exposure,
-                    Aperture = String.IsNullOrEmpty(item.Aperture) ? "Unknown" : item.Aperture,
-                    FocalLength = String.IsNullOrEmpty(item.FocalLength) ? "Unknown" : item.FocalLength,
+                    Iso = item.Iso,
+                    Exposure = item.Exposure,
+                    Aperture = item.Aperture,
+                    FocalLength = item.FocalLength,
 
                     Likes = _likesMapper.MapRange(item.Likes),
                     Comments = _commentsMapper.MapRange(item.Comments)

@@ -17,7 +17,7 @@
             </p>
 
             <div class="card-header-icon">
-                <a class="button is-white" title="show options" v-on:click="showOptions(post)"><i class="fas fa-bars"></i></a>
+                <a class="button is-white" href="#options" title="show options" v-on:click="showOptions(post)"><i class="fas fa-bars"></i></a>
             </div>
         </header>
 
@@ -46,12 +46,12 @@
             <div class="content card-button-panel">
                 <div>
                     <button class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-on:click="post.liked?dislike(post):like(post)" v-bind:title="post.liked?'Dislike':'Like'" v-if="currentAppUserName"><i class="fa-heart" v-bind:class="post.liked?'fas':'far'"></i></button>
-                    <button v-if="post.likes.length > 0" class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-on:click="showLikes(post)" title="Likes list">{{ post.likes.length }}</button>
-                    <button class="button is-light comment-button" v-on:click="showComments(post)" title="Comments"><i class="fas fa-comment"></i></button>
-                    <button class="button is-light" v-on:click="showComments(post)" title="Comments" v-if="post.comments.length > 0">{{ post.comments.length }}</button>
+                    <button v-if="post.likes.length > 0" href="#likes" class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-on:click="showLikes(post)" title="Likes list">{{ post.likes.length }}</button>
+                    <button class="button is-light comment-button" href="#comments" v-on:click="showComments(post)" title="Comments"><i class="fas fa-comment"></i></button>
+                    <button class="button is-light" href="#comments" v-on:click="showComments(post)" title="Comments" v-if="post.comments.length > 0">{{ post.comments.length }}</button>
                 </div>
                 <div>
-                    <button class="button is-white" title="Show metadata" v-on:click="showMetadata(post)"><i class="fab fa-medapps"></i></button>
+                    <button class="button is-white" href="#info" title="Show metadata" v-on:click="showMetadata(post)"><i class="fab fa-medapps"></i></button>
                     <button class="button bookmark-button" v-bind:class="post.bookmarked?'is-light':'is-white'" title="Save to bookmarks" v-if="currentAppUserName" v-on:click="post.bookmarked?disbookmark(post):bookmark(post)"><i class="fa-bookmark" v-bind:class="post.bookmarked?'fas':'far'"></i></button>
                 </div>
             </div>
@@ -146,31 +146,31 @@
         <div class="modal-background modal-custom-background" v-on:click="closeMetadata"></div>
         <div class="modal-card modal-card-custom modal-card-custom-metadata">
             <header class="modal-card-head">
-                <p class="modal-card-title is-uppercase">metadata</p>
+                <p class="modal-card-title is-uppercase">info</p>
                 <a class="close-button" v-on:click="closeMetadata" title="Close modal"><i class="fas fa-times"></i></a>
             </header>
             <section class="modal-card-body modal-card-body-metadata">
-                <div>
+                <div v-if="current.manufacturer != 'Unknown' || current.model != 'Unknown'">
                     <p>Brand</p>
                     <p>{{current.manufacturer}}</p>
                 </div>
-                <div>
+                <div v-if="current.manufacturer != 'Unknown' || current.model != 'Unknown'">
                     <p>Model</p>
                     <p>{{current.model}}</p>
                 </div>
-                <div>
+                <div v-if="current.iso != 'Unknown' || current.exposure != 'Unknown' || current.aperture != 'Unknown'">
                     <p>ISO</p>
                     <p>{{current.iso}}</p>
                 </div>
-                <div>
+                <div v-if="current.iso != 'Unknown' || current.exposure != 'Unknown' || current.aperture != 'Unknown'">
                     <p>Exposure</p>
                     <p>{{current.exposure}}</p>
                 </div>
-                <div>
+                <div v-if="current.iso != 'Unknown' || current.exposure != 'Unknown' || current.aperture != 'Unknown'">
                     <p>Aperture</p>
                     <p>{{current.aperture}}</p>
                 </div>
-                <div>
+                <div v-if="current.focalLength >= 3">
                     <p>Focal length</p>
                     <p>{{current.focalLength}}</p>
                 </div>

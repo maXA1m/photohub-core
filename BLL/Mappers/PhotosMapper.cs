@@ -1,7 +1,9 @@
-﻿using PhotoHub.BLL.DTO;
-using PhotoHub.BLL.Interfaces;
+﻿using System.Collections.Generic;
 using PhotoHub.DAL.Entities;
-using System.Collections.Generic;
+#region using PhotoHub.BLL
+using PhotoHub.BLL.DTO;
+using PhotoHub.BLL.Interfaces;
+#endregion
 
 namespace PhotoHub.BLL.Mappers
 {
@@ -23,9 +25,9 @@ namespace PhotoHub.BLL.Mappers
 
                 Manufacturer = item.Manufacturer,
                 Model = item.Model,
-                Iso = item.Iso,
-                Exposure = item.Exposure,
-                Aperture = item.Aperture,
+                Iso = null,
+                Exposure = null,
+                Aperture = null,
                 FocalLength = item.FocalLength,
 
                 Owner = null,
@@ -49,9 +51,9 @@ namespace PhotoHub.BLL.Mappers
 
                 Manufacturer = item.Manufacturer,
                 Model = item.Model,
-                Iso = item.Iso,
-                Exposure = item.Exposure,
-                Aperture = item.Aperture,
+                Iso = item.Iso.Name,
+                Exposure = item.Exposure.Name,
+                Aperture = item.Aperture.Name,
                 FocalLength = item.FocalLength,
 
                 Owner = owner,

@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿#region using System/Microsoft
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+#endregion
 using PhotoHub.BLL.Interfaces;
 
 namespace PhotoHub.WEB.Controllers.Api

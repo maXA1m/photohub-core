@@ -1,5 +1,7 @@
-﻿using System;
+﻿#region using System/Microsoft
+using System;
 using Microsoft.AspNetCore.Identity;
+#endregion
 
 namespace PhotoHub.DAL.Entities
 {
@@ -12,6 +14,9 @@ namespace PhotoHub.DAL.Entities
         public string WebSite { get; set; }
         public string Gender { get; set; }
         public bool PrivateAccount { get; set; }
+
+        //public int PinnedPhotoId { get; set; }
+        //public Photo PinnedPhoto { get; set; }
 
         public ApplicationUser() : base()
         {

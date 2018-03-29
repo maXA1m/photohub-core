@@ -1,12 +1,18 @@
-﻿using System;
+﻿#region using System/Microsoft
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using PhotoHub.BLL.Interfaces;
+#endregion
+#region using PhotoHub.DAL
 using PhotoHub.DAL.Interfaces;
 using PhotoHub.DAL.Entities;
-using PhotoHub.BLL.Mappers;
+#endregion
+#region using PhotoHub.BLL
+using PhotoHub.BLL.Interfaces;
 using PhotoHub.BLL.DTO;
+using PhotoHub.BLL.Mappers;
+#endregion
 
 namespace PhotoHub.BLL.Services
 {

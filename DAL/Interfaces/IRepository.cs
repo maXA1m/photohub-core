@@ -1,6 +1,8 @@
-﻿using System;
+﻿#region using System
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+#endregion
 
 namespace PhotoHub.DAL.Interfaces
 {

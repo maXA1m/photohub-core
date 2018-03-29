@@ -1,10 +1,14 @@
-﻿using System.Collections.Generic;
+﻿#region using System/Microsoft
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+#endregion
 using PhotoHub.BLL.Interfaces;
+#region using PhotoHub.WEB
 using PhotoHub.WEB.Mappers;
 using PhotoHub.WEB.ViewModels;
+#endregion
 
 namespace PhotoHub.WEB.Controllers.Api
 {
@@ -52,6 +56,12 @@ namespace PhotoHub.WEB.Controllers.Api
         public IEnumerable<PhotoViewModel> GetBookmarks(int page)
         {
             return _photosMapper.MapRange(_photosService.GetBookmarks(page, _getForUserPageSize));
+        }
+
+        [HttpGet, Route("search")]
+        public IEnumerable<PhotoViewModel> Search(int page, string search, int iso, int exposure, int aperture)
+        {
+            return _photosMapper.MapRange(_photosService.Search(page, search, _getHomePageSize, iso, exposure, aperture));
         }
 
         [Authorize, HttpPost, Route("bookmark/{id}")]

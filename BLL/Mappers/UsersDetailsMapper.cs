@@ -1,8 +1,12 @@
-﻿using PhotoHub.BLL.DTO;
-using PhotoHub.BLL.Interfaces;
-using PhotoHub.DAL.Entities;
+﻿#region using System
 using System;
 using System.Collections.Generic;
+#endregion
+using PhotoHub.DAL.Entities;
+#region using PhotoHub.BLL
+using PhotoHub.BLL.DTO;
+using PhotoHub.BLL.Interfaces;
+#endregion
 
 namespace PhotoHub.BLL.Mappers
 {
@@ -27,9 +31,10 @@ namespace PhotoHub.BLL.Mappers
                 IBlocked = false,
                 Followings = null,
                 Followers = null,
+                Mutuals = null
             };
         }
-        public UserDetailsDTO Map(ApplicationUser item, bool confirmed, bool followed, bool blocked, bool iBlocked, ICollection<UserDTO> followings, ICollection<UserDTO> followers)
+        public UserDetailsDTO Map(ApplicationUser item, bool confirmed, bool followed, bool blocked, bool iBlocked, ICollection<UserDTO> followings, ICollection<UserDTO> followers, ICollection<UserDTO> mutuals)
         {
             return new UserDetailsDTO()
             {
@@ -48,6 +53,7 @@ namespace PhotoHub.BLL.Mappers
                 IBlocked = iBlocked,
                 Followings = followings,
                 Followers = followers,
+                Mutuals = mutuals
             };
         }
 

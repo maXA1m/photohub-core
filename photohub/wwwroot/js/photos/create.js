@@ -3,9 +3,10 @@
     data: {
         filter: 'pure',
         path: '',
-        name: 'Your photo',
+        name: 'Photo name',
         submited: false,
-        loaded: false
+        loaded: false,
+        metadataActive: false
     },
     created() {
 
@@ -46,6 +47,13 @@
         submit() {
             if(this.loaded)
                 this.submited = true;
-        }
+        },
+
+        showMetadata() {
+            this.metadataActive = true;
+        },
+        closeMetadata() {
+            this.metadataActive = false;
+        },
     }
 });

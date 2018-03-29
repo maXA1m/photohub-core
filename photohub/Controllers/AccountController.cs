@@ -1,4 +1,5 @@
-﻿using System;
+﻿#region using System/Microsoft
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -6,11 +7,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
-using PhotoHub.BLL.Interfaces;
+#endregion
 using PhotoHub.DAL.Entities;
+using PhotoHub.BLL.Interfaces;
+#region using PhotoHub.WEB
 using PhotoHub.WEB.Extensions;
 using PhotoHub.WEB.ViewModels.Account;
+#endregion
 
 namespace PhotoHub.WEB.Controllers
 {

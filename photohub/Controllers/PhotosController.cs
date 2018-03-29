@@ -1,26 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region using System/Microsoft
+using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
-using System.IO;
 using Microsoft.AspNetCore.Http;
-using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Hosting;
+#endregion
+#region using PhotoHub.BLL
 using PhotoHub.BLL.Interfaces;
+using PhotoHub.BLL.DTO;
+#endregion
+#region using PhotoHub.WEB
 using PhotoHub.WEB.ViewModels;
 using PhotoHub.WEB.Mappers;
-using PhotoHub.BLL.DTO;
-#region Include CoreCompat.System.Drawing
+#endregion
+#region using CoreCompat.System.Drawing
 /*
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Text;
 */
 #endregion
-#region Include Magick.NET
+#region using Magick.NET
 using ImageMagick;
 #endregion
 
@@ -30,9 +34,14 @@ namespace PhotoHub.WEB.Controllers
     {
         private readonly IPhotosService _photosService;
         private readonly IHostingEnvironment _environment;
+        #region private readonly mappers
         private readonly UsersMapper _usersMapper;
-        private readonly FiltersMapper _filtersMapper;
         private readonly PhotosMapper _photosMapper;
+        private readonly FiltersMapper _filtersMapper;
+        private readonly IsosMapper _isosMapper;
+        private readonly ExposuresMapper _exposuresMapper;
+        private readonly AperturesMapper _aperturesMapper;
+        #endregion
 
         public PhotosController(IPhotosService photosService, IHostingEnvironment environment)
         {
@@ -41,6 +50,9 @@ namespace PhotoHub.WEB.Controllers
             _usersMapper = new UsersMapper();
             _filtersMapper = new FiltersMapper();
             _photosMapper = new PhotosMapper();
+            _isosMapper = new IsosMapper();
+            _exposuresMapper = new ExposuresMapper();
+            _aperturesMapper = new AperturesMapper();
         }
 
         [HttpGet, Route("photos")]
@@ -52,31 +64,34 @@ namespace PhotoHub.WEB.Controllers
         [HttpGet, Route("photos/{id}")]
         public async Task<ActionResult> Details(int id)
         {
-            PhotoViewModel photo = _photosMapper.Map(await _photosService.GetAsync(id));
+            PhotoViewModel item = _photosMapper.Map(await _photosService.GetAsync(id));
 
             if (User.Identity.IsAuthenticated)
                 ViewBag.CurrentUser = _usersMapper.Map(_photosService.CurrentUserDTO);
 
-            return View(photo);
+            return View(item);
         }
         
         [Authorize, HttpGet, Route("photos/create")]
         public ActionResult Create()
         {
             ViewBag.Filters = _filtersMapper.MapRange(_photosService.Filters);
+            ViewBag.Isos = _isosMapper.MapRange(_photosService.Isos);
+            ViewBag.Exposures = _exposuresMapper.MapRange(_photosService.Exposures);
+            ViewBag.Apertures = _aperturesMapper.MapRange(_photosService.Apertures);
 
             return View(_usersMapper.Map(_photosService.CurrentUserDTO));
         }
         
         [Authorize, HttpPost, ValidateAntiForgeryToken, Route("photos/create")]
-        public async Task<ActionResult> Create([Bind("Description, Filter")] PhotoViewModel photo, IFormFile file)
+        public async Task<ActionResult> Create([Bind("Description, Filter, Iso, Aperture, Exposure, FocalLength")] PhotoViewModel item, IFormFile file)
         {
             if (ModelState.IsValid && file.Length > 0)
             {
                 #region Saving image
                 string fileName = Convert.ToString(Guid.NewGuid()) + Path.GetExtension(ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"'));
 
-                photo.Path = fileName;
+                item.Path = fileName;
 
                 fileName = Path.Combine(_environment.WebRootPath, "data/photos") + $@"/{User.Identity.Name}/{fileName}";
 
@@ -93,10 +108,6 @@ namespace PhotoHub.WEB.Controllers
 
                 string manufacturer = null;
                 string model = null;
-                string iso = null;
-                string exposure = null;
-                string aperture = null;
-                string focalLength = null;
 
                 #region CoreCompat.System.Drawing
                 /*
@@ -160,24 +171,12 @@ namespace PhotoHub.WEB.Controllers
 
                             else if (value.Tag == ExifTag.Model)
                                 model = value.ToString();
-
-                            else if (value.Tag == ExifTag.ISOSpeed)
-                                iso = value.ToString();
-
-                            else if (value.Tag == ExifTag.ExposureTime)
-                                exposure = value.ToString();
-
-                            else if (value.Tag == ExifTag.ApertureValue)
-                                aperture = value.ToString();
-
-                            else if (value.Tag == ExifTag.FocalLength)
-                                focalLength = value.ToString();
                         }
                     }
                 }
                 #endregion
 
-                int pid = await _photosService.CreateAsync(photo.Filter, photo.Description, photo.Path, manufacturer, model, iso, exposure, aperture, focalLength);
+                int pid = await _photosService.CreateAsync(item.Filter, item.Description, item.Path, manufacturer, model, item.Iso, item.Exposure, item.Aperture, item.FocalLength);
 
                 return RedirectToAction("Details", "Photos", new { id = pid });
             }
@@ -190,26 +189,29 @@ namespace PhotoHub.WEB.Controllers
         {
             UserDTO user = _photosService.CurrentUserDTO;
 
-            PhotoDTO photo = await _photosService.GetAsync(id);
+            PhotoDTO item = await _photosService.GetAsync(id);
 
-            if(photo != null && user != null && user.UserName == photo.Owner.UserName)
+            if(item != null && user != null && user.UserName == item.Owner.UserName)
             {
-                ViewBag.LikesCount = photo.Likes.Count();
+                ViewBag.LikesCount = item.Likes.Count();
                 ViewBag.Filters = _filtersMapper.MapRange(_photosService.Filters);
+                ViewBag.Isos = _isosMapper.MapRange(_photosService.Isos);
+                ViewBag.Exposures = _exposuresMapper.MapRange(_photosService.Exposures);
+                ViewBag.Apertures = _aperturesMapper.MapRange(_photosService.Apertures);
 
-                return View(_photosMapper.Map(photo));
+                return View(_photosMapper.Map(item));
             }
 
-            return RedirectToAction("Details", "Photos", new { id = photo.Id });
+            return RedirectToAction("Details", "Photos", new { id = item.Id });
         }
         
         [Authorize, HttpPost, ValidateAntiForgeryToken, Route("photos/edit/{id}")]
-        public async Task<ActionResult> Edit([Bind("Id,Filter,Description")] PhotoViewModel photo)
+        public async Task<ActionResult> Edit([Bind("Id, Filter, Description, Iso, Aperture, Exposure, FocalLength")] PhotoViewModel item)
         {
             if (ModelState.IsValid)
-                await _photosService.EditAsync(photo.Id, photo.Filter, photo.Description);
+                await _photosService.EditAsync(item.Id, item.Filter, item.Description, item.Iso, item.Exposure, item.Aperture, item.FocalLength);
 
-            return RedirectToAction("Details", "Photos", new { id = photo.Id });
+            return RedirectToAction("Details", "Photos", new { id = item.Id });
         }
         
         [Authorize, HttpPost, Route("photos/delete/{id}")]
@@ -217,11 +219,11 @@ namespace PhotoHub.WEB.Controllers
         {
             UserViewModel user = _usersMapper.Map(_photosService.CurrentUserDTO);
 
-            PhotoDTO photo = await _photosService.GetAsync(id);
+            PhotoDTO item = await _photosService.GetAsync(id);
 
-            if (photo != null && user.UserName == photo.Owner.UserName)
+            if (item != null && user.UserName == item.Owner.UserName)
             {
-                var filePath = Path.Combine(_environment.WebRootPath, "data/photos") + $@"/{user.UserName}/{photo.Path}";
+                var filePath = Path.Combine(_environment.WebRootPath, "data/photos") + $@"/{user.UserName}/{item.Path}";
                 if (System.IO.File.Exists(filePath))
                     System.IO.File.Delete(filePath);
 

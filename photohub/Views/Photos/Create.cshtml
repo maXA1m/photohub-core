@@ -50,7 +50,7 @@
 
         <div class="is-filters-picker is-flex is-flex-row is-flex-centered is-flex-wrap" v-bind:class="{'is-display-none': submited}">
             @foreach (var filter in ViewBag.Filters)
-        {
+            {
             <div class="has-margin-10px is-unselectable">
                 <input class="is-display-none" id="@("filterId" + @filter.Id )" type="radio" name="Filter" value="@filter.Name" v-on:click="pickFilter('@filter.Name')" @( filter.Id == 1 ? "checked" : "" ) />
                 <label for="@("filterId" + @filter.Id )" class="is-paddingless" title="@filter.Name">
@@ -60,7 +60,7 @@
                     <h5 class="has-text-centered has-text-weight-bold">@filter.Name</h5>
                 </label>
             </div>
-    }
+            }
         </div>
 
         <div class="card-content">
@@ -74,7 +74,7 @@
                     <a class="button is-light comment-button" title="Comments"><i class="fas fa-comment"></i></a>
                 </div>
                 <div>
-                    <a class="button is-white" title="Show metadata"><i class="fab fa-medapps"></i></a>
+                    <a class="button is-warning" title="Show metadata" v-on:click="showMetadata"><i class="fab fa-medapps"></i></a>
                     <a class="button is-white bookmark-button" title="Save to bookmarks"><i class="far fa-bookmark"></i></a>
                 </div>
             </div>
@@ -86,6 +86,78 @@
             </div>
         </footer>
     </article>
+
+    <!-- Modal Metadata -->
+    <div class="modal" v-bind:class="{'is-active': metadataActive, 'is-display-none': submited}">
+        <div class="modal-background modal-custom-background" v-on:click="closeMetadata"></div>
+        <div class="modal-card modal-card-custom modal-card-custom-metadata">
+            <header class="modal-card-head">
+                <p class="modal-card-title is-uppercase">Info</p>
+                <a class="close-button" v-on:click="closeMetadata" title="Close modal"><i class="fas fa-times"></i></a>
+            </header>
+            <section class="modal-card-body modal-card-body-metadata">
+                <div>
+                    <p>ISO</p>
+                    <div class="select">
+                        <select id="Iso" name="Iso">
+                            @foreach(IsoViewModel iso in ViewBag.Isos)
+                            {
+                                if(iso.Id == 1)
+                                {
+                                    <option value="@iso.Name" selected>@iso.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@iso.Name">@iso.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <p>Exposure</p>
+                    <div class="select">
+                                <select id="Exposure" name="Exposure">
+                                    @foreach(ExposureViewModel exposure in ViewBag.Exposures)
+                                    {
+                                        if(exposure.Id == 1)
+                                        {
+                                            <option value="@exposure.Name" selected>@exposure.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@exposure.Name">@exposure.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                </div>
+                <div>
+                    <p>Aperture</p>
+                    <div class="select">
+                        <select id="Aperture" name="Aperture">
+                            @foreach(ApertureViewModel aperture in ViewBag.Apertures)
+                            {
+                                if(aperture.Id == 1)
+                                {
+                                    <option value="@aperture.Name" selected>@aperture.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@aperture.Name">@aperture.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <p>Focal length</p>
+                    <input class="input" type="text" placeholder="Focal Length mm" name="FocalLength" id="FocalLength" value="0">
+                </div>
+                <a class="button is-white has-text-grey-darker" title="Close modal" v-on:click="closeMetadata">Close</a>
+            </section>
+        </div>
+    </div>
 </form>
 
 

@@ -1,7 +1,9 @@
-﻿using PhotoHub.BLL.DTO;
-using PhotoHub.BLL.Interfaces;
+﻿using System.Collections.Generic;
 using PhotoHub.DAL.Entities;
-using System.Collections.Generic;
+#region using PhotoHub.BLL
+using PhotoHub.BLL.DTO;
+using PhotoHub.BLL.Interfaces;
+#endregion
 
 namespace PhotoHub.BLL.Mappers
 {

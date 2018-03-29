@@ -1,5 +1,7 @@
-﻿using System;
+﻿#region using System
+using System;
 using System.Collections.Generic;
+#endregion
 
 namespace PhotoHub.BLL.DTO
 {
@@ -21,7 +23,7 @@ namespace PhotoHub.BLL.DTO
         public string Iso { get; set; }
         public string Exposure { get; set; }
         public string Aperture { get; set; }
-        public string FocalLength { get; set; }
+        public double FocalLength { get; set; }
 
         public IEnumerable<LikeDTO> Likes { get; set; }
         public IEnumerable<CommentDTO> Comments { get; set; }

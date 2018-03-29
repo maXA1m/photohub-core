@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿#region using Microsoft
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+#endregion
 using PhotoHub.DAL.Entities;
 
 namespace PhotoHub.DAL.Data
@@ -12,6 +14,9 @@ namespace PhotoHub.DAL.Data
         public DbSet<Following> Followings { get; set; }
         public DbSet<Bookmark> Bookmarks { get; set; }
         public DbSet<Photo> Photos { get; set; }
+        public DbSet<Exposure> Exposures { get; set; }
+        public DbSet<Aperture> Apertures { get; set; }
+        public DbSet<ISO> Isos { get; set; }
         public DbSet<Filter> Filters { get; set; }
         public DbSet<Confirmed> Confirmed { get; set; }
 

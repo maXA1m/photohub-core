@@ -1,5 +1,5 @@
-﻿using PhotoHub.BLL.DTO;
-using PhotoHub.DAL.Entities;
+﻿using PhotoHub.DAL.Entities;
+using PhotoHub.BLL.DTO;
 
 namespace PhotoHub.BLL.Interfaces
 {
