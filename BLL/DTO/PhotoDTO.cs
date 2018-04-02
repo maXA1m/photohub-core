@@ -27,5 +27,6 @@ namespace PhotoHub.BLL.DTO
 
         public IEnumerable<LikeDTO> Likes { get; set; }
         public IEnumerable<CommentDTO> Comments { get; set; }
+        public IEnumerable<TagDTO> Tags { get; set; }
     }
 }

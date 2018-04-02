@@ -11,6 +11,9 @@ namespace PhotoHub.WEB.Mappers
     {
         public IsoViewModel Map(IsoDTO item)
         {
+            if (item == null)
+                return null;
+
             return new IsoViewModel()
             {
                 Id = item.Id,
@@ -20,6 +23,9 @@ namespace PhotoHub.WEB.Mappers
 
         public List<IsoViewModel> MapRange(IEnumerable<IsoDTO> items)
         {
+            if (items == null)
+                return null;
+
             List<IsoViewModel> isos = new List<IsoViewModel>();
             foreach (IsoDTO item in items)
             {

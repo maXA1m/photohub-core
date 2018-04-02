@@ -8,6 +8,7 @@ namespace PhotoHub.DAL.Interfaces
 {
     public interface IRepository<T> where T : class
     {
+        IEnumerable<T> GetAll();
         IEnumerable<T> GetAll(int page, int pageSize);
 
         T Get(int id);

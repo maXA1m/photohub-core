@@ -58,10 +58,16 @@ namespace PhotoHub.WEB.Controllers.Api
             return _photosMapper.MapRange(_photosService.GetBookmarks(page, _getForUserPageSize));
         }
 
-        [HttpGet, Route("search")]
-        public IEnumerable<PhotoViewModel> Search(int page, string search, int iso, int exposure, int aperture)
+        [HttpGet, Route("tags/{tagId}/{page}")]
+        public IEnumerable<PhotoViewModel> GetTags(int tagId, int page)
         {
-            return _photosMapper.MapRange(_photosService.Search(page, search, _getHomePageSize, iso, exposure, aperture));
+            return _photosMapper.MapRange(_photosService.GetTags(tagId, page, _getAllPageSize));
+        }
+
+        [HttpGet, Route("search")]
+        public IEnumerable<PhotoViewModel> Search(int page, string search, int iso, int exposure, int aperture, double focalLength)
+        {
+            return _photosMapper.MapRange(_photosService.Search(page, search, _getHomePageSize, iso, exposure, aperture, focalLength));
         }
 
         [Authorize, HttpPost, Route("bookmark/{id}")]

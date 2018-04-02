@@ -11,6 +11,9 @@ namespace PhotoHub.WEB.Mappers
     {
         public FilterViewModel Map(FilterDTO item)
         {
+            if (item == null)
+                return null;
+
             return new FilterViewModel()
             {
                 Id = item.Id,
@@ -20,6 +23,9 @@ namespace PhotoHub.WEB.Mappers
 
         public List<FilterViewModel> MapRange(IEnumerable<FilterDTO> items)
         {
+            if (items == null)
+                return null;
+
             List<FilterViewModel> filters = new List<FilterViewModel>();
             foreach (FilterDTO item in items)
             {

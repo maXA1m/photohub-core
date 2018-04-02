@@ -22,6 +22,11 @@ namespace PhotoHub.DAL.Repositories
             _context = context;
         }
 
+        public IEnumerable<Comment> GetAll()
+        {
+            return _context.Comments.Include(c => c.Owner).OrderBy(c => c.Date);
+        }
+
         public IEnumerable<Comment> GetAll(int page, int pageSize)
         {
             return _context.Comments.Include(c => c.Owner).OrderBy(c => c.Date).Skip(page * pageSize).Take(pageSize);

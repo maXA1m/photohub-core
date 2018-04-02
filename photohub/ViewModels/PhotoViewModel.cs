@@ -42,5 +42,7 @@ namespace PhotoHub.WEB.ViewModels
         public List<LikeViewModel> Likes { get; set; }
         [JsonProperty("comments")]
         public List<CommentViewModel> Comments { get; set; }
+        [JsonProperty("tags")]
+        public List<TagViewModel> Tags { get; set; }
     }
 }

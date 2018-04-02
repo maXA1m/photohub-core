@@ -11,6 +11,9 @@ namespace PhotoHub.BLL.Mappers
     {
         public PhotoDTO Map(Photo item)
         {
+            if (item == null)
+                return null;
+
             return new PhotoDTO()
             {
                 Id = item.Id,
@@ -32,11 +35,15 @@ namespace PhotoHub.BLL.Mappers
 
                 Owner = null,
                 Likes = null,
-                Comments = null
+                Comments = null,
+                Tags = null
             };
         }
-        public PhotoDTO Map(Photo item, bool liked, bool bookmarked, UserDTO owner, ICollection<LikeDTO> likes, ICollection<CommentDTO> comments)
+        public PhotoDTO Map(Photo item, bool liked, bool bookmarked, UserDTO owner, ICollection<LikeDTO> likes, ICollection<CommentDTO> comments, ICollection<TagDTO> tags)
         {
+            if (item == null)
+                return null;
+
             return new PhotoDTO()
             {
                 Id = item.Id,
@@ -58,13 +65,17 @@ namespace PhotoHub.BLL.Mappers
 
                 Owner = owner,
                 Likes = likes,
-                Comments = comments
+                Comments = comments,
+                Tags = tags
             };
         }
 
         public List<PhotoDTO> MapRange(IEnumerable<Photo> items)
         {
-            throw new System.NotImplementedException();
+            if (items == null)
+                return null;
+
+            return null;
         }
     }
 }

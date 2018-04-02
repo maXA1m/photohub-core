@@ -11,6 +11,9 @@ namespace PhotoHub.BLL.Mappers
     {
         public CommentDTO Map(Comment item)
         {
+            if (item == null)
+                return null;
+
             return new CommentDTO()
             {
                 Id = item.Id,
@@ -19,20 +22,26 @@ namespace PhotoHub.BLL.Mappers
                 Date = item.Date
             };
         }
-        public CommentDTO Map(Comment comment, UserDTO owner)
+        public CommentDTO Map(Comment item, UserDTO owner)
         {
+            if (item == null)
+                return null;
+
             return new CommentDTO()
             {
-                Id = comment.Id,
-                Text = comment.Text,
+                Id = item.Id,
+                Text = item.Text,
                 Owner = owner,
-                Date = comment.Date
+                Date = item.Date
             };
         }
 
         public List<CommentDTO> MapRange(IEnumerable<Comment> items)
         {
-            throw new System.NotImplementedException();
+            if (items == null)
+                return null;
+
+            return null;
         }
     }
 }

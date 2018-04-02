@@ -13,6 +13,7 @@ using PhotoHub.DAL.Entities;
 using PhotoHub.BLL.Interfaces;
 using PhotoHub.BLL.DTO;
 using PhotoHub.BLL.Mappers;
+using PhotoHub.BLL.Helpers;
 #endregion
 
 namespace PhotoHub.BLL.Services
@@ -30,6 +31,8 @@ namespace PhotoHub.BLL.Services
         private readonly AperturesMapper _aperturesMapper;
         private readonly ExposuresMapper _exposuresMapper;
         private readonly IsosMapper _isosMapper;
+        private readonly TagsMapper _tagsMapper;
+        private readonly ITagParser _tagParser;
         #endregion
 
         public ApplicationUser CurrentUser => _unitOfWork.Users.Find(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name).FirstOrDefault();
@@ -49,10 +52,11 @@ namespace PhotoHub.BLL.Services
             }
         }
 
-        public List<FilterDTO> Filters => _filtersMapper.MapRange(_unitOfWork.Filters.GetAll(0, 14));
-        public List<ApertureDTO> Apertures => _aperturesMapper.MapRange(_unitOfWork.Apertures.GetAll(0, 48));
-        public List<ExposureDTO> Exposures => _exposuresMapper.MapRange(_unitOfWork.Exposures.GetAll(0, 68));
-        public List<IsoDTO> Isos => _isosMapper.MapRange(_unitOfWork.Isos.GetAll(0, 30));
+        public List<FilterDTO> Filters => _filtersMapper.MapRange(_unitOfWork.Filters.GetAll());
+        public List<ApertureDTO> Apertures => _aperturesMapper.MapRange(_unitOfWork.Apertures.GetAll());
+        public List<ExposureDTO> Exposures => _exposuresMapper.MapRange(_unitOfWork.Exposures.GetAll());
+        public List<IsoDTO> Isos => _isosMapper.MapRange(_unitOfWork.Isos.GetAll());
+        public List<TagDTO> Tags => _tagsMapper.MapRange(_unitOfWork.Tags.GetAll());
 
         public PhotosService(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
         {
@@ -66,6 +70,8 @@ namespace PhotoHub.BLL.Services
             _isosMapper = new IsosMapper();
             _aperturesMapper = new AperturesMapper();
             _exposuresMapper = new ExposuresMapper();
+            _tagsMapper = new TagsMapper();
+            _tagParser = new TagParser();
         }
 
         public IEnumerable<PhotoDTO> GetAll(int page, int pageSize)
@@ -112,7 +118,8 @@ namespace PhotoHub.BLL.Services
                             false, false, false
                         ),
                         likes,
-                        comments));
+                        comments,
+                        _tagsMapper.MapRange(_unitOfWork.Tagings.Find(t => t.PhotoId == photo.Id).Select(t => t.Tag))));
                 }
             }
             else
@@ -160,7 +167,8 @@ namespace PhotoHub.BLL.Services
                                 _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == photo.OwnerId).FirstOrDefault() != null
                             ),
                             likes,
-                            comments));
+                            comments,
+                            _tagsMapper.MapRange(_unitOfWork.Tagings.Find(t => t.PhotoId == photo.Id).Select(t => t.Tag))));
                     }
                 }
             }
@@ -212,7 +220,8 @@ namespace PhotoHub.BLL.Services
                                 false, false, false
                             ),
                             likes,
-                            comments
+                            comments,
+                            _tagsMapper.MapRange(_unitOfWork.Tagings.Find(t => t.PhotoId == photo.Id).Select(t => t.Tag))
                 );
             }
             else
@@ -258,7 +267,8 @@ namespace PhotoHub.BLL.Services
                                     _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == photo.OwnerId).FirstOrDefault() != null
                                 ),
                                 likes,
-                                comments
+                                comments,
+                                _tagsMapper.MapRange(_unitOfWork.Tagings.Find(t => t.PhotoId == photo.Id).Select(t => t.Tag))
                     );
                 }
                 return null;
@@ -308,7 +318,8 @@ namespace PhotoHub.BLL.Services
                                 false, false, false
                             ),
                             likes,
-                            comments
+                            comments,
+                            _tagsMapper.MapRange(_unitOfWork.Tagings.Find(t => t.PhotoId == photo.Id).Select(t => t.Tag))
                 );
             }
             else
@@ -354,7 +365,8 @@ namespace PhotoHub.BLL.Services
                                     _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == photo.OwnerId).FirstOrDefault() != null
                                 ),
                                 likes,
-                                comments
+                                comments,
+                                _tagsMapper.MapRange(_unitOfWork.Tagings.Find(t => t.PhotoId == photo.Id).Select(t => t.Tag))
                     );
                 }
                 return null;
@@ -418,7 +430,8 @@ namespace PhotoHub.BLL.Services
                                 _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == photo.OwnerId).FirstOrDefault() != null
                         ),
                         likes,
-                        comments));
+                        comments,
+                        _tagsMapper.MapRange(_unitOfWork.Tagings.Find(t => t.PhotoId == photo.Id).Select(t => t.Tag))));
                 }
             }
 
@@ -471,7 +484,8 @@ namespace PhotoHub.BLL.Services
                             false, false, false
                         ),
                         likes,
-                        comments));
+                        comments,
+                        _tagsMapper.MapRange(_unitOfWork.Tagings.Find(t => t.PhotoId == photo.Id).Select(t => t.Tag))));
                 }
             }
             else
@@ -519,7 +533,8 @@ namespace PhotoHub.BLL.Services
                                     _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == photo.OwnerId).FirstOrDefault() != null
                             ),
                             likes,
-                            comments));
+                            comments,
+                            _tagsMapper.MapRange(_unitOfWork.Tagings.Find(t => t.PhotoId == photo.Id).Select(t => t.Tag))));
                     }
                 }
             }
@@ -530,13 +545,7 @@ namespace PhotoHub.BLL.Services
         public IEnumerable<PhotoDTO> GetBookmarks(int page, int pageSize)
         {
             ApplicationUser currentUser = CurrentUser;
-            IEnumerable<Bookmark> bookmarks = _unitOfWork.Bookmarks.Find(b => b.UserId == currentUser.Id).OrderByDescending(b => b.Date);
-            List<Photo> photos = new List<Photo>();
-
-            foreach (var bookmark in bookmarks)
-                photos.Add(bookmark.Photo);
-
-            photos.Skip(page * pageSize).Take(pageSize);
+            IEnumerable<Photo> photos = _unitOfWork.Bookmarks.Find(b => b.UserId == currentUser.Id).OrderByDescending(b => b.Date).Select(b => b.Photo).Skip(page * pageSize).Take(pageSize);
 
             List<PhotoDTO> photoDTOs = new List<PhotoDTO>(pageSize);
 
@@ -583,14 +592,76 @@ namespace PhotoHub.BLL.Services
                                 _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == photo.OwnerId).FirstOrDefault() != null
                         ),
                         likes,
-                        comments));
+                        comments,
+                        _tagsMapper.MapRange(_unitOfWork.Tagings.Find(t => t.PhotoId == photo.Id).Select(t => t.Tag))));
                 }
             }
 
             return photoDTOs;
         }
 
-        public IEnumerable<PhotoDTO> Search(int page, string search, int pageSize, int iso, int exposure, int aperture)
+        public IEnumerable<PhotoDTO> GetTags(int tagId, int page, int pageSize)
+        {
+            ApplicationUser currentUser = CurrentUser;
+            if (_unitOfWork.Tags.Find(t => t.Id == tagId).FirstOrDefault() == null)
+                return null;
+
+            IEnumerable<Photo> photos = _unitOfWork.Tagings.Find(t => t.TagId == tagId).Select(t => t.Photo).OrderByDescending(p => p.Date).Skip(page * pageSize).Take(pageSize);
+
+            List<PhotoDTO> photoDTOs = new List<PhotoDTO>(pageSize);
+
+            foreach (Photo photo in photos)
+            {
+                if (_unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == photo.OwnerId).FirstOrDefault() == null)
+                {
+                    List<LikeDTO> likes = new List<LikeDTO>(photo.Likes.Count);
+                    foreach (Like like in photo.Likes)
+                    {
+                        likes.Add(_likesMapper.Map(like,
+                            _usersMapper.Map(
+                                like.Owner,
+                                _unitOfWork.Confirmations.Find(c => c.UserId == like.OwnerId).FirstOrDefault() != null,
+                                _unitOfWork.Followings.Find(f => f.FollowedUserId == like.OwnerId && f.UserId == currentUser.Id).FirstOrDefault() != null,
+                                _unitOfWork.Blockings.Find(b => b.BlockedUserId == like.OwnerId && b.UserId == currentUser.Id).FirstOrDefault() != null,
+                                _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == currentUser.Id).FirstOrDefault() != null
+                        )));
+                    }
+
+                    List<CommentDTO> comments = new List<CommentDTO>(photo.Comments.Count);
+                    foreach (Comment comment in photo.Comments)
+                    {
+                        comments.Add(_commentsMapper.Map(
+                            comment,
+                            _usersMapper.Map(
+                                comment.Owner,
+                                _unitOfWork.Confirmations.Find(c => c.UserId == comment.OwnerId).FirstOrDefault() != null,
+                                _unitOfWork.Followings.Find(f => f.FollowedUserId == comment.OwnerId && f.UserId == currentUser.Id).FirstOrDefault() != null,
+                                _unitOfWork.Blockings.Find(b => b.BlockedUserId == comment.OwnerId && b.UserId == currentUser.Id).FirstOrDefault() != null,
+                                _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == currentUser.Id).FirstOrDefault() != null
+                        )));
+                    }
+
+                    photoDTOs.Add(_photosMapper.Map(
+                        photo,
+                        _unitOfWork.Likes.Find(l => l.OwnerId == currentUser.Id && l.PhotoId == photo.Id).FirstOrDefault() != null,
+                        _unitOfWork.Bookmarks.Find(b => b.UserId == currentUser.Id && b.PhotoId == photo.Id).FirstOrDefault() != null,
+                        _usersMapper.Map(
+                            photo.Owner,
+                            _unitOfWork.Confirmations.Find(c => c.UserId == photo.OwnerId).FirstOrDefault() != null,
+                            _unitOfWork.Followings.Find(f => f.FollowedUserId == photo.OwnerId && f.UserId == currentUser.Id).FirstOrDefault() != null,
+                            _unitOfWork.Blockings.Find(b => b.BlockedUserId == photo.OwnerId && b.UserId == currentUser.Id).FirstOrDefault() != null,
+                                _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == photo.OwnerId).FirstOrDefault() != null
+                        ),
+                        likes,
+                        comments,
+                        _tagsMapper.MapRange(_unitOfWork.Tagings.Find(t => t.PhotoId == photo.Id).Select(t => t.Tag))));
+                }
+            }
+
+            return photoDTOs;
+        }
+
+        public IEnumerable<PhotoDTO> Search(int page, string search, int pageSize, int iso, int exposure, int aperture, double focalLength)
         {
             ApplicationUser currentUser = CurrentUser;
             IEnumerable<Photo> photos;
@@ -659,7 +730,8 @@ namespace PhotoHub.BLL.Services
                                 _unitOfWork.Blockings.Find(b => b.BlockedUserId == currentUser.Id && b.UserId == photo.OwnerId).FirstOrDefault() != null
                         ),
                         likes,
-                        comments));
+                        comments,
+                        _tagsMapper.MapRange(_unitOfWork.Tagings.Find(t => t.PhotoId == photo.Id).Select(t => t.Tag))));
                 }
             }
 
@@ -724,7 +796,7 @@ namespace PhotoHub.BLL.Services
             }
         }
 
-        public int Create(string filter, string description, string path, string manufacturer, string model, string iso, string exposure, string aperture, double focalLength)
+        public int Create(string filter, string description, string path, string manufacturer, string model, string iso, string exposure, string aperture, double focalLength, string tags)
         {
             Photo photo = new Photo()
             {
@@ -754,15 +826,33 @@ namespace PhotoHub.BLL.Services
             if (pexposure != null)
                 photo.ExposureId = pexposure.Id;
 
-            if (focalLength > 0)
+            if (focalLength >= 3)
                 photo.FocalLength = focalLength;
+            else
+                photo.FocalLength = 0;
+
+            if (!String.IsNullOrEmpty(tags))
+            {
+                foreach (string tag in _tagParser.Parse(tags, _unitOfWork.Tags.GetAll()))
+                {
+                    Tag tg = _unitOfWork.Tags.Find(t => t.Name == tag).FirstOrDefault();
+                    if (tg != null)
+                    {
+                        _unitOfWork.Tagings.Create(new Taging()
+                        {
+                            TagId = tg.Id,
+                            PhotoId = photo.Id
+                        });
+                    }
+                }
+            }
 
             _unitOfWork.Photos.Create(photo);
             _unitOfWork.Save();
 
             return photo.Id;
         }
-        public async ValueTask<int> CreateAsync(string filter, string description, string path, string manufacturer, string model, string iso, string exposure, string aperture, double focalLength)
+        public async ValueTask<int> CreateAsync(string filter, string description, string path, string manufacturer, string model, string iso, string exposure, string aperture, double focalLength, string tags)
         {
             Photo photo = new Photo()
             {
@@ -792,16 +882,35 @@ namespace PhotoHub.BLL.Services
             if (pexposure != null)
                 photo.ExposureId = pexposure.Id;
 
-            if (focalLength > 0)
+            if (focalLength >= 3)
                 photo.FocalLength = focalLength;
+            else
+                photo.FocalLength = 0;
 
             await _unitOfWork.Photos.CreateAsync(photo);
+
+            if (!String.IsNullOrEmpty(tags))
+            {
+                foreach (string tag in _tagParser.Parse(tags, _unitOfWork.Tags.GetAll()))
+                {
+                    Tag tg = _unitOfWork.Tags.Find(t => t.Name == tag).FirstOrDefault();
+                    if (tg != null)
+                    {
+                        await _unitOfWork.Tagings.CreateAsync(new Taging()
+                        {
+                            TagId = tg.Id,
+                            PhotoId = photo.Id
+                        });
+                    }
+                }
+            }
+
             await _unitOfWork.SaveAsync();
 
             return photo.Id;
         }
 
-        public void Edit(int id, string filter, string description, string iso, string exposure, string aperture, double focalLength)
+        public void Edit(int id, string filter, string description, string iso, string exposure, string aperture, double focalLength, string tags)
         {
             Photo photo = _unitOfWork.Photos.Get(id);
 
@@ -824,17 +933,38 @@ namespace PhotoHub.BLL.Services
                 if (pexposure != null && pexposure.Id != photo.ExposureId)
                     photo.ExposureId = pexposure.Id;
 
-                if(focalLength > 0 && focalLength != photo.FocalLength)
+                if (focalLength >= 3 && focalLength != photo.FocalLength)
                     photo.FocalLength = focalLength;
+                else if (focalLength < 3)
+                    photo.FocalLength = 0;
 
-                if (description != null && description != photo.Description)
+                if (description != photo.Description)
                     photo.Description = description;
+
+                foreach (Taging taging in _unitOfWork.Tagings.Find(t => t.PhotoId == photo.Id))
+                    _unitOfWork.Tagings.Delete(taging.Id);
+
+                if (!String.IsNullOrEmpty(tags))
+                {
+                    foreach (string tag in _tagParser.Parse(tags, _unitOfWork.Tags.GetAll()))
+                    {
+                        Tag tg = _unitOfWork.Tags.Find(t => t.Name == tag).FirstOrDefault();
+                        if (tg != null)
+                        {
+                            _unitOfWork.Tagings.Create(new Taging()
+                            {
+                                TagId = tg.Id,
+                                PhotoId = photo.Id
+                            });
+                        }
+                    }
+                }
 
                 _unitOfWork.Photos.Update(photo);
                 _unitOfWork.Save();
             }
         }
-        public async Task EditAsync(int id, string filter, string description, string iso, string exposure, string aperture, double focalLength)
+        public async Task EditAsync(int id, string filter, string description, string iso, string exposure, string aperture, double focalLength, string tags)
         {
             Photo photo = await _unitOfWork.Photos.GetAsync(id);
 
@@ -857,11 +987,32 @@ namespace PhotoHub.BLL.Services
                 if (pexposure != null && pexposure.Id != photo.ExposureId)
                     photo.ExposureId = pexposure.Id;
 
-                if (focalLength > 0 && focalLength != photo.FocalLength)
+                if (focalLength >= 0 && focalLength != photo.FocalLength)
                     photo.FocalLength = focalLength;
+                else if (focalLength < 3)
+                    photo.FocalLength = 0;
 
-                if (description != null && description != photo.Description)
+                if (description != photo.Description)
                     photo.Description = description;
+
+                foreach (Taging taging in _unitOfWork.Tagings.Find(t => t.PhotoId == photo.Id))
+                    await _unitOfWork.Tagings.DeleteAsync(taging.Id);
+
+                if (!String.IsNullOrEmpty(tags))
+                {
+                    foreach (string tag in _tagParser.Parse(tags, _unitOfWork.Tags.GetAll()))
+                    {
+                        Tag tg = _unitOfWork.Tags.Find(t => t.Name == tag).FirstOrDefault();
+                        if (tg != null)
+                        {
+                            await _unitOfWork.Tagings.CreateAsync(new Taging()
+                            {
+                                TagId = tg.Id,
+                                PhotoId = photo.Id
+                            });
+                        }
+                    }
+                }
 
                 _unitOfWork.Photos.Update(photo);
                 await _unitOfWork.SaveAsync();

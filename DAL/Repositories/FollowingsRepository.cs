@@ -22,6 +22,13 @@ namespace PhotoHub.DAL.Repositories
             _context = context;
         }
 
+        public IEnumerable<Following> GetAll()
+        {
+            return _context.Followings
+                            .Include(c => c.FollowedUser)
+                            .Include(c => c.User);
+        }
+
         public IEnumerable<Following> GetAll(int page, int pageSize)
         {
             return _context.Followings

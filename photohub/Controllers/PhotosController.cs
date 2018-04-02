@@ -41,6 +41,7 @@ namespace PhotoHub.WEB.Controllers
         private readonly IsosMapper _isosMapper;
         private readonly ExposuresMapper _exposuresMapper;
         private readonly AperturesMapper _aperturesMapper;
+        private readonly TagsMapper _tagsMapper;
         #endregion
 
         public PhotosController(IPhotosService photosService, IHostingEnvironment environment)
@@ -53,6 +54,7 @@ namespace PhotoHub.WEB.Controllers
             _isosMapper = new IsosMapper();
             _exposuresMapper = new ExposuresMapper();
             _aperturesMapper = new AperturesMapper();
+            _tagsMapper = new TagsMapper();
         }
 
         [HttpGet, Route("photos")]
@@ -79,12 +81,13 @@ namespace PhotoHub.WEB.Controllers
             ViewBag.Isos = _isosMapper.MapRange(_photosService.Isos);
             ViewBag.Exposures = _exposuresMapper.MapRange(_photosService.Exposures);
             ViewBag.Apertures = _aperturesMapper.MapRange(_photosService.Apertures);
+            //ViewBag.Tags = _tagsMapper.MapRange(_photosService.Tags);
 
             return View(_usersMapper.Map(_photosService.CurrentUserDTO));
         }
         
         [Authorize, HttpPost, ValidateAntiForgeryToken, Route("photos/create")]
-        public async Task<ActionResult> Create([Bind("Description, Filter, Iso, Aperture, Exposure, FocalLength")] PhotoViewModel item, IFormFile file)
+        public async Task<ActionResult> Create([Bind("Description, Filter, Iso, Aperture, Exposure, FocalLength")] PhotoViewModel item, string tags, IFormFile file)
         {
             if (ModelState.IsValid && file.Length > 0)
             {
@@ -176,7 +179,7 @@ namespace PhotoHub.WEB.Controllers
                 }
                 #endregion
 
-                int pid = await _photosService.CreateAsync(item.Filter, item.Description, item.Path, manufacturer, model, item.Iso, item.Exposure, item.Aperture, item.FocalLength);
+                int pid = await _photosService.CreateAsync(item.Filter, item.Description, item.Path, manufacturer, model, item.Iso, item.Exposure, item.Aperture, item.FocalLength, tags);
 
                 return RedirectToAction("Details", "Photos", new { id = pid });
             }
@@ -198,6 +201,7 @@ namespace PhotoHub.WEB.Controllers
                 ViewBag.Isos = _isosMapper.MapRange(_photosService.Isos);
                 ViewBag.Exposures = _exposuresMapper.MapRange(_photosService.Exposures);
                 ViewBag.Apertures = _aperturesMapper.MapRange(_photosService.Apertures);
+                //ViewBag.Tags = _tagsMapper.MapRange(_photosService.Tags);
 
                 return View(_photosMapper.Map(item));
             }
@@ -206,10 +210,10 @@ namespace PhotoHub.WEB.Controllers
         }
         
         [Authorize, HttpPost, ValidateAntiForgeryToken, Route("photos/edit/{id}")]
-        public async Task<ActionResult> Edit([Bind("Id, Filter, Description, Iso, Aperture, Exposure, FocalLength")] PhotoViewModel item)
+        public async Task<ActionResult> Edit([Bind("Id, Filter, Description, Iso, Aperture, Exposure, FocalLength")] PhotoViewModel item, string tags)
         {
             if (ModelState.IsValid)
-                await _photosService.EditAsync(item.Id, item.Filter, item.Description, item.Iso, item.Exposure, item.Aperture, item.FocalLength);
+                await _photosService.EditAsync(item.Id, item.Filter, item.Description, item.Iso, item.Exposure, item.Aperture, item.FocalLength, tags);
 
             return RedirectToAction("Details", "Photos", new { id = item.Id });
         }

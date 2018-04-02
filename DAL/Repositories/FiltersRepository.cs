@@ -22,6 +22,11 @@ namespace PhotoHub.DAL.Repositories
             _context = context;
         }
 
+        public IEnumerable<Filter> GetAll()
+        {
+            return _context.Filters;
+        }
+
         public IEnumerable<Filter> GetAll(int page, int pageSize)
         {
             return _context.Filters.Skip(page * pageSize).Take(pageSize);

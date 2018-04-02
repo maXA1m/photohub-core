@@ -11,6 +11,9 @@ namespace PhotoHub.BLL.Mappers
     {
         public ApertureDTO Map(Aperture item)
         {
+            if (item == null)
+                return null;
+
             return new ApertureDTO()
             {
                 Id = item.Id,
@@ -20,6 +23,9 @@ namespace PhotoHub.BLL.Mappers
 
         public List<ApertureDTO> MapRange(IEnumerable<Aperture> items)
         {
+            if (items == null)
+                return null;
+
             List<ApertureDTO> apertures = new List<ApertureDTO>();
             foreach (Aperture item in items)
             {

@@ -19,6 +19,8 @@ namespace PhotoHub.DAL.Data
         public DbSet<ISO> Isos { get; set; }
         public DbSet<Filter> Filters { get; set; }
         public DbSet<Confirmed> Confirmed { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<Taging> Tagings { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

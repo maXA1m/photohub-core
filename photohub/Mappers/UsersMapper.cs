@@ -14,6 +14,9 @@ namespace PhotoHub.WEB.Mappers
     {
         public UserViewModel Map(UserDTO item)
         {
+            if (item == null)
+                return null;
+
             return new UserViewModel()
             {
                 RealName = item.RealName,
@@ -30,8 +33,10 @@ namespace PhotoHub.WEB.Mappers
         }
         public List<UserViewModel> MapRange(IEnumerable<UserDTO> items)
         {
-            List<UserViewModel> users = new List<UserViewModel>();
+            if (items == null)
+                return null;
 
+            List<UserViewModel> users = new List<UserViewModel>();
             foreach (UserDTO item in items)
             {
                 users.Add(new UserViewModel()

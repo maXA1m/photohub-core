@@ -11,6 +11,9 @@ namespace PhotoHub.WEB.Mappers
     {
         public ApertureViewModel Map(ApertureDTO item)
         {
+            if (item == null)
+                return null;
+
             return new ApertureViewModel()
             {
                 Id = item.Id,
@@ -20,6 +23,9 @@ namespace PhotoHub.WEB.Mappers
 
         public List<ApertureViewModel> MapRange(IEnumerable<ApertureDTO> items)
         {
+            if (items == null)
+                return null;
+
             List<ApertureViewModel> apertures = new List<ApertureViewModel>();
             foreach (ApertureDTO item in items)
             {

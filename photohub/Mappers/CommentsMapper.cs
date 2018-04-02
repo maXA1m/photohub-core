@@ -15,6 +15,9 @@ namespace PhotoHub.WEB.Mappers
 
         public CommentViewModel Map(CommentDTO item)
         {
+            if (item == null)
+                return null;
+
             return new CommentViewModel()
             {
                 Id = item.Id,
@@ -26,8 +29,10 @@ namespace PhotoHub.WEB.Mappers
 
         public List<CommentViewModel> MapRange(IEnumerable<CommentDTO> items)
         {
-            List<CommentViewModel> comments = new List<CommentViewModel>();
+            if (items == null)
+                return null;
 
+            List<CommentViewModel> comments = new List<CommentViewModel>();
             foreach (CommentDTO item in items)
             {
                 comments.Add(new CommentViewModel()

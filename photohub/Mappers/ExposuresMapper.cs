@@ -11,6 +11,9 @@ namespace PhotoHub.WEB.Mappers
     {
         public ExposureViewModel Map(ExposureDTO item)
         {
+            if (item == null)
+                return null;
+
             return new ExposureViewModel()
             {
                 Id = item.Id,
@@ -20,6 +23,9 @@ namespace PhotoHub.WEB.Mappers
 
         public List<ExposureViewModel> MapRange(IEnumerable<ExposureDTO> items)
         {
+            if (items == null)
+                return null;
+
             List<ExposureViewModel> exposures = new List<ExposureViewModel>();
             foreach (ExposureDTO item in items)
             {

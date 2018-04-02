@@ -2,7 +2,7 @@
     el: '#posts',
     data: {
         currentAppUserName: document.querySelector('#body').dataset.appUser,
-        posts: null,
+        posts: [],
 
         page: 0,
         incallback: false,

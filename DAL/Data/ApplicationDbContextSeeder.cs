@@ -244,6 +244,16 @@ namespace PhotoHub.DAL.Data
             new Photo { Path = "example5.jpg", FilterId = 9, Description = "Fifth example", IsoId = 6, ApertureId = 6, ExposureId = 6, FocalLength = 21 },
             new Photo { Path = "example1.jpg", FilterId = 11, Description = "Sixth example", IsoId = 7, ApertureId = 7, ExposureId = 7, FocalLength = 14 }
         };
+        List<Tag> _tags = new List<Tag>(7)
+        {
+            new Tag { Name = "HiRes" },
+            new Tag { Name = "Widescreen" },
+            new Tag { Name = "Horizontal" },
+            new Tag { Name = "Vertical" },
+            new Tag { Name = "Space" },
+            new Tag { Name = "Nature" },
+            new Tag { Name = "City" },
+        };
         #endregion
 
         public ApplicationDbContextSeeder(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
@@ -261,6 +271,8 @@ namespace PhotoHub.DAL.Data
             _context.AddRange(_exposures);
             await _context.SaveChangesAsync();
             _context.AddRange(_apertures);
+            await _context.SaveChangesAsync();
+            _context.AddRange(_tags);
             await _context.SaveChangesAsync();
 
             foreach (ApplicationUser u in _users)

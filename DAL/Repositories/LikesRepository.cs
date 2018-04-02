@@ -21,7 +21,12 @@ namespace PhotoHub.DAL.Repositories
         {
             _context = context;
         }
-        
+
+        public IEnumerable<Like> GetAll()
+        {
+            return _context.Likes.Include(l => l.Owner).OrderBy(l => l.Date);
+        }
+
         public IEnumerable<Like> GetAll(int page, int pageSize)
         {
             return _context.Likes.Include(l => l.Owner).OrderBy(l => l.Date).Skip(page * pageSize).Take(pageSize);

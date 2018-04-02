@@ -13,7 +13,7 @@
         photosTab: {
             search: '',
             active: false,
-            photos: null,
+            photos: [],
             loaded: false,
             incallback: false,
             page: 0
@@ -21,7 +21,7 @@
         usersTab: {
             search: '',
             active: true,
-            users: null,
+            users: [],
             loaded: false,
             incallback: false,
             page: 0

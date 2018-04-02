@@ -2,7 +2,7 @@
     el: '#blocklist',
     data: {
         currentAppUserName: document.querySelector('#body').dataset.appUser,
-        users: null,
+        users: [],
 
         usersLoaded: false,
         incallback: false,

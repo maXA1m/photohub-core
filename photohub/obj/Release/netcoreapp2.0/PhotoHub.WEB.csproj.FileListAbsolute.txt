@@ -14,3 +14,4 @@ C:\Users\maxmi\Desktop\photohub-core\photohub\obj\Release\netcoreapp2.0\PhotoHub
 C:\Users\maxmi\Desktop\photohub-core\photohub\obj\Release\netcoreapp2.0\PhotoHub.WEB.AssemblyInfo.cs
 C:\Users\maxmi\Desktop\photohub-core\photohub\obj\Release\netcoreapp2.0\PhotoHub.WEB.dll
 C:\Users\maxmi\Desktop\photohub-core\photohub\obj\Release\netcoreapp2.0\PhotoHub.WEB.pdb
+C:\Users\maxmi\Desktop\photohub-core\photohub\obj\Release\netcoreapp2.0\PhotoHub.WEB.csproj.CopyComplete

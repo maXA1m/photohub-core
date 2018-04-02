@@ -7,7 +7,7 @@
 }
 
 <div id="bookmarks" class="is-flex" v-cloak>
-    <article class="card is-responsive" v-for="post in posts" v-if="posts != null || posts.length > 0">
+    <article class="card is-responsive" v-for="post in posts" :key="post.$id" v-if="posts != null || posts.length > 0">
         <header class="card-header">
             <p class="card-header-title">
                 <a class="has-text-grey-darker has-text-left has-text-justified" v-bind:href="`/users/${post.owner.userName}`" v-bind:title="post.owner.userName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" v-bind:src="post.owner.avatar" v-bind:alt="post.owner.userName" /></a>
@@ -23,6 +23,10 @@
             <figure class="is-card-image filter" v-bind:class="post.filter">
                 <img v-bind:src="`/data/photos/${post.owner.userName}/${post.path}`" v-bind:alt="`${post.owner.userName} photo with filter`">
             </figure>
+        </div>
+
+        <div class="card-tags-panel">
+            <a class="button is-small is-light" v-bind:href="`/tag/${tag.name}`" v-for="tag in post.tags">{{tag.name}}</a>
         </div>
 
         <div class="card-content">
@@ -56,7 +60,7 @@
     </article>
 
     <!-- Empty -->
-    <div class="empty-container" v-if="posts == null || posts.length <= 0">
+    <div class="empty-container" v-if="(posts == null || posts.length <= 0) && postsLoaded">
         <p>You have no bookmarks</p>
     </div>
 
@@ -69,7 +73,7 @@
                 <a class="close-button" v-on:click="closeLikes" title="Close modal"><i class="fas fa-times"></i></a>
             </header>
             <section class="modal-card-body" v-if="current.likes != null && current.likes.length > 0">
-                <div class="media" v-for="like in current.likes">
+                <div class="media" v-for="like in current.likes" :key="like.$id">
                     <div class="media-left">
                         <a v-bind:href="`/Users/${like.owner.userName}`" class="has-text-black is-doted-end" v-bind:title="like.owner.userName"><b>{{ like.owner.userName }}</b></a>
                     </div>
@@ -102,7 +106,7 @@
             </header>
             <section class="modal-card-body" v-if="current.comments != null && current.comments.length > 0">
                 <div class="content">
-                    <div class="media" v-for="comment in current.comments">
+                    <div class="media" v-for="comment in current.comments" :key="comment.$id">
                         <div class="media-left is-flex is-flex-column">
                             <a v-bind:href="`/users/${comment.owner.userName}`" class="has-text-black" v-bind:title="comment.owner.userName"><b>{{ comment.owner.userName }}</b></a>
                             <small class="has-text-grey">{{ comment.date }}</small>

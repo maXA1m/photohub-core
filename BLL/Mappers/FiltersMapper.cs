@@ -11,6 +11,9 @@ namespace PhotoHub.BLL.Mappers
     {
         public FilterDTO Map(Filter item)
         {
+            if (item == null)
+                return null;
+
             return new FilterDTO()
             {
                 Id = item.Id,
@@ -20,6 +23,9 @@ namespace PhotoHub.BLL.Mappers
 
         public List<FilterDTO> MapRange(IEnumerable<Filter> items)
         {
+            if (items == null)
+                return null;
+
             List<FilterDTO> filters = new List<FilterDTO>();
             foreach (Filter filter in items)
             {

@@ -15,6 +15,9 @@ namespace PhotoHub.WEB.Mappers
 
         public LikeViewModel Map(LikeDTO item)
         {
+            if (item == null)
+                return null;
+
             return new LikeViewModel()
             {
                 Id = item.Id,
@@ -25,8 +28,10 @@ namespace PhotoHub.WEB.Mappers
 
         public List<LikeViewModel> MapRange(IEnumerable<LikeDTO> items)
         {
-            List<LikeViewModel> likes = new List<LikeViewModel>();
+            if (items == null)
+                return null;
 
+            List<LikeViewModel> likes = new List<LikeViewModel>();
             foreach (LikeDTO item in items)
             {
                 likes.Add(new LikeViewModel()

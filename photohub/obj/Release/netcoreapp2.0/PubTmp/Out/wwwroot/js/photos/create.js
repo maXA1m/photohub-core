@@ -4,17 +4,41 @@
         filter: 'pure',
         path: '',
         name: 'Photo name',
+        pickedTags: [],
+        tags: [],
+        sortedTags: [],
+        findTag: null,
+
         submited: false,
         loaded: false,
-        metadataActive: false
+        metadataActive: false,
+        addTagActive: false,
+        message: {
+            status: null,
+            text: null
+        },
     },
     created() {
-
+        this.fetchTags();
     },
     mounted() {
 
     },
     methods: {
+        fetchTags() {
+            nanobar.go(40);
+            this.$http.get(`/api/tags`).then(response => response.json()).then(json => {
+                this.tags = json;
+                this.sortedTags = json;
+
+                nanobar.go(100);
+            },
+            error => {
+                nanobar.go(0);
+                this.message.text = 'error while fetching tags';
+                this.message.status = 'error';
+            });
+        },
         filePreview(event) {
             nanobar.go(40);
 
@@ -49,11 +73,39 @@
                 this.submited = true;
         },
 
+        sortTags() {
+            this.sortedTags = [];
+            for (let i in this.tags) {
+                if (this.tags[i].name == this.findTag)
+                    this.sortedTags.push(this.tags[i]);
+            }
+        },
+
+        addTag(tagName) {
+            if (!this.pickedTags.join().includes(tagName))
+                this.pickedTags.push(tagName);
+
+            this.closeAddTag();
+        },
+        removeTag(tagName) {
+            for (let i in this.pickedTags) {
+                if (this.pickedTags[i] == tagName)
+                    this.pickedTags.splice(i, 1);
+            }
+        },
+
         showMetadata() {
             this.metadataActive = true;
         },
         closeMetadata() {
             this.metadataActive = false;
+        },
+
+        showAddTag() {
+            this.addTagActive = true;
+        },
+        closeAddTag() {
+            this.addTagActive = false;
         },
     }
 });

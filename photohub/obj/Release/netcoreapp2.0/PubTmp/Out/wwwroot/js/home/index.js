@@ -2,7 +2,7 @@
     el: '#posts',
     data: {
         currentAppUserName: document.querySelector('#body').dataset.appUser,
-        posts: null,
+        posts: [],
 
         page: 0,
         incallback: false,
@@ -49,12 +49,12 @@
                     this.incallback = false;
                     this.page++;
                 },
-                    error => {
-                        nanobar.go(0);
-                        this.incallback = false;
-                        this.message.text = 'error while fetching photos';
-                        this.message.status = 'error';
-                    });
+                error => {
+                    nanobar.go(0);
+                    this.incallback = false;
+                    this.message.text = 'error while fetching photos';
+                    this.message.status = 'error';
+                });
             }
         },
 

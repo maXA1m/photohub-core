@@ -14,6 +14,9 @@ namespace PhotoHub.BLL.Mappers
     {
         public UserDetailsDTO Map(ApplicationUser item)
         {
+            if (item == null)
+                return null;
+
             return new UserDetailsDTO()
             {
                 RealName = item.RealName,
@@ -36,6 +39,9 @@ namespace PhotoHub.BLL.Mappers
         }
         public UserDetailsDTO Map(ApplicationUser item, bool confirmed, bool followed, bool blocked, bool iBlocked, ICollection<UserDTO> followings, ICollection<UserDTO> followers, ICollection<UserDTO> mutuals)
         {
+            if (item == null)
+                return null;
+
             return new UserDetailsDTO()
             {
                 RealName = item.RealName,
@@ -59,7 +65,10 @@ namespace PhotoHub.BLL.Mappers
 
         public List<UserDetailsDTO> MapRange(IEnumerable<ApplicationUser> items)
         {
-            throw new NotImplementedException();
+            if (items == null)
+                return null;
+
+            return null;
         }
     }
 }

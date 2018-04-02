@@ -11,6 +11,9 @@ namespace PhotoHub.BLL.Mappers
     {
         public LikeDTO Map(Like item)
         {
+            if (item == null)
+                return null;
+
             return new LikeDTO()
             {
                 Id = item.Id,
@@ -20,6 +23,9 @@ namespace PhotoHub.BLL.Mappers
         }
         public LikeDTO Map(Like item, UserDTO owner)
         {
+            if (item == null)
+                return null;
+
             return new LikeDTO()
             {
                 Id = item.Id,
@@ -31,7 +37,10 @@ namespace PhotoHub.BLL.Mappers
 
         public List<LikeDTO> MapRange(IEnumerable<Like> items)
         {
-            throw new System.NotImplementedException();
+            if (items == null)
+                return null;
+
+            return null;
         }
     }
 }

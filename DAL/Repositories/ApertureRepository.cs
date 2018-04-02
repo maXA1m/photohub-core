@@ -22,6 +22,11 @@ namespace PhotoHub.DAL.Repositories
             _context = context;
         }
 
+        public IEnumerable<Aperture> GetAll()
+        {
+            return _context.Apertures.OrderBy(a => a.Id);
+        }
+
         public IEnumerable<Aperture> GetAll(int page, int pageSize)
         {
             return _context.Apertures.OrderBy(a => a.Id).Skip(page * pageSize).Take(pageSize);

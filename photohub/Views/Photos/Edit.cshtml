@@ -10,7 +10,7 @@
     <script defer src="~/js/photos/edit.js"></script>
 }
 
-<form action="/photos/edit/@Model.Id" class="is-flex is-flex-row is-flex-centered is-flex-wrap" method="POST" id="photosEdit">
+<form action="/photos/edit/@Model.Id" class="is-flex is-flex-row is-flex-centered is-flex-wrap" method="POST" id="photosEdit" data-current-photo-id="@Model.Id">
     @Html.AntiForgeryToken()
 
     <input type="hidden" id="Id" name="Id" value="@Model.Id" />
@@ -30,19 +30,26 @@
             </figure>
         </div>
 
+        <input type="hidden" v-bind:value="pickedTags.join()" name="tags" id="tags" v-bind:class="{'is-display-none': submited}" v-if="post != null"/>
+
+        <div class="card-tags-panel" v-bind:class="{'is-display-none': submited}" v-if="post != null">
+            <a class="button is-small is-light" v-on:click="removeTag(tag)" v-for="tag in pickedTags" v-bind:title="'Remove ' + tag + ' tag'">{{tag}}</a>
+            <a class="button is-small is-light" v-on:click="showAddTag" v-if="pickedTags.length < 5" title="Add tag"><i class="fas fa-plus"></i><span v-if="pickedTags < 1"> Add tag</span></a>
+        </div>
+
         <div class="is-flex is-flex-row is-flex-centered is-flex-wrap" v-bind:class="{'is-display-none': submited}" id="container-filters" data-current-filter-name="@Model.Filter">
             @foreach (var filter in ViewBag.Filters)
-            {
-                <div class="has-margin-10px is-unselectable">
-                    <input class="is-display-none" id="@("filterId" + @filter.Id )" type="radio" name="Filter" value="@filter.Name" v-on:click="pickFilter('@filter.Name')" @( filter.Name == Model.Filter ? "checked" : "" ) />
-                    <label for="@("filterId" + @filter.Id )" class="is-paddingless" title="@filter.Name">
-                        <figure class="filter @filter.Name is-paddingless is-marginless">
-                            <img src="~/data/photos/@Model.Owner.UserName/@Model.Path" alt="@filter.Name filter" class="image is-96x96">
-                        </figure>
-                        <h5 class="has-text-centered has-text-weight-bold">@filter.Name</h5>
-                    </label>
-                </div>
-            }
+        {
+            <div class="has-margin-10px is-unselectable">
+                <input class="is-display-none" id="@("filterId" + @filter.Id )" type="radio" name="Filter" value="@filter.Name" v-on:click="pickFilter('@filter.Name')" @( filter.Name == Model.Filter ? "checked" : "" ) />
+                <label for="@("filterId" + @filter.Id )" class="is-paddingless" title="@filter.Name">
+                    <figure class="filter @filter.Name is-paddingless is-marginless">
+                        <img src="~/data/photos/@Model.Owner.UserName/@Model.Path" alt="@filter.Name filter" class="image is-96x96">
+                    </figure>
+                    <h5 class="has-text-centered has-text-weight-bold">@filter.Name</h5>
+                </label>
+            </div>
+    }
         </div>
 
         <div class="card-content">
@@ -143,9 +150,26 @@
                 </div>
                 <div>
                     <p>Focal length</p>
-                    <input class="input" type="text" placeholder="Focal Length mm" name="FocalLength" id="FocaLength" value="@Model.FocalLength">
+                    <input class="input" type="number" placeholder="Focal Length mm" name="FocalLength" id="FocaLength" value="@Model.FocalLength">
                 </div>
                 <a class="button is-white has-text-grey-darker" title="Close modal" v-on:click="closeMetadata">Close</a>
+            </section>
+        </div>
+    </div>
+    
+    <!-- Modal Tags -->
+    <div class="modal" v-bind:class="{'is-active': addTagActive, 'is-display-none': submited}">
+        <div class="modal-background modal-custom-background" v-on:click="closeAddTag"></div>
+        <div class="modal-card modal-card-custom modal-card-custom-metadata">
+            <header class="modal-card-head">
+                <p class="modal-card-title is-uppercase">Add tag</p>
+                <a class="close-button" v-on:click="closeAddTag" title="Close modal"><i class="fas fa-times"></i></a>
+            </header>
+            <section class="modal-card-body modal-card-body-tags">
+                <div>
+                    <a class="button is-light" v-on:click="addTag(tag.name)" v-for="tag in tags" :key="tag.$id">{{tag.name}}</a>
+                </div>
+                <a class="button is-white has-text-grey-darker close-modal-mobile-button" title="Close modal" v-on:click="closeAddTag">Close</a>
             </section>
         </div>
     </div>

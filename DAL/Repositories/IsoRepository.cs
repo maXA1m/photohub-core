@@ -22,6 +22,11 @@ namespace PhotoHub.DAL.Repositories
             _context = context;
         }
 
+        public IEnumerable<ISO> GetAll()
+        {
+            return _context.Isos.OrderBy(i => i.Id);
+        }
+
         public IEnumerable<ISO> GetAll(int page, int pageSize)
         {
             return _context.Isos.OrderBy(i => i.Id).Skip(page * pageSize).Take(pageSize);

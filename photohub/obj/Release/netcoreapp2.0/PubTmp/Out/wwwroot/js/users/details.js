@@ -4,7 +4,7 @@
         currentAppUserName: document.querySelector('#body').dataset.appUser,
         detailsUserName: document.querySelector('#user').dataset.user,
 
-        posts: null,
+        posts: [],
         user: null,
 
         postsFetch: {
@@ -20,7 +20,7 @@
             text: null
         },
         mutualsActive: false,
-        mutuals: null,
+        mutuals: [],
         modals: {
             likeActive: false,
             commentActive: false,

@@ -22,6 +22,13 @@ namespace PhotoHub.DAL.Repositories
             _context = context;
         }
 
+        public IEnumerable<BlackList> GetAll()
+        {
+            return _context.BlackLists
+                            .Include(c => c.BlockedUser)
+                            .Include(c => c.User);
+        }
+
         public IEnumerable<BlackList> GetAll(int page, int pageSize)
         {
             return _context.BlackLists

@@ -2,7 +2,6 @@
 using System;
 using System.Threading.Tasks;
 #endregion
-
 #region using PhotoHub.DAL
 using PhotoHub.DAL.Entities;
 #endregion
@@ -23,6 +22,8 @@ namespace PhotoHub.DAL.Interfaces
         IRepository<BlackList> Blockings { get; }
         IRepository<Bookmark> Bookmarks { get; }
         IRepository<Filter> Filters { get; }
+        IRepository<Tag> Tags { get; }
+        IRepository<Taging> Tagings { get; }
 
         void Save();
         Task SaveAsync();

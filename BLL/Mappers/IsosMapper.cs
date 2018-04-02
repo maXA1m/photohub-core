@@ -11,6 +11,9 @@ namespace PhotoHub.BLL.Mappers
     {
         public IsoDTO Map(ISO item)
         {
+            if (item == null)
+                return null;
+
             return new IsoDTO()
             {
                 Id = item.Id,
@@ -20,6 +23,9 @@ namespace PhotoHub.BLL.Mappers
 
         public List<IsoDTO> MapRange(IEnumerable<ISO> items)
         {
+            if (items == null)
+                return null;
+
             List<IsoDTO> isos = new List<IsoDTO>();
             foreach (ISO item in items)
             {

@@ -82,6 +82,7 @@ namespace PhotoHub.WEB
             services.AddScoped<ILikesService, LikesService>();
             services.AddScoped<IPhotosService, PhotosService>();
             services.AddScoped<IUsersService, UsersService>();
+            services.AddScoped<ITagsService, TagsService>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

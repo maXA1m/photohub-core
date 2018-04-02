@@ -22,6 +22,21 @@ namespace PhotoHub.DAL.Repositories
             _context = context;
         }
 
+        public IEnumerable<Photo> GetAll()
+        {
+            return _context.Photos
+                    .Include(p => p.Owner)
+                    .Include(p => p.Filter)
+                    .Include(p => p.Aperture)
+                    .Include(p => p.Exposure)
+                    .Include(p => p.Iso)
+                    .Include(p => p.Comments)
+                        .ThenInclude(c => c.Owner)
+                    .Include(p => p.Likes)
+                        .ThenInclude(l => l.Owner)
+                    .OrderByDescending(p => p.Date);
+        }
+
         public IEnumerable<Photo> GetAll(int page, int pageSize)
         {
             return _context.Photos

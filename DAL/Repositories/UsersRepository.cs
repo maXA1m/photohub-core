@@ -22,6 +22,10 @@ namespace PhotoHub.DAL.Repositories
             _context = context;
         }
 
+        public IEnumerable<ApplicationUser> GetAll()
+        {
+            return _context.Users;
+        }
 
         public IEnumerable<ApplicationUser> GetAll(int page, int pageSize)
         {

@@ -19,6 +19,7 @@ namespace PhotoHub.WEB.Controllers
         private readonly IsosMapper _isosMapper;
         private readonly ExposuresMapper _exposuresMapper;
         private readonly AperturesMapper _aperturesMapper;
+        private readonly TagsMapper _tagsMapper;
         #endregion
 
         public HomeController(IPhotosService photosService)
@@ -27,6 +28,7 @@ namespace PhotoHub.WEB.Controllers
             _isosMapper = new IsosMapper();
             _exposuresMapper = new ExposuresMapper();
             _aperturesMapper = new AperturesMapper();
+            _tagsMapper = new TagsMapper();
         }
 
         [Route("")]
@@ -44,6 +46,7 @@ namespace PhotoHub.WEB.Controllers
             ViewBag.Isos = _isosMapper.MapRange(_photosService.Isos);
             ViewBag.Exposures = _exposuresMapper.MapRange(_photosService.Exposures);
             ViewBag.Apertures = _aperturesMapper.MapRange(_photosService.Apertures);
+            ViewBag.Tags = _tagsMapper.MapRange(_photosService.Tags);
 
             return View();
         }

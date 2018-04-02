@@ -15,16 +15,21 @@ namespace PhotoHub.WEB.Mappers
         private readonly UsersMapper _usersMapper;
         private readonly CommentsMapper _commentsMapper;
         private readonly LikesMapper _likesMapper;
+        private readonly TagsMapper _tagsMapper;
 
         public PhotosMapper()
         {
             _usersMapper = new UsersMapper();
             _commentsMapper = new CommentsMapper();
             _likesMapper = new LikesMapper();
+            _tagsMapper = new TagsMapper();
         }
 
         public PhotoViewModel Map(PhotoDTO item)
         {
+            if (item == null)
+                return null;
+
             return new PhotoViewModel()
             {
                 Id = item.Id,
@@ -46,14 +51,17 @@ namespace PhotoHub.WEB.Mappers
                 FocalLength = item.FocalLength,
 
                 Likes = _likesMapper.MapRange(item.Likes),
-                Comments = _commentsMapper.MapRange(item.Comments)
+                Comments = _commentsMapper.MapRange(item.Comments),
+                Tags = _tagsMapper.MapRange(item.Tags)
             };
         }
 
         public List<PhotoViewModel> MapRange(IEnumerable<PhotoDTO> items)
         {
-            List<PhotoViewModel> photos = new List<PhotoViewModel>();
+            if (items == null)
+                return null;
 
+            List<PhotoViewModel> photos = new List<PhotoViewModel>();
             foreach(PhotoDTO item in items)
             {
                 photos.Add(new PhotoViewModel()
@@ -77,7 +85,8 @@ namespace PhotoHub.WEB.Mappers
                     FocalLength = item.FocalLength,
 
                     Likes = _likesMapper.MapRange(item.Likes),
-                    Comments = _commentsMapper.MapRange(item.Comments)
+                    Comments = _commentsMapper.MapRange(item.Comments),
+                    Tags = _tagsMapper.MapRange(item.Tags)
                 });
             }
 

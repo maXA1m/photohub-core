@@ -22,6 +22,26 @@ namespace PhotoHub.DAL.Repositories
             _context = context;
         }
 
+        public IEnumerable<Bookmark> GetAll()
+        {
+            return _context.Bookmarks
+                    .Include(b => b.User)
+                    .Include(b => b.Photo)
+                        .ThenInclude(p => p.Comments)
+                    .Include(b => b.Photo)
+                        .ThenInclude(p => p.Likes)
+                    .Include(b => b.Photo)
+                        .ThenInclude(p => p.Owner)
+                    .Include(b => b.Photo)
+                        .ThenInclude(p => p.Filter)
+                    .Include(b => b.Photo)
+                        .ThenInclude(p => p.Aperture)
+                    .Include(b => b.Photo)
+                        .ThenInclude(p => p.Exposure)
+                    .Include(b => b.Photo)
+                        .ThenInclude(p => p.Iso);
+        }
+
         public IEnumerable<Bookmark> GetAll(int page, int pageSize)
         {
             return _context.Bookmarks

@@ -302,6 +302,25 @@ h1 {
     max-width: 90vw !important;
 }
 
+.card-tags-panel {
+    margin: 0 5px 0 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.card-tags-panel a {
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+.card-content {
+    padding-top: 5px;
+}
+
 .card-loading .is-filters-picker, 
 .card-loading .card-footer {
     display: none !important;
@@ -339,6 +358,10 @@ h1 {
         border-top: 1px solid #ddd;
         border-radius: 0 !important;
         margin-bottom: 25px !important;
+    }
+
+    .card-tags-panel {
+        justify-content: flex-start;
     }
 
     /*  Responsive width 40% of screen  */
@@ -787,5 +810,28 @@ form.adaptive-form div.field {
 @media (max-width: 736px) {
     #content-photo-details {
         padding: 2vh 4vw 2vh 4vw;
+    }
+}
+
+/*  Styles for add tags modal  */
+.modal-card-body-tags {
+
+}
+
+.modal-card-body-tags > input {
+    margin-bottom: 5px;
+}
+    
+.modal-card-body-tags > div > a {
+    margin: 3px;
+}
+
+@media (max-width: 736px) {
+    .modal-card-body-tags {
+        padding: 0 !important;
+    }
+    
+    .modal-card-body-tags > div {
+        margin-bottom: 5px;
     }
 }

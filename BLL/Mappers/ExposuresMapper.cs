@@ -11,6 +11,9 @@ namespace PhotoHub.BLL.Mappers
     {
         public ExposureDTO Map(Exposure item)
         {
+            if (item == null)
+                return null;
+
             return new ExposureDTO()
             {
                 Id = item.Id,
@@ -20,6 +23,9 @@ namespace PhotoHub.BLL.Mappers
 
         public List<ExposureDTO> MapRange(IEnumerable<Exposure> items)
         {
+            if (items == null)
+                return null;
+
             List<ExposureDTO> exposures = new List<ExposureDTO>();
             foreach (Exposure item in items)
             {
