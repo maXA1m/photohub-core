@@ -9,17 +9,16 @@
 }
 
 <div id="search" class="container is-flex is-flex-centered is-flex-column" v-cloak>
-    <div class="field has-addons" id="search-buttons-panel">
-        <p class="control">
-            <a class="button" v-on:click="showUsers" v-bind:class="{'is-warning': usersTab.active}">
-                <span>Users</span>
-            </a>
-        </p>
-        <p class="control">
-            <a class="button" v-on:click="showPhotos" v-bind:class="{'is-warning': photosTab.active}">
-                <span>Photos</span>
-            </a>
-        </p>
+    <div class="buttons" id="search-buttons-panel">
+        <a class="button is-rounded" v-on:click="showUsers" v-bind:class="{'is-light': usersTab.active}">
+            <span>Users</span>
+        </a>
+        <a class="button is-rounded" v-on:click="showPhotos" v-bind:class="{'is-light': photosTab.active}">
+            <span>Photos</span>
+        </a>
+        <a class="button is-rounded" v-on:click="showTags" v-bind:class="{'is-light': tagsTab.active}">
+            <span>Tags</span>
+        </a>
     </div>
 
     <div class="field is-grouped search-field" v-if="usersTab.active">
@@ -43,8 +42,18 @@
             </button>
         </p>
     </div>
+    
+    <div class="field is-grouped search-field" v-if="tagsTab.active">
+        <p class="control is-expanded">
+            <input class="input" type="text" v-model="tagsTab.search" placeholder="Enter tag name" required>
+        </p>
+    </div>
+    
+    <div id="tags-search-panel" class="buttons" v-bind:class="{'is-display-none': !tagsTab.active}" v-if="tagsTab.active">
+        <a class="button is-light" v-bind:href="'/tag/'+tag.name" v-bind:title="tag.name" v-for="tag in filteredTags" :key="tag.$id">{{tag.name}}</a>
+    </div>
 
-    <div id="photos-search-panel" v-bind:class="{'is-display-none': usersTab.active}">
+    <div id="photos-search-panel" v-bind:class="{'is-display-none': !photosTab.active}">
         <div class="select">
             <select id="Iso" name="Iso" v-model="iso">
                 <option value="0" disabled>ISO</option>
@@ -272,9 +281,24 @@
     <div class="empty-container" v-if="!photosTab.incallback && photosTab.active && (photosTab.photos == null || photosTab.photos.length <= 0)">
         <p>Can't find photo</p>
     </div>
+        
+    <!-- Empty tags -->
+    <div class="empty-container" v-if="tagsTab.active && (tagsTab.tags == null || tagsTab.tags.length <= 0 || filteredTags.length <= 0)">
+        <p>Can't find tag</p>
+    </div>
 
     <!--  Loading  -->
-    <div class="empty-container" v-if="photosTab.incallback || usersTab.incallback">
+    <div class="empty-container" v-if="usersTab.active && usersTab.incallback">
+        <p>Loading...</p>
+    </div>
+
+    <!--  Loading  -->
+    <div class="empty-container" v-if="photosTab.active && photosTab.incallback">
+        <p>Loading...</p>
+    </div>
+
+    <!--  Loading  -->
+    <div class="empty-container" v-if="tagsTab.active && tagsTab.incallback">
         <p>Loading...</p>
     </div>
 

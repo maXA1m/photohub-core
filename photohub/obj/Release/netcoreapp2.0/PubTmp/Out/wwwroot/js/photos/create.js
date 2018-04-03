@@ -6,7 +6,6 @@
         name: 'Photo name',
         pickedTags: [],
         tags: [],
-        sortedTags: [],
         findTag: null,
 
         submited: false,
@@ -23,6 +22,17 @@
     },
     mounted() {
 
+    },
+    computed: {
+        filteredTags() {
+            if (this.findTag) {
+                return this.tags.filter(t => {
+                    return t.name.toLowerCase().includes(this.findTag.toLowerCase())
+                });
+            }
+
+            return this.tags;
+        }
     },
     methods: {
         fetchTags() {
@@ -73,12 +83,23 @@
                 this.submited = true;
         },
 
-        sortTags() {
-            this.sortedTags = [];
-            for (let i in this.tags) {
-                if (this.tags[i].name == this.findTag)
-                    this.sortedTags.push(this.tags[i]);
+        findTagEnter(event) {
+            event.preventDefault();
+
+            let tags;
+
+            if (this.findTag) {
+                tags = this.tags.filter(t => {
+                    return t.name.toLowerCase().includes(this.findTag.toLowerCase())
+                });
             }
+            else {
+                tags = this.tags;
+            }
+            
+            this.addTag(tags[0].name);
+            this.findTag = '';
+            this.closeAddTag();
         },
 
         addTag(tagName) {
@@ -103,6 +124,7 @@
 
         showAddTag() {
             this.addTagActive = true;
+            document.getElementById('findTagInput').focus();
         },
         closeAddTag() {
             this.addTagActive = false;

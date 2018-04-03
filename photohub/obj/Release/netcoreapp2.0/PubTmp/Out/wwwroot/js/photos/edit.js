@@ -6,6 +6,8 @@
         tags: [],
         post: null,
         pickedTags: [],
+        tags: [],
+        findTag: null,
 
         submited: false,
         metadataActive: false,
@@ -21,6 +23,17 @@
     },
     mounted() {
 
+    },
+    computed: {
+        filteredTags() {
+            if (this.findTag) {
+                return this.tags.filter(t => {
+                    return t.name.toLowerCase().includes(this.findTag.toLowerCase())
+                });
+            }
+
+            return this.tags;
+        }
     },
     methods: {
         fetchPhoto() {
@@ -48,11 +61,30 @@
                 this.message.status = 'error';
             });
         },
-        pickFilter: function (f) {
+        pickFilter(f) {
             this.filter = f;
         },
         submit() {
             this.submited = true;
+        },
+
+        findTagEnter(event) {
+            event.preventDefault();
+
+            let tags;
+
+            if (this.findTag) {
+                tags = this.tags.filter(t => {
+                    return t.name.toLowerCase().includes(this.findTag.toLowerCase())
+                });
+            }
+            else {
+                tags = this.tags;
+            }
+
+            this.addTag(tags[0].name);
+            this.findTag = '';
+            this.closeAddTag();
         },
 
         addTag(tagName) {
@@ -77,6 +109,8 @@
 
         showAddTag() {
             this.addTagActive = true;
+            console.log(document.getElementById('findTagInput'));
+            document.getElementById('findTagInput').focus();
         },
         closeAddTag() {
             this.addTagActive = false;

@@ -177,7 +177,7 @@
             <section class="modal-card-body modal-card-body-tags">
                 <input class="input" type="text" placeholder="Tag name" id="findTagInput" v-model="findTag" v-on:keydown.enter="findTagEnter" v-on:keyup.enter="findTagEnter" v-on:keydown.space="findTagEnter" v-on:keyup.space="findTagEnter"/>
                 <div>
-                    <a class="button is-light" v-on:click="addTag(tag.name)" v-for="tag in filteredTags" :key="tag.$id">{{tag.name}}</a>
+                    <a class="button is-light" v-on:click="addTag(tag.name)" v-bind:title="tag.name" v-for="tag in filteredTags" :key="tag.$id">{{tag.name}}</a>
                 </div>
                 <a class="button is-white has-text-grey-darker close-modal-mobile-button" title="Close modal" v-on:click="closeAddTag">Close</a>
             </section>

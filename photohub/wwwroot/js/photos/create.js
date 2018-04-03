@@ -39,7 +39,6 @@
             nanobar.go(40);
             this.$http.get(`/api/tags`).then(response => response.json()).then(json => {
                 this.tags = json;
-                this.sortedTags = json;
 
                 nanobar.go(100);
             },
