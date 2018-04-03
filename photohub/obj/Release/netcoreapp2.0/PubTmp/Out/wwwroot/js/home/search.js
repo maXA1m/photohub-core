@@ -18,6 +18,11 @@
             incallback: false,
             page: 0
         },
+        tagsTab: {
+            search: '',
+            active: false,
+            tags: []
+        },
         usersTab: {
             search: '',
             active: true,
@@ -42,6 +47,17 @@
     },
     created() {
         this.search();
+    },
+    computed: {
+        filteredTags() {
+            if (this.tagsTab.search) {
+                return this.tagsTab.tags.filter(t => {
+                    return t.name.toLowerCase().includes(this.tagsTab.search.toLowerCase())
+                });
+            }
+
+            return this.tagsTab.tags;
+        }
     },
     methods: {
         search() {
@@ -97,6 +113,20 @@
                         this.message.text = 'error while fetching photos';
                         this.message.status = 'error';
                     });
+            }
+            else if (this.tagsTab.active) {
+                nanobar.go(40);
+
+                this.$http.get(`/api/tags`).then(response => response.json()).then(json => {
+                    this.tagsTab.tags = json;
+
+                    nanobar.go(100);
+                },
+                error => {
+                    nanobar.go(0);
+                    this.message.text = 'error while fetching tags';
+                    this.message.status = 'error';
+                });
             }
         },
         like(post) {
@@ -216,7 +246,7 @@
         },
         copyToClipboard(id) {
             const copyTextArea = document.createElement('textarea');
-            copyTextArea.value = `https://photohub.azurewebsites.net/photos/${id}`;
+            copyTextArea.value = `https://${window.location.hostname}/photos/${id}`;
             document.body.appendChild(copyTextArea);
             copyTextArea.select();
 
@@ -341,16 +371,26 @@
         showUsers() {
             this.usersTab.active = true;
             this.photosTab.active = false;
+            this.tagsTab.active = false;
 
             if(!this.usersTab.users)
                 this.handleSearch();
         },
         showPhotos() {
             this.usersTab.active = false;
+            this.tagsTab.active = false;
             this.photosTab.active = true;
 
-            if (!this.photosTab.photos)
+            if (!this.photosTab.photos || this.photosTab.photos.length <= 0)
                 this.handleSearch();
+        },
+        showTags() {
+            this.usersTab.active = false;
+            this.photosTab.active = false;
+            this.tagsTab.active = true;
+
+            if (!this.tagsTab.tags || this.tagsTab.tags.length <= 0)
+                this.search();
         },
 
         closeLikes() {
