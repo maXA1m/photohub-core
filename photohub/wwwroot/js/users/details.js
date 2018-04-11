@@ -3,6 +3,11 @@
     data: {
         currentAppUserName: document.querySelector('#body').dataset.appUser,
         detailsUserName: document.querySelector('#user').dataset.user,
+        preloader: document.querySelector('#preloader'),
+        message: {
+            element: document.querySelector('#message'),
+            text: document.querySelector('#message .message-text')
+        },
 
         posts: [],
         user: null,
@@ -15,10 +20,6 @@
 
         current: null,
         commenting: false,
-        message: {
-            status: null,
-            text: null
-        },
         mutualsActive: false,
         mutuals: [],
         modals: {
@@ -42,18 +43,21 @@
         fetchUser() {
             this.$http.get(`/api/users/details/${this.detailsUserName}`).then(response => response.json()).then(json => {
                 this.user = json;
-                this.mutuals = this.user.mutuals.slice(0, 3);
+                if (this.user.mutuals != null && this.user.mutuals.length)
+                    this.mutuals = this.user.mutuals.slice(0, 3);
             },
-            error => {
-                this.message.text = 'error while fetching user';
-                this.message.status = 'error';
+                error => {
+                    this.message.text.innerHTML = 'Error while loading user';
+                    this.message.element.setAttribute('data-message-type', 'error');
+                    this.message.element.setAttribute('data-hidden', 'false');
+                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
             });
         },
         fetchPhotos() {
             if (!this.postsFetch.incallback && this.postsFetch.page > -1 && !this.postsFetch.loaded) {
 
                 this.postsFetch.incallback = true;
-                nanobar.go(40);
+                this.preloader.setAttribute('data-hidden', 'false');
 
                 this.$http.get(`/api/photos/user/${this.detailsUserName}/${this.postsFetch.page}`).then(response => response.json()).then(json => {
 
@@ -66,15 +70,17 @@
                             this.posts.push(json[post]);
                     }
 
-                    nanobar.go(100);
+                    this.preloader.setAttribute('data-hidden', 'true');
                     this.postsFetch.incallback = false;
                     this.postsFetch.page++;
                 },
                 error => {
-                    nanobar.go(0);
+                    this.preloader.setAttribute('data-hidden', 'true');
                     this.postsFetch.incallback = false;
-                    this.message.text = 'error while fetching photos';
-                    this.message.status = 'error';
+                    this.message.text.innerHTML = 'Error while loading photos';
+                    this.message.element.setAttribute('data-message-type', 'error');
+                    this.message.element.setAttribute('data-hidden', 'false');
+                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
                 });
             }
         },
@@ -94,8 +100,10 @@
                 this.$http.post(`/api/likes/add/${post.$id}`).then(response => {
 
                 }, response => {
-                    this.message.text = 'error while sending like';
-                    this.message.status = 'error';
+                    this.message.text.innerHTML = 'Error while liking photo';
+                    this.message.element.setAttribute('data-message-type', 'error');
+                    this.message.element.setAttribute('data-hidden', 'false');
+                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
 
                     post.liked = false;
                     for (let i in post.likes) {
@@ -118,8 +126,10 @@
                 this.$http.post(`/api/likes/delete/${post.$id}`).then(response => {
 
                 }, response => {
-                    this.message.text = 'error while sending like';
-                    this.message.status = 'error';
+                    this.message.text.innerHTML = 'Error while disliking photo';
+                    this.message.element.setAttribute('data-message-type', 'error');
+                    this.message.element.setAttribute('data-hidden', 'false');
+                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
 
                     post.liked = true;
                     post.likes.push({
@@ -141,7 +151,7 @@
                 return -1;
 
             this.commenting = true;
-            nanobar.go(40);
+            this.preloader.setAttribute('data-hidden', 'false');
 
             const words = text.split(/[, ;.]/);
 
@@ -165,32 +175,36 @@
 
                     document.querySelector('#comment').value = '';
                     this.commenting = false;
-                    nanobar.go(100);
+                    this.preloader.setAttribute('data-hidden', 'true');
                 }, response => {
-                    this.message.text = 'error while sending comment';
-                    this.message.status = 'error';
+                    this.message.text.innerHTML = 'Error while commenting photo';
+                    this.message.element.setAttribute('data-message-type', 'error');
+                    this.message.element.setAttribute('data-hidden', 'false');
+                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
                     this.commenting = false;
-                    nanobar.go(0);
+                    this.preloader.setAttribute('data-hidden', 'true');
                 });
             }
             else {
-                nanobar.go(0);
+                this.preloader.setAttribute('data-hidden', 'true');
                 this.commenting = false;
             }
         },
         deleteComment(comment) {
             if (comment.owner.userName == this.currentAppUserName) {
-                nanobar.go(60);
+                this.preloader.setAttribute('data-hidden', 'false');
                 this.$http.post(`/api/comments/delete/${comment.$id}`).then(response => {
                     for (let i in this.current.comments) {
                         if (this.current.comments[i].$id == comment.$id)
                             this.current.comments.splice(i, 1);
                     }
-                    nanobar.go(100);
+                    this.preloader.setAttribute('data-hidden', 'true');
                 }, response => {
-                    nanobar.go(0);
-                    this.message.text = 'error while deleting comment';
-                    this.message.status = 'error';
+                    this.preloader.setAttribute('data-hidden', 'true');
+                    this.message.text.innerHTML = 'Error while deleting comment';
+                    this.message.element.setAttribute('data-message-type', 'error');
+                    this.message.element.setAttribute('data-hidden', 'false');
+                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
                 });
             }
         },
@@ -204,6 +218,11 @@
 
             document.body.removeChild(copyTextArea);
             this.closeOptions();
+
+            this.message.text.innerHTML = 'Link copied to clipboard';
+            this.message.element.setAttribute('data-message-type', 'success');
+            this.message.element.setAttribute('data-hidden', 'false');
+            setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 3000);
         },
         autoFetchPhotos() {
             const scrollTop = document.documentElement.scrollTop;
@@ -226,8 +245,10 @@
                 this.$http.post(`/api/users/follow/${this.user.userName}`).then(response => {
 
                 }, response => {
-                    this.message.text = 'error while following';
-                    this.message.status = 'error';
+                    this.message.text.innerHTML = 'Error while following';
+                    this.message.element.setAttribute('data-message-type', 'error');
+                    this.message.element.setAttribute('data-hidden', 'false');
+                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
 
                     this.user.followed = false;
                 });
@@ -243,8 +264,10 @@
                 this.$http.post(`/api/users/dismiss/follow/${this.user.userName}`).then(response => {
 
                 }, response => {
-                    this.message.text = 'error while disfollowing';
-                    this.message.status = 'error';
+                    this.message.text.innerHTML = 'Error while unfollowing';
+                    this.message.element.setAttribute('data-message-type', 'error');
+                    this.message.element.setAttribute('data-hidden', 'false');
+                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
 
                     this.user.followed = true;
                 });
@@ -260,8 +283,10 @@
                 this.$http.post(`/api/users/block/${this.user.userName}`).then(response => {
 
                 }, response => {
-                    this.message.text = 'error while blocking';
-                    this.message.status = 'error';
+                    this.message.text.innerHTML = 'Error while blocking';
+                    this.message.element.setAttribute('data-message-type', 'error');
+                    this.message.element.setAttribute('data-hidden', 'false');
+                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
 
                     this.user.blocked = false;
                 });
@@ -277,8 +302,10 @@
                 this.$http.post(`/api/users/dismiss/block/${this.user.userName}`).then(response => {
 
                 }, response => {
-                    this.message.text = 'error while disblocking';
-                    this.message.status = 'error';
+                    this.message.text.innerHTML = 'Error while unblocking';
+                    this.message.element.setAttribute('data-message-type', 'error');
+                    this.message.element.setAttribute('data-hidden', 'false');
+                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
 
                     this.user.blocked = true;
                 });
@@ -293,10 +320,15 @@
                 post.bookmarked = true;
 
                 this.$http.post(`/api/photos/bookmark/${post.$id}`).then(response => {
-
+                    this.message.text.innerHTML = 'Saved to bookmarks';
+                    this.message.element.setAttribute('data-message-type', 'success');
+                    this.message.element.setAttribute('data-hidden', 'false');
+                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 3000);
                 }, response => {
-                    this.message.text = 'error while bookmarking';
-                    this.message.status = 'error';
+                    this.message.text.innerHTML = 'Error while bookmarking';
+                    this.message.element.setAttribute('data-message-type', 'error');
+                    this.message.element.setAttribute('data-hidden', 'false');
+                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
 
                     post.bookmarked = false;
                 });
@@ -310,10 +342,15 @@
                 post.bookmarked = false;
 
                 this.$http.post(`/api/photos/dismiss/bookmark/${post.$id}`).then(response => {
-
+                    this.message.text.innerHTML = 'Removed from bookmarks';
+                    this.message.element.setAttribute('data-message-type', 'success');
+                    this.message.element.setAttribute('data-hidden', 'false');
+                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 3000);
                 }, response => {
-                    this.message.text = 'error while dismising bookmark';
-                    this.message.status = 'error';
+                    this.message.text.innerHTML = 'Error while deleting bookmark';
+                    this.message.element.setAttribute('data-message-type', 'error');
+                    this.message.element.setAttribute('data-hidden', 'false');
+                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
 
                     post.bookmarked = true;
                 });

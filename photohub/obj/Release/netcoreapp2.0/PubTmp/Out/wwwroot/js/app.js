@@ -1,9 +1,4 @@
-﻿/*     nanobar init     */
-const nanobar = new Nanobar({
-    id: 'nanobar'
-});
-
-/*   navbar vue instance   */
+﻿/*   navbar vue instance   */
 const navbar = new Vue({
     el: '#navbar',
     data: {

@@ -2,15 +2,16 @@
     el: '#photosDetails',
     data: {
         currentAppUserName: document.querySelector('#body').dataset.appUser,
+        preloader: document.querySelector('#preloader'),
         id: document.querySelector('#photosDetails').dataset.postId,
+        message: {
+            element: document.querySelector('#message'),
+            text: document.querySelector('#message .message-text')
+        },
 
         post: null,
 
         commenting: false,
-        message: {
-            status: null,
-            text: null
-        },
         modals: {
             likeActive: false,
             optionActive: false,
@@ -25,17 +26,19 @@
     },
     methods: {
         fetchPhoto() {
-            nanobar.go(40);
+            this.preloader.setAttribute('data-hidden', 'false');
 
             this.$http.get(`/api/photos/details/${this.id}`).then(response => response.json()).then(json => {
                 this.post = json;
 
-                nanobar.go(100);
+                this.preloader.setAttribute('data-hidden', 'true');
             },
             error => {
-                nanobar.go(0);
-                this.message.text = 'error while fetching photo';
-                this.message.status = 'error';
+                this.preloader.setAttribute('data-hidden', 'true');
+                this.message.text.innerHTML = 'Error while loading photos';
+                this.message.element.setAttribute('data-message-type', 'error');
+                this.message.element.setAttribute('data-hidden', 'false');
+                setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
             });
         },
         like() {
@@ -53,8 +56,10 @@
                 this.$http.post(`/api/likes/add/${this.id}`).then(response => {
 
                 }, response => {
-                    this.message.text = 'error while sending like';
-                    this.message.status = 'error';
+                    this.message.text.innerHTML = 'Error while liking photo';
+                    this.message.element.setAttribute('data-message-type', 'error');
+                    this.message.element.setAttribute('data-hidden', 'false');
+                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
 
                     this.post.liked = false;
                     for (let i in this.post.likes) {
@@ -77,8 +82,10 @@
                 this.$http.post(`/api/likes/delete/${this.id}`).then(response => {
 
                 }, response => {
-                    this.message.text = 'error while sending dislike';
-                    this.message.status = 'error';
+                    this.message.text.innerHTML = 'Error while disliking photo';
+                    this.message.element.setAttribute('data-message-type', 'error');
+                    this.message.element.setAttribute('data-hidden', 'false');
+                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
 
                     this.post.liked = true;
                     this.post.likes.push({
@@ -101,7 +108,7 @@
                 return -1;
 
             this.commenting = true;
-            nanobar.go(40);
+            this.preloader.setAttribute('data-hidden', 'false');
 
             const words = text.split(/[, ;.]/);;
 
@@ -125,32 +132,36 @@
 
                     document.querySelector('#comment').value = '';
                     this.commenting = false;
-                    nanobar.go(100);
+                    this.preloader.setAttribute('data-hidden', 'true');
                 }, response => {
-                    this.message.text = 'error while sending comment';
-                    this.message.status = 'error';
+                    this.message.text.innerHTML = 'Error while commenting photo';
+                    this.message.element.setAttribute('data-message-type', 'error');
+                    this.message.element.setAttribute('data-hidden', 'false');
+                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
                     this.commenting = false;
-                    nanobar.go(0);
+                    this.preloader.setAttribute('data-hidden', 'true');
                 });
             }
             else {
-                nanobar.go(0);
+                this.preloader.setAttribute('data-hidden', 'true');
                 this.commenting = false;
             }
         },
         deleteComment(comment) {
             if (comment.owner.userName == this.currentAppUserName) {
-                nanobar.go(60);
+                this.preloader.setAttribute('data-hidden', 'false');
                 this.$http.post(`/api/comments/delete/${comment.$id}`).then(response => {
                     for (let i in this.post.comments) {
                         if (this.post.comments[i].$id == comment.$id)
                             this.post.comments.splice(i, 1);
                     }
-                    nanobar.go(100);
+                    this.preloader.setAttribute('data-hidden', 'true');
                 }, response => {
-                    nanobar.go(0);
-                    this.message.text = 'error while deleting comment';
-                    this.message.status = 'error';
+                    this.preloader.setAttribute('data-hidden', 'true');
+                    this.message.text.innerHTML = 'Error while deleting comment';
+                    this.message.element.setAttribute('data-message-type', 'error');
+                    this.message.element.setAttribute('data-hidden', 'false');
+                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
                 });
             }
         },
@@ -163,10 +174,15 @@
                 this.post.bookmarked = true;
 
                 this.$http.post(`/api/photos/bookmark/${this.post.$id}`).then(response => {
-
+                    this.message.text.innerHTML = 'Saved to bookmarks';
+                    this.message.element.setAttribute('data-message-type', 'success');
+                    this.message.element.setAttribute('data-hidden', 'false');
+                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 3000);
                 }, response => {
-                    this.message.text = 'error while bookmarking';
-                    this.message.status = 'error';
+                    this.message.text.innerHTML = 'Error while bookmarking';
+                    this.message.element.setAttribute('data-message-type', 'error');
+                    this.message.element.setAttribute('data-hidden', 'false');
+                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
 
                     this.post.bookmarked = false;
                 });
@@ -180,10 +196,15 @@
                 this.post.bookmarked = false;
 
                 this.$http.post(`/api/photos/dismiss/bookmark/${this.post.$id}`).then(response => {
-
+                    this.message.text.innerHTML = 'Removed from bookmarks';
+                    this.message.element.setAttribute('data-message-type', 'success');
+                    this.message.element.setAttribute('data-hidden', 'false');
+                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 3000);
                 }, response => {
-                    this.message.text = 'error while dismising bookmark';
-                    this.message.status = 'error';
+                    this.message.text.innerHTML = 'Error while deleting bookmark';
+                    this.message.element.setAttribute('data-message-type', 'error');
+                    this.message.element.setAttribute('data-hidden', 'false');
+                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
 
                     this.post.bookmarked = true;
                 });

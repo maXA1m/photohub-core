@@ -1,6 +1,11 @@
 ﻿const photosCreate = new Vue({
     el: '#photosCreate',
     data: {
+        preloader: document.querySelector('#preloader'),
+        message: {
+            element: document.querySelector('#message'),
+            text: document.querySelector('#message .message-text')
+        },
         filter: 'pure',
         path: '',
         name: 'Photo name',
@@ -11,11 +16,7 @@
         submited: false,
         loaded: false,
         metadataActive: false,
-        addTagActive: false,
-        message: {
-            status: null,
-            text: null
-        },
+        addTagActive: false
     },
     created() {
         this.fetchTags();
@@ -36,38 +37,43 @@
     },
     methods: {
         fetchTags() {
-            nanobar.go(40);
+            this.preloader.setAttribute('data-hidden', 'false');
             this.$http.get(`/api/tags`).then(response => response.json()).then(json => {
                 this.tags = json;
 
-                nanobar.go(100);
+                this.preloader.setAttribute('data-hidden', 'true');
             },
             error => {
-                nanobar.go(0);
-                this.message.text = 'error while fetching tags';
-                this.message.status = 'error';
+                this.preloader.setAttribute('data-hidden', 'true');
+                this.message.text.innerHTML = 'Error while loading tags';
+                this.message.element.setAttribute('data-message-type', 'error');
+                this.message.element.setAttribute('data-hidden', 'false');
+                setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
             });
         },
         filePreview(event) {
-            nanobar.go(40);
+            this.preloader.setAttribute('data-hidden', 'false');
 
             const file = event.target.files[0];
             const imagefile = file.type;
             const match = ['image/jpeg', 'image/png', 'image/jpg', 'image/*'];
 
             if (!((imagefile == match[0]) || (imagefile == match[1]) || (imagefile == match[2]) || (imagefile == match[3]))) {
-                nanobar.go(0);
-                return false;
+                this.preloader.setAttribute('data-hidden', 'true');
+
+                this.message.text.innerHTML = 'Error while uploading photo';
+                this.message.element.setAttribute('data-message-type', 'error');
+                this.message.element.setAttribute('data-hidden', 'false');
+                setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
             }
             else {
-                nanobar.go(70);
                 this.name = file.name;
                 const reader = new FileReader();
                 reader.onload = e => {
                     this.path = e.target.result;
                     this.loaded = true;
                 };
-                nanobar.go(100);
+                this.preloader.setAttribute('data-hidden', 'true');
                 reader.readAsDataURL(file);
             }
         },

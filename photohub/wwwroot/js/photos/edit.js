@@ -2,7 +2,12 @@
     el: '#photosEdit',
     data: {
         filter: document.querySelector('#container-filters').dataset.currentFilterName,
+        preloader: document.querySelector('#preloader'),
         currentPhotoId: document.querySelector('#photosEdit').dataset.currentPhotoId,
+        message: {
+            element: document.querySelector('#message'),
+            text: document.querySelector('#message .message-text')
+        },
         tags: [],
         post: null,
         pickedTags: [],
@@ -11,11 +16,7 @@
 
         submited: false,
         metadataActive: false,
-        addTagActive: false,
-        message: {
-            status: null,
-            text: null
-        },
+        addTagActive: false
     },
     created() {
         this.fetchPhoto();
@@ -37,19 +38,21 @@
     },
     methods: {
         fetchPhoto() {
-            nanobar.go(40);
+            this.preloader.setAttribute('data-hidden', 'false');
             this.$http.get(`/api/photos/details/${this.currentPhotoId}`).then(response => response.json()).then(json => {
                 this.post = json;
 
                 for (let i in json.tags)
                     this.pickedTags.push(json.tags[i].name);
 
-                nanobar.go(100);
+                this.preloader.setAttribute('data-hidden', 'true');
             },
             error => {
-                nanobar.go(0);
-                this.message.text = 'error while fetching photo';
-                this.message.status = 'error';
+                this.preloader.setAttribute('data-hidden', 'true');
+                this.message.text.innerHTML = 'Error while loading photos';
+                this.message.element.setAttribute('data-message-type', 'error');
+                this.message.element.setAttribute('data-hidden', 'false');
+                setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
             });
         },
         fetchTags() {
@@ -57,8 +60,10 @@
                 this.tags = json;
             },
             error => {
-                this.message.text = 'error while fetching tags';
-                this.message.status = 'error';
+                this.message.text.innerHTML = 'Error while loading tags';
+                this.message.element.setAttribute('data-message-type', 'error');
+                this.message.element.setAttribute('data-hidden', 'false');
+                setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
             });
         },
         pickFilter(f) {

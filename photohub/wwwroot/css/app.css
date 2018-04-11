@@ -36,9 +36,61 @@ h1 {
     }
 }
 
+/*  Message panel  */
+#message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    align-content: center;
+    position: fixed;
+    width: 100vw;
+    height: 30px;
+    bottom: 0;
+    left: 0;
+    z-index: 1100;
+    box-shadow: 0 0 60px 0 rgba(0, 0, 0, .27);
+}
+
+#message[data-message-type="error"],
+#message {
+    background: #FF7043;
+    color: #333;
+}
+
+#message[data-message-type="success"] {
+    background: #fff;
+    color: #333;
+}
+
+#message[data-hidden="true"],
+#message {
+    display: none;
+}
+
+#message[data-hidden="false"] {
+    display: flex !important;
+}
+
+#message p.message-text {
+    font-size: 0.8rem;
+    margin: 0;
+    padding: 0;
+}
+
+@media (max-width: 736px) {
+    #message {
+        top: 0;
+        bottom: unset;
+        box-shadow: none;
+    }
+    #message[data-hidden="false"] {
+        border-bottom: 1px solid #ddd;
+    }
+}
+
 /*  Custom styles for modal  */
-.modal-custom-background,
-.modal-options-background {
+.modal-custom-background, .modal-options-background {
     background: rgba(0, 0, 0, .85) !important;
 }
 
@@ -482,6 +534,7 @@ h1 {
     transition: transform .3s;
     transition: transform .3s, -webkit-transform .4s;
     box-shadow: 0 0 60px 0 rgba(0, 0, 0, .17);
+    z-index: 10;
 }
 
 /*  Mobile navbar styles  */
@@ -534,9 +587,95 @@ h1 {
     box-shadow: none;
 }
 
-/*  Nanobar style  */
-.bar {
-    background: #FCDC59;
+/*  Peloader style  */
+#preloader[data-hidden="true"],
+#preloader {
+    display: none;
+}
+
+#preloader[data-hidden="false"] {
+    display: block !important;
+}
+
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 4px;
+    background-color: #ffdd57;
+    z-index: 1200;
+}
+
+#preloader > .bar {
+    content: "";
+    display: inline;
+    position: fixed;
+    width: 0;
+    top: 0;
+    height: 4px;
+    left: 50%;
+    text-align: center;
+}
+
+#preloader > .bar:nth-child(1) {
+    background-color: #fff;
+    animation: loading 2s linear infinite;
+}
+
+#preloader > .bar:nth-child(2) {
+    background-color: #ffdd57;
+    animation: loading 2s linear .66s infinite;
+}
+
+#preloader > .bar:nth-child(3) {
+    background-color: #424242;
+    animation: loading 2s linear 1.4s infinite;
+}
+
+@media (max-width: 736px) {
+    #preloader {
+        height: 6px;
+    }
+
+    #preloader > .bar {
+        height: 6px;
+    }
+
+    #preloader > .bar:nth-child(1) {
+        background-color: #fff;
+        animation: loading 1s linear infinite;
+    }
+
+    #preloader > .bar:nth-child(2) {
+        background-color: #ffdd57;
+        animation: loading 1s linear .33s infinite;
+    }
+
+    #preloader > .bar:nth-child(3) {
+        background-color: #424242;
+        animation: loading 1s linear .7s infinite;
+    }
+}
+
+@keyframes loading {
+    from {
+        left: 50%;
+        width: 0;
+        z-index: 1000;
+    }
+
+    33.3333% {
+        left: 0;
+        width: 100%;
+        z-index: 100;
+    }
+
+    to {
+        left: 0;
+        width: 100%;
+        z-index: 20;
+    }
 }
 
 /*  Filter picker styles  */
@@ -834,4 +973,8 @@ form.adaptive-form div.field {
     .modal-card-body-tags > div {
         margin-bottom: 5px;
     }
+}
+
+.tag {
+    margin-bottom: 3px !important;
 }

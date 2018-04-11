@@ -2,16 +2,16 @@
     el: '#blocklist',
     data: {
         currentAppUserName: document.querySelector('#body').dataset.appUser,
+        preloader: document.querySelector('#preloader'),
+        message: {
+            element: document.querySelector('#message'),
+            text: document.querySelector('#message .message-text')
+        },
         users: [],
 
         usersLoaded: false,
         incallback: false,
-        page: 0,
-
-        message: {
-            text: null,
-            status: null
-        }
+        page: 0
     },
     mounted() {
         window.addEventListener('scroll', this.autoLoad);
@@ -24,7 +24,7 @@
             if (!this.incallback && this.page > -1 && !this.usersLoaded) {
 
                 this.incallback = true;
-                nanobar.go(40);
+                this.preloader.setAttribute('data-hidden', 'false');
 
                 this.$http.get(`/api/users/blocklist/${this.page}`).then(response => response.json()).then(json => {
 
@@ -37,15 +37,17 @@
                             this.users.push(json[user]);
                     }
 
-                    nanobar.go(100);
+                    this.preloader.setAttribute('data-hidden', 'true');
                     this.incallback = false;
                     this.page++;
                 },
                     error => {
-                        nanobar.go(0);
+                        this.preloader.setAttribute('data-hidden', 'true');
                         this.incallback = false;
-                        this.message.text = 'error while fetching users';
-                        this.message.status = 'error';
+                        this.message.text.innerHTML = 'Error while loading users';
+                        this.message.element.setAttribute('data-message-type', 'error');
+                        this.message.element.setAttribute('data-hidden', 'false');
+                        setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
                     });
             }
         },
@@ -70,8 +72,10 @@
                 this.$http.post(`/api/users/block/${user.userName}`).then(response => {
 
                 }, response => {
-                    this.message.text = 'error while blocking';
-                    this.message.status = 'error';
+                    this.message.text.innerHTML = 'Error while blocking user';
+                    this.message.element.setAttribute('data-message-type', 'error');
+                    this.message.element.setAttribute('data-hidden', 'false');
+                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
 
                     user.blocked = false;
                 });
@@ -87,8 +91,10 @@
                 this.$http.post(`/api/users/dismiss/block/${user.userName}`).then(response => {
 
                 }, response => {
-                    this.message.text = 'error while disblocking';
-                    this.message.status = 'error';
+                    this.message.text.innerHTML = 'Error while unblocking user';
+                    this.message.element.setAttribute('data-message-type', 'error');
+                    this.message.element.setAttribute('data-hidden', 'false');
+                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
 
                     user.blocked = true;
                 });

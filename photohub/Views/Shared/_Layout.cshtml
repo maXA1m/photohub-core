@@ -30,7 +30,6 @@
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.4"></script>
 
-    <script defer src="~/lib/nanobar.min.js"></script>
     <script defer src="~/js/app.js"></script>
 
     @RenderSection("Scripts", required: false)
@@ -38,6 +37,19 @@
 </head>
 <body id="body" data-app-user="@( User.Identity.IsAuthenticated ? User.Identity.Name : "" )">
 
+    <!--  Preloader  -->
+    <div id="preloader" data-hidden="true">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+
+    <!--  Panel for messages  -->
+    <div id="message" data-hidden="true" data-message-type="error">
+        <p class="message-text"></p>
+    </div>
+
+    <!--  Desktop navbar  -->
     <nav class="navbar is-unselectable is-fixed-top is-white" v-if="width > 736" v-bind:class="{'is-hidden-navbar': isHidden}" id="navbar">
         <div class="container">
             <!-- v-on:dblclick="toTopPage"-->
@@ -70,6 +82,7 @@
         </div>
     </nav>
 
+    <!--  Mobile navbar  -->
     <nav class="mobile-navbar" v-if="width <= 736">
         @if (User.Identity.IsAuthenticated)
         {
@@ -87,6 +100,7 @@
         }
     </nav>
 
+    <!--  Main content  -->
     <main class="section" id="primary-container">
         <div class="container">
             <h1 class="title is-spaced is-uppercase has-text-centered has-text-weight-bold is-doted-end" title="@ViewBag.Title">@ViewBag.Title</h1>
@@ -94,6 +108,7 @@
         </div>
     </main>
 
+    <!--  Footer  -->
     <footer class="footer" id="footer">
         <div class="container">
             <div class="content has-text-centered">

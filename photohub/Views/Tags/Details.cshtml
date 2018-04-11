@@ -62,6 +62,11 @@
             </div>
         </div>
     </article>
+    
+    <!-- Empty -->
+    <div class="empty-container" v-if="(posts == null || posts.length <= 0) && postsLoaded">
+        <p>Here is no photos</p>
+    </div>
 
     <!-- Modal Likes -->
     <div class="modal" v-bind:class="{'is-active': modals.likeActive}" v-if="current">
