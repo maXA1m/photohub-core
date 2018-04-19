@@ -17,7 +17,8 @@
             </p>
 
             <div class="card-header-icon">
-                <a class="button is-white" title="show options" v-on:click="showOptions(post)"><i class="fas fa-bars"></i></a>
+                <a class="button is-white" title="Share" v-on:click="sharePhoto(post)" v-if="canShare"><i class="fas fa-share-alt"></i></a>
+                <a class="button is-white" title="Copy link to clipboard" v-on:click="copyToClipboard(post.$id)"><i class="far fa-copy"></i></a>
             </div>
         </header>
 
@@ -42,7 +43,7 @@
                 </div>
 
                 <div class="media-right">
-                    <time v-bind:datetime="post.date">{{post.date}}</time>
+                    <a class="photo-card-date" v-bind:href="`/photos/${post.$id}`" title="Go to photo"><time v-bind:datetime="post.date">{{post.date}}</time></a>
                 </div>
             </div>
 
@@ -129,19 +130,9 @@
                 <div class="control" v-if="currentAppUserName" style="width: 100%;">
                     <input class="input" id="comment" type="text" placeholder="Comment photo" v-on:keyup.enter="comment">
                 </div>
-                <button class="button is-warning" v-bind:class="{'is-loading': commenting}" title="Comment photo" style="margin-top: 5px;" v-if="currentAppUserName" v-on:click="comment">Comment</button>
+                <button class="button is-info" v-bind:class="{'is-loading': commenting}" title="Comment photo" style="margin-top: 5px;" v-if="currentAppUserName" v-on:click="comment">Comment</button>
             </footer>
             <a class="button is-white close-modal-mobile-button" title="Close modal" v-on:click="closeComments">Close</a>
-        </div>
-    </div>
-
-    <!-- Modal Options -->
-    <div class="modal" v-bind:class="{'is-active': modals.optionActive}" v-if="posts.length > 0 && current">
-        <div class="modal-background modal-options-background" v-on:click="closeOptions"></div>
-        <div class="content is-flex is-flex-column modal-options-content-custom">
-            <a class="button is-large is-white has-text-grey-darker" title="Copy link to Clipboard" v-on:click="copyToClipboard(current.$id)">Copy link to Clipboard</a>
-            <a class="button is-large is-white has-text-grey-darker" title="Go to photo" v-bind:href="`/photos/${current.$id}`">Go to photo</a>
-            <a class="button is-large is-white has-text-grey-darker" title="Close" v-on:click="closeOptions">Close</a>
         </div>
     </div>
 
@@ -191,7 +182,7 @@
     <div class="is-flex is-flex-centered is-flex-column" v-if="posts.length < 1 && postsLoaded">
         <p class="has-text-centered has-text-weight-light has-text-weight-semibold is-size-5" style="margin-bottom: 10px;">You have no followings, follow on someone to view his new photos!</p>
         <p class="has-text-centered has-text-weight-light is-size-5" style="margin-bottom: 10px;">You can find friends by our search</p>
-        <p class="has-text-centered"><a class="button is-warning is-medium" href="/search" title="Search for People">Search for People</a></p>
+        <p class="has-text-centered"><a class="button is-info is-medium" href="/search" title="Search for People">Search for People</a></p>
     </div>
 
     <button class="button is-uppercase is-responsive" v-bind:class="{'is-loading': incallback}" v-on:click="fetchPhotos" v-if="!postsLoaded && posts.length > 0 && posts.length%8 == 0">Load More</button>

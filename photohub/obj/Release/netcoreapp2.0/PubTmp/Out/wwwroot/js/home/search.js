@@ -10,6 +10,8 @@
         current: null,
         commenting: false,
 
+        canShare: navigator.share,
+
         iso: 0,
         exposure: 0,
         aperture: 0,
@@ -39,7 +41,6 @@
         modals: {
             likeActive: false,
             commentActive: false,
-            optionActive: false,
             metadataActive: false
         }
     },
@@ -264,19 +265,13 @@
         },
         copyToClipboard(id) {
             const copyTextArea = document.createElement('textarea');
-            copyTextArea.value = `https://${window.location.hostname}/photos/${id}`;
+            copyTextArea.value = `https://photoub.azurewebsites.net/photos/${id}`;
             document.body.appendChild(copyTextArea);
             copyTextArea.select();
 
             const successful = document.execCommand('copy');
 
             document.body.removeChild(copyTextArea);
-            this.closeOptions();
-
-            this.message.text.innerHTML = 'Link copied to clipboard';
-            this.message.element.setAttribute('data-message-type', 'success');
-            this.message.element.setAttribute('data-hidden', 'false');
-            setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 3000);
         },
         autoSearch() {
             const scrollTop = document.documentElement.scrollTop;
@@ -354,10 +349,6 @@
 
                 this.$http.post(`/api/photos/bookmark/${post.$id}`).then(response => {
 
-                    this.message.text.innerHTML = 'Saved to bookmarks';
-                    this.message.element.setAttribute('data-message-type', 'success');
-                    this.message.element.setAttribute('data-hidden', 'false');
-                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 3000);
                 }, response => {
 
                     this.message.text.innerHTML = 'Error while bookmarking';
@@ -377,10 +368,7 @@
                 post.bookmarked = false;
 
                 this.$http.post(`/api/photos/dismiss/bookmark/${post.$id}`).then(response => {
-                    this.message.text.innerHTML = 'Removed from bookmarks';
-                    this.message.element.setAttribute('data-message-type', 'success');
-                    this.message.element.setAttribute('data-hidden', 'false');
-                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 3000);
+
                 }, response => {
                     this.message.text.innerHTML = 'Error while deleting bookmark';
                     this.message.element.setAttribute('data-message-type', 'error');
@@ -392,16 +380,24 @@
             }
         },
 
+        sharePhoto(photo) {
+            if (this.canShare) {
+                navigator.share({
+                    title: `${photo.owner.userName}'s photo`,
+                    text: photo.description,
+                    url: `https://photohub.azurewebsites.net/photos/${photo.$id}`,
+                })
+                    .then(() => console.log('Successful share'))
+                    .catch((error) => console.log('Error sharing', error));
+            }
+        },
+
         showLikes(post) {
             this.modals.likeActive = true;
             this.current = post;
         },
         showComments(post) {
             this.modals.commentActive = true;
-            this.current = post;
-        },
-        showOptions(post) {
-            this.modals.optionActive = true;
             this.current = post;
         },
         showMetadata(post) {
@@ -439,9 +435,6 @@
         },
         closeComments() {
             this.modals.commentActive = false;
-        },
-        closeOptions() {
-            this.modals.optionActive = false;
         },
         closeMetadata() {
             this.modals.metadataActive = false;

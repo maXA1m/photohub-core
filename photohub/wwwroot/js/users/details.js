@@ -9,6 +9,8 @@
             text: document.querySelector('#message .message-text')
         },
 
+        canShare: navigator.share,
+
         posts: [],
         user: null,
 
@@ -25,12 +27,14 @@
         modals: {
             likeActive: false,
             commentActive: false,
-            optionActive: false,
             metadataActive: false,
 
             followings: false,
             followers: false
-        }
+        },
+
+        findFollower: '',
+        findFollowing: ''
     },
     created() {
         this.fetchUser();
@@ -38,6 +42,26 @@
     },
     mounted() {
         window.addEventListener('scroll', this.autoFetchPhotos);
+    },
+    computed: {
+        filteredFollowings() {
+            if (this.findFollowing) {
+                return this.user.followings.filter(t => {
+                    return t.userName.toLowerCase().includes(this.findFollowing.toLowerCase())
+                });
+            }
+
+            return this.user.followings;
+        },
+        filteredFollowers() {
+            if (this.findFollower) {
+                return this.user.followers.filter(t => {
+                    return t.userName.toLowerCase().includes(this.findFollower.toLowerCase())
+                });
+            }
+
+            return this.user.followers;
+        }
     },
     methods: {
         fetchUser() {
@@ -210,19 +234,13 @@
         },
         copyToClipboard(id) {
             const copyTextArea = document.createElement('textarea');
-            copyTextArea.value = `https://${window.location.hostname}/photos/${id}`;
+            copyTextArea.value = `https://photohub.azurewebsites.net/photos/${id}`;
             document.body.appendChild(copyTextArea);
             copyTextArea.select();
 
             const successful = document.execCommand('copy');
 
             document.body.removeChild(copyTextArea);
-            this.closeOptions();
-
-            this.message.text.innerHTML = 'Link copied to clipboard';
-            this.message.element.setAttribute('data-message-type', 'success');
-            this.message.element.setAttribute('data-hidden', 'false');
-            setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 3000);
         },
         autoFetchPhotos() {
             const scrollTop = document.documentElement.scrollTop;
@@ -320,10 +338,7 @@
                 post.bookmarked = true;
 
                 this.$http.post(`/api/photos/bookmark/${post.$id}`).then(response => {
-                    this.message.text.innerHTML = 'Saved to bookmarks';
-                    this.message.element.setAttribute('data-message-type', 'success');
-                    this.message.element.setAttribute('data-hidden', 'false');
-                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 3000);
+
                 }, response => {
                     this.message.text.innerHTML = 'Error while bookmarking';
                     this.message.element.setAttribute('data-message-type', 'error');
@@ -342,10 +357,7 @@
                 post.bookmarked = false;
 
                 this.$http.post(`/api/photos/dismiss/bookmark/${post.$id}`).then(response => {
-                    this.message.text.innerHTML = 'Removed from bookmarks';
-                    this.message.element.setAttribute('data-message-type', 'success');
-                    this.message.element.setAttribute('data-hidden', 'false');
-                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 3000);
+
                 }, response => {
                     this.message.text.innerHTML = 'Error while deleting bookmark';
                     this.message.element.setAttribute('data-message-type', 'error');
@@ -354,6 +366,18 @@
 
                     post.bookmarked = true;
                 });
+            }
+        },
+
+        sharePhoto(photo) {
+            if (this.canShare) {
+                navigator.share({
+                    title: `${photo.owner.userName}'s photo`,
+                    text: photo.description,
+                    url: `https://photohub.azurewebsites.net/photos/${photo.$id}`,
+                })
+                    .then(() => console.log('Successful share'))
+                    .catch((error) => console.log('Error sharing', error));
             }
         },
 
@@ -386,10 +410,6 @@
             this.modals.commentActive = true;
             this.current = post;
         },
-        showOptions(post) {
-            this.modals.optionActive = true;
-            this.current = post;
-        },
         showMetadata(post) {
             this.modals.metadataActive = true;
             this.current = post;
@@ -400,9 +420,6 @@
         },
         closeComments() {
             this.modals.commentActive = false;
-        },
-        closeOptions() {
-            this.modals.optionActive = false;
         },
         closeMetadata() {
             this.modals.metadataActive = false;

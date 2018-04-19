@@ -2,7 +2,6 @@
 const navbar = new Vue({
     el: '#navbar',
     data: {
-        navActive: false,
         nav: document.getElementById('navbar'),
         scrolling: false,
         previousTop: 0,
@@ -19,9 +18,6 @@ const navbar = new Vue({
         window.addEventListener('resize', this.onResize)
     },
     methods: {
-        clickNavbar() {
-            this.navActive = this.navActive ? false : true;
-        },
         onResize() {
             this.width = window.innerWidth || document.body.clientWidth;
 

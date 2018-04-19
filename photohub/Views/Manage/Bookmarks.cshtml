@@ -15,7 +15,8 @@
             </p>
 
             <div class="card-header-icon">
-                <a class="button is-white" title="show options" v-on:click="showOptions(post)"><i class="fas fa-bars"></i></a>
+                <a class="button is-white" title="Share" v-on:click="sharePhoto(post)" v-if="canShare"><i class="fas fa-share-alt"></i></a>
+                <a class="button is-white" title="Copy link to clipboard" v-on:click="copyToClipboard(post.$id)"><i class="far fa-copy"></i></a>
             </div>
         </header>
 
@@ -40,7 +41,7 @@
                 </div>
 
                 <div class="media-right">
-                    <time v-bind:datetime="post.date">{{post.date}}</time>
+                    <a class="photo-card-date" v-bind:href="`/photos/${post.$id}`" title="Go to photo"><time v-bind:datetime="post.date">{{post.date}}</time></a>
                 </div>
             </div>
 
@@ -131,19 +132,9 @@
                 <div class="control" v-if="currentAppUserName" style="width: 100%;">
                     <input class="input" id="comment" type="text" placeholder="Comment photo" v-on:keyup.enter="comment">
                 </div>
-                <button class="button is-warning" v-bind:class="{'is-loading': commenting}" style="margin-top: 5px;" title="Comment photo" v-if="currentAppUserName" v-on:click="comment">Comment</button>
+                <button class="button is-info" v-bind:class="{'is-loading': commenting}" style="margin-top: 5px;" title="Comment photo" v-if="currentAppUserName" v-on:click="comment">Comment</button>
             </footer>
             <a class="button is-white close-modal-mobile-button" title="Close modal" v-on:click="closeComments">Close</a>
-        </div>
-    </div>
-
-    <!-- Modal Options -->
-    <div class="modal" v-bind:class="{'is-active': modals.optionActive}" v-if="current">
-        <div class="modal-background modal-options-background" v-on:click="closeOptions"></div>
-        <div class="content is-flex is-flex-column modal-options-content-custom">
-            <a class="button is-large is-white has-text-grey-darker" title="Copy link to Clipboard" v-on:click="copyToClipboard(current.$id)">Copy link to Clipboard</a>
-            <a class="button is-large is-white has-text-grey-darker" title="Go to photo" v-bind:href="`/photos/${current.$id}`">Go to photo</a>
-            <a class="button is-large is-white has-text-grey-darker" title="Close" v-on:click="closeOptions">Close</a>
         </div>
     </div>
 

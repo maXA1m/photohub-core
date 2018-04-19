@@ -11,10 +11,11 @@
 
         post: null,
 
+        canShare: navigator.share,
+
         commenting: false,
         modals: {
             likeActive: false,
-            optionActive: false,
             metadataActive: false
         }
     },
@@ -174,10 +175,7 @@
                 this.post.bookmarked = true;
 
                 this.$http.post(`/api/photos/bookmark/${this.post.$id}`).then(response => {
-                    this.message.text.innerHTML = 'Saved to bookmarks';
-                    this.message.element.setAttribute('data-message-type', 'success');
-                    this.message.element.setAttribute('data-hidden', 'false');
-                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 3000);
+
                 }, response => {
                     this.message.text.innerHTML = 'Error while bookmarking';
                     this.message.element.setAttribute('data-message-type', 'error');
@@ -196,10 +194,7 @@
                 this.post.bookmarked = false;
 
                 this.$http.post(`/api/photos/dismiss/bookmark/${this.post.$id}`).then(response => {
-                    this.message.text.innerHTML = 'Removed from bookmarks';
-                    this.message.element.setAttribute('data-message-type', 'success');
-                    this.message.element.setAttribute('data-hidden', 'false');
-                    setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 3000);
+
                 }, response => {
                     this.message.text.innerHTML = 'Error while deleting bookmark';
                     this.message.element.setAttribute('data-message-type', 'error');
@@ -208,6 +203,28 @@
 
                     this.post.bookmarked = true;
                 });
+            }
+        },
+
+        copyToClipboard() {
+            const copyTextArea = document.createElement('textarea');
+            copyTextArea.value = `https://photohub.azurewebsites.net/photos/${this.post.$id}`;
+            document.body.appendChild(copyTextArea);
+            copyTextArea.select();
+
+            const successful = document.execCommand('copy');
+
+            document.body.removeChild(copyTextArea);
+        },
+        sharePhoto() {
+            if (this.canShare) {
+                navigator.share({
+                    title: `${this.post.owner.userName}'s photo`,
+                    text: this.post.description,
+                    url: `https://photohub.azurewebsites.net/photos/${this.post.$id}`,
+                })
+                    .then(() => console.log('Successful share'))
+                    .catch((error) => console.log('Error sharing', error));
             }
         },
 
@@ -220,9 +237,6 @@
 
         modalLikes() {
             this.modals.likeActive = this.modals.likeActive?false:true;
-        },
-        modalOptions() {
-            this.modals.optionActive = this.modals.optionActive ? false : true;
         },
 
         getCurrentDate() {

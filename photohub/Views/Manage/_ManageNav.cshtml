@@ -5,14 +5,14 @@
 }
 
 <nav class="buttons" id="manage-nav">
-    <a asp-action="Index" class="button is-rounded is-light">Profile</a>
-    <a asp-action="ChangePassword" class="button is-rounded is-light">Password</a>
+    <a asp-action="Index" class="button is-rounded">Profile</a>
+    <a asp-action="ChangePassword" class="button is-rounded">Password</a>
     @if (hasExternalLogins)
     {
-        <a asp-action="ExternalLogins" class="button is-rounded is-light">External logins</a>
+        @*<a asp-action="ExternalLogins" class="button is-rounded">External logins</a>*@
     }
-    <a asp-action="Blocklist" class="button is-rounded is-light" title="Blocklist">Blocklist</a>
-    <a asp-action="Bookmarks" class="button is-rounded is-light" title="Bookmarks">Bookmaks</a>
-    <a @*asp-action="TwoFactorAuthentication" *@ class="button is-rounded is-light" disabled>Two-factor authentication</a>
+    <a asp-action="Blocklist" class="button is-rounded" title="Blocklist">Blocklist</a>
+    <a asp-action="Bookmarks" class="button is-rounded" title="Bookmarks">Bookmaks</a>
+    <a @*asp-action="TwoFactorAuthentication" *@ class="button is-rounded" disabled>Two-factor authentication</a>
 </nav>
 

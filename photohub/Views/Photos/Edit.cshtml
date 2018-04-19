@@ -22,6 +22,10 @@
                 <a class="has-text-grey-darker has-text-left has-text-justified" href="/users/@Model.Owner.UserName" title="@Model.Owner.UserName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" src="@Model.Owner.Avatar" alt="@Model.Owner.UserName" /></a>
                 <a class="has-text-grey-darker has-text-left has-text-justified" href="/users/@Model.Owner.UserName" title="@Model.Owner.UserName">@Model.Owner.UserName</a>
             </p>
+            <div class="card-header-icon">
+                <a class="button is-white" title="Share"><i class="fas fa-share-alt"></i></a>
+                <a class="button is-white" title="Copy link to clipboard"><i class="far fa-copy"></i></a>
+            </div>
         </header>
 
         <div class="card-image">
@@ -64,7 +68,7 @@
                     <a class="button is-light comment-button" title="Comments"><i class="fas fa-comment"></i></a>
                 </div>
                 <div>
-                    <a class="button is-warning" title="Show metadata" v-on:click="showMetadata"><i class="fab fa-medapps"></i></a>
+                    <a class="button is-info" title="Show metadata" v-on:click="showMetadata"><i class="fab fa-medapps"></i></a>
                     <a class="button is-white bookmark-button" title="Save to bookmarks"><i class="far fa-bookmark"></i></a>
                 </div>
             </div>
@@ -72,7 +76,7 @@
 
         <footer class="card-footer">
             <div class="card-footer-item">
-                <button type="submit" class="button is-warning is-uppercase" v-bind:class="{'is-loading': submited}" v-on:click="submit" title="Edit photo">edit</button>
+                <button type="submit" class="button is-info is-uppercase" v-bind:class="{'is-loading': submited}" v-on:click="submit" title="Edit photo">edit</button>
             </div>
         </footer>
     </article>

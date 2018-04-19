@@ -227,7 +227,10 @@ namespace PhotoHub.WEB.Controllers
                 ApplicationUser user =  await _usersService.CreateAsync(model.UserName, model.Email, model.Password);
 
                 if(user == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Enter unique login and email");
                     return View(model);
+                }
 
                 _logger.LogInformation("User created a new account with password.");
 
@@ -296,7 +299,12 @@ namespace PhotoHub.WEB.Controllers
                 ViewData["ReturnUrl"] = returnUrl;
                 ViewData["LoginProvider"] = info.LoginProvider;
                 var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                return View("ExternalLogin", new ExternalLoginViewModel { Email = email });
+
+                string userName = "";
+                if (!String.IsNullOrEmpty(email))
+                    userName = EmailToUserName(email);
+
+                return View("ExternalLogin", new ExternalLoginViewModel { Email = email, UserName = userName });
             }
         }
 
@@ -313,7 +321,7 @@ namespace PhotoHub.WEB.Controllers
                 {
                     throw new ApplicationException("Error loading external login information during confirmation.");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
@@ -460,6 +468,20 @@ namespace PhotoHub.WEB.Controllers
             {
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
+        }
+
+        private string EmailToUserName(string userName)
+        {
+            string result = "";
+            foreach(char c in userName.ToCharArray())
+            {
+                if (c == '@')
+                    break;
+
+                result += c;
+            }
+
+            return result;
         }
 
         #endregion

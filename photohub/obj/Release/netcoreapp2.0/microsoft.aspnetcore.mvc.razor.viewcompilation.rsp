@@ -40,7 +40,6 @@ C:\Users\maxmi\Desktop\photohub-core\photohub
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Photos\Index.cshtml
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Shared\Error.cshtml
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Shared\_Layout.cshtml
---file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Shared\_ValidationScriptsPartial.cshtml
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Tags\Details.cshtml
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Users\Details.cshtml
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\_ViewImports.cshtml

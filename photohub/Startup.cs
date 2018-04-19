@@ -41,6 +41,20 @@ namespace PhotoHub.WEB
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddAuthentication().AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = "898819496715-g0dk8mimqmmsl93c6o3hlm6j65qhahqc.apps.googleusercontent.com";
+                googleOptions.ClientSecret = "JTdwBEP7c0FN5r9Xk1WcMdVm";
+            }).AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = "1458237504267258";
+                facebookOptions.AppSecret = "cb13b1b64b2735b45f3837ecc5f79ad0";
+            }).AddTwitter(twitterOptions =>
+            {
+                twitterOptions.ConsumerKey = "oieC1IDbdXx9dJeWeADGBnYJY";
+                twitterOptions.ConsumerSecret = "tQG8nqAOzlUJqwcZix1yEecKjRAhrAM9jeUZLxFhfI6nvuS59z";
+            });
+
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings

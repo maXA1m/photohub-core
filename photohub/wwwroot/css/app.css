@@ -1,6 +1,6 @@
 ﻿/*  Changes text selection styles  */
 ::selection {
-    background: rgba(252, 220, 89, .85);
+    background: rgba(200, 200, 200, .3);
     color: #333;
 }
 
@@ -147,7 +147,7 @@ h1 {
 .modal-card-custom {
     max-height: 95% !important;
     min-height: 500px !important;
-    border-radius: 5px !important;
+    border-radius: 3px !important;
 }
 
 .modal-card-body,
@@ -326,10 +326,15 @@ h1 {
 .card {
     max-width: none !important;
     margin-bottom: 50px !important;
-    border-radius: 7px;
-    box-shadow: 0 0 50px 0 rgba(0, 0, 0, .17);
+    border-radius: 3px;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.15), 0 10px 10px rgba(0,0,0,0.22);
     margin-bottom: 30px !important;
+
     transition: all ease .3s;
+}
+
+.card.droping {
+    transform: scale(1.1);
 }
 
 .card .card-header-title {
@@ -343,11 +348,19 @@ h1 {
     justify-content: center;
     align-items: center;
     height: 300px !important;
+    transition: all ease .3s;
 }
 
 .card-loading .card-image[preloader] img {
     width: 100px !important;
     height: auto !important;
+    margin-bottom: 15px;
+}
+
+.card-loading .card-image[preloader] p {
+    color: #333;
+    font-size: 1.2rem;
+    font-weight: 600;
 }
 
 .card .file.has-name {
@@ -389,6 +402,19 @@ h1 {
     min-height: 150px;
     height: 100% !important;
     width: 100% !important;
+}
+
+.photo-card-date,
+.photo-card-date:hover,
+.photo-card-date:focus {
+    color: #333;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.photo-card-date:hover,
+.photo-card-date:focus {
+    color: #000;
 }
 
 .card-button-panel {
@@ -434,14 +460,14 @@ h1 {
     margin: 20px 0;
     max-width: 98vw;
     width: 60vw !important;
-    border-radius: 7px;
-    box-shadow: 0 0 20px 0 rgba(0, 0, 0, .15);
+    border-radius: 3px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.09), 0 6px 6px rgba(0,0,0,0.13);
     justify-content: space-between !important;
     transition: all ease .3s;
 }
 
 .search-element:hover {
-    box-shadow: 0 0 20px 0 rgba(0, 0, 0, .30);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
 .search-element a {
@@ -523,7 +549,20 @@ h1 {
 }
 
 /*  Navbar styles  */
-.navbar {
+.desktop-navbar {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
     will-change: transform;
@@ -533,8 +572,25 @@ h1 {
     -o-transition: transform .3s;
     transition: transform .3s;
     transition: transform .3s, -webkit-transform .4s;
-    box-shadow: 0 0 60px 0 rgba(0, 0, 0, .17);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     z-index: 10;
+}
+
+.desktop-navbar b {
+
+}
+
+.desktop-navbar .navbar-item {
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    background: transparent;
+    font-size: 1.2rem;
+}
+
+.desktop-navbar .navbar-item:hover,
+.desktop-navbar .navbar-item:focus {
+    color: #000;
 }
 
 /*  Mobile navbar styles  */
@@ -547,7 +603,6 @@ h1 {
     background: #fff;
     z-index: 10;
     border-top: 1px solid #ddd;
-
     /*  Hidden on desktops  */
     display: none;
 }
@@ -559,10 +614,10 @@ h1 {
 }
 
 @media (max-width: 736px) {
-    .navbar {
-        box-shadow: none !important;
+    .desktop-navbar {
+        /*box-shadow: none !important;
         border-bottom: 1px solid #ddd;
-        border-radius: 0 !important;
+        border-radius: 0 !important;*/
 
         /*  Hide desktop navbar on mobile  */
         display: none;
@@ -602,8 +657,8 @@ h1 {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 4px;
-    background-color: #ffdd57;
+    height: 3px;
+    background-color: #fdba2c;
     z-index: 1200;
 }
 
@@ -613,47 +668,44 @@ h1 {
     position: fixed;
     width: 0;
     top: 0;
-    height: 4px;
+    height: 3px;
     left: 50%;
     text-align: center;
 }
 
 #preloader > .bar:nth-child(1) {
-    background-color: #fff;
+    background-color: #EF5350;
     animation: loading 2s linear infinite;
 }
 
 #preloader > .bar:nth-child(2) {
-    background-color: #ffdd57;
+    background-color: #209cee;
     animation: loading 2s linear .66s infinite;
 }
 
 #preloader > .bar:nth-child(3) {
-    background-color: #424242;
+    background-color: #fdba2c;
     animation: loading 2s linear 1.4s infinite;
 }
 
 @media (max-width: 736px) {
     #preloader {
-        height: 6px;
+        height: 5px;
     }
 
     #preloader > .bar {
-        height: 6px;
+        height: 5px;
     }
 
     #preloader > .bar:nth-child(1) {
-        background-color: #fff;
         animation: loading 1s linear infinite;
     }
 
     #preloader > .bar:nth-child(2) {
-        background-color: #ffdd57;
         animation: loading 1s linear .33s infinite;
     }
 
     #preloader > .bar:nth-child(3) {
-        background-color: #424242;
         animation: loading 1s linear .7s infinite;
     }
 }
@@ -680,14 +732,15 @@ h1 {
 
 /*  Filter picker styles  */
 input[name="Filter"] + label figure {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     overflow: hidden;
-    border-radius: 7px !important;
+    border-radius: 3px !important;
     transition: all ease-in-out .3s;
 }
 
 input[name="Filter"]:hover + label figure,
-input[name="Filter"]:checked + label figure{
-    box-shadow: 0 0 60px 0 rgba(0, 0, 0, .25);
+input[name="Filter"]:checked + label figure {
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
     transform: translateY(-7px);
 }
 
@@ -705,7 +758,7 @@ input[name="Filter"]:checked + label figure{
 
 /*  CSS classes for add shadow  */
 .has-tiny-shadow {
-    box-shadow: 0 0 40px 0 rgba(0, 0, 0, .27);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 .has-bold-shadow {
@@ -739,19 +792,25 @@ input[name="Filter"]:checked + label figure{
 }
 
 #user-about-panel .user-name-text {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
+    color: #111;
+    font-weight: bold;
 }
 
 #user-about-panel .user-about-text {
-    font-size: 1.4rem;
+    font-size: 1.1rem;
+    color: #111;
 }
 
 #user-about-panel .user-website-href,
 #user-about-panel .user-website-href:hover,
 #user-about-panel .user-website-href:focus {
+    margin-top: 3px;
     font-size: 1rem;
-    text-decoration: none;
-    text-transform: uppercase;
+    text-transform: lowercase;
+    text-align: center;
+    text-decoration: dotted;
+    color: #333;
 }
 
 #user-about-panel p {
@@ -785,9 +844,8 @@ input[name="Filter"]:checked + label figure{
 
 #user-follow-panel {
     margin: 30px 0 30px 0;
-    width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-around;
     align-items: center;
     flex-wrap: wrap;
@@ -797,14 +855,12 @@ input[name="Filter"]:checked + label figure{
 @media (max-width: 736px) {
     #main-user-panel {
         border-bottom: 1px solid #ddd;
-    }
-
-    #user-about-panel div {
-
+        width: 100vw;
+        margin: 10px 0 30px 0;
     }
 
     #user-about-panel img {
-        width: 96px;
+        width: 136px;
         box-shadow: none !important;
         border: 1px solid #ddd !important;
     }
@@ -977,4 +1033,53 @@ form.adaptive-form div.field {
 
 .tag {
     margin-bottom: 3px !important;
+}
+
+.validation-summary {
+    margin-bottom: 10px;
+}
+
+.validation-summary > ul,
+.validation-summary > li {
+    text-align: center;
+    color: #D32F2F;
+    font-weight: bolder;
+    font-size: 1rem;
+}
+
+/*  Styles for social networks buttons  */
+.is-social-button {
+    width: 45px !important;
+    height: 45px !important;
+    color: #fff !important;
+    border-radius: 50% !important;
+    border: none !important;
+    font-size: 1.2rem !important;
+    transition: transform ease .3s !important;
+}
+
+.is-social-button:hover,
+.is-social-button:focus {
+    border: none;
+    transform: translateY(-5px);
+}
+
+.is-google-button {
+    background: #d34836 !important;
+}
+
+.is-facebook-button {
+    background: #3b5998 !important;
+}
+
+.is-twitter-button {
+    background: #00aced !important;
+}
+
+/*  Styles for option buttons on photo cards  */
+.card-header-icon > a,
+.card-header-icon > button,
+.card-header-icon > div,
+.card-header-icon > form {
+    margin-left: 3px;
 }

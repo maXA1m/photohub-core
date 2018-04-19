@@ -13,12 +13,16 @@
 <form action="/photos/create" class="is-flex is-flex-row is-flex-centered is-flex-wrap" method="POST" id="photosCreate" enctype="multipart/form-data">
     @Html.AntiForgeryToken()
 
-    <article class="card is-responsive" v-bind:class="{'card-loading': !loaded}">
+    <article class="card is-responsive" v-bind:class="{'card-loading': !loaded, 'droping': droping}" id="mainCard">
         <header class="card-header">
             <p class="card-header-title">
                 <a class="has-text-grey-darker has-text-left has-text-justified" href="/users/@Model.UserName" title="@Model.UserName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" src="@Model.Avatar" alt="@Model.UserName" /></a>
                 <a class="has-text-grey-darker has-text-left has-text-justified" href="/users/@Model.UserName" title="@Model.UserName">@Model.UserName</a>
             </p>
+            <div class="card-header-icon">
+                <a class="button is-white" title="Share"><i class="fas fa-share-alt"></i></a>
+                <a class="button is-white" title="Copy link to clipboard"><i class="far fa-copy"></i></a>
+            </div>
         </header>
 
         <div class="card-image" v-if="loaded">
@@ -29,16 +33,17 @@
 
         <div class="card-image" v-if="!loaded" preloader v-on:click="clickFile">
             <img src="~/images/defaults/def-photo.png">
+            <p>Drag'n'Drop or click to upload photo</p>
         </div>
 
         <input type="hidden" v-bind:value="pickedTags.join()" v-bind:class="{'is-display-none': submited}" name="tags" id="tags" />
 
-        <div class="card-tags-panel" v-bind:class="{'is-display-none': submited}">
+        <div class="card-tags-panel" v-if="loaded" v-bind:class="{'is-display-none': submited}">
             <a class="button is-small is-light" v-on:click="removeTag(tag)" v-for="tag in pickedTags" v-bind:title="'Remove ' + tag + ' tag'">{{tag}}</a>
             <a class="button is-small is-light" v-on:click="showAddTag" v-if="pickedTags.length < 5" title="Add tag"><i class="fas fa-plus"></i><span v-if="pickedTags < 1"> Add tag</span></a>
         </div>
 
-        <div class="has-text-centered" v-bind:class="{'is-display-none': submited}" style="margin-top: 5px;">
+        <div class="has-text-centered" v-bind:class="{'is-display-none': submited || !loaded}" style="margin-top: 5px; margin-bottom: 10px;">
             <div class="file has-name" style="display: inline-block;">
                 <label class="file-label">
                     <input class="file-input" type="file" id="file" name="file" accept="image/*" v-on:change="filePreview($event)" required>
@@ -77,11 +82,11 @@
 
             <div class="content card-button-panel">
                 <div>
-                    <a class="button is-danger is-unselectable" title="Dislike"><i class="fas fa-heart"></i></a>
-                    <a class="button is-light comment-button" title="Comments"><i class="fas fa-comment"></i></a>
+                    <a class="button is-white is-unselectable" title="Dislike"><i class="fas fa-heart"></i></a>
+                    <a class="button is-white comment-button" title="Comments"><i class="fas fa-comment"></i></a>
                 </div>
                 <div>
-                    <a class="button is-warning" title="Show metadata" v-on:click="showMetadata"><i class="fab fa-medapps"></i></a>
+                    <a class="button is-info" title="Show metadata" v-on:click="showMetadata"><i class="fab fa-medapps"></i></a>
                     <a class="button is-white bookmark-button" title="Save to bookmarks"><i class="far fa-bookmark"></i></a>
                 </div>
             </div>
@@ -89,7 +94,7 @@
 
         <footer class="card-footer">
             <div class="card-footer-item">
-                <button type="submit" class="button is-warning is-uppercase" v-bind:class="{'is-loading': submited}" v-on:click="submit" title="Create photo">create</button>
+                <button type="submit" class="button is-info is-uppercase" v-bind:class="{'is-loading': submited}" v-on:click="submit" title="Create photo">create</button>
             </div>
         </footer>
     </article>

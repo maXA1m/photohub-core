@@ -345,6 +345,10 @@ namespace PhotoHub.BLL.Services
         public ApplicationUser Create(string userName, string email, string password)
         {
             PasswordHasher<ApplicationUser> passwordHasher = new PasswordHasher<ApplicationUser>();
+
+            if (_unitOfWork.Users.Find(u => u.UserName == userName || u.Email == email).FirstOrDefault() != null)
+                return null;
+
             ApplicationUser user = new ApplicationUser
             {
                 UserName = userName,
@@ -369,6 +373,10 @@ namespace PhotoHub.BLL.Services
         public async Task<ApplicationUser> CreateAsync(string userName, string email, string password)
         {
             PasswordHasher<ApplicationUser> passwordHasher = new PasswordHasher<ApplicationUser>();
+
+            if (_unitOfWork.Users.Find(u => u.UserName == userName).FirstOrDefault() != null)
+                return null;
+
             ApplicationUser user = new ApplicationUser
             {
                 UserName = userName,

@@ -14,6 +14,7 @@
 
 <form action="/account/login" method="post" class="adaptive-form" style="margin-bottom: 5px;">
     @Html.AntiForgeryToken()
+    <div asp-validation-summary="All" class="is-danger validation-summary"></div>
 
     <div class="field">
         <label asp-for="UserName" class="label"></label>
@@ -41,7 +42,7 @@
     </div>
 
     <div class="field has-text-centered">
-        <button type="submit" class="button is-warning">@ViewBag.Title</button>
+        <button type="submit" class="button is-info">@ViewBag.Title</button>
     </div>
     <div class="field has-text-centered">
         <a asp-action="ForgotPassword" class="button is-white">Forgot your password?</a>
@@ -56,13 +57,22 @@
     if (loginProviders.Count != 0)
     {
         <form asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
-            <div>
-                <p>
-                    @foreach (var provider in loginProviders)
+            <div class="buttons" style="padding: 5px; margin-top: 20px; justify-content: center;">
+                @foreach (var provider in loginProviders)
+                {
+                    if (provider.Name == "Google" || provider.DisplayName == "Google")
                     {
-                        <button type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.Name</button>
+                        <button type="submit" class="button is-google-button is-social-button" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account"><i class="fab fa-google"></i></button>
                     }
-                </p>
+                    else if (provider.Name == "Facebook" || provider.DisplayName == "Facebook")
+                    {
+                        <button type="submit" class="button is-facebook-button is-social-button" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account"><i class="fab fa-facebook-f"></i></button>
+                    }
+                    else if (provider.Name == "Twitter" || provider.DisplayName == "Twitter")
+                    {
+                        <button type="submit" class="button is-twitter-button is-social-button" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account"><i class="fab fa-twitter"></i></button>
+                    }
+                }
             </div>
         </form>
     }

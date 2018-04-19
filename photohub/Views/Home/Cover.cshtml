@@ -11,7 +11,7 @@
 
     <title>Welcome to PhotoHub</title>
 
-    <meta name="theme-color" content="#FCDC59">
+    <meta name="theme-color" content="#000">
 
     <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
     <link rel="icon" type="image/png" href="/favicon-24x24.png" sizes="24x24">
@@ -24,72 +24,60 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
     <style>
         ::selection {
-            background: rgba(252, 220, 89, .85);
-            color: #eee;
+            background: rgba(255, 255, 255, .3) !important;
+            color: #fff;
         }
 
         body,
         html {
-            background: #333 !important;
-            color: #eee !important;
-        }
-
-        #particles-js {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: #333;
-            background-image: url("");
-            background-repeat: no-repeat;
+            background: url('/images/cover.jpg') no-repeat;
             background-size: cover;
-            background-position: 50% 50%;
+            background-repeat: no-repeat;
+            background-position: center top;
+
+            color: #fff !important;
         }
 
-        .navbar-menu.is-active {
-            background-color: #333 !important;
-            color: #eee !important;
+        nav {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            padding: 0 15px 0 15px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-content: center;
+            align-items: center;
         }
 
-        .navbar-menu.is-active .navbar-item:hover {
-            background-color: rgba(100, 100, 100, .5) !important;
+        .navbar-item {
+            background: transparent;
+            color: #fff;
+            display: inline-block;
+        }
+
+        .navbar-item:hover,
+        .navbar-item:focus {
+            background: rgba(255, 255, 255, .3) !important;
+            color: #fff !important;
         }
     </style>
-
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js"></script>
-    <script defer src="~/lib/particles.min.js"></script>
-    <script defer src="~/js/home/cover.js"></script>
-
 </head>
 
 <body>
-    <div id="particles-js"></div>
-    <section id="cover" class="hero is-fullheight is-default is-bold">
+    <section class="hero is-fullheight is-default is-bold">
         <div class="hero-head">
-            <nav class="navbar is-dark">
-                <div class="container">
-                    <div class="navbar-brand">
-                        <b class="navbar-item has-text-white">
-                            PhotoHub
-                        </b>
-                        <span class="navbar-burger burger has-text-white" v-bind:class="{'is-active': menuActive}" v-on:click="clickNavbar">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </span>
-                    </div>
-                    <div class="navbar-menu" v-bind:class="{'is-active': menuActive}">
-                        <div class="navbar-end">
-                            <a class="navbar-item has-text-white" href="/about">
-                                About
-                            </a>
-                            <a class="navbar-item has-text-white" href="/photos">
-                                Photos
-                            </a>
-                            <a class="navbar-item has-text-white" href="/account/login">
-                                Log in
-                            </a>
-                        </div>
-                    </div>
+            <nav>
+                <b class="navbar-item has-text-white">
+                    PhotoHub
+                </b>
+                <div>
+                    <a class="navbar-item" href="/photos">
+                        Photos
+                    </a>
+                    <a class="navbar-item" href="/account/login">
+                        Log in
+                    </a>
                 </div>
             </nav>
         </div>
@@ -104,7 +92,7 @@
                             PhotoHub provides a fast, beautiful and fun way for you to share media through our content-sharing platform. Just snap a photo, choose a filter to transform the look and feel, add comments (if you like) and share!
                         </h2>
                         <p class="has-text-centered">
-                            <a class="button is-large is-warning" href="/account/register" title="Sign In">
+                            <a class="button is-white is-large" href="/account/register" title="Sign up">
                                 Sign up
                             </a>
                         </p>
@@ -113,15 +101,17 @@
             </div>
         </div>
 
-        @*<div class="hero-foot">
+        <div class="hero-foot">
             <div class="container">
-                <div class="tabs is-centered">
+                <div class="tabs is-centered has-text-centered">
                     <ul>
-                        <li>PhotoHub @System.DateTime.Now.Year</li>
+                        <li>
+                            Copyright © @DateTime.Now.Year PhotoHub. All rights reserved.
+                        </li>
                     </ul>
                 </div>
             </div>
-        </div>*@
+        </div>
     </section>
 </body>
 </html>
