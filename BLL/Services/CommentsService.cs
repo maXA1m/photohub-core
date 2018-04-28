@@ -22,12 +22,12 @@ namespace PhotoHub.BLL.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UsersMapper _usersMapper;
 
-        public ApplicationUser CurrentUser => _unitOfWork.Users.Find(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name).FirstOrDefault();
+        public User CurrentUser => _unitOfWork.Users.Find(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name).FirstOrDefault();
         public UserDTO CurrentUserDTO
         {
             get
             {
-                ApplicationUser user = CurrentUser;
+                User user = CurrentUser;
 
                 return _usersMapper.Map(
                     user,
@@ -48,7 +48,7 @@ namespace PhotoHub.BLL.Services
 
         public int? Add(int photoId, string text)
         {
-            ApplicationUser user = CurrentUser;
+            User user = CurrentUser;
             Photo photo = _unitOfWork.Photos.Get(photoId);
 
             if (!String.IsNullOrEmpty(text) && user != null && photo != null)
@@ -72,7 +72,7 @@ namespace PhotoHub.BLL.Services
         }
         public async Task<int?> AddAsync(int photoId, string text)
         {
-            ApplicationUser user = CurrentUser;
+            User user = CurrentUser;
             Photo photo = await _unitOfWork.Photos.GetAsync(photoId);
 
             if(!String.IsNullOrEmpty(text) && user != null && photo != null)
@@ -97,10 +97,11 @@ namespace PhotoHub.BLL.Services
 
         public void Delete(int id)
         {
-            ApplicationUser user = CurrentUser;
-            Comment comment = _unitOfWork.Comments.Find(c => c.OwnerId == user.Id && c.Id == id).FirstOrDefault();
+            User user = CurrentUser;
+            Comment comment = _unitOfWork.Comments.Get(id);
+            Photo photo = _unitOfWork.Photos.Get(comment.PhotoId);
 
-            if (user != null && comment != null)
+            if (user != null && (photo.OwnerId == user.Id || comment.OwnerId != user.Id))
             {
                 _unitOfWork.Comments.Delete(id);
                 _unitOfWork.Save();
@@ -108,10 +109,11 @@ namespace PhotoHub.BLL.Services
         }
         public async Task DeleteAsync(int id)
         {
-            ApplicationUser user = CurrentUser;
-            Comment comment = _unitOfWork.Comments.Find(c => c.OwnerId == user.Id && c.Id == id).FirstOrDefault();
+            User user = CurrentUser;
+            Comment comment = _unitOfWork.Comments.Get(id);
+            Photo photo = _unitOfWork.Photos.Get(comment.PhotoId);
 
-            if (user != null && comment != null)
+            if (user != null && (photo.OwnerId == user.Id || comment.OwnerId != user.Id))
             {
                 await _unitOfWork.Comments.DeleteAsync(id);
                 await _unitOfWork.SaveAsync();

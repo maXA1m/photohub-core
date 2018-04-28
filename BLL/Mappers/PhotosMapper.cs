@@ -28,10 +28,10 @@ namespace PhotoHub.BLL.Mappers
 
                 Manufacturer = item.Manufacturer,
                 Model = item.Model,
-                Iso = null,
-                Exposure = null,
-                Aperture = null,
-                FocalLength = item.FocalLength,
+                Iso = item.Iso,
+                Exposure = item.Exposure,
+                Aperture = item.Aperture,
+                FocalLength = item.Aperture,
 
                 Owner = null,
                 Likes = null,
@@ -58,9 +58,9 @@ namespace PhotoHub.BLL.Mappers
 
                 Manufacturer = item.Manufacturer,
                 Model = item.Model,
-                Iso = item.Iso.Name,
-                Exposure = item.Exposure.Name,
-                Aperture = item.Aperture.Name,
+                Iso = item.Iso,
+                Exposure = item.Exposure,
+                Aperture = item.Aperture,
                 FocalLength = item.FocalLength,
 
                 Owner = owner,

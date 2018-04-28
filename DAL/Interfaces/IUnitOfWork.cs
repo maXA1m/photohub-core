@@ -11,10 +11,8 @@ namespace PhotoHub.DAL.Interfaces
     public interface IUnitOfWork : IDisposable
     {
         IRepository<Photo> Photos { get; }
-        IRepository<Exposure> Exposures { get; }
-        IRepository<Aperture> Apertures { get; }
-        IRepository<ISO> Isos { get; }
-        IRepository<ApplicationUser> Users { get; }
+        IRepository<ApplicationUser> IdentityUsers { get; }
+        IRepository<User> Users { get; }
         IRepository<Comment> Comments { get; }
         IRepository<Like> Likes { get; }
         IRepository<Confirmed> Confirmations { get; }

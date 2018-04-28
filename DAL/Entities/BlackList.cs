@@ -2,10 +2,10 @@
 {
     public class BlackList : BaseEntity
     { 
-        public string UserId { get; set; }
-        public ApplicationUser User { get; set; }
+        public int UserId { get; set; }
+        public User User { get; set; }
         
-        public string BlockedUserId { get; set; }
-        public ApplicationUser BlockedUser { get; set; }
+        public int BlockedUserId { get; set; }
+        public User BlockedUser { get; set; }
     }
 }

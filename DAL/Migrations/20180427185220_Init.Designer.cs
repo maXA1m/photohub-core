@@ -11,7 +11,7 @@ using System;
 namespace PhotoHub.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180321164938_Init")]
+    [Migration("20180427185220_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -134,16 +134,10 @@ namespace PhotoHub.DAL.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("About");
-
                     b.Property<int>("AccessFailedCount");
-
-                    b.Property<string>("Avatar");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
-
-                    b.Property<DateTime>("Date");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256);
@@ -165,8 +159,6 @@ namespace PhotoHub.DAL.Migrations
                     b.Property<string>("PhoneNumber");
 
                     b.Property<bool>("PhoneNumberConfirmed");
-
-                    b.Property<string>("RealName");
 
                     b.Property<string>("SecurityStamp");
 
@@ -193,9 +185,9 @@ namespace PhotoHub.DAL.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("BlockedUserId");
+                    b.Property<int>("BlockedUserId");
 
-                    b.Property<string>("UserId");
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
@@ -211,9 +203,11 @@ namespace PhotoHub.DAL.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("Date");
+
                     b.Property<int>("PhotoId");
 
-                    b.Property<string>("UserId");
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
@@ -231,7 +225,7 @@ namespace PhotoHub.DAL.Migrations
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<string>("OwnerId");
+                    b.Property<int>("OwnerId");
 
                     b.Property<int>("PhotoId");
 
@@ -251,9 +245,9 @@ namespace PhotoHub.DAL.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("AdminId");
+                    b.Property<int>("AdminId");
 
-                    b.Property<string>("UserId");
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
@@ -281,9 +275,9 @@ namespace PhotoHub.DAL.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("FollowedUserId");
+                    b.Property<int>("FollowedUserId");
 
-                    b.Property<string>("UserId");
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
@@ -301,7 +295,7 @@ namespace PhotoHub.DAL.Migrations
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<string>("OwnerId");
+                    b.Property<int>("OwnerId");
 
                     b.Property<int>("PhotoId");
 
@@ -319,7 +313,7 @@ namespace PhotoHub.DAL.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Aperture");
+                    b.Property<double?>("Aperture");
 
                     b.Property<int>("CountViews");
 
@@ -327,17 +321,19 @@ namespace PhotoHub.DAL.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<string>("Exposure");
+                    b.Property<double?>("Exposure");
 
                     b.Property<int>("FilterId");
 
-                    b.Property<string>("Iso");
+                    b.Property<double?>("FocalLength");
+
+                    b.Property<int?>("Iso");
 
                     b.Property<string>("Manufacturer");
 
                     b.Property<string>("Model");
 
-                    b.Property<string>("OwnerId");
+                    b.Property<int>("OwnerId");
 
                     b.Property<string>("Path");
 
@@ -348,6 +344,62 @@ namespace PhotoHub.DAL.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("Photos");
+                });
+
+            modelBuilder.Entity("PhotoHub.DAL.Entities.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
+                });
+
+            modelBuilder.Entity("PhotoHub.DAL.Entities.Taging", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("PhotoId");
+
+                    b.Property<int>("TagId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PhotoId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("Tagings");
+                });
+
+            modelBuilder.Entity("PhotoHub.DAL.Entities.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("About");
+
+                    b.Property<string>("Avatar");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Gender");
+
+                    b.Property<bool>("PrivateAccount");
+
+                    b.Property<string>("RealName");
+
+                    b.Property<string>("UserName");
+
+                    b.Property<string>("WebSite");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AppUsers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -397,13 +449,15 @@ namespace PhotoHub.DAL.Migrations
 
             modelBuilder.Entity("PhotoHub.DAL.Entities.BlackList", b =>
                 {
-                    b.HasOne("PhotoHub.DAL.Entities.ApplicationUser", "BlockedUser")
+                    b.HasOne("PhotoHub.DAL.Entities.User", "BlockedUser")
                         .WithMany()
-                        .HasForeignKey("BlockedUserId");
+                        .HasForeignKey("BlockedUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("PhotoHub.DAL.Entities.ApplicationUser", "User")
+                    b.HasOne("PhotoHub.DAL.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("PhotoHub.DAL.Entities.Bookmark", b =>
@@ -413,16 +467,18 @@ namespace PhotoHub.DAL.Migrations
                         .HasForeignKey("PhotoId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("PhotoHub.DAL.Entities.ApplicationUser", "User")
+                    b.HasOne("PhotoHub.DAL.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("PhotoHub.DAL.Entities.Comment", b =>
                 {
-                    b.HasOne("PhotoHub.DAL.Entities.ApplicationUser", "Owner")
+                    b.HasOne("PhotoHub.DAL.Entities.User", "Owner")
                         .WithMany()
-                        .HasForeignKey("OwnerId");
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("PhotoHub.DAL.Entities.Photo", "Photo")
                         .WithMany("Comments")
@@ -432,31 +488,36 @@ namespace PhotoHub.DAL.Migrations
 
             modelBuilder.Entity("PhotoHub.DAL.Entities.Confirmed", b =>
                 {
-                    b.HasOne("PhotoHub.DAL.Entities.ApplicationUser", "Admin")
+                    b.HasOne("PhotoHub.DAL.Entities.User", "Admin")
                         .WithMany()
-                        .HasForeignKey("AdminId");
+                        .HasForeignKey("AdminId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("PhotoHub.DAL.Entities.ApplicationUser", "User")
+                    b.HasOne("PhotoHub.DAL.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("PhotoHub.DAL.Entities.Following", b =>
                 {
-                    b.HasOne("PhotoHub.DAL.Entities.ApplicationUser", "FollowedUser")
+                    b.HasOne("PhotoHub.DAL.Entities.User", "FollowedUser")
                         .WithMany()
-                        .HasForeignKey("FollowedUserId");
+                        .HasForeignKey("FollowedUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("PhotoHub.DAL.Entities.ApplicationUser", "User")
+                    b.HasOne("PhotoHub.DAL.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("PhotoHub.DAL.Entities.Like", b =>
                 {
-                    b.HasOne("PhotoHub.DAL.Entities.ApplicationUser", "Owner")
+                    b.HasOne("PhotoHub.DAL.Entities.User", "Owner")
                         .WithMany()
-                        .HasForeignKey("OwnerId");
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("PhotoHub.DAL.Entities.Photo", "Photo")
                         .WithMany("Likes")
@@ -471,9 +532,23 @@ namespace PhotoHub.DAL.Migrations
                         .HasForeignKey("FilterId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("PhotoHub.DAL.Entities.ApplicationUser", "Owner")
+                    b.HasOne("PhotoHub.DAL.Entities.User", "Owner")
                         .WithMany()
-                        .HasForeignKey("OwnerId");
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("PhotoHub.DAL.Entities.Taging", b =>
+                {
+                    b.HasOne("PhotoHub.DAL.Entities.Photo", "Photo")
+                        .WithMany()
+                        .HasForeignKey("PhotoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("PhotoHub.DAL.Entities.Tag", "Tag")
+                        .WithMany()
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

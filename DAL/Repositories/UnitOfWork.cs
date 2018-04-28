@@ -14,11 +14,9 @@ namespace PhotoHub.DAL.Repositories
     {
         private readonly ApplicationDbContext _context;
 
-        private readonly IRepository<ApplicationUser> _usersRepository;
+        private readonly IRepository<ApplicationUser> _usersIdentityRepository;
+        private readonly IRepository<User> _usersRepository;
         private readonly IRepository<Photo> _photosRepository;
-        private readonly IRepository<Exposure> _exposuresRepository;
-        private readonly IRepository<Aperture> _aperturesRepository;
-        private readonly IRepository<ISO> _isosRepository;
         private readonly IRepository<Comment> _commentsRepository;
         private readonly IRepository<Like> _likesRepository;
         private readonly IRepository<Following> _followingsRepository;
@@ -33,6 +31,7 @@ namespace PhotoHub.DAL.Repositories
         {
             _context = context;
 
+            _usersIdentityRepository = new UsersIdentityRepository(context);
             _usersRepository = new UsersRepository(context);
             _photosRepository = new PhotosRepository(context);
             _commentsRepository = new CommentsRepository(context);
@@ -42,18 +41,13 @@ namespace PhotoHub.DAL.Repositories
             _confirmationsRepository = new ConfirmationsRepository(context);
             _bookmarksRepository = new BookmarksRepository(context);
             _filtersRepository = new FiltersRepository(context);
-            _exposuresRepository = new ExposureRepository(context);
-            _aperturesRepository = new ApertureRepository(context);
-            _isosRepository = new IsoRepository(context);
             _tagingsRepository = new TagingsRepository(context);
             _tagsRepository = new TagsRepository(context);
         }
 
-        public IRepository<ApplicationUser> Users => _usersRepository;
+        public IRepository<ApplicationUser> IdentityUsers => _usersIdentityRepository;
+        public IRepository<User> Users => _usersRepository;
         public IRepository<Photo> Photos => _photosRepository;
-        public IRepository<Exposure> Exposures => _exposuresRepository;
-        public IRepository<Aperture> Apertures => _aperturesRepository;
-        public IRepository<ISO> Isos => _isosRepository;
         public IRepository<Comment> Comments => _commentsRepository;
         public IRepository<Like> Likes => _likesRepository;
         public IRepository<Confirmed> Confirmations => _confirmationsRepository;

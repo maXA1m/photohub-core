@@ -60,7 +60,7 @@
                     </div>
                 </div>
 
-                <div class="content card-button-panel">
+                <div class="content card-button-panel" v-cloak>
                     <div>
                         @if (User.Identity.IsAuthenticated)
                 {
@@ -91,7 +91,7 @@
                                 {{comment.text}}
                             </div>
 
-                            <div class="media-right" v-if="comment.$id && currentAppUserName == comment.owner.userName">
+                            <div class="media-right" v-if="comment.$id && (currentAppUserName == comment.owner.userName || current.owner.userName == currentAppUserName)">
                                 <a class="close-button" v-on:click="deleteComment(comment)" title="Delete comment"><i class="fas fa-trash"></i></a>
                             </div>
                         </div>
@@ -101,7 +101,7 @@
                 <div class="control" style="margin: 15px 15px 0 15px">
                     <input class="input" id="comment" type="text" placeholder="Comment photo" v-on:keyup.enter="comment">
                     <div class="is-flex is-flex-centered" style="margin: 10px 0 10px 0">
-                        <button class="button is-info" v-bind:class="{'is-loading': commenting}" v-on:click="comment" title="Comment photo">Comment</button>
+                        <button class="button is-warning" v-bind:class="{'is-loading': commenting}" v-on:click="comment" title="Comment photo">Comment</button>
                     </div>
                 </div>
     }
@@ -151,23 +151,23 @@
                 <a class="close-button" v-on:click="closeMetadata" title="Close modal"><i class="fas fa-times"></i></a>
             </header>
             <section class="modal-card-body modal-card-body-metadata">
-                <div v-if="post.manufacturer != 'Unknown' || post.model != 'Unknown'">
+                <div v-if="post.manufacturer || post.model">
                     <p>Brand</p>
                     <p>{{post.manufacturer}}</p>
                 </div>
-                <div v-if="post.manufacturer != 'Unknown' || post.model != 'Unknown'">
+                <div v-if="post.manufacturer || post.model">
                     <p>Model</p>
                     <p>{{post.model}}</p>
                 </div>
-                <div v-if="post.iso != 'Unknown' || post.exposure != 'Unknown' || post.aperture != 'Unknown'">
+                <div v-if="post.iso || post.exposure || post.aperture">
                     <p>ISO</p>
                     <p>{{post.iso}}</p>
                 </div>
-                <div v-if="post.iso != 'Unknown' || post.exposure != 'Unknown' || post.aperture != 'Unknown'">
+                <div v-if="post.iso || post.exposure || post.aperture">
                     <p>Exposure</p>
                     <p>{{post.exposure}}</p>
                 </div>
-                <div v-if="post.iso != 'Unknown' || post.exposure != 'Unknown' || post.aperture != 'Unknown'">
+                <div v-if="post.iso || post.exposure || post.aperture">
                     <p>Aperture</p>
                     <p>{{post.aperture}}</p>
                 </div>

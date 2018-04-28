@@ -10,44 +10,45 @@
     <script defer src="~/js/users/details.js"></script>
 }
 
- <div class="container" id="user" data-user="@Model.UserName" v-if="user != null" v-cloak>
+ <div class="container" id="user" data-user="@Model.UserName" v-if="user">
     <article>
-        <div id="main-user-panel" v-bind:class="user.confirmed == true ? 'confirmed' : ''">
+        <div id="main-user-panel" class="@(Model.Confirmed?"user-confirmed":"")">
             <div id="user-about-panel">
                 <div style="display: flex; justify-content: center; flex-direction: column; align-content: center; align-items: center;">
-                    <img v-bind:src="user.avatar" v-bind:alt="user.userName" class="is-circle has-tiny-shadow image" />
-                    <a v-bind:href="user.webSite" class="user-website-href" title="Personal web site" target="_blank" v-if="user.webSite">website<i class="fas fa-external-link-square-alt"></i></a>
+                    <img src="@Model.Avatar" alt="@Model.UserName" class="is-circle has-tiny-shadow image" />
+                    @if (!String.IsNullOrEmpty(Model.WebSite)) { 
+                        <a href="@Model.WebSite" class="user-website-href" title="Personal web site" target="_blank">website<i class="fas fa-external-link-square-alt"></i></a>
+                    }
                 </div>
                 <div>
                     <div class="has-text-centered">
-                        @*<h3 class="is-uppercase is-paddingless is-marginless is-size-3 has-text-weight-bold is-display-none">About</h3>*@
-                        <p class="user-name-text">{{ user.realName }}</p>
-                        <p class="user-about-text">{{ user.about }}</p>
+                        <p class="user-name-text">@Model.RealName</p>
+                        <p class="user-about-text">@Model.About</p>
                     </div>
                     <div id="user-follow-panel">
                         <div style="margin-bottom: 15px;">
-                            <button class="button is-white" v-if="user.followers == null || user.followers.length <= 0" title="Followers">{{ user.followers.length }} followers</button>
-                            <button class="button is-white" v-if="user.followers != null && user.followers.length > 0" v-on:click="showFollowers" title="Followers">{{ user.followers.length }} followers</button>
-                            <button class="button is-white" v-if="user.followings == null || user.followings.length <= 0" title="Followings">{{ user.followings.length }} followings</button>
-                            <button class="button is-white" v-if="user.followings != null && user.followings.length > 0" v-on:click="showFollowings" title="Followings">{{ user.followings.length }} followings</button>
+                            <button class="button is-white" v-if="user.followers == null || user.followers.length <= 0" title="Followers">@Model.Followers.Count followers</button>
+                            <button class="button is-white" v-if="user.followers != null && user.followers.length > 0" v-on:click="showFollowers" title="Followers" v-cloak>@Model.Followers.Count followers</button>
+                            <button class="button is-white" v-if="user.followings == null || user.followings.length <= 0" title="Followings">@Model.Followings.Count followings</button>
+                            <button class="button is-white" v-if="user.followings != null && user.followings.length > 0" v-on:click="showFollowings" title="Followings" v-cloak>@Model.Followings.Count followings</button>
                         </div>
                         <div style="margin-bottom: 15px;">
                             @if (User.Identity.IsAuthenticated)
                             {
                                 if (User.Identity.Name != Model.UserName)
                                 {
-                                    <button class="button" v-bind:title="user.followed?'Unfollow':'Follow'" v-bind:class="{'is-info': !user.followed}" v-on:click="user.followed?disfollow():follow()">{{user.followed?'Unfollow':'Follow'}}</button>
-                                    <button class="button is-dark" v-bind:title="user.blocked?'Unblock':'Block'" v-on:click="user.blocked?disblock():block()">{{user.blocked?'Unblock':'Block'}}</button>
+                                    <button class="button" v-bind:title="user.followed?'Unfollow':'Follow'" v-bind:class="{'is-warning': !user.followed}" v-on:click="user.followed?disfollow():follow()" v-cloak>{{user.followed?'Unfollow':'Follow'}}</button>
+                                    <button class="button is-dark" v-bind:title="user.blocked?'Unblock':'Block'" v-on:click="user.blocked?disblock():block()" v-cloak>{{user.blocked?'Unblock':'Block'}}</button>
                                 }
                                 else
                                 {
-                                    <a href="/manage/index" class="button is-info" title="Manage Account">Manage Account</a>
+                                    <a href="/manage/index" class="button is-warning" title="Manage Account">Manage Account</a>
                                     <a href="/manage/bookmarks" class="button is-light" title="Show bookmarks"><i class="fas fa-bookmark"></i></a>
                                 }
                             }
                             else
                             {
-                                <a class="button is-info" href="/account/login" title="Log In to Follow">Log In to Follow</a>
+                                <a class="button is-warning" href="/account/login" title="Log In to Follow">Log in</a>
                             }
                         </div>
                     </div>
@@ -55,7 +56,7 @@
             </div>
             @if(User.Identity.IsAuthenticated && Model.UserName != User.Identity.Name)
             {
-            <div id="user-mutual-panel" v-if="!user.followed && user.mutuals != null && user.mutuals.length > 0">
+            <div id="user-mutual-panel" v-if="!user.followed && user.mutuals != null && user.mutuals.length > 0" v-cloak>
                 <a class="button is-small is-light mutual-friend-button" v-bind:href="`/users/${mutual.userName}`" v-for="mutual in mutuals" v-bind:title="mutual.realName || mutual.userName">{{mutual.userName}}</a>
                 <a class="button is-small is-white" v-if="mutualsActive && user.mutuals.length > 3" v-on:click="closeMutuals" title="Hide all mutuals">Hide</a>
                 <a class="button is-small is-white" v-if="!mutualsActive && user.mutuals.length > 3" v-on:click="showMutuals" title="Show all mutuals">All mutuals({{user.mutuals.length}})</a>
@@ -111,7 +112,7 @@
     else
     {
         <div id="posts" class="is-flex" v-if="posts.length > 0">
-            <article class="card is-responsive" v-for="post in posts" :key="post.$id">
+            <article class="card is-responsive" v-for="post in posts" :key="post.$id" v-cloak>
                 <header class="card-header">
                     <p class="card-header-title">
                         <a class="has-text-grey-darker has-text-left has-text-justified" v-bind:href="`/users/${post.owner.userName}`" v-bind:title="post.owner.userName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" v-bind:src="post.owner.avatar" v-bind:alt="post.owner.userName" /></a>
@@ -221,7 +222,7 @@
                                     {{comment.text}}
                                 </div>
 
-                                <div class="media-right" v-if="comment.$id && currentAppUserName == comment.owner.userName">
+                                <div class="media-right" v-if="comment.$id && (currentAppUserName == comment.owner.userName || current.owner.userName == currentAppUserName)">
                                     <a class="close-button" v-on:click="deleteComment(comment)" title="Delete comment"><i class="fas fa-trash"></i></a>
                                 </div>
                             </div>
@@ -236,7 +237,7 @@
                         <div class="control" v-if="currentAppUserName" style="width: 100%;">
                             <input class="input" id="comment" type="text" placeholder="Comment photo" v-on:keyup.enter="comment">
                         </div>
-                        <button class="button is-info" v-bind:class="{'is-loading': commenting}" title="Comment photo" style="margin-top: 5px;" v-if="currentAppUserName" v-on:click="comment">Comment</button>
+                        <button class="button is-warning" v-bind:class="{'is-loading': commenting}" title="Comment photo" style="margin-top: 5px;" v-if="currentAppUserName" v-on:click="comment">Comment</button>
                     </footer>
                     <a class="button is-white close-modal-mobile-button" title="Close modal" v-on:click="closeComments">Close</a>
                 </div>
@@ -251,23 +252,23 @@
                         <a class="close-button" v-on:click="closeMetadata" title="Close modal"><i class="fas fa-times"></i></a>
                     </header>
                     <section class="modal-card-body modal-card-body-metadata">
-                        <div v-if="current.manufacturer != 'Unknown' || current.model != 'Unknown'">
+                        <div v-if="current.manufacturer || current.model">
                             <p>Brand</p>
                             <p>{{current.manufacturer}}</p>
                         </div>
-                        <div v-if="current.manufacturer != 'Unknown' || current.model != 'Unknown'">
+                        <div v-if="current.manufacturer || current.model">
                             <p>Model</p>
                             <p>{{current.model}}</p>
                         </div>
-                        <div v-if="current.iso != 'Unknown' || current.exposure != 'Unknown' || current.aperture != 'Unknown'">
+                        <div v-if="current.iso || current.exposure || current.aperture">
                             <p>ISO</p>
                             <p>{{current.iso}}</p>
                         </div>
-                        <div v-if="current.iso != 'Unknown' || current.exposure != 'Unknown' || current.aperture != 'Unknown'">
+                        <div v-if="current.iso || current.exposure || current.aperture">
                             <p>Exposure</p>
                             <p>{{current.exposure}}</p>
                         </div>
-                        <div v-if="current.iso != 'Unknown' || current.exposure != 'Unknown' || current.aperture != 'Unknown'">
+                        <div v-if="current.iso || current.exposure || current.aperture">
                             <p>Aperture</p>
                             <p>{{current.aperture}}</p>
                         </div>
@@ -284,9 +285,9 @@
                 </div>
             </div>
 
-            <button class="button is-uppercase is-responsive" v-bind:class="{'is-loading': postsFetch.incallback}" v-on:click="fetchPhotos" v-if="!postsFetch.loaded && posts.length > 0 && posts.length%4 == 0">Load More</button>
+            <button class="button is-uppercase is-responsive" v-bind:class="{'is-loading': postsFetch.incallback}" v-on:click="fetchPhotos" v-if="!postsFetch.loaded && posts.length > 0 && posts.length%4 == 0" v-cloak>Load More</button>
         </div>
-        <div class="empty-container" v-if="postsFetch.loaded && posts.length < 1">
+        <div class="empty-container" v-if="postsFetch.loaded && posts.length < 1" v-cloak>
             <p>User has no photos</p>
         </div>
     }

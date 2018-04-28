@@ -36,7 +36,7 @@ namespace PhotoHub.WEB.ViewModels
         [JsonProperty("aperture")]
         public string Aperture { get; set; }
         [JsonProperty("focalLength")]
-        public double FocalLength { get; set; }
+        public string FocalLength { get; set; }
 
         [JsonProperty("likes")]
         public List<LikeViewModel> Likes { get; set; }

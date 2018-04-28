@@ -38,9 +38,6 @@ namespace PhotoHub.WEB.Controllers
         private readonly UsersMapper _usersMapper;
         private readonly PhotosMapper _photosMapper;
         private readonly FiltersMapper _filtersMapper;
-        private readonly IsosMapper _isosMapper;
-        private readonly ExposuresMapper _exposuresMapper;
-        private readonly AperturesMapper _aperturesMapper;
         private readonly TagsMapper _tagsMapper;
         #endregion
 
@@ -51,9 +48,6 @@ namespace PhotoHub.WEB.Controllers
             _usersMapper = new UsersMapper();
             _filtersMapper = new FiltersMapper();
             _photosMapper = new PhotosMapper();
-            _isosMapper = new IsosMapper();
-            _exposuresMapper = new ExposuresMapper();
-            _aperturesMapper = new AperturesMapper();
             _tagsMapper = new TagsMapper();
         }
 
@@ -78,16 +72,13 @@ namespace PhotoHub.WEB.Controllers
         public ActionResult Create()
         {
             ViewBag.Filters = _filtersMapper.MapRange(_photosService.Filters);
-            ViewBag.Isos = _isosMapper.MapRange(_photosService.Isos);
-            ViewBag.Exposures = _exposuresMapper.MapRange(_photosService.Exposures);
-            ViewBag.Apertures = _aperturesMapper.MapRange(_photosService.Apertures);
             //ViewBag.Tags = _tagsMapper.MapRange(_photosService.Tags);
 
             return View(_usersMapper.Map(_photosService.CurrentUserDTO));
         }
         
         [Authorize, HttpPost, ValidateAntiForgeryToken, Route("photos/create")]
-        public async Task<ActionResult> Create([Bind("Description, Filter, Iso, Aperture, Exposure, FocalLength")] PhotoViewModel item, string tags, IFormFile file)
+        public async Task<ActionResult> Create([Bind("Description, Filter")] PhotoViewModel item, string tags, IFormFile file, int? Iso, double? Aperture, double? Exposure, double? FocalLength, string Model, string Brand)
         {
             if (ModelState.IsValid && file.Length > 0)
             {
@@ -109,77 +100,80 @@ namespace PhotoHub.WEB.Controllers
                 }
                 #endregion
 
-                string manufacturer = null;
-                string model = null;
+                string manufacturer = Brand;
+                string model = Model;
 
-                #region CoreCompat.System.Drawing
-                /*
-                try
+                if(manufacturer == null || model == null)
                 {
-                    FileInfo info = new FileInfo(fileName);
-
-                    using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+                    #region CoreCompat.System.Drawing
+                    /*
+                    try
                     {
-                        Image image = Image.FromStream(stream, false, false);
+                        FileInfo info = new FileInfo(fileName);
 
-                        PropertyItem item;
-
-                        // Camera brand.
-                        item = image.GetPropertyItem(0x010F);
-                        manufacturer = Encoding.UTF8.GetString(item.Value, 0, item.Value.Length - 1);
-
-                        // Camera model.
-                        item = image.GetPropertyItem(0x0110);
-                        model = Encoding.UTF8.GetString(item.Value, 0, item.Value.Length - 1);
-
-                        // Photo iso.
-                        item = image.GetPropertyItem(0x8827);
-                        iso = Convert.ToInt16(item.Value[1]).ToString();
-
-                        // Photo exposure.
-                        item = image.GetPropertyItem(0x829A);
-                        exposure = Convert.ToInt64(item.Value[1]).ToString();
-
-                        // Photo aperture.
-                        item = image.GetPropertyItem(0x9202);
-                        exposure = Convert.ToInt64(item.Value[0]).ToString();
-
-                        // Photo focal length.
-                        item = image.GetPropertyItem(0x920A);
-                        exposure = Convert.ToInt64(item.Value[1]).ToString();
-                    }
-                }
-                catch (Exception ex)
-                {
-
-                }
-                */
-                #endregion
-
-                #region Magick.NET
-                // Read image from file
-                using (MagickImage image = new MagickImage(fileName))
-                {
-                    // Retrieve the exif information
-                    ExifProfile profile = image.GetExifProfile();
-
-                    // Check if image contains an exif profile
-                    if (profile != null)
-                    {
-                        // Write all values to the console
-                        foreach (ExifValue value in profile.Values)
+                        using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
                         {
-                            if (value.Tag == ExifTag.Make)
-                                manufacturer = value.ToString();
+                            Image image = Image.FromStream(stream, false, false);
 
-                            else if (value.Tag == ExifTag.Model)
-                                model = value.ToString();
+                            PropertyItem item;
+
+                            // Camera brand.
+                            item = image.GetPropertyItem(0x010F);
+                            manufacturer = Encoding.UTF8.GetString(item.Value, 0, item.Value.Length - 1);
+
+                            // Camera model.
+                            item = image.GetPropertyItem(0x0110);
+                            model = Encoding.UTF8.GetString(item.Value, 0, item.Value.Length - 1);
+
+                            // Photo iso.
+                            item = image.GetPropertyItem(0x8827);
+                            iso = Convert.ToInt16(item.Value[1]).ToString();
+
+                            // Photo exposure.
+                            item = image.GetPropertyItem(0x829A);
+                            exposure = Convert.ToInt64(item.Value[1]).ToString();
+
+                            // Photo aperture.
+                            item = image.GetPropertyItem(0x9202);
+                            exposure = Convert.ToInt64(item.Value[0]).ToString();
+
+                            // Photo focal length.
+                            item = image.GetPropertyItem(0x920A);
+                            exposure = Convert.ToInt64(item.Value[1]).ToString();
                         }
                     }
-                }
-                #endregion
+                    catch (Exception ex)
+                    {
 
-                int pid = await _photosService.CreateAsync(item.Filter, item.Description, item.Path, manufacturer, model, item.Iso, item.Exposure, item.Aperture, item.FocalLength, tags);
+                    }
+                    */
+                    #endregion
+
+                    #region Magick.NET
+                    // Read image from file
+                    using (MagickImage image = new MagickImage(fileName))
+                    {
+                        // Retrieve the exif information
+                        ExifProfile profile = image.GetExifProfile();
+
+                        // Check if image contains an exif profile
+                        if (profile != null)
+                        {
+                            // Write all values to the console
+                            foreach (ExifValue value in profile.Values)
+                            {
+                                if (value.Tag == ExifTag.Make && manufacturer == null)
+                                    manufacturer = value.ToString();
+
+                                else if (value.Tag == ExifTag.Model && model == null)
+                                    model = value.ToString();
+                            }
+                        }
+                    }
+                    #endregion
+                }
+
+                int pid = await _photosService.CreateAsync(item.Filter, item.Description, item.Path, manufacturer, model, Iso, Exposure, Aperture, FocalLength, tags);
 
                 return RedirectToAction("Details", "Photos", new { id = pid });
             }
@@ -198,9 +192,6 @@ namespace PhotoHub.WEB.Controllers
             {
                 ViewBag.LikesCount = item.Likes.Count();
                 ViewBag.Filters = _filtersMapper.MapRange(_photosService.Filters);
-                ViewBag.Isos = _isosMapper.MapRange(_photosService.Isos);
-                ViewBag.Exposures = _exposuresMapper.MapRange(_photosService.Exposures);
-                ViewBag.Apertures = _aperturesMapper.MapRange(_photosService.Apertures);
                 //ViewBag.Tags = _tagsMapper.MapRange(_photosService.Tags);
 
                 return View(_photosMapper.Map(item));
@@ -210,10 +201,10 @@ namespace PhotoHub.WEB.Controllers
         }
         
         [Authorize, HttpPost, ValidateAntiForgeryToken, Route("photos/edit/{id}")]
-        public async Task<ActionResult> Edit([Bind("Id, Filter, Description, Iso, Aperture, Exposure, FocalLength")] PhotoViewModel item, string tags)
+        public async Task<ActionResult> Edit([Bind("Id, Filter, Description")] PhotoViewModel item, string tags)
         {
             if (ModelState.IsValid)
-                await _photosService.EditAsync(item.Id, item.Filter, item.Description, item.Iso, item.Exposure, item.Aperture, item.FocalLength, tags);
+                await _photosService.EditAsync(item.Id, item.Filter, item.Description, tags);
 
             return RedirectToAction("Details", "Photos", new { id = item.Id });
         }

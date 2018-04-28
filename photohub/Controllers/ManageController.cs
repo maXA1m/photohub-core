@@ -14,6 +14,8 @@ using PhotoHub.BLL.Interfaces;
 #region using PhotoHub.WEB
 using PhotoHub.WEB.Extensions;
 using PhotoHub.WEB.ViewModels.Manage;
+using PhotoHub.WEB.Mappers;
+using PhotoHub.WEB.ViewModels;
 #endregion
 
 namespace PhotoHub.WEB.Controllers
@@ -28,6 +30,7 @@ namespace PhotoHub.WEB.Controllers
         private readonly ILogger _logger;
         private readonly UrlEncoder _urlEncoder;
         private readonly IUsersService _usersService;
+        private readonly UsersDetailsMapper _usersMapper;
 
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
         private const string RecoveryCodesKey = nameof(RecoveryCodesKey);
@@ -46,6 +49,7 @@ namespace PhotoHub.WEB.Controllers
             _logger = logger;
             _urlEncoder = urlEncoder;
             _usersService = usersService;
+            _usersMapper = new UsersDetailsMapper();
         }
 
         [TempData]
@@ -54,7 +58,7 @@ namespace PhotoHub.WEB.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetUserAsync(User);
+            UserDetailsViewModel user = _usersMapper.Map(_usersService.Get(User.Identity.Name));
             if (user == null)
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
@@ -62,11 +66,8 @@ namespace PhotoHub.WEB.Controllers
             {
                 RealName = user.RealName,
                 Username = user.UserName,
-                Email = user.Email,
                 About = user.About,
                 WebSite = user.WebSite,
-                PhoneNumber = user.PhoneNumber,
-                IsEmailConfirmed = user.EmailConfirmed,
                 StatusMessage = StatusMessage
             };
 
@@ -80,7 +81,7 @@ namespace PhotoHub.WEB.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            await _usersService.EditAsync(User.Identity.Name, model.RealName, model.PhoneNumber, model.Email, model.About, model.WebSite);
+            await _usersService.EditAsync(User.Identity.Name, model.RealName, model.About, model.WebSite);
 
             StatusMessage = "Your profile has been updated";
             return RedirectToAction(nameof(Index));

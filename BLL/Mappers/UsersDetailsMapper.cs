@@ -10,9 +10,9 @@ using PhotoHub.BLL.Interfaces;
 
 namespace PhotoHub.BLL.Mappers
 {
-    public class UsersDetailsMapper : IMapper<UserDetailsDTO, ApplicationUser>
+    public class UsersDetailsMapper : IMapper<UserDetailsDTO, User>
     {
-        public UserDetailsDTO Map(ApplicationUser item)
+        public UserDetailsDTO Map(User item)
         {
             if (item == null)
                 return null;
@@ -21,7 +21,6 @@ namespace PhotoHub.BLL.Mappers
             {
                 RealName = item.RealName,
                 UserName = item.UserName,
-                Email = item.Email,
                 Avatar = item.Avatar,
                 About = item.About,
                 Date = item.Date,
@@ -37,7 +36,7 @@ namespace PhotoHub.BLL.Mappers
                 Mutuals = null
             };
         }
-        public UserDetailsDTO Map(ApplicationUser item, bool confirmed, bool followed, bool blocked, bool iBlocked, ICollection<UserDTO> followings, ICollection<UserDTO> followers, ICollection<UserDTO> mutuals)
+        public UserDetailsDTO Map(User item, bool confirmed, bool followed, bool blocked, bool iBlocked, ICollection<UserDTO> followings, ICollection<UserDTO> followers, ICollection<UserDTO> mutuals)
         {
             if (item == null)
                 return null;
@@ -46,7 +45,6 @@ namespace PhotoHub.BLL.Mappers
             {
                 RealName = item.RealName,
                 UserName = item.UserName,
-                Email = item.Email,
                 Avatar = item.Avatar,
                 About = item.About,
                 Date = item.Date,
@@ -63,7 +61,7 @@ namespace PhotoHub.BLL.Mappers
             };
         }
 
-        public List<UserDetailsDTO> MapRange(IEnumerable<ApplicationUser> items)
+        public List<UserDetailsDTO> MapRange(IEnumerable<User> items)
         {
             if (items == null)
                 return null;

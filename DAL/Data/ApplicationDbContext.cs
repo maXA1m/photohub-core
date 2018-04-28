@@ -8,15 +8,13 @@ namespace PhotoHub.DAL.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<User> AppUsers { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Like> Likes { get; set; }
         public DbSet<BlackList> BlackLists { get; set; }
         public DbSet<Following> Followings { get; set; }
         public DbSet<Bookmark> Bookmarks { get; set; }
         public DbSet<Photo> Photos { get; set; }
-        public DbSet<Exposure> Exposures { get; set; }
-        public DbSet<Aperture> Apertures { get; set; }
-        public DbSet<ISO> Isos { get; set; }
         public DbSet<Filter> Filters { get; set; }
         public DbSet<Confirmed> Confirmed { get; set; }
         public DbSet<Tag> Tags { get; set; }

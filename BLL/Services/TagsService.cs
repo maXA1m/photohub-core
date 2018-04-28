@@ -26,12 +26,12 @@ namespace PhotoHub.BLL.Services
         private readonly TagsMapper _tagsMapper;
         #endregion
 
-        public ApplicationUser CurrentUser => _unitOfWork.Users.Find(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name).FirstOrDefault();
+        public User CurrentUser => _unitOfWork.Users.Find(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name).FirstOrDefault();
         public UserDTO CurrentUserDTO
         {
             get
             {
-                ApplicationUser user = CurrentUser;
+                User user = CurrentUser;
 
                 return _usersMapper.Map(
                     user,

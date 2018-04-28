@@ -28,19 +28,16 @@ namespace PhotoHub.BLL.Services
         private readonly PhotosMapper _photosMapper;
         private readonly LikesMapper _likesMapper;
         private readonly CommentsMapper _commentsMapper;
-        private readonly AperturesMapper _aperturesMapper;
-        private readonly ExposuresMapper _exposuresMapper;
-        private readonly IsosMapper _isosMapper;
         private readonly TagsMapper _tagsMapper;
         private readonly ITagParser _tagParser;
         #endregion
 
-        public ApplicationUser CurrentUser => _unitOfWork.Users.Find(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name).FirstOrDefault();
+        public User CurrentUser => _unitOfWork.Users.Find(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name).FirstOrDefault();
         public UserDTO CurrentUserDTO
         {
             get
             {
-                ApplicationUser user = CurrentUser;
+                User user = CurrentUser;
 
                 return _usersMapper.Map(
                     user,
@@ -53,9 +50,6 @@ namespace PhotoHub.BLL.Services
         }
 
         public List<FilterDTO> Filters => _filtersMapper.MapRange(_unitOfWork.Filters.GetAll());
-        public List<ApertureDTO> Apertures => _aperturesMapper.MapRange(_unitOfWork.Apertures.GetAll());
-        public List<ExposureDTO> Exposures => _exposuresMapper.MapRange(_unitOfWork.Exposures.GetAll());
-        public List<IsoDTO> Isos => _isosMapper.MapRange(_unitOfWork.Isos.GetAll());
         public List<TagDTO> Tags => _tagsMapper.MapRange(_unitOfWork.Tags.GetAll());
 
         public PhotosService(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
@@ -67,16 +61,13 @@ namespace PhotoHub.BLL.Services
             _photosMapper = new PhotosMapper();
             _commentsMapper = new CommentsMapper();
             _likesMapper = new LikesMapper();
-            _isosMapper = new IsosMapper();
-            _aperturesMapper = new AperturesMapper();
-            _exposuresMapper = new ExposuresMapper();
             _tagsMapper = new TagsMapper();
             _tagParser = new TagParser();
         }
 
         public IEnumerable<PhotoDTO> GetAll(int page, int pageSize)
         {
-            ApplicationUser currentUser = CurrentUser;
+            User currentUser = CurrentUser;
             IEnumerable<Photo> photos = _unitOfWork.Photos.GetAll(page, pageSize).OrderByDescending(p => p.Likes.Count);
 
             List<PhotoDTO> photoDTOs = new List<PhotoDTO>(pageSize);
@@ -178,7 +169,7 @@ namespace PhotoHub.BLL.Services
 
         public PhotoDTO Get(int id)
         {
-            ApplicationUser currentUser = CurrentUser;
+            User currentUser = CurrentUser;
             Photo photo = _unitOfWork.Photos.Get(id);
 
             photo.CountViews++;
@@ -276,7 +267,7 @@ namespace PhotoHub.BLL.Services
         }
         public async Task<PhotoDTO> GetAsync(int id)
         {
-            ApplicationUser currentUser = CurrentUser;
+            User currentUser = CurrentUser;
             Photo photo =  await _unitOfWork.Photos.GetAsync(id);
 
             photo.CountViews++;
@@ -375,7 +366,7 @@ namespace PhotoHub.BLL.Services
 
         public IEnumerable<PhotoDTO> GetPhotosHome(int page, int pageSize)
         {
-            ApplicationUser currentUser = CurrentUser;
+            User currentUser = CurrentUser;
             IEnumerable<Following> followings = _unitOfWork.Followings.Find(f => f.UserId == currentUser.Id);
             List<Photo> photos = new List<Photo>();
 
@@ -440,8 +431,8 @@ namespace PhotoHub.BLL.Services
 
         public IEnumerable<PhotoDTO> GetForUser(int page, string userName, int pageSize)
         {
-            ApplicationUser currentUser = CurrentUser;
-            ApplicationUser user = _unitOfWork.Users.Find(u => u.UserName == userName).FirstOrDefault();
+            User currentUser = CurrentUser;
+            User user = _unitOfWork.Users.Find(u => u.UserName == userName).FirstOrDefault();
 
             IEnumerable<Photo> photos = _unitOfWork.Photos.Find(p => p.OwnerId == user.Id).OrderByDescending(p => p.Date).Skip(page * pageSize).Take(pageSize);
 
@@ -544,7 +535,7 @@ namespace PhotoHub.BLL.Services
 
         public IEnumerable<PhotoDTO> GetBookmarks(int page, int pageSize)
         {
-            ApplicationUser currentUser = CurrentUser;
+            User currentUser = CurrentUser;
             IEnumerable<Photo> photos = _unitOfWork.Bookmarks.Find(b => b.UserId == currentUser.Id).OrderByDescending(b => b.Date).Select(b => b.Photo).Skip(page * pageSize).Take(pageSize);
 
             List<PhotoDTO> photoDTOs = new List<PhotoDTO>(pageSize);
@@ -602,7 +593,7 @@ namespace PhotoHub.BLL.Services
 
         public IEnumerable<PhotoDTO> GetTags(int tagId, int page, int pageSize)
         {
-            ApplicationUser currentUser = CurrentUser;
+            User currentUser = CurrentUser;
             if (_unitOfWork.Tags.Find(t => t.Id == tagId).FirstOrDefault() == null)
                 return null;
 
@@ -661,9 +652,9 @@ namespace PhotoHub.BLL.Services
             return photoDTOs;
         }
 
-        public IEnumerable<PhotoDTO> Search(int page, string search, int pageSize, int iso, int exposure, int aperture, double focalLength)
+        public IEnumerable<PhotoDTO> Search(int page, string search, int pageSize, int? iso, double? exposure, double? aperture, double? focalLength)
         {
-            ApplicationUser currentUser = CurrentUser;
+            User currentUser = CurrentUser;
             IEnumerable<Photo> photos;
             if (String.IsNullOrEmpty(search))
             {
@@ -678,12 +669,14 @@ namespace PhotoHub.BLL.Services
                 ).OrderByDescending(p => p.Likes.Count).Skip(page * pageSize).Take(pageSize);
             }
 
-            if(iso > 0)
-                photos = photos.Where(p => p.IsoId == iso);
-            if (exposure > 0)
-                photos = photos.Where(p => p.ExposureId == exposure);
-            if (aperture > 0)
-                photos = photos.Where(p => p.ApertureId == aperture);
+            if(iso != null)
+                photos = photos.Where(p => p.Iso == iso);
+            if (exposure != null)
+                photos = photos.Where(p => p.Exposure == exposure);
+            if (aperture != null)
+                photos = photos.Where(p => p.Aperture == aperture);
+            if (focalLength != null)
+                photos = photos.Where(p => p.FocalLength == focalLength);
 
             List<PhotoDTO> photoDTOs = new List<PhotoDTO>(pageSize);
 
@@ -740,7 +733,7 @@ namespace PhotoHub.BLL.Services
 
         public void Bookmark(int id)
         {
-            ApplicationUser currentUser = CurrentUser;
+            User currentUser = CurrentUser;
             Photo bookmarkedPhoto = _unitOfWork.Photos.Find(p => p.Id == id).FirstOrDefault();
 
             if (currentUser != null && bookmarkedPhoto != null && _unitOfWork.Bookmarks.Find(b => b.UserId == currentUser.Id && b.PhotoId == id).FirstOrDefault() == null)
@@ -756,7 +749,7 @@ namespace PhotoHub.BLL.Services
         }
         public async Task BookmarkAsync(int id)
         {
-            ApplicationUser currentUser = CurrentUser;
+            User currentUser = CurrentUser;
             Photo bookmarkedPhoto = _unitOfWork.Photos.Find(p => p.Id == id).FirstOrDefault();
 
             if (currentUser != null && bookmarkedPhoto != null && _unitOfWork.Bookmarks.Find(b => b.UserId == currentUser.Id && b.PhotoId == id).FirstOrDefault() == null)
@@ -773,7 +766,7 @@ namespace PhotoHub.BLL.Services
 
         public void DismissBookmark(int id)
         {
-            ApplicationUser currentUser = CurrentUser;
+            User currentUser = CurrentUser;
             Photo bookmarkedPhoto = _unitOfWork.Photos.Find(p => p.Id == id).FirstOrDefault();
             Bookmark bookmark = _unitOfWork.Bookmarks.Find(b => b.UserId == currentUser.Id && b.PhotoId == id).FirstOrDefault();
 
@@ -785,7 +778,7 @@ namespace PhotoHub.BLL.Services
         }
         public async Task DismissBookmarkAsync(int id)
         {
-            ApplicationUser currentUser = CurrentUser;
+            User currentUser = CurrentUser;
             Photo bookmarkedPhoto = _unitOfWork.Photos.Find(p => p.Id == id).FirstOrDefault();
             Bookmark bookmark = _unitOfWork.Bookmarks.Find(b => b.UserId == currentUser.Id && b.PhotoId == id).FirstOrDefault();
 
@@ -796,7 +789,7 @@ namespace PhotoHub.BLL.Services
             }
         }
 
-        public int Create(string filter, string description, string path, string manufacturer, string model, string iso, string exposure, string aperture, double focalLength, string tags)
+        public int Create(string filter, string description, string path, string manufacturer, string model, int? iso, double? exposure, double? aperture, double? focalLength, string tags)
         {
             Photo photo = new Photo()
             {
@@ -808,28 +801,16 @@ namespace PhotoHub.BLL.Services
 
                 Manufacturer = manufacturer,
                 Model = model,
-                IsoId = 1,
-                ExposureId = 1,
-                ApertureId = 1,
-                FocalLength = 0
+                Iso = iso,
+                Exposure = exposure,
+                Aperture = aperture,
+                FocalLength = null
             };
-
-            ISO piso = _unitOfWork.Isos.Find(i => i.Name == iso).FirstOrDefault();
-            if (piso != null)
-                photo.IsoId = piso.Id;
-
-            Aperture paperture = _unitOfWork.Apertures.Find(i => i.Name == aperture).FirstOrDefault();
-            if (paperture != null)
-                photo.ApertureId = paperture.Id;
-
-            Exposure pexposure = _unitOfWork.Exposures.Find(i => i.Name == exposure).FirstOrDefault();
-            if (pexposure != null)
-                photo.ExposureId = pexposure.Id;
 
             if (focalLength >= 3)
                 photo.FocalLength = focalLength;
-            else
-                photo.FocalLength = 0;
+
+            _unitOfWork.Photos.Create(photo);
 
             if (!String.IsNullOrEmpty(tags))
             {
@@ -847,12 +828,11 @@ namespace PhotoHub.BLL.Services
                 }
             }
 
-            _unitOfWork.Photos.Create(photo);
             _unitOfWork.Save();
 
             return photo.Id;
         }
-        public async ValueTask<int> CreateAsync(string filter, string description, string path, string manufacturer, string model, string iso, string exposure, string aperture, double focalLength, string tags)
+        public async ValueTask<int> CreateAsync(string filter, string description, string path, string manufacturer, string model, int? iso, double? exposure, double? aperture, double? focalLength, string tags)
         {
             Photo photo = new Photo()
             {
@@ -864,28 +844,14 @@ namespace PhotoHub.BLL.Services
 
                 Manufacturer = manufacturer,
                 Model = model,
-                IsoId = 1,
-                ExposureId = 1,
-                ApertureId = 1,
-                FocalLength = 0
+                Iso = iso,
+                Exposure = exposure,
+                Aperture = aperture,
+                FocalLength = null
             };
-            
-            ISO piso = _unitOfWork.Isos.Find(i => i.Name == iso).FirstOrDefault();
-            if (piso != null)
-                photo.IsoId = piso.Id;
-
-            Aperture paperture = _unitOfWork.Apertures.Find(i => i.Name == aperture).FirstOrDefault();
-            if (paperture != null)
-                photo.ApertureId = paperture.Id;
-
-            Exposure pexposure = _unitOfWork.Exposures.Find(i => i.Name == exposure).FirstOrDefault();
-            if (pexposure != null)
-                photo.ExposureId = pexposure.Id;
 
             if (focalLength >= 3)
                 photo.FocalLength = focalLength;
-            else
-                photo.FocalLength = 0;
 
             await _unitOfWork.Photos.CreateAsync(photo);
 
@@ -910,7 +876,7 @@ namespace PhotoHub.BLL.Services
             return photo.Id;
         }
 
-        public void Edit(int id, string filter, string description, string iso, string exposure, string aperture, double focalLength, string tags)
+        public void Edit(int id, string filter, string description, string tags)
         {
             Photo photo = _unitOfWork.Photos.Get(id);
 
@@ -919,24 +885,6 @@ namespace PhotoHub.BLL.Services
                 Filter flt = _unitOfWork.Filters.Find(f => f.Name == filter).FirstOrDefault();
                 if (flt != null)
                     photo.FilterId = flt.Id;
-
-                ISO piso = _unitOfWork.Isos.Find(i => i.Name == iso).FirstOrDefault();
-                if (piso != null && piso.Id != photo.IsoId)
-                    photo.IsoId = piso.Id;
-
-                Aperture paperture = _unitOfWork.Apertures.Find(i => i.Name == aperture).FirstOrDefault();
-                if (paperture != null && paperture.Id != photo.ApertureId)
-                    photo.ApertureId = paperture.Id;
-
-
-                Exposure pexposure = _unitOfWork.Exposures.Find(i => i.Name == exposure).FirstOrDefault();
-                if (pexposure != null && pexposure.Id != photo.ExposureId)
-                    photo.ExposureId = pexposure.Id;
-
-                if (focalLength >= 3 && focalLength != photo.FocalLength)
-                    photo.FocalLength = focalLength;
-                else if (focalLength < 3)
-                    photo.FocalLength = 0;
 
                 if (description != photo.Description)
                     photo.Description = description;
@@ -964,7 +912,7 @@ namespace PhotoHub.BLL.Services
                 _unitOfWork.Save();
             }
         }
-        public async Task EditAsync(int id, string filter, string description, string iso, string exposure, string aperture, double focalLength, string tags)
+        public async Task EditAsync(int id, string filter, string description, string tags)
         {
             Photo photo = await _unitOfWork.Photos.GetAsync(id);
 
@@ -973,24 +921,6 @@ namespace PhotoHub.BLL.Services
                 Filter flt = _unitOfWork.Filters.Find(f => f.Name == filter).FirstOrDefault();
                 if (flt != null)
                     photo.FilterId = flt.Id;
-
-                ISO piso = _unitOfWork.Isos.Find(i => i.Name == iso).FirstOrDefault();
-                if (piso != null && piso.Id != photo.IsoId)
-                    photo.IsoId = piso.Id;
-
-                Aperture paperture = _unitOfWork.Apertures.Find(i => i.Name == aperture).FirstOrDefault();
-                if (paperture != null && paperture.Id != photo.ApertureId)
-                    photo.ApertureId = paperture.Id;
-
-
-                Exposure pexposure = _unitOfWork.Exposures.Find(i => i.Name == exposure).FirstOrDefault();
-                if (pexposure != null && pexposure.Id != photo.ExposureId)
-                    photo.ExposureId = pexposure.Id;
-
-                if (focalLength >= 0 && focalLength != photo.FocalLength)
-                    photo.FocalLength = focalLength;
-                else if (focalLength < 3)
-                    photo.FocalLength = 0;
 
                 if (description != photo.Description)
                     photo.Description = description;

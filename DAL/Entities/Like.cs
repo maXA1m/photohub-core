@@ -9,8 +9,8 @@ namespace PhotoHub.DAL.Entities
         public int PhotoId { get; set; }
         public Photo Photo { get; set; }
 
-        public string OwnerId { get; set; }
-        public ApplicationUser Owner { get; set; }
+        public int OwnerId { get; set; }
+        public User Owner { get; set; }
 
         public Like()
         {

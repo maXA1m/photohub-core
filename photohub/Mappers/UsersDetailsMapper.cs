@@ -25,7 +25,6 @@ namespace PhotoHub.WEB.Mappers
             {
                 RealName = item.RealName,
                 UserName = item.UserName,
-                Email = item.Email,
                 Avatar = item.Avatar != null ? String.Format("/data/avatars/{0}/{1}", item.UserName, item.Avatar) : "/images/defaults/def-user-logo.png",
                 About = item.About != null ? item.About : "",
                 Date = item.Date.ToString("MMMM dd, yyyy"),
@@ -54,7 +53,6 @@ namespace PhotoHub.WEB.Mappers
                 {
                     RealName = item.RealName,
                     UserName = item.UserName,
-                    Email = item.Email,
                     Avatar = item.Avatar != null ? String.Format("/data/avatars/{0}/{1}", item.UserName, item.Avatar) : "/images/defaults/def-user-logo.png",
                     About = item.About != null ? item.About : "",
                     Date = item.Date.ToString("MMMM dd, yyyy"),

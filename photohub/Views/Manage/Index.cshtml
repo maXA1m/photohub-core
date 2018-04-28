@@ -33,11 +33,11 @@
     <div class="field">
         <label asp-for="About" class="label"></label>
         <div class="control">
-            <textarea asp-for="About" class="textarea">@Model.About</textarea>
+            <input asp-for="About" class="input">
         </div>
     </div>
 
-    <div class="field">
+    @*<div class="field">
         <label asp-for="Email" class="label"></label>
         <div class="control">
             <input asp-for="Email" class="input" required />
@@ -61,14 +61,14 @@
             <input asp-for="PhoneNumber" class="input" />
         </div>
         <p asp-validation-for="PhoneNumber" class="help is-danger"></p>
-    </div>
+    </div>*@
 
     <div class="field has-text-centered">
-        <button type="submit" class="button is-info" title="Save">Save</button>
+        <button type="submit" class="button is-warning" title="Save">Save</button>
     </div>
 </form>
 
 
 <form method="post" asp-controller="Account" asp-action="Logout" class="has-text-centered" style="margin-top: 30px;">
-    <button type="submit" class="button is-dark">Logout</button>
+    <button type="submit" class="button is-danger">Logout</button>
 </form>

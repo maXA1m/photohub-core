@@ -8,8 +8,6 @@ namespace PhotoHub.WEB.ViewModels
         public string RealName { get; set; }
         [JsonProperty("userName")]
         public string UserName { get; set; }
-        [JsonProperty("email")]
-        public string Email { get; set; }
         [JsonProperty("avatar")]
         public string Avatar { get; set; }
         [JsonProperty("date")]

@@ -2,10 +2,10 @@
 {
     public class Confirmed : BaseEntity
     {
-        public string UserId { get; set; }
-        public ApplicationUser User { get; set; }
+        public int UserId { get; set; }
+        public User User { get; set; }
 
-        public string AdminId { get; set; }
-        public ApplicationUser Admin { get; set; }
+        public int AdminId { get; set; }
+        public User Admin { get; set; }
     }
 }

@@ -6,8 +6,8 @@
     <script defer src="~/js/manage/blocklist.js"></script>
 }
 
-<div id="blocklist" class="container is-flex is-flex-centered is-flex-column" v-cloak>
-    <div class="is-flex is-flex-centered is-flex-wrap search-element" v-if="users != null || users.length > 0" v-for="user in users">
+<div id="blocklist" class="container is-flex is-flex-centered is-flex-column">
+    <div class="is-flex is-flex-centered is-flex-wrap search-element" v-if="users != null || users.length > 0" v-for="user in users" v-cloak>
         <a v-bind:href="`/users/${user.userName}`" class="button is-white is-flex is-flex-centered" v-bind:title="user.userName" style="justify-content: space-between !important; height: 100%;">
             <img class="image is-64x64 is-circle" v-bind:src="user.avatar" v-bind:alt="user.userName" style="margin-right: 7px;" />
             <span class="is-doted-end is-size-5">{{user.userName}}</span>
@@ -16,7 +16,7 @@
     </div>
 
     <!-- Empty -->
-    <div class="empty-container" v-if="users == null || users.length <= 0">
+    <div class="empty-container" v-if="users == null || users.length <= 0" v-cloak>
         <p>Blocklist is empty</p>
     </div>
 

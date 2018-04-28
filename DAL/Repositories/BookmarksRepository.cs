@@ -33,13 +33,7 @@ namespace PhotoHub.DAL.Repositories
                     .Include(b => b.Photo)
                         .ThenInclude(p => p.Owner)
                     .Include(b => b.Photo)
-                        .ThenInclude(p => p.Filter)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Aperture)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Exposure)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Iso);
+                        .ThenInclude(p => p.Filter);
         }
 
         public IEnumerable<Bookmark> GetAll(int page, int pageSize)
@@ -54,12 +48,6 @@ namespace PhotoHub.DAL.Repositories
                         .ThenInclude(p => p.Owner)
                     .Include(b => b.Photo)
                         .ThenInclude(p => p.Filter)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Aperture)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Exposure)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Iso)
                     .Skip(page * pageSize).Take(pageSize);
         }
 
@@ -75,12 +63,6 @@ namespace PhotoHub.DAL.Repositories
                         .ThenInclude(p => p.Owner)
                     .Include(b => b.Photo)
                         .ThenInclude(p => p.Filter)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Aperture)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Exposure)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Iso)
                     .Where(b => b.Id == id).FirstOrDefault();
         }
         public async Task<Bookmark> GetAsync(int id)
@@ -110,12 +92,6 @@ namespace PhotoHub.DAL.Repositories
                         .ThenInclude(p => p.Owner)
                     .Include(b => b.Photo)
                         .ThenInclude(p => p.Filter)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Aperture)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Exposure)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Iso)
                     .Where(predicate);
         }
 

@@ -22,12 +22,12 @@ namespace PhotoHub.BLL.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UsersMapper _usersMapper;
 
-        public ApplicationUser CurrentUser => _unitOfWork.Users.Find(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name).FirstOrDefault();
+        public User CurrentUser => _unitOfWork.Users.Find(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name).FirstOrDefault();
         public UserDTO CurrentUserDTO
         {
             get
             {
-                ApplicationUser user = CurrentUser;
+                User user = CurrentUser;
 
                 return _usersMapper.Map(
                     user,
@@ -49,7 +49,7 @@ namespace PhotoHub.BLL.Services
         public void Add(int photoId)
         {
             Photo photo = _unitOfWork.Photos.Get(photoId);
-            ApplicationUser user = CurrentUser;
+            User user = CurrentUser;
             Like like = _unitOfWork.Likes.Find(l => l.OwnerId == user.Id && l.PhotoId == photo.Id).FirstOrDefault();
 
             if (photo != null && user != null && like == null)
@@ -69,7 +69,7 @@ namespace PhotoHub.BLL.Services
         public async Task AddAsync(int photoId)
         {
             Photo photo = await _unitOfWork.Photos.GetAsync(photoId);
-            ApplicationUser user = CurrentUser;
+            User user = CurrentUser;
             Like like = _unitOfWork.Likes.Find(l => l.OwnerId == user.Id && l.PhotoId == photo.Id).FirstOrDefault();
 
             if (photo != null && user != null && like == null)
@@ -89,7 +89,7 @@ namespace PhotoHub.BLL.Services
         public void Delete(int photoId)
         {
             Photo photo = _unitOfWork.Photos.Get(photoId);
-            ApplicationUser user = CurrentUser;
+            User user = CurrentUser;
             Like like = _unitOfWork.Likes.Find(l => l.OwnerId == user.Id && l.PhotoId == photo.Id).FirstOrDefault();
 
             if (photo != null && user != null && like != null)
@@ -101,7 +101,7 @@ namespace PhotoHub.BLL.Services
         public async Task DeleteAsync(int photoId)
         {
             Photo photo = await _unitOfWork.Photos.GetAsync(photoId);
-            ApplicationUser user = CurrentUser;
+            User user = CurrentUser;
             Like like = _unitOfWork.Likes.Find(l => l.OwnerId == user.Id && l.PhotoId == photo.Id).FirstOrDefault();
 
             if (photo != null && user != null && like != null)

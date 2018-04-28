@@ -10,10 +10,10 @@ using PhotoHub.BLL.Interfaces;
 
 namespace PhotoHub.BLL.Mappers
 {
-    public class UsersMapper : IMapper<UserDTO, ApplicationUser>
+    public class UsersMapper : IMapper<UserDTO, User>
     {
 
-        public UserDTO Map(ApplicationUser item)
+        public UserDTO Map(User item)
         {
             if (item == null)
                 return null;
@@ -22,7 +22,6 @@ namespace PhotoHub.BLL.Mappers
             {
                 RealName = item.RealName,
                 UserName = item.UserName,
-                Email = item.Email,
                 Avatar = item.Avatar,
                 Date = item.Date,
 
@@ -33,7 +32,7 @@ namespace PhotoHub.BLL.Mappers
                 IBlocked = false
             };
         }
-        public UserDTO Map(ApplicationUser item, bool confirmed, bool followed, bool blocked, bool iBlocked)
+        public UserDTO Map(User item, bool confirmed, bool followed, bool blocked, bool iBlocked)
         {
             if (item == null)
                 return null;
@@ -42,7 +41,6 @@ namespace PhotoHub.BLL.Mappers
             {
                 RealName = item.RealName,
                 UserName = item.UserName,
-                Email = item.Email,
                 Avatar = item.Avatar,
                 Date = item.Date,
 
@@ -54,7 +52,7 @@ namespace PhotoHub.BLL.Mappers
             };
         }
 
-        public List<UserDTO> MapRange(IEnumerable<ApplicationUser> items)
+        public List<UserDTO> MapRange(IEnumerable<User> items)
         {
             if (items == null)
                 return null;

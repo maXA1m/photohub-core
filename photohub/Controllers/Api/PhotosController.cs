@@ -65,7 +65,7 @@ namespace PhotoHub.WEB.Controllers.Api
         }
 
         [HttpGet, Route("search")]
-        public IEnumerable<PhotoViewModel> Search(int page, string search, int iso, int exposure, int aperture, double focalLength)
+        public IEnumerable<PhotoViewModel> Search(int page, string search, int? iso, double? exposure, double? aperture, double? focalLength)
         {
             return _photosMapper.MapRange(_photosService.Search(page, search, _getHomePageSize, iso, exposure, aperture, focalLength));
         }

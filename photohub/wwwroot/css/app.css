@@ -6,7 +6,7 @@
 
 /*  Styles for unloaded vue js components  */
 [v-cloak] {
-    display: none;
+    display: none !important;
 }
 
 /*  Styles for document, body element  */
@@ -14,6 +14,7 @@ body,
 html {
     padding-top: 40px;
     padding-bottom: 0;
+    background: #fff;
 }
 
 h1 {
@@ -26,7 +27,6 @@ h1 {
     body,
     html {
         padding-top: 10px;
-        padding-bottom: 25px;
     }
 
     h1 {
@@ -35,6 +35,8 @@ h1 {
         padding: 0;
     }
 }
+
+
 
 /*  Message panel  */
 #message {
@@ -327,10 +329,9 @@ h1 {
     max-width: none !important;
     margin-bottom: 50px !important;
     border-radius: 3px;
-    box-shadow: 0 14px 28px rgba(0,0,0,0.15), 0 10px 10px rgba(0,0,0,0.22);
+    box-shadow: 0 0 2px rgba(38,50,56,.2), 0 8px 24px 0 rgba(0,0,0,.2);
     margin-bottom: 30px !important;
-
-    transition: all ease .3s;
+    transition: all .3s cubic-bezier(.4,0,.2,1);
 }
 
 .card.droping {
@@ -348,7 +349,7 @@ h1 {
     justify-content: center;
     align-items: center;
     height: 300px !important;
-    transition: all ease .3s;
+    transition: all .3s cubic-bezier(.4,0,.2,1);
 }
 
 .card-loading .card-image[preloader] img {
@@ -391,9 +392,25 @@ h1 {
     display: none !important;
 }
 
+.is-filters-picker {
+    overflow-y: hidden;
+    width: auto;
+    cursor: pointer;
+    white-space: nowrap;
+    padding: 0px 5px 0px 5px;
+    margin-bottom: 6px;
+    margin-top: -3px;
+}
+
+.is-filters-picker > div {
+    display: inline-block;
+    margin: 0px 1px 0px 1px;
+    cursor: pointer;
+}
+
 /*  Responsive width 100% of screen  */
 .is-responsive {
-    width: 534px !important;
+    width: 568px !important;
 }
 
 /*  Styles for image inside photo card  */
@@ -461,13 +478,13 @@ h1 {
     max-width: 98vw;
     width: 60vw !important;
     border-radius: 3px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.09), 0 6px 6px rgba(0,0,0,0.13);
+    box-shadow: 0 0 2px rgba(38,50,56,.2), 0 4px 14px 0 rgba(0,0,0,.2);
     justify-content: space-between !important;
-    transition: all ease .3s;
+    transition: all .3s cubic-bezier(.4,0,.2,1);
 }
 
 .search-element:hover {
-    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    box-shadow: 0 0 2px rgba(38,50,56,.2), 0 8px 44px 0 rgba(0,0,0,.2);
 }
 
 .search-element a {
@@ -566,14 +583,13 @@ h1 {
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
     will-change: transform;
-    -webkit-transition: -webkit-transform .3s;
-    transition: -webkit-transform .3s;
-    transition: -webkit-transform .3s;
-    -o-transition: transform .3s;
-    transition: transform .3s;
-    transition: transform .3s, -webkit-transform .4s;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all .3s cubic-bezier(.4,0,.2,1);
     z-index: 10;
+}
+
+.has-nav-shadow {
+    box-shadow: 0 5px 6px -3px rgba(0,0,0,0.2);
+    border-bottom: 1px solid #ddd;
 }
 
 .desktop-navbar b {
@@ -585,7 +601,7 @@ h1 {
     text-align: center;
     vertical-align: middle;
     background: transparent;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
 }
 
 .desktop-navbar .navbar-item:hover,
@@ -597,14 +613,20 @@ h1 {
 .mobile-navbar {
     position: fixed;
     bottom: 0;
+    left: 0;
     height: 50px;
     padding: 0;
     width: 100vw;
     background: #fff;
-    z-index: 10;
     border-top: 1px solid #ddd;
     /*  Hidden on desktops  */
     display: none;
+
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: transform;
+    transition: all .3s cubic-bezier(.4,0,.2,1);
+    z-index: 10;
 }
 
 .mobile-navbar a {
@@ -639,7 +661,13 @@ h1 {
     -webkit-transform: translateY(-100%);
     -ms-transform: translateY(-100%);
     transform: translateY(-100%);
-    box-shadow: none;
+}
+
+
+.is-hidden-mobile-navbar {
+    -webkit-transform: translateY(100%);
+    -ms-transform: translateY(100%);
+    transform: translateY(100%);
 }
 
 /*  Peloader style  */
@@ -732,28 +760,14 @@ h1 {
 
 /*  Filter picker styles  */
 input[name="Filter"] + label figure {
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     overflow: hidden;
-    border-radius: 3px !important;
-    transition: all ease-in-out .3s;
+    cursor: pointer;
+    transition: all .3s cubic-bezier(.4,0,.2,1);
 }
 
-input[name="Filter"]:hover + label figure,
-input[name="Filter"]:checked + label figure {
-    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-    transform: translateY(-7px);
-}
-
-@media (max-width: 736px) {
-    input[name="Filter"] + label figure {
-        box-shadow: none !important;
-        border: 1px solid #ddd !important;
-    }
-
-    input[name="Filter"]:hover + label figure,
-    input[name="Filter"]:checked + label figure {
-        box-shadow: none !important;
-    }
+input[name="Filter"]:hover + label h5,
+input[name="Filter"]:checked + label h5 {
+    color: #FFDD57;
 }
 
 /*  CSS classes for add shadow  */
@@ -897,6 +911,7 @@ input[name="Filter"]:checked + label figure {
 /*  Styles for footer  */
 #footer {
     padding: 30px 0 30px 0;
+    background: transparent;
 }
 
 @media (max-width: 768px) {
@@ -904,6 +919,13 @@ input[name="Filter"]:checked + label figure {
         display: none;
     }
 }
+
+@media (max-width: 736px) {
+    #footer {
+        display: block;
+    }
+}
+
 
 /*  Text align center  */
 .has-text-centered {
@@ -1055,7 +1077,7 @@ form.adaptive-form div.field {
     border-radius: 50% !important;
     border: none !important;
     font-size: 1.2rem !important;
-    transition: transform ease .3s !important;
+    transition: transform .3s cubic-bezier(.4,0,.2,1) !important;
 }
 
 .is-social-button:hover,

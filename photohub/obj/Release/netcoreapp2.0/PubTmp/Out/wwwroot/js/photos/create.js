@@ -1,4 +1,22 @@
-﻿const photosCreate = new Vue({
+﻿function makeExif() {
+    const imgFile = document.getElementById('mainImg');
+    let metadata;
+
+    EXIF.getData(imgFile, function() {
+        metadata = EXIF.getAllTags(this);
+    });
+
+    return {
+        brand: metadata.Make,
+        model: metadata.Model,
+        iso: metadata.ISOSpeedRatings,
+        aperture: metadata.FNumber,
+        exposure: metadata.ExposureTime,
+        focalLength: metadata.FocalLength
+    };
+}
+
+const photosCreate = new Vue({
     el: '#photosCreate',
     data: {
         preloader: document.querySelector('#preloader'),
@@ -10,6 +28,7 @@
         filter: 'pure',
         path: '',
         name: 'Photo name',
+        metadata: null,
         pickedTags: [],
         tags: [],
         findTag: null,
@@ -67,31 +86,9 @@
                 });
         },
         filePreview(event) {
-            if (this.loaded != true)
-                this.preloader.setAttribute('data-hidden', 'false');
-
             const file = event.target.files[0];
-            const imagefile = file.type;
-            const match = ['image/jpeg', 'image/png', 'image/jpg', 'image/*'];
 
-            if (!((imagefile == match[0]) || (imagefile == match[1]) || (imagefile == match[2]) || (imagefile == match[3]))) {
-
-                this.message.text.innerHTML = 'Error while uploading photo';
-                this.message.element.setAttribute('data-message-type', 'error');
-                this.message.element.setAttribute('data-hidden', 'false');
-                setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
-                this.preloader.setAttribute('data-hidden', 'true');
-            }
-            else {
-                this.name = file.name;
-                const reader = new FileReader();
-                reader.onload = e => {
-                    this.path = e.target.result;
-                    this.preloader.setAttribute('data-hidden', 'true');
-                    this.loaded = true;
-                };
-                reader.readAsDataURL(file);
-            }
+            this.uploadFile(file);
         },
         uploadFile(file) {
             if (this.loaded != true)
@@ -110,11 +107,14 @@
             }
             else {
                 this.name = file.name;
+
                 const reader = new FileReader();
                 reader.onload = e => {
                     this.path = e.target.result;
-                    this.preloader.setAttribute('data-hidden', 'true');
                     this.loaded = true;
+                    this.preloader.setAttribute('data-hidden', 'true');
+                    
+                    setTimeout(() => { this.metadata = makeExif(); }, 100);
                 };
                 reader.readAsDataURL(file);
             }
@@ -180,10 +180,12 @@
         onDrop(e) {
             let dt = e.dataTransfer;
             let file = dt.files[0];
-            this.uploadFile(file);
+            if(!this.loaded && !this.submited)
+                this.uploadFile(file);
         },
         highlight(e) {
-            this.droping = true;
+            if (!this.loaded && !this.submited)
+                this.droping = true;
         },
         unhighlight(e) {
             this.droping = false;

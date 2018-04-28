@@ -5,7 +5,7 @@ namespace PhotoHub.BLL.Interfaces
 {
     public interface IReturnUser
     {
-        ApplicationUser CurrentUser { get; }
+        User CurrentUser { get; }
         UserDTO CurrentUserDTO { get; }
     }
 }

@@ -12,9 +12,10 @@
 
         canShare: navigator.share,
 
-        iso: 0,
-        exposure: 0,
-        aperture: 0,
+        iso: null,
+        exposure: null,
+        aperture: null,
+        focalLength: null,
         tags: '',
 
         photosTab: {
@@ -97,7 +98,7 @@
                 this.photosTab.incallback = true;
                 this.preloader.setAttribute('data-hidden', 'false');
 
-                this.$http.get(`/api/photos/search?search=${this.photosTab.search}&page=${this.photosTab.page}&iso=${this.iso}&exposure=${this.exposure}&aperture=${this.aperture}`).then(response => response.json()).then(json => {
+                this.$http.get(`/api/photos/search?search=${this.photosTab.search}&page=${this.photosTab.page}&iso=${this.iso}&exposure=${this.exposure}&aperture=${this.aperture}&focalLength=${this.focalLength}`).then(response => response.json()).then(json => {
 
                     if (this.photosTab.photos == null)
                         this.photosTab.photos = json;
@@ -246,7 +247,7 @@
             }
         },
         deleteComment(comment) {
-            if (comment.owner.userName == this.currentAppUserName) {
+            if (this.currentAppUserName == comment.owner.userName || this.current.owner.userName == this.currentAppUserName) {
                 this.preloader.setAttribute('data-hidden', 'false');
                 this.$http.post(`/api/comments/delete/${comment.$id}`).then(response => {
                     for (let i in this.current.comments) {

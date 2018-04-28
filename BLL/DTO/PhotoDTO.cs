@@ -20,10 +20,10 @@ namespace PhotoHub.BLL.DTO
 
         public string Manufacturer { get; set; }
         public string Model { get; set; }
-        public string Iso { get; set; }
-        public string Exposure { get; set; }
-        public string Aperture { get; set; }
-        public double FocalLength { get; set; }
+        public int? Iso { get; set; }
+        public double? Exposure { get; set; }
+        public double? Aperture { get; set; }
+        public double? FocalLength { get; set; }
 
         public IEnumerable<LikeDTO> Likes { get; set; }
         public IEnumerable<CommentDTO> Comments { get; set; }

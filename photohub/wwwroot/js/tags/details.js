@@ -168,7 +168,7 @@
             }
         },
         deleteComment(comment) {
-            if (comment.owner.userName == this.currentAppUserName) {
+            if (this.currentAppUserName == comment.owner.userName || this.current.owner.userName == this.currentAppUserName) {
                 this.preloader.setAttribute('data-hidden', 'false');
                 this.$http.post(`/api/comments/delete/${comment.$id}`).then(response => {
                     for (let i in this.current.comments) {

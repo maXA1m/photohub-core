@@ -13,7 +13,7 @@ using PhotoHub.DAL.Entities;
 
 namespace PhotoHub.DAL.Repositories
 {
-    public class UsersRepository : IRepository<ApplicationUser>
+    public class UsersRepository : IRepository<User>
     {
         private readonly ApplicationDbContext _context;
 
@@ -22,55 +22,55 @@ namespace PhotoHub.DAL.Repositories
             _context = context;
         }
 
-        public IEnumerable<ApplicationUser> GetAll()
+        public IEnumerable<User> GetAll()
         {
-            return _context.Users;
+            return _context.AppUsers;
         }
 
-        public IEnumerable<ApplicationUser> GetAll(int page, int pageSize)
+        public IEnumerable<User> GetAll(int page, int pageSize)
         {
-            return _context.Users.Skip(page * pageSize).Take(pageSize);
+            return _context.AppUsers.Skip(page * pageSize).Take(pageSize);
         }
 
-        public ApplicationUser Get(int id)
+        public User Get(int id)
         {
-            return _context.Users.Find(id);
+            return _context.AppUsers.Find(id);
         }
-        public async Task<ApplicationUser> GetAsync(int id)
+        public async Task<User> GetAsync(int id)
         {
-            return await _context.Users.FindAsync(id);
-        }
-
-        public IEnumerable<ApplicationUser> Find(Func<ApplicationUser, bool> predicate)
-        {
-            return _context.Users.Where(predicate);
+            return await _context.AppUsers.FindAsync(id);
         }
 
-        public void Create(ApplicationUser item)
+        public IEnumerable<User> Find(Func<User, bool> predicate)
         {
-            _context.Users.Add(item);
-        }
-        public async Task CreateAsync(ApplicationUser item)
-        {
-            await _context.Users.AddAsync(item);
+            return _context.AppUsers.Where(predicate);
         }
 
-        public void Update(ApplicationUser item)
+        public void Create(User item)
+        {
+            _context.AppUsers.Add(item);
+        }
+        public async Task CreateAsync(User item)
+        {
+            await _context.AppUsers.AddAsync(item);
+        }
+
+        public void Update(User item)
         {
             _context.Entry(item).State = EntityState.Modified;
         }
 
         public void Delete(int id)
         {
-            ApplicationUser user = _context.Users.Find(id);
+            User user = _context.AppUsers.Find(id);
             if (user != null)
-                _context.Users.Remove(user);
+                _context.AppUsers.Remove(user);
         }
         public async Task DeleteAsync(int id)
         {
-            ApplicationUser user = await _context.Users.FindAsync(id);
+            User user = await _context.AppUsers.FindAsync(id);
             if (user != null)
-                _context.Users.Remove(user);
+                _context.AppUsers.Remove(user);
         }
     }
 }
