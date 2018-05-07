@@ -1,4 +1,34 @@
-﻿<!DOCTYPE html>
+﻿@using System.IO;
+@using Newtonsoft.Json;
+@{
+    if (User.Identity.IsAuthenticated)
+    {
+        string root = Directory.GetCurrentDirectory();
+        string dir = String.Format("{0}\\wwwroot\\data\\settings\\{1}", root, User.Identity.Name);
+        string file = String.Format("{0}\\config.json", dir);
+
+        if (Directory.Exists(dir) && File.Exists(file))
+        {
+            using (StreamReader r = new StreamReader(file))
+            {
+                var json = r.ReadToEnd();
+                UserSettingsViewModel setting = JsonConvert.DeserializeObject<UserSettingsViewModel>(json);
+
+                if(setting != null && setting.ThemeColor != null)
+                {
+                    ViewBag.ThemeClass = setting.ThemeColor.CssClass;
+                }
+
+                if (setting != null && setting.AccentColor != null)
+                {
+                    ViewBag.AccentClass = setting.AccentColor.CssClass;
+                    ViewBag.AccentColor = setting.AccentColor.Color;
+                }
+            }
+        }
+    }
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -9,7 +39,7 @@
 
     <title>@ViewBag.Title &#8729; PhotoHub</title>
 
-    <meta name="theme-color" content="#FFDD57">
+    <meta name="theme-color" content="@(ViewBag.AccentColor != null ? ViewBag.AccentColor : "#FFDB4A")">
 
     <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
     <link rel="icon" type="image/png" href="/favicon-24x24.png" sizes="24x24">
@@ -20,7 +50,6 @@
     <link rel="icon" type="image/png" href="/favicon-512x512.png" sizes="512x512">
 
     <link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css" rel="stylesheet">
 
     <link href="~/css/filters.css" rel="stylesheet" />
     <link href="~/css/app.css" rel="stylesheet" />
@@ -35,7 +64,7 @@
     @RenderSection("Scripts", required: false)
 
 </head>
-<body id="body" data-app-user="@( User.Identity.IsAuthenticated ? User.Identity.Name : "" )">
+<body id="body" class="@( ViewBag.ThemeClass != null ? ViewBag.ThemeClass : "is-white-background" ) @( ViewBag.AccentClass != null ? ViewBag.AccentClass : "is-warning-accent" )" data-app-user="@( User.Identity.IsAuthenticated ? User.Identity.Name : "" )">
 
     <!--  Preloader  -->
     <div id="preloader" data-hidden="true">
@@ -79,20 +108,20 @@
     </nav>
 
     <!--  Mobile navbar  -->
-    <nav class="mobile-navbar" id="mobileNavbar"  v-bind:class="{'is-hidden-mobile-navbar': isHidden}" v-if="width <= 736">
+    <nav class="mobile-navbar" id="mobileNavbar" v-bind:class="{'is-hidden-mobile-navbar': isHidden}" v-if="width <= 736">
         @if (User.Identity.IsAuthenticated)
         {
-            <a class="button is-white" href="/photos" title="All photos"><i class="fas fa-home"></i></a>
-            <a class="button is-white" href="/" title="Updates"><i class="fas fa-hand-peace"></i></a>
-            <a class="button is-white" href="/photos/create" title="Create new photo"><i class="fas fa-plus"></i></a>
-            <a class="button is-white" href="/search" title="Search"><i class="fas fa-search"></i></a>
-            <a class="button is-white" href="/users/@User.Identity.Name" title="@User.Identity.Name"><i class="fas fa-user"></i></a>
+            <a class="button is-white is-mobile-nav-item" href="/photos" title="All photos"><i class="fas fa-home"></i></a>
+            <a class="button is-white is-mobile-nav-item" href="/" title="Updates"><i class="fas fa-hand-peace"></i></a>
+            <a class="button is-white is-mobile-nav-item" href="/photos/create" title="Create new photo"><i class="fas fa-plus"></i></a>
+            <a class="button is-white is-mobile-nav-item" href="/search" title="Search"><i class="fas fa-search"></i></a>
+            <a class="button is-white is-mobile-nav-item" href="/users/@User.Identity.Name" title="@User.Identity.Name"><i class="fas fa-user"></i></a>
         }
         else
         {
-            <a id="registerLink" class="button is-white" href="/account/register" title="Sign up"><i class="fas fa-address-book"></i></a>
+            <a id="registerLink" class="button is-white is-mobile-nav-item" href="/account/register" title="Sign up"><i class="fas fa-address-book"></i></a>
             <a class="button is-white" href="/photos" title="All photos"><i class="fas fa-home"></i></a>
-            <a id="loginLink" class="button is-white" href="/account/login" title="Log in"><i class="fas fa-sign-in-alt"></i></a>
+            <a id="loginLink" class="button is-white is-mobile-nav-item" href="/account/login" title="Log in"><i class="fas fa-sign-in-alt"></i></a>
         }
     </nav>
 

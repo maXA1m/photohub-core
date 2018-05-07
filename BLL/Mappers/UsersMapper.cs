@@ -24,6 +24,7 @@ namespace PhotoHub.BLL.Mappers
                 UserName = item.UserName,
                 Avatar = item.Avatar,
                 Date = item.Date,
+                Gender = item.Gender,
 
                 Confirmed = false,
                 Followed = false,
@@ -43,6 +44,7 @@ namespace PhotoHub.BLL.Mappers
                 UserName = item.UserName,
                 Avatar = item.Avatar,
                 Date = item.Date,
+                Gender = item.Gender,
 
                 Confirmed = confirmed,
                 Followed = followed,

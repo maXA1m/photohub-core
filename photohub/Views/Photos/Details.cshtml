@@ -101,7 +101,7 @@
                 <div class="control" style="margin: 15px 15px 0 15px">
                     <input class="input" id="comment" type="text" placeholder="Comment photo" v-on:keyup.enter="comment">
                     <div class="is-flex is-flex-centered" style="margin: 10px 0 10px 0">
-                        <button class="button is-warning" v-bind:class="{'is-loading': commenting}" v-on:click="comment" title="Comment photo">Comment</button>
+                        <button class="button is-accent-button" v-bind:class="{'is-loading': commenting}" v-on:click="comment" title="Comment photo">Comment</button>
                     </div>
                 </div>
     }
@@ -151,27 +151,27 @@
                 <a class="close-button" v-on:click="closeMetadata" title="Close modal"><i class="fas fa-times"></i></a>
             </header>
             <section class="modal-card-body modal-card-body-metadata">
-                <div v-if="post.manufacturer || post.model">
+                <div>
                     <p>Brand</p>
                     <p>{{post.manufacturer}}</p>
                 </div>
-                <div v-if="post.manufacturer || post.model">
+                <div>
                     <p>Model</p>
                     <p>{{post.model}}</p>
                 </div>
-                <div v-if="post.iso || post.exposure || post.aperture">
+                <div>
                     <p>ISO</p>
                     <p>{{post.iso}}</p>
                 </div>
-                <div v-if="post.iso || post.exposure || post.aperture">
+                <div>
                     <p>Exposure</p>
                     <p>{{post.exposure}}</p>
                 </div>
-                <div v-if="post.iso || post.exposure || post.aperture">
+                <div>
                     <p>Aperture</p>
                     <p>{{post.aperture}}</p>
                 </div>
-                <div v-if="post.focalLength >= 3">
+                <div>
                     <p>Focal length</p>
                     <p>{{post.focalLength}}</p>
                 </div>

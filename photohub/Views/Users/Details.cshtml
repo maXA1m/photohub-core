@@ -37,18 +37,18 @@
                             {
                                 if (User.Identity.Name != Model.UserName)
                                 {
-                                    <button class="button" v-bind:title="user.followed?'Unfollow':'Follow'" v-bind:class="{'is-warning': !user.followed}" v-on:click="user.followed?disfollow():follow()" v-cloak>{{user.followed?'Unfollow':'Follow'}}</button>
+                                    <button class="button" v-bind:title="user.followed?'Unfollow':'Follow'" v-bind:class="{'is-accent-button': !user.followed}" v-on:click="user.followed?disfollow():follow()" v-cloak>{{user.followed?'Unfollow':'Follow'}}</button>
                                     <button class="button is-dark" v-bind:title="user.blocked?'Unblock':'Block'" v-on:click="user.blocked?disblock():block()" v-cloak>{{user.blocked?'Unblock':'Block'}}</button>
                                 }
                                 else
                                 {
-                                    <a href="/manage/index" class="button is-warning" title="Manage Account">Manage Account</a>
+                                    <a href="/manage/index" class="button is-accent-button" title="Manage Account">Manage Account</a>
                                     <a href="/manage/bookmarks" class="button is-light" title="Show bookmarks"><i class="fas fa-bookmark"></i></a>
                                 }
                             }
                             else
                             {
-                                <a class="button is-warning" href="/account/login" title="Log In to Follow">Log in</a>
+                                <a class="button is-accent-button" href="/account/login" title="Log In to Follow">Log in</a>
                             }
                         </div>
                     </div>
@@ -75,7 +75,7 @@
             </header>
             <section class="modal-card-body">
                 <input class="input" type="text" placeholder="User name" id="findFollowerInput" v-model="findFollower" style="margin-bottom: 15px;" />
-                <a class="button is-white follower-modal-button" v-bind:href="`/users/${user.userName}`" v-bind:title="user.userName" v-for="user in filteredFollowers">
+                <a class="button is-white is-mobile-nav-item follower-modal-button" v-bind:href="`/users/${user.userName}`" v-bind:title="user.userName" v-for="user in filteredFollowers">
                     <img class="image is-64x64 is-circle" v-bind:src="user.avatar" v-bind:alt="user.userName">
                     <p class="is-size-5 is-doted-end">{{user.userName}}</p>
                 </a>
@@ -94,7 +94,7 @@
             </header>
             <section class="modal-card-body">
                 <input class="input" type="text" placeholder="User name" id="findFollowingInput" v-model="findFollowing" style="margin-bottom: 15px;"/>
-                <a class="button is-white follower-modal-button" v-bind:href="`/users/${user.userName}`" v-bind:title="user.userName" v-for="user in filteredFollowings">
+                <a class="button is-white is-mobile-nav-item follower-modal-button" v-bind:href="`/users/${user.userName}`" v-bind:title="user.userName" v-for="user in filteredFollowings">
                     <img class="image is-64x64 is-circle" v-bind:src="user.avatar" v-bind:alt="user.userName">
                     <p class="is-size-5 is-doted-end">{{user.userName}}</p>
                 </a>
@@ -237,7 +237,7 @@
                         <div class="control" v-if="currentAppUserName" style="width: 100%;">
                             <input class="input" id="comment" type="text" placeholder="Comment photo" v-on:keyup.enter="comment">
                         </div>
-                        <button class="button is-warning" v-bind:class="{'is-loading': commenting}" title="Comment photo" style="margin-top: 5px;" v-if="currentAppUserName" v-on:click="comment">Comment</button>
+                        <button class="button is-accent-button" v-bind:class="{'is-loading': commenting}" title="Comment photo" style="margin-top: 5px;" v-if="currentAppUserName" v-on:click="comment">Comment</button>
                     </footer>
                     <a class="button is-white close-modal-mobile-button" title="Close modal" v-on:click="closeComments">Close</a>
                 </div>
@@ -252,29 +252,29 @@
                         <a class="close-button" v-on:click="closeMetadata" title="Close modal"><i class="fas fa-times"></i></a>
                     </header>
                     <section class="modal-card-body modal-card-body-metadata">
-                        <div v-if="current.manufacturer || current.model">
+                        <div>
                             <p>Brand</p>
                             <p>{{current.manufacturer}}</p>
                         </div>
-                        <div v-if="current.manufacturer || current.model">
+                        <div>
                             <p>Model</p>
                             <p>{{current.model}}</p>
                         </div>
-                        <div v-if="current.iso || current.exposure || current.aperture">
+                        <div>
                             <p>ISO</p>
                             <p>{{current.iso}}</p>
                         </div>
-                        <div v-if="current.iso || current.exposure || current.aperture">
+                        <div>
                             <p>Exposure</p>
                             <p>{{current.exposure}}</p>
                         </div>
-                        <div v-if="current.iso || current.exposure || current.aperture">
+                        <div>
                             <p>Aperture</p>
                             <p>{{current.aperture}}</p>
                         </div>
-                        <div v-if="current.focalLength >= 3">
+                        <div>
                             <p>Focal length</p>
-                            <p>{{current.focalLength}} mm</p>
+                            <p>{{current.focalLength}}</p>
                         </div>
                         <div>
                             <p>Filter</p>

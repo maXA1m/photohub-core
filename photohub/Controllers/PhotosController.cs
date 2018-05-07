@@ -201,10 +201,10 @@ namespace PhotoHub.WEB.Controllers
         }
         
         [Authorize, HttpPost, ValidateAntiForgeryToken, Route("photos/edit/{id}")]
-        public async Task<ActionResult> Edit([Bind("Id, Filter, Description")] PhotoViewModel item, string tags)
+        public async Task<ActionResult> Edit([Bind("Id, Filter, Description")] PhotoViewModel item, string tags, string model, string brand, int? iso, double? aperture, double? exposure, double? focalLength)
         {
             if (ModelState.IsValid)
-                await _photosService.EditAsync(item.Id, item.Filter, item.Description, tags);
+                await _photosService.EditAsync(item.Id, item.Filter, item.Description, tags, model, brand, iso, aperture, exposure, focalLength);
 
             return RedirectToAction("Details", "Photos", new { id = item.Id });
         }

@@ -4,6 +4,80 @@
     ViewData.AddActivePage(ManageNavPages.Index);
 }
 
+<h2 class="is-uppercase has-text-centered has-text-weight-bold">Application theme</h2>
+<form method="post" asp-controller="Manage" asp-action="ChangeTheme" class="adaptive-form">
+    <h3 class="has-text-centered is-uppercase has-text-weight-bold">Theme color</h3>
+    <div class="is-colors-picker">
+        <div class="is-unselectable">
+            <input class="is-display-none" id="white-color-picker" type="radio" name="theme" value="0" checked />
+            <label for="white-color-picker" class="is-paddingless" title="White">
+                <div></div>
+                <h5 class="has-text-centered has-text-weight-bold">White</h5>
+            </label>
+        </div>
+        <div class="is-unselectable">
+            <input class="is-display-none" id="dark-color-picker" type="radio" name="theme" value="1" />
+            <label for="dark-color-picker" class="is-paddingless" title="Dark">
+                <div></div>
+                <h5 class="has-text-centered has-text-weight-bold">Dark</h5>
+            </label>
+        </div>
+    </div>
+
+    <h3 class="has-text-centered is-uppercase has-text-weight-bold">Accent color</h3>
+    <div class="is-colors-picker">
+        <div class="is-unselectable">
+            <input class="is-display-none" id="yellow-accent-picker" type="radio" name="accent" value="0" checked />
+            <label for="yellow-accent-picker" class="is-paddingless" title="Yellow">
+                <div></div>
+                <h5 class="has-text-centered has-text-weight-bold">Yellow</h5>
+            </label>
+        </div>
+        <div class="is-unselectable">
+            <input class="is-display-none" id="green-accent-picker" type="radio" name="accent" value="1" />
+            <label for="green-accent-picker" class="is-paddingless" title="Green">
+                <div></div>
+                <h5 class="has-text-centered has-text-weight-bold">Green</h5>
+            </label>
+        </div>
+        <div class="is-unselectable">
+            <input class="is-display-none" id="blue-accent-picker" type="radio" name="accent" value="2" />
+            <label for="blue-accent-picker" class="is-paddingless" title="Blue">
+                <div></div>
+                <h5 class="has-text-centered has-text-weight-bold">Blue</h5>
+            </label>
+        </div>
+        <div class="is-unselectable">
+            <input class="is-display-none" id="sky-blue-accent-picker" type="radio" name="accent" value="3" />
+            <label for="sky-blue-accent-picker" class="is-paddingless" title="Sky Blue">
+                <div></div>
+                <h5 class="has-text-centered has-text-weight-bold">Sky Blue</h5>
+            </label>
+        </div>
+        <div class="is-unselectable">
+            <input class="is-display-none" id="red-accent-picker" type="radio" name="accent" value="4" />
+            <label for="red-accent-picker" class="is-paddingless" title="Red">
+                <div></div>
+                <h5 class="has-text-centered has-text-weight-bold">Red</h5>
+            </label>
+        </div>
+        <div class="is-unselectable">
+            <input class="is-display-none" id="turquoise-accent-picker" type="radio" name="accent" value="5" />
+            <label for="turquoise-accent-picker" class="is-paddingless" title="Turquoise">
+                <div></div>
+                <h5 class="has-text-centered has-text-weight-bold">Turquoise</h5>
+            </label>
+        </div>
+    </div>
+
+    <div class="field has-text-centered">
+        <button type="submit" class="button is-accent-button" title="Save theme">Save theme</button>
+    </div>
+</form>
+
+<hr />
+
+<h2 class="is-uppercase has-text-centered has-text-weight-bold">Account info</h2>
 <form method="post" class="adaptive-form">
     <div class="field">
         <div asp-validation-summary="All" class="has-text-danger"></div>
@@ -37,37 +111,50 @@
         </div>
     </div>
 
-    @*<div class="field">
-        <label asp-for="Email" class="label"></label>
-        <div class="control">
-            <input asp-for="Email" class="input" required />
-        </div>
-        @if (Model.IsEmailConfirmed)
-        {
-            <p class="help is-success">Verified</p>
-        }
-        <p asp-validation-for="Email" class="help is-danger"></p>
-        @if (!Model.IsEmailConfirmed)
-        {
-            <div class="has-text-centered">
-                <button asp-action="SendVerificationEmail" class="button is-light" title="Send verification email">Send verification email</button>
-            </div>
-        }
+    <div class="field has-text-centered">
+        <h3 class="has-text-centered is-uppercase has-text-weight-bold">Gender</h3>
+        <label class="radio">
+            <input type="radio" name="Gender" value="Male" @( String.IsNullOrEmpty(Model.Gender) || Model.Gender == "Male" ? "checked" : "")>
+            Male
+        </label>
+        <label class="radio">
+            <input type="radio" name="Gender" value="Female" @( Model.Gender == "Female" ? "checked" : "")>
+            Female
+        </label>
     </div>
 
-    <div class="field">
-        <label asp-for="PhoneNumber" class="label"></label>
-        <div class="control">
-            <input asp-for="PhoneNumber" class="input" />
+    @*<div class="field">
+            <label asp-for="Email" class="label"></label>
+            <div class="control">
+                <input asp-for="Email" class="input" required />
+            </div>
+            @if (Model.IsEmailConfirmed)
+            {
+                <p class="help is-success">Verified</p>
+            }
+            <p asp-validation-for="Email" class="help is-danger"></p>
+            @if (!Model.IsEmailConfirmed)
+            {
+                <div class="has-text-centered">
+                    <button asp-action="SendVerificationEmail" class="button is-light" title="Send verification email">Send verification email</button>
+                </div>
+            }
         </div>
-        <p asp-validation-for="PhoneNumber" class="help is-danger"></p>
-    </div>*@
+
+        <div class="field">
+            <label asp-for="PhoneNumber" class="label"></label>
+            <div class="control">
+                <input asp-for="PhoneNumber" class="input" />
+            </div>
+            <p asp-validation-for="PhoneNumber" class="help is-danger"></p>
+        </div>*@
 
     <div class="field has-text-centered">
-        <button type="submit" class="button is-warning" title="Save">Save</button>
+        <button type="submit" class="button is-accent-button" title="Save info">Save info</button>
     </div>
 </form>
 
+<hr />
 
 <form method="post" asp-controller="Account" asp-action="Logout" class="has-text-centered" style="margin-top: 30px;">
     <button type="submit" class="button is-danger">Logout</button>

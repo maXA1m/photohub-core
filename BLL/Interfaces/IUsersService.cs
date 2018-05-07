@@ -33,7 +33,7 @@ namespace PhotoHub.BLL.Interfaces
         ApplicationUser Create(string userName, string email, string password);
         Task<ApplicationUser> CreateAsync(string userName, string email, string password);
 
-        void Edit(string userName, string realName, string about, string webSite);
-        Task EditAsync(string userName, string realName, string about, string webSite);
+        void Edit(string userName, string realName, string about, string webSite, string gender);
+        Task EditAsync(string userName, string realName, string about, string webSite, string gender);
     }
 }

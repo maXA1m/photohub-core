@@ -16,6 +16,9 @@ using PhotoHub.WEB.Extensions;
 using PhotoHub.WEB.ViewModels.Manage;
 using PhotoHub.WEB.Mappers;
 using PhotoHub.WEB.ViewModels;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using Newtonsoft.Json;
 #endregion
 
 namespace PhotoHub.WEB.Controllers
@@ -30,6 +33,7 @@ namespace PhotoHub.WEB.Controllers
         private readonly ILogger _logger;
         private readonly UrlEncoder _urlEncoder;
         private readonly IUsersService _usersService;
+        private readonly IHostingEnvironment _environment;
         private readonly UsersDetailsMapper _usersMapper;
 
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
@@ -41,7 +45,8 @@ namespace PhotoHub.WEB.Controllers
           IEmailSender emailSender,
           ILogger<ManageController> logger,
           UrlEncoder urlEncoder,
-          IUsersService usersService)
+          IUsersService usersService,
+          IHostingEnvironment environment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -49,6 +54,7 @@ namespace PhotoHub.WEB.Controllers
             _logger = logger;
             _urlEncoder = urlEncoder;
             _usersService = usersService;
+            _environment = environment;
             _usersMapper = new UsersDetailsMapper();
         }
 
@@ -68,6 +74,7 @@ namespace PhotoHub.WEB.Controllers
                 Username = user.UserName,
                 About = user.About,
                 WebSite = user.WebSite,
+                Gender = user.Gender,
                 StatusMessage = StatusMessage
             };
 
@@ -81,7 +88,7 @@ namespace PhotoHub.WEB.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            await _usersService.EditAsync(User.Identity.Name, model.RealName, model.About, model.WebSite);
+            await _usersService.EditAsync(User.Identity.Name, model.RealName, model.About, model.WebSite, model.Gender);
 
             StatusMessage = "Your profile has been updated";
             return RedirectToAction(nameof(Index));
@@ -169,6 +176,48 @@ namespace PhotoHub.WEB.Controllers
             StatusMessage = "Your password has been changed.";
 
             return RedirectToAction(nameof(ChangePassword));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeTheme(int theme, int accent)
+        {
+            ThemeColorViewModel themeColor = new ThemeColorViewModel();
+            switch (theme)
+            {
+                case 0: themeColor.Color = "#fff"; themeColor.CssClass = "is-white-background"; break;
+                case 1: themeColor.Color = "#333"; themeColor.CssClass = "is-dark-background"; break;
+
+                default: themeColor.Color = "#fff"; themeColor.CssClass = "is-white-background"; break;
+            }
+
+            ThemeColorViewModel accentColor = new ThemeColorViewModel();
+            switch (accent)
+            {
+                case 0: accentColor.Color = "#FFDB4A"; accentColor.CssClass = "is-warning-accent"; break;
+                case 1: accentColor.Color = "#23D160"; accentColor.CssClass = "is-success-accent"; break;
+                case 2: accentColor.Color = "#276CDA"; accentColor.CssClass = "is-link-accent"; break;
+                case 3: accentColor.Color = "#1496ED"; accentColor.CssClass = "is-info-accent"; break;
+                case 4: accentColor.Color = "#FF2B56"; accentColor.CssClass = "is-danger-accent"; break;
+                case 5: accentColor.Color = "#00C4A7"; accentColor.CssClass = "is-primary-accent"; break;
+
+                default: accentColor.Color = "#FFDB4A"; accentColor.CssClass = "is-warning-accent"; break;
+            }
+
+            string root = _environment.WebRootPath;
+            string dir = String.Format("{0}\\data\\settings\\{1}", root, User.Identity.Name);
+            string file = String.Format("{0}\\config.json", dir);
+
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+
+            using (StreamWriter sw = System.IO.File.CreateText(file))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(sw, new UserSettingsViewModel() { AccentColor = accentColor, ThemeColor = themeColor });
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]

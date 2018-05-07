@@ -8,7 +8,6 @@ C:\Users\maxmi\Desktop\photohub-core\DAL\bin\Release\netcoreapp2.0\Microsoft.Asp
 C:\Users\maxmi\Desktop\photohub-core\DAL\obj\Release\netcoreapp2.0\PhotoHub.DAL.csproj.CoreCompileInputs.cache
 C:\Users\maxmi\Desktop\photohub-core\DAL\obj\Release\netcoreapp2.0\PhotoHub.DAL.AssemblyInfoInputs.cache
 C:\Users\maxmi\Desktop\photohub-core\DAL\obj\Release\netcoreapp2.0\PhotoHub.DAL.AssemblyInfo.cs
+C:\Users\maxmi\Desktop\photohub-core\DAL\obj\Release\netcoreapp2.0\PhotoHub.DAL.csproj.CopyComplete
 C:\Users\maxmi\Desktop\photohub-core\DAL\obj\Release\netcoreapp2.0\PhotoHub.DAL.dll
 C:\Users\maxmi\Desktop\photohub-core\DAL\obj\Release\netcoreapp2.0\PhotoHub.DAL.pdb
-C:\Users\maxmi\Desktop\photohub-core\DAL\obj\Release\netcoreapp2.0\PhotoHub.DAL.csproj.CopyComplete
-C:\Users\maxmi\Desktop\photohub-core\DAL\obj\Release\netcoreapp2.0\PhotoHub.DAL.csprojResolveAssemblyReference.cache

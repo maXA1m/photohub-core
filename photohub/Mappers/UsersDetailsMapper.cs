@@ -25,7 +25,7 @@ namespace PhotoHub.WEB.Mappers
             {
                 RealName = item.RealName,
                 UserName = item.UserName,
-                Avatar = item.Avatar != null ? String.Format("/data/avatars/{0}/{1}", item.UserName, item.Avatar) : "/images/defaults/def-user-logo.png",
+                Avatar = item.Avatar != null ? String.Format("/data/avatars/{0}/{1}", item.UserName, item.Avatar) : String.IsNullOrEmpty(item.Gender) || item.Gender == "Male" ? "/images/defaults/def-male-logo.png" : "/images/defaults/def-female-logo.png",
                 About = item.About != null ? item.About : "",
                 Date = item.Date.ToString("MMMM dd, yyyy"),
                 Confirmed = item.Confirmed,
@@ -53,7 +53,7 @@ namespace PhotoHub.WEB.Mappers
                 {
                     RealName = item.RealName,
                     UserName = item.UserName,
-                    Avatar = item.Avatar != null ? String.Format("/data/avatars/{0}/{1}", item.UserName, item.Avatar) : "/images/defaults/def-user-logo.png",
+                    Avatar = item.Avatar != null ? String.Format("/data/avatars/{0}/{1}", item.UserName, item.Avatar) : String.IsNullOrEmpty(item.Gender) || item.Gender == "Male" ? "/images/defaults/def-male-logo.png" : "/images/defaults/def-female-logo.png",
                     About = item.About != null ? item.About : "",
                     Date = item.Date.ToString("MMMM dd, yyyy"),
                     Confirmed = item.Confirmed,

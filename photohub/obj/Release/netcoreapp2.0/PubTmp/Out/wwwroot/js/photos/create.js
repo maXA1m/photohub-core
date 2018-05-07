@@ -114,7 +114,7 @@ const photosCreate = new Vue({
                     this.loaded = true;
                     this.preloader.setAttribute('data-hidden', 'true');
                     
-                    setTimeout(() => { this.metadata = makeExif(); }, 100);
+                    setTimeout(() => { this.metadata = makeExif(); }, 1000);
                 };
                 reader.readAsDataURL(file);
             }

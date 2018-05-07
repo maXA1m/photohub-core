@@ -15,6 +15,7 @@ namespace PhotoHub.DAL.Entities
 
         public User()
         {
+            Gender = "Male";
             PrivateAccount = false;
             Date = DateTime.Now;
         }

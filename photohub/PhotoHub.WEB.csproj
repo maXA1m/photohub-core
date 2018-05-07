@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="wwwroot\data\settings\" />
   </ItemGroup>
 
 </Project>

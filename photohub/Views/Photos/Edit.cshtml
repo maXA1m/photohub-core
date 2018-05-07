@@ -7,6 +7,7 @@
 }
 
 @section Scripts{
+    <script defer src="https://unpkg.com/vue-dragscroll@1.3.1/dist/vue-dragscroll.min.js"></script>
     <script defer src="~/js/photos/edit.js"></script>
 }
 
@@ -34,26 +35,26 @@
             </figure>
         </div>
 
-        <input type="hidden" v-bind:value="pickedTags.join()" name="tags" id="tags" v-bind:class="{'is-display-none': submited}" v-if="post != null"/>
+        <input type="hidden" v-bind:value="pickedTags.join()" name="tags" id="tags" v-bind:class="{'is-display-none': submited}" v-if="post != null" />
 
         <div class="card-tags-panel" v-bind:class="{'is-display-none': submited}" v-if="post != null">
             <a class="button is-small is-light" v-on:click="removeTag(tag)" v-for="tag in pickedTags" v-bind:title="'Remove ' + tag + ' tag'">{{tag}}</a>
             <a class="button is-small is-light" v-on:click="showAddTag" v-if="pickedTags.length < 5" title="Add tag"><i class="fas fa-plus"></i><span v-if="pickedTags < 1"> Add tag</span></a>
         </div>
 
-        <div class="is-flex is-flex-row is-flex-centered is-flex-wrap" v-bind:class="{'is-display-none': submited}" id="container-filters" data-current-filter-name="@Model.Filter">
+        <div class="is-filters-picker" style="margin-top: 10px;" v-bind:class="{'is-display-none': submited}" id="container-filters" v-dragscroll.x="true" v-dragscroll.y="false" data-current-filter-name="@Model.Filter">
             @foreach (var filter in ViewBag.Filters)
-        {
-            <div class="has-margin-10px is-unselectable">
-                <input class="is-display-none" id="@("filterId" + @filter.Id )" type="radio" name="Filter" value="@filter.Name" v-on:click="pickFilter('@filter.Name')" @( filter.Name == Model.Filter ? "checked" : "" ) />
-                <label for="@("filterId" + @filter.Id )" class="is-paddingless" title="@filter.Name">
-                    <figure class="filter @filter.Name is-paddingless is-marginless">
-                        <img src="~/data/photos/@Model.Owner.UserName/@Model.Path" alt="@filter.Name filter" class="image is-96x96">
-                    </figure>
-                    <h5 class="has-text-centered has-text-weight-bold">@filter.Name</h5>
-                </label>
-            </div>
-    }
+            {
+                <div class="is-unselectable">
+                    <input class="is-display-none" id="@("filterId" + @filter.Id )" type="radio" name="Filter" value="@filter.Name" v-on:click="pickFilter('@filter.Name')" @( filter.Name == Model.Filter ? "checked" : "" ) />
+                    <label for="@("filterId" + @filter.Id )" class="is-paddingless" title="@filter.Name">
+                        <figure class="filter @filter.Name is-paddingless is-marginless">
+                            <img src="~/data/photos/@Model.Owner.UserName/@Model.Path" alt="@filter.Name filter" class="image is-96x96">
+                        </figure>
+                        <h5 class="has-text-centered has-text-weight-bold has-text-accented">@filter.Name</h5>
+                    </label>
+                </div>
+            }
         </div>
 
         <div class="card-content">
@@ -68,7 +69,7 @@
                     <a class="button is-light comment-button" title="Comments"><i class="fas fa-comment"></i></a>
                 </div>
                 <div>
-                    <a class="button is-warning" title="Show metadata" v-on:click="showMetadata"><i class="fab fa-medapps"></i></a>
+                    <a class="button is-accent-button" title="Show metadata" v-on:click="showMetadata"><i class="fab fa-medapps"></i></a>
                     <a class="button is-white bookmark-button" title="Save to bookmarks"><i class="far fa-bookmark"></i></a>
                 </div>
             </div>
@@ -76,7 +77,7 @@
 
         <footer class="card-footer">
             <div class="card-footer-item">
-                <button type="submit" class="button is-warning is-uppercase" v-bind:class="{'is-loading': submited}" v-on:click="submit" title="Edit photo">edit</button>
+                <button type="submit" class="button is-accent-button is-uppercase" v-bind:class="{'is-loading': submited}" v-on:click="submit" title="Edit photo">edit</button>
             </div>
         </footer>
     </article>
@@ -92,33 +93,79 @@
             <section class="modal-card-body modal-card-body-metadata">
                 <div>
                     <p>Brand</p>
-                    <p>@Model.Manufacturer</p>
+                    @if (Model.Manufacturer == "Unknown")
+                    {
+                        <input type="text" class="input" name="brand" id="brand" placeholder="Unknown" />
+                    }
+                    @if (Model.Manufacturer != "Unknown")
+                    {
+                        <p>@Model.Manufacturer</p>
+                    }
                 </div>
                 <div>
                     <p>Model</p>
-                    <p>@Model.Model</p>
+                    @if (Model.Model == "Unknown")
+                    {
+                        <input type="text" class="input" name="model" id="model" placeholder="Unknown" />
+                    }
+                    @if (Model.Model != "Unknown")
+                    {
+                        <p>@Model.Model</p>
+                    }
                 </div>
                 <div>
                     <p>ISO</p>
-                    <p>@Model.Iso</p>
+                    @if (Model.Iso == "Unknown")
+                    {
+                        <input type="number" class="input" name="iso" id="iso" step="5" min="0" max="256000" placeholder="Unknown" />
+                    }
+                    @if (Model.Iso != "Unknown")
+                    {
+                        <p>@Model.Iso</p>
+                    }
                 </div>
                 <div>
                     <p>Exposure</p>
-                    <p>@Model.Exposure</p>
+                    @if (Model.Exposure == "Unknown")
+                    {
+                        <input type="text" class="input" name="exposure" id="exposure" placeholder="Sec" />
+                    }
+                    @if (Model.Exposure != "Unknown")
+                    {
+                        <p>@Model.Exposure</p>
+                    }
                 </div>
                 <div>
                     <p>Aperture</p>
-                    <p>@Model.Aperture</p>
+                    @if (Model.Aperture == "Unknown")
+                    {
+                        <input type="text" class="input" name="aperture" id="aperture" placeholder="f/" />
+                    }
+                    @if (Model.Aperture != "Unknown")
+                    {
+                        <p>@Model.Aperture</p>
+                    }
                 </div>
                 <div>
                     <p>Focal length</p>
-                    <p>@Model.FocalLength</p>
+                    @if (Model.FocalLength == "Unknown")
+                    {
+                        <input type="text" class="input" name="focalLength" id="focalLength" placeholder="mm" />
+                    }
+                    @if (Model.FocalLength != "Unknown")
+                    {
+                        <p>@Model.FocalLength</p>
+                    }
+                </div>
+                <div>
+                    <p>Filter</p>
+                    <p>{{filter}}</p>
                 </div>
                 <a class="button is-white has-text-grey-darker" title="Close modal" v-on:click="closeMetadata">Close</a>
             </section>
         </div>
     </div>
-    
+
     <!-- Modal Tags -->
     <div class="modal" v-bind:class="{'is-active': addTagActive, 'is-display-none': submited}">
         <div class="modal-background modal-custom-background" v-on:click="closeAddTag"></div>

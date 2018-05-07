@@ -665,7 +665,7 @@ namespace PhotoHub.BLL.Services
                 photos = _unitOfWork.Photos.Find(p =>
                     (!String.IsNullOrEmpty(p.Model) ? p.Model.ToLower().Contains(search.ToLower()) : false) ||
                     (!String.IsNullOrEmpty(p.Manufacturer) ? p.Manufacturer.ToLower().Contains(search.ToLower()) : false) ||
-                    (!String.IsNullOrEmpty(p.Manufacturer) && !String.IsNullOrEmpty(p.Model)) ? String.Format("{0} {1}", p.Manufacturer, p.Model).ToLower().Contains(search.ToLower()) : false
+                    ((!String.IsNullOrEmpty(p.Manufacturer) && !String.IsNullOrEmpty(p.Model)) ? String.Format("{0} {1}", p.Manufacturer.ToLower(), p.Model.ToLower()).Contains(search.ToLower()) : false)
                 ).OrderByDescending(p => p.Likes.Count).Skip(page * pageSize).Take(pageSize);
             }
 
@@ -876,7 +876,7 @@ namespace PhotoHub.BLL.Services
             return photo.Id;
         }
 
-        public void Edit(int id, string filter, string description, string tags)
+        public void Edit(int id, string filter, string description, string tags, string model, string brand, int? iso, double? aperture, double? exposure, double? focalLength)
         {
             Photo photo = _unitOfWork.Photos.Get(id);
 
@@ -885,9 +885,6 @@ namespace PhotoHub.BLL.Services
                 Filter flt = _unitOfWork.Filters.Find(f => f.Name == filter).FirstOrDefault();
                 if (flt != null)
                     photo.FilterId = flt.Id;
-
-                if (description != photo.Description)
-                    photo.Description = description;
 
                 foreach (Taging taging in _unitOfWork.Tagings.Find(t => t.PhotoId == photo.Id))
                     _unitOfWork.Tagings.Delete(taging.Id);
@@ -908,11 +905,32 @@ namespace PhotoHub.BLL.Services
                     }
                 }
 
+                if (!String.IsNullOrEmpty(description) && description != photo.Description)
+                    photo.Description = description;
+
+                if (String.IsNullOrEmpty(photo.Manufacturer) && !String.IsNullOrEmpty(brand))
+                    photo.Manufacturer = brand;
+
+                if (String.IsNullOrEmpty(photo.Model) && !String.IsNullOrEmpty(model))
+                    photo.Model = model;
+
+                if (photo.Iso == null && iso != null)
+                    photo.Iso = iso;
+
+                if (photo.Aperture == null && aperture != null)
+                    photo.Aperture = aperture;
+
+                if (photo.Exposure == null && exposure != null)
+                    photo.Exposure = exposure;
+
+                if (photo.FocalLength == null && focalLength != null)
+                    photo.FocalLength = focalLength;
+
                 _unitOfWork.Photos.Update(photo);
                 _unitOfWork.Save();
             }
         }
-        public async Task EditAsync(int id, string filter, string description, string tags)
+        public async Task EditAsync(int id, string filter, string description, string tags, string model, string brand, int? iso, double? aperture, double? exposure, double? focalLength)
         {
             Photo photo = await _unitOfWork.Photos.GetAsync(id);
 
@@ -921,9 +939,6 @@ namespace PhotoHub.BLL.Services
                 Filter flt = _unitOfWork.Filters.Find(f => f.Name == filter).FirstOrDefault();
                 if (flt != null)
                     photo.FilterId = flt.Id;
-
-                if (description != photo.Description)
-                    photo.Description = description;
 
                 foreach (Taging taging in _unitOfWork.Tagings.Find(t => t.PhotoId == photo.Id))
                     await _unitOfWork.Tagings.DeleteAsync(taging.Id);
@@ -943,6 +958,27 @@ namespace PhotoHub.BLL.Services
                         }
                     }
                 }
+
+                if (!String.IsNullOrEmpty(description) && description != photo.Description)
+                    photo.Description = description;
+
+                if (String.IsNullOrEmpty(photo.Manufacturer) && !String.IsNullOrEmpty(brand))
+                    photo.Manufacturer = brand;
+
+                if (String.IsNullOrEmpty(photo.Model) && !String.IsNullOrEmpty(model))
+                    photo.Model = model;
+
+                if (photo.Iso == null && iso != null)
+                    photo.Iso = iso;
+
+                if (photo.Aperture == null && aperture != null)
+                    photo.Aperture = aperture;
+
+                if (photo.Exposure == null && exposure != null)
+                    photo.Exposure = exposure;
+
+                if (photo.FocalLength == null && focalLength != null)
+                    photo.FocalLength = focalLength;
 
                 _unitOfWork.Photos.Update(photo);
                 await _unitOfWork.SaveAsync();

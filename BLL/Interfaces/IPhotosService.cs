@@ -36,8 +36,8 @@ namespace PhotoHub.BLL.Interfaces
         int Create(string filter, string description, string path, string manufacturer, string model, int? iso, double? exposure, double? aperture, double? focalLength, string tags);
         ValueTask<int> CreateAsync(string filter, string description, string path, string manufacturer, string model, int? iso, double? exposure, double? aperture, double? focalLength, string tags);
 
-        void Edit(int id, string filter, string description, string tags);
-        Task EditAsync(int id, string filter, string description, string tags);
+        void Edit(int id, string filter, string description, string tags, string model, string brand, int? iso, double? aperture, double? exposure, double? focalLength);
+        Task EditAsync(int id, string filter, string description, string tags, string model, string brand, int? iso, double? aperture, double? exposure, double? focalLength);
 
         void Delete(int id);
         Task DeleteAsync(int id);

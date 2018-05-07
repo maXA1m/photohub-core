@@ -8,6 +8,7 @@ namespace PhotoHub.BLL.DTO
         public string UserName { get; set; }
         public string Avatar { get; set; }
         public DateTime Date { get; set; }
+        public string Gender { get; set; }
 
         public bool Confirmed { get; set; }
         public bool Followed { get; set; }

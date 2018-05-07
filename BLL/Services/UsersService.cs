@@ -399,7 +399,7 @@ namespace PhotoHub.BLL.Services
             return identity;
         }
 
-        public void Edit(string userName, string realName, string about, string webSite)
+        public void Edit(string userName, string realName, string about, string webSite, string gender)
         {
             User user = _unitOfWork.Users.Find(u => u.UserName == userName).FirstOrDefault();
             if (user != null)
@@ -422,10 +422,16 @@ namespace PhotoHub.BLL.Services
                     _unitOfWork.Users.Update(user);
                 }
 
+                if(user.Gender != gender)
+                {
+                    user.Gender = gender;
+                    _unitOfWork.Users.Update(user);
+                }
+
                 _unitOfWork.Save();
             }
         }
-        public async Task EditAsync(string userName, string realName, string about, string webSite)
+        public async Task EditAsync(string userName, string realName, string about, string webSite, string gender)
         {
             User user = _unitOfWork.Users.Find(u => u.UserName == userName).FirstOrDefault();
             if (user != null)
@@ -445,6 +451,12 @@ namespace PhotoHub.BLL.Services
                 if (user.WebSite != webSite)
                 {
                     user.WebSite = webSite;
+                    _unitOfWork.Users.Update(user);
+                }
+
+                if (user.Gender != gender)
+                {
+                    user.Gender = gender;
                     _unitOfWork.Users.Update(user);
                 }
 

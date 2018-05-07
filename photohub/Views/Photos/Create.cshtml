@@ -39,12 +39,12 @@
         </div>
 
         <div v-if="metadata">
-            <input type="hidden" v-bind:value="metadata.brand" name="Brand" id="Brand" />
-            <input type="hidden" v-bind:value="metadata.model" name="Model" id="Model" />
-            <input type="hidden" v-bind:value="metadata.aperture" name="Aperture" id="Aperture" />
-            <input type="hidden" v-bind:value="metadata.exposure" name="Exposure" id="Exposure" />
-            <input type="hidden" v-bind:value="metadata.iso" name="Iso" id="Iso" />
-            <input type="hidden" v-bind:value="metadata.focalLength" name="FocalLength" id="FocalLength" />
+            <input type="hidden" v-bind:value="metadata.brand" name="Brand" id="Brand" v-if="metadata.brand" />
+            <input type="hidden" v-bind:value="metadata.model" name="Model" id="Model" v-if="metadata.model" />
+            <input type="hidden" v-bind:value="metadata.aperture" name="Aperture" id="Aperture" v-if="metadata.aperture" />
+            <input type="hidden" v-bind:value="metadata.exposure" name="Exposure" id="Exposure" v-if="metadata.exposure" />
+            <input type="hidden" v-bind:value="metadata.iso" name="Iso" id="Iso"  v-if="metadata.iso"  />
+            <input type="hidden" v-bind:value="metadata.focalLength" name="FocalLength" id="FocalLength"  v-if="metadata.focalLength"  />
         </div>
 
         <input class="file-input" type="file" id="file" name="file" accept="image/*" v-on:change="filePreview($event)" required>
@@ -58,7 +58,7 @@
                     <figure class="filter @filter.Name is-paddingless is-marginless">
                         <img v-bind:src="path" alt="@filter.Name filter" class="image is-96x96">
                     </figure>
-                    <h5 class="has-text-centered has-text-weight-bold">@filter.Name</h5>
+                    <h5 class="has-text-centered has-text-weight-bold has-text-accented">@filter.Name</h5>
                 </label>
             </div>
     }
@@ -82,7 +82,7 @@
                     <a class="button is-white comment-button" title="Comments"><i class="fas fa-comment"></i></a>
                 </div>
                 <div>
-                    <a class="button is-warning" title="Show metadata" v-on:click="showMetadata"><i class="fab fa-medapps"></i></a>
+                    <a class="button is-accent-button" title="Show metadata" v-on:click="showMetadata"><i class="fab fa-medapps"></i></a>
                     <a class="button is-white bookmark-button" title="Save to bookmarks"><i class="far fa-bookmark"></i></a>
                 </div>
             </div>
@@ -90,7 +90,7 @@
 
         <footer class="card-footer">
             <div class="card-footer-item">
-                <button type="submit" class="button is-warning is-uppercase" v-bind:class="{'is-loading': submited}" v-on:click="submit" title="Create photo">create</button>
+                <button type="submit" class="button is-accent-button is-uppercase" v-bind:class="{'is-loading': submited}" v-on:click="submit" title="Create photo">create</button>
             </div>
         </footer>
     </article>
@@ -106,27 +106,31 @@
             <section class="modal-card-body modal-card-body-metadata">
                 <div>
                     <p>Brand</p>
-                    <p>{{metadata.brand}}</p>
+                    <p>{{metadata.brand?metadata.brand:'Unknown'}}</p>
                 </div>
                 <div>
                     <p>Model</p>
-                    <p>{{metadata.model}}</p>
+                    <p>{{metadata.model?metadata.model:'Unknown'}}</p>
                 </div>
                 <div>
                     <p>ISO</p>
-                    <p>{{metadata.iso}}</p>
+                    <p>{{metadata.iso?metadata.iso:'Unknown'}}</p>
                 </div>
                 <div>
                     <p>Exposure</p>
-                    <p>{{metadata.exposure + ' sec'}}</p>
+                    <p>{{metadata.exposure?metadata.exposure + ' sec':'Unknown'}}</p>
                 </div>
                 <div>
                     <p>Aperture</p>
-                    <p>{{'f/' + metadata.aperture}}</p>
+                    <p>{{metadata.aperture?'f/' + metadata.aperture:'Unknown'}}</p>
                 </div>
                 <div>
                     <p>Focal length</p>
-                    <p>{{metadata.focalLength + 'mm'}}</p>
+                    <p>{{metadata.focalLength?metadata.focalLength + 'mm':'Unknown'}}</p>
+                </div>
+                <div>
+                    <p>Filter</p>
+                    <p>{{filter}}</p>
                 </div>
                 <a class="button is-white has-text-grey-darker" title="Close modal" v-on:click="closeMetadata">Close</a>
             </section>

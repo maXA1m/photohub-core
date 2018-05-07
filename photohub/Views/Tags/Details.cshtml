@@ -136,7 +136,7 @@
                 <div class="control" v-if="currentAppUserName" style="width: 100%;">
                     <input class="input" id="comment" type="text" placeholder="Comment photo" v-on:keyup.enter="comment">
                 </div>
-                <button class="button is-warning" v-bind:class="{'is-loading': commenting}" style="margin-top: 5px;" title="Comment photo" v-if="currentAppUserName" v-on:click="comment">Comment</button>
+                <button class="button is-accent-button" v-bind:class="{'is-loading': commenting}" style="margin-top: 5px;" title="Comment photo" v-if="currentAppUserName" v-on:click="comment">Comment</button>
             </footer>
             <a class="button is-white close-modal-mobile-button" title="Close modal" v-on:click="closeComments">Close</a>
         </div>
@@ -151,27 +151,27 @@
                 <a class="close-button" v-on:click="closeMetadata" title="Close modal"><i class="fas fa-times"></i></a>
             </header>
             <section class="modal-card-body modal-card-body-metadata">
-                <div v-if="current.manufacturer || current.model">
+                <div>
                     <p>Brand</p>
                     <p>{{current.manufacturer}}</p>
                 </div>
-                <div v-if="current.manufacturer || current.model">
+                <div>
                     <p>Model</p>
                     <p>{{current.model}}</p>
                 </div>
-                <div v-if="current.iso || current.exposure || current.aperture">
+                <div>
                     <p>ISO</p>
                     <p>{{current.iso}}</p>
                 </div>
-                <div v-if="current.iso || current.exposure || current.aperture">
+                <div>
                     <p>Exposure</p>
                     <p>{{current.exposure}}</p>
                 </div>
-                <div v-if="current.iso || current.exposure || current.aperture">
+                <div>
                     <p>Aperture</p>
                     <p>{{current.aperture}}</p>
                 </div>
-                <div v-if="current.focalLength >= 3">
+                <div>
                     <p>Focal length</p>
                     <p>{{current.focalLength}}</p>
                 </div>

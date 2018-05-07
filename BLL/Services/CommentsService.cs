@@ -101,7 +101,7 @@ namespace PhotoHub.BLL.Services
             Comment comment = _unitOfWork.Comments.Get(id);
             Photo photo = _unitOfWork.Photos.Get(comment.PhotoId);
 
-            if (user != null && (photo.OwnerId == user.Id || comment.OwnerId != user.Id))
+            if (user != null && (photo.OwnerId == user.Id || comment.OwnerId == user.Id))
             {
                 _unitOfWork.Comments.Delete(id);
                 _unitOfWork.Save();
@@ -113,7 +113,7 @@ namespace PhotoHub.BLL.Services
             Comment comment = _unitOfWork.Comments.Get(id);
             Photo photo = _unitOfWork.Photos.Get(comment.PhotoId);
 
-            if (user != null && (photo.OwnerId == user.Id || comment.OwnerId != user.Id))
+            if (user != null && (photo.OwnerId == user.Id || comment.OwnerId == user.Id))
             {
                 await _unitOfWork.Comments.DeleteAsync(id);
                 await _unitOfWork.SaveAsync();
