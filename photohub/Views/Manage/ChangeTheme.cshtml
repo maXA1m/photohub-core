@@ -1,0 +1,74 @@
+﻿@{
+    ViewBag.Title = "App Theme";
+}
+
+<form method="post" asp-controller="Manage" asp-action="ChangeTheme" class="adaptive-form">
+    <h3 class="has-text-centered is-uppercase has-text-weight-bold">Theme color</h3>
+    <div class="is-colors-picker">
+        <div class="is-unselectable">
+            <input class="is-display-none" id="white-color-picker" type="radio" name="theme" value="0" checked />
+            <label for="white-color-picker" class="is-paddingless" title="White">
+                <div></div>
+                <h5 class="has-text-centered has-text-weight-bold">White</h5>
+            </label>
+        </div>
+        <div class="is-unselectable">
+            <input class="is-display-none" id="dark-color-picker" type="radio" name="theme" value="1" />
+            <label for="dark-color-picker" class="is-paddingless" title="Dark">
+                <div></div>
+                <h5 class="has-text-centered has-text-weight-bold">Dark</h5>
+            </label>
+        </div>
+    </div>
+
+    <h3 class="has-text-centered is-uppercase has-text-weight-bold">Accent color</h3>
+    <div class="is-colors-picker">
+        <div class="is-unselectable">
+            <input class="is-display-none" id="yellow-accent-picker" type="radio" name="accent" value="0" checked />
+            <label for="yellow-accent-picker" class="is-paddingless" title="Yellow">
+                <div></div>
+                <h5 class="has-text-centered has-text-weight-bold">Yellow</h5>
+            </label>
+        </div>
+        <div class="is-unselectable">
+            <input class="is-display-none" id="green-accent-picker" type="radio" name="accent" value="1" />
+            <label for="green-accent-picker" class="is-paddingless" title="Green">
+                <div></div>
+                <h5 class="has-text-centered has-text-weight-bold">Green</h5>
+            </label>
+        </div>
+        <div class="is-unselectable">
+            <input class="is-display-none" id="blue-accent-picker" type="radio" name="accent" value="2" />
+            <label for="blue-accent-picker" class="is-paddingless" title="Blue">
+                <div></div>
+                <h5 class="has-text-centered has-text-weight-bold">Blue</h5>
+            </label>
+        </div>
+        <div class="is-unselectable">
+            <input class="is-display-none" id="sky-blue-accent-picker" type="radio" name="accent" value="3" />
+            <label for="sky-blue-accent-picker" class="is-paddingless" title="Sky Blue">
+                <div></div>
+                <h5 class="has-text-centered has-text-weight-bold">Sky Blue</h5>
+            </label>
+        </div>
+        <div class="is-unselectable">
+            <input class="is-display-none" id="red-accent-picker" type="radio" name="accent" value="4" />
+            <label for="red-accent-picker" class="is-paddingless" title="Red">
+                <div></div>
+                <h5 class="has-text-centered has-text-weight-bold">Red</h5>
+            </label>
+        </div>
+        <div class="is-unselectable">
+            <input class="is-display-none" id="turquoise-accent-picker" type="radio" name="accent" value="5" />
+            <label for="turquoise-accent-picker" class="is-paddingless" title="Turquoise">
+                <div></div>
+                <h5 class="has-text-centered has-text-weight-bold">Turquoise</h5>
+            </label>
+        </div>
+    </div>
+
+    <div class="field has-text-centered">
+        <button type="submit" class="button is-accent-button" title="Save theme">Save theme</button>
+    </div>
+</form>
+

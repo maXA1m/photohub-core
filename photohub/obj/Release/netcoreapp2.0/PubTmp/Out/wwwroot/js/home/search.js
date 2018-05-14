@@ -396,14 +396,20 @@
         showLikes(post) {
             this.modals.likeActive = true;
             this.current = post;
+            document.documentElement.classList.add('is-clipped');
+            document.body.classList.add('is-clipped');
         },
         showComments(post) {
             this.modals.commentActive = true;
             this.current = post;
+            document.documentElement.classList.add('is-clipped');
+            document.body.classList.add('is-clipped');
         },
         showMetadata(post) {
             this.modals.metadataActive = true;
             this.current = post;
+            document.documentElement.classList.add('is-clipped');
+            document.body.classList.add('is-clipped');
         },
 
         showUsers() {
@@ -433,12 +439,18 @@
 
         closeLikes() {
             this.modals.likeActive = false;
+            document.documentElement.classList.remove('is-clipped');
+            document.body.classList.remove('is-clipped');
         },
         closeComments() {
             this.modals.commentActive = false;
+            document.documentElement.classList.remove('is-clipped');
+            document.body.classList.remove('is-clipped');
         },
         closeMetadata() {
             this.modals.metadataActive = false;
+            document.documentElement.classList.remove('is-clipped');
+            document.body.classList.remove('is-clipped');
         },
 
         getCurrentDate() {

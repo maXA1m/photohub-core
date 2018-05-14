@@ -15,7 +15,7 @@
         <div id="main-user-panel" class="@(Model.Confirmed?"user-confirmed":"")">
             <div id="user-about-panel">
                 <div style="display: flex; justify-content: center; flex-direction: column; align-content: center; align-items: center;">
-                    <img src="@Model.Avatar" alt="@Model.UserName" class="is-circle has-tiny-shadow image" />
+                    <img src="@Model.Avatar" alt="@Model.UserName" class="is-circle has-tiny-shadow image is-172x172" />
                     @if (!String.IsNullOrEmpty(Model.WebSite)) { 
                         <a href="@Model.WebSite" class="user-website-href" title="Personal web site" target="_blank">website<i class="fas fa-external-link-square-alt"></i></a>
                     }
@@ -74,12 +74,14 @@
                 <a class="close-button" v-on:click="closeFollowers" title="Close modal"><i class="fas fa-times"></i></a>
             </header>
             <section class="modal-card-body">
-                <input class="input" type="text" placeholder="User name" id="findFollowerInput" v-model="findFollower" style="margin-bottom: 15px;" />
                 <a class="button is-white is-mobile-nav-item follower-modal-button" v-bind:href="`/users/${user.userName}`" v-bind:title="user.userName" v-for="user in filteredFollowers">
                     <img class="image is-64x64 is-circle" v-bind:src="user.avatar" v-bind:alt="user.userName">
                     <p class="is-size-5 is-doted-end">{{user.userName}}</p>
                 </a>
             </section>
+            <div class="followers-modal-input">
+                <input class="input" type="text" placeholder="User name" id="findFollowerInput" v-model="findFollower" />
+            </div>
             <a class="button is-white close-modal-mobile-button" title="Close modal" v-on:click="closeFollowers">Close</a>
         </div>
     </div>
@@ -93,12 +95,14 @@
                 <a class="close-button" v-on:click="closeFollowings" title="Close modal"><i class="fas fa-times"></i></a>
             </header>
             <section class="modal-card-body">
-                <input class="input" type="text" placeholder="User name" id="findFollowingInput" v-model="findFollowing" style="margin-bottom: 15px;"/>
                 <a class="button is-white is-mobile-nav-item follower-modal-button" v-bind:href="`/users/${user.userName}`" v-bind:title="user.userName" v-for="user in filteredFollowings">
                     <img class="image is-64x64 is-circle" v-bind:src="user.avatar" v-bind:alt="user.userName">
                     <p class="is-size-5 is-doted-end">{{user.userName}}</p>
                 </a>
             </section>
+            <div class="followers-modal-input">
+                <input class="input" type="text" placeholder="User name" id="findFollowingInput" v-model="findFollowing" />
+            </div>
             <a class="button is-white close-modal-mobile-button" title="Close modal" v-on:click="closeFollowings">Close</a>
         </div>
     </div>

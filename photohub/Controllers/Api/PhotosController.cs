@@ -55,7 +55,7 @@ namespace PhotoHub.WEB.Controllers.Api
         [HttpGet, Route("bookmarks/{page}")]
         public IEnumerable<PhotoViewModel> GetBookmarks(int page)
         {
-            return _photosMapper.MapRange(_photosService.GetBookmarks(page, _getForUserPageSize));
+            return _photosMapper.MapRange(_photosService.GetBookmarks(page, _getAllPageSize));
         }
 
         [HttpGet, Route("tags/{tagId}/{page}")]

@@ -22,6 +22,7 @@ C:\Users\maxmi\Desktop\photohub-core\photohub
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Manage\Blocklist.cshtml
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Manage\Bookmarks.cshtml
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Manage\ChangePassword.cshtml
+--file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Manage\ChangeTheme.cshtml
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Manage\Disable2fa.cshtml
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Manage\EnableAuthenticator.cshtml
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Manage\ExternalLogins.cshtml

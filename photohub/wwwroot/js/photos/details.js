@@ -230,13 +230,24 @@
 
         showMetadata() {
             this.modals.metadataActive = true;
+            document.documentElement.classList.add('is-clipped');
+            document.body.classList.add('is-clipped');
         },
         closeMetadata() {
             this.modals.metadataActive = false;
+            document.documentElement.classList.remove('is-clipped');
+            document.body.classList.remove('is-clipped');
         },
 
-        modalLikes() {
-            this.modals.likeActive = this.modals.likeActive?false:true;
+        showLikes() {
+            this.modals.likeActive = true;
+            document.documentElement.classList.add('is-clipped');
+            document.body.classList.add('is-clipped');
+        },
+        closeLikes() {
+            this.modals.likeActive = false;
+            document.documentElement.classList.remove('is-clipped');
+            document.body.classList.remove('is-clipped');
         },
 
         getCurrentDate() {

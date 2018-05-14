@@ -6,6 +6,7 @@ namespace PhotoHub.WEB.ViewModels.Manage
     {
         [Display(Name = "Real name")]
         public string RealName { get; set; }
+        public string Avatar { get; set; }
         public string Username { get; set; }
         public string About { get; set; }
         public string Gender { get; set; }

@@ -126,8 +126,11 @@ const photosCreate = new Vue({
             document.getElementById('file').click();
         },
         submit() {
-            if(this.loaded)
-                this.submited = true;
+            if (!this.loaded)
+                return -1;
+
+            this.submited = true;
+            document.getElementById("photosCreate").submit(); 
         },
 
         findTagEnter(event) {
@@ -164,17 +167,25 @@ const photosCreate = new Vue({
 
         showMetadata() {
             this.metadataActive = true;
+            document.documentElement.classList.add('is-clipped');
+            document.body.classList.add('is-clipped');
         },
         closeMetadata() {
             this.metadataActive = false;
+            document.documentElement.classList.remove('is-clipped');
+            document.body.classList.remove('is-clipped');
         },
 
         showAddTag() {
             this.addTagActive = true;
             document.getElementById('findTagInput').focus();
+            document.documentElement.classList.add('is-clipped');
+            document.body.classList.add('is-clipped');
         },
         closeAddTag() {
             this.addTagActive = false;
+            document.documentElement.classList.remove('is-clipped');
+            document.body.classList.remove('is-clipped');
         },
 
         onDrop(e) {

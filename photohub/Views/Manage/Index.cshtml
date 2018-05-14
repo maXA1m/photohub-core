@@ -1,77 +1,38 @@
 ﻿@model IndexViewModel
 @{
-    ViewBag.Title = "Profile";
+    ViewBag.Title = "Account";
     ViewData.AddActivePage(ManageNavPages.Index);
 }
 
-<h2 class="is-uppercase has-text-centered has-text-weight-bold">Application theme</h2>
-<form method="post" asp-controller="Manage" asp-action="ChangeTheme" class="adaptive-form">
-    <h3 class="has-text-centered is-uppercase has-text-weight-bold">Theme color</h3>
-    <div class="is-colors-picker">
-        <div class="is-unselectable">
-            <input class="is-display-none" id="white-color-picker" type="radio" name="theme" value="0" checked />
-            <label for="white-color-picker" class="is-paddingless" title="White">
-                <div></div>
-                <h5 class="has-text-centered has-text-weight-bold">White</h5>
-            </label>
-        </div>
-        <div class="is-unselectable">
-            <input class="is-display-none" id="dark-color-picker" type="radio" name="theme" value="1" />
-            <label for="dark-color-picker" class="is-paddingless" title="Dark">
-                <div></div>
-                <h5 class="has-text-centered has-text-weight-bold">Dark</h5>
-            </label>
-        </div>
-    </div>
+@section Scripts {
+    <script defer src="~/js/manage/avatar.js"></script>
+}
 
-    <h3 class="has-text-centered is-uppercase has-text-weight-bold">Accent color</h3>
-    <div class="is-colors-picker">
-        <div class="is-unselectable">
-            <input class="is-display-none" id="yellow-accent-picker" type="radio" name="accent" value="0" checked />
-            <label for="yellow-accent-picker" class="is-paddingless" title="Yellow">
-                <div></div>
-                <h5 class="has-text-centered has-text-weight-bold">Yellow</h5>
-            </label>
-        </div>
-        <div class="is-unselectable">
-            <input class="is-display-none" id="green-accent-picker" type="radio" name="accent" value="1" />
-            <label for="green-accent-picker" class="is-paddingless" title="Green">
-                <div></div>
-                <h5 class="has-text-centered has-text-weight-bold">Green</h5>
-            </label>
-        </div>
-        <div class="is-unselectable">
-            <input class="is-display-none" id="blue-accent-picker" type="radio" name="accent" value="2" />
-            <label for="blue-accent-picker" class="is-paddingless" title="Blue">
-                <div></div>
-                <h5 class="has-text-centered has-text-weight-bold">Blue</h5>
-            </label>
-        </div>
-        <div class="is-unselectable">
-            <input class="is-display-none" id="sky-blue-accent-picker" type="radio" name="accent" value="3" />
-            <label for="sky-blue-accent-picker" class="is-paddingless" title="Sky Blue">
-                <div></div>
-                <h5 class="has-text-centered has-text-weight-bold">Sky Blue</h5>
-            </label>
-        </div>
-        <div class="is-unselectable">
-            <input class="is-display-none" id="red-accent-picker" type="radio" name="accent" value="4" />
-            <label for="red-accent-picker" class="is-paddingless" title="Red">
-                <div></div>
-                <h5 class="has-text-centered has-text-weight-bold">Red</h5>
-            </label>
-        </div>
-        <div class="is-unselectable">
-            <input class="is-display-none" id="turquoise-accent-picker" type="radio" name="accent" value="5" />
-            <label for="turquoise-accent-picker" class="is-paddingless" title="Turquoise">
-                <div></div>
-                <h5 class="has-text-centered has-text-weight-bold">Turquoise</h5>
-            </label>
+<h2 class="is-uppercase has-text-centered has-text-weight-bold">Profile avatar</h2>
+<form method="post" asp-controller="Manage" asp-action="ChangeAvatar" class="adaptive-form has-text-centered" id="uploadAvatar" enctype="multipart/form-data">
+
+    <img alt="@Model.Username" v-bind:src="path?path:'@Model.Avatar'" class="is-circle has-tiny-shadow image is-172x172" style="margin: 10px;" />
+    <input type="hidden" value="@Model.Username" name="userName" />
+    <div style="width: 100%; display: flex; flex-direction: row; align-content: center; justify-content: center; align-items: center;">
+        <div class="field has-text-centered" style="margin-bottom: 10px; width: auto !important;">
+            <div class="file is-light" v-bind:class="{'is-light':!loaded, 'is-success':loaded}">
+                <label class="file-label">
+                    <input class="file-input" type="file" id="avatar" name="avatar" accept="image/*" v-on:change="filePreview($event)" required>
+                    <span class="file-cta">
+                        <span class="file-icon">
+                            <i class="fas fa-upload"></i>
+                        </span>
+                        <span class="file-label">
+                            Select file
+                        </span>
+                    </span>
+                </label>
+            </div>
         </div>
     </div>
 
     <div class="field has-text-centered">
-        <button type="submit" class="button is-accent-button" title="Save theme">Save theme</button>
+        <button type="submit" class="button is-accent-button" title="Save avatar">Save avatar</button>
     </div>
 </form>
 

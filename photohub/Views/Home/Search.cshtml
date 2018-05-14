@@ -10,34 +10,34 @@
 
 <div id="search" class="container is-flex is-flex-centered is-flex-column" v-cloak>
     <div class="buttons" id="search-buttons-panel">
-        <a class="button is-rounded" v-on:click="showUsers" v-bind:class="{'is-light': usersTab.active}">
+        <a class="button is-rounded" v-on:click="showUsers" v-bind:class="{'is-light': usersTab.active, 'is-white': !usersTab.active}">
             <span>Users</span>
         </a>
-        <a class="button is-rounded" v-on:click="showPhotos" v-bind:class="{'is-light': photosTab.active}">
+        <a class="button is-rounded" v-on:click="showPhotos" v-bind:class="{'is-light': photosTab.active, 'is-white': !photosTab.active}">
             <span>Photos</span>
         </a>
-        <a class="button is-rounded" v-on:click="showTags" v-bind:class="{'is-light': tagsTab.active}">
+        <a class="button is-rounded" v-on:click="showTags" v-bind:class="{'is-light': tagsTab.active, 'is-white': !tagsTab.active}">
             <span>Tags</span>
         </a>
     </div>
 
-    <div class="field is-grouped search-field" v-if="usersTab.active">
+    <div class="field is-grouped search-field" v-if="usersTab.active" v-cloak>
         <p class="control is-expanded">
-            <input class="input" type="text" v-on:keyup.enter="handleSearch" v-model="usersTab.search" placeholder="Enter login or name" required>
+            <input class="input" type="text" v-on:keyup.enter="handleSearch" v-model="usersTab.search" placeholder="Enter login or name" v-cloak required>
         </p>
         <p class="control">
-            <button class="button is-accent-button" title="Search" v-bind:class="{'is-loading': usersTab.incallback }" v-on:submit.prevent="handleSearch" v-on:submit="handleSearch" v-on:click="handleSearch">
+            <button class="button is-accent-button" title="Search" v-bind:class="{'is-loading': usersTab.incallback }" v-on:submit.prevent="handleSearch" v-on:submit="handleSearch" v-on:click="handleSearch" v-cloak>
                 Search
             </button>
         </p>
     </div>
     
-    <div class="field is-grouped search-field" v-if="photosTab.active">
+    <div class="field is-grouped search-field" v-if="photosTab.active" v-cloak>
         <p class="control is-expanded">
-            <input class="input" type="text" v-on:keyup.enter="handleSearch" v-model="photosTab.search" placeholder="Enter brand or model" required>
+            <input class="input" type="text" v-on:keyup.enter="handleSearch" v-model="photosTab.search" placeholder="Enter brand or model" v-cloak required>
         </p>
         <p class="control">
-            <button class="button is-accent-button" title="Search" v-bind:class="{'is-loading': photosTab.incallback}" v-on:submit.prevent="handleSearch" v-on:submit="handleSearch" v-on:click="handleSearch">
+            <button class="button is-accent-button" title="Search" v-bind:class="{'is-loading': photosTab.incallback}" v-on:submit.prevent="handleSearch" v-on:submit="handleSearch" v-on:click="handleSearch" v-cloak>
                 Search
             </button>
         </p>
@@ -45,22 +45,22 @@
     
     <div class="field is-grouped search-field" v-if="tagsTab.active">
         <p class="control is-expanded">
-            <input class="input" type="text" v-model="tagsTab.search" placeholder="Enter tag name" required>
+            <input class="input" type="text" v-model="tagsTab.search" placeholder="Enter tag name" v-cloak required>
         </p>
     </div>
     
     <div id="tags-search-panel" class="buttons" v-bind:class="{'is-display-none': !tagsTab.active}" v-if="tagsTab.active">
-        <a class="button is-light" v-bind:href="'/tag/'+tag.name" v-bind:title="tag.name" v-for="tag in filteredTags" :key="tag.$id">{{tag.name}}</a>
+        <a class="button is-light" v-bind:href="'/tag/'+tag.name" v-bind:title="tag.name" v-for="tag in filteredTags" :key="tag.$id" v-cloak>{{tag.name}}</a>
     </div>
 
-    <div id="photos-search-panel" v-bind:class="{'is-display-none': !photosTab.active}">
+    <div id="photos-search-panel" v-bind:class="{'is-display-none': !photosTab.active}" v-cloak>
         <input class="input" type="number" step="5" min="0" max="256000" v-model="iso" name="Iso" id="Iso" placeholder="ISO">
         <input class="input" type="text" v-model="exposure" name="Exposure" id="Exposure" placeholder="Exposure sec">
         <input class="input" type="text" v-model="aperture" name="Aperture" id="Aperture" placeholder="f/*">
         <input class="input" type="text" v-model="focalLength" name="FocalLength" id="FocalLength" placeholder="Focal Length mm">
     </div>
 
-    <article class="is-flex is-flex-centered is-flex-wrap search-element" v-for="user in usersTab.users" v-if="usersTab.active && usersTab.users != null">
+    <article class="is-flex is-flex-centered is-flex-wrap search-element" v-for="user in usersTab.users" v-if="usersTab.active && usersTab.users != null" v-cloak>
         <a v-bind:href="`/users/${user.userName}`" class="button is-white is-mobile-nav-item is-flex is-flex-centered" v-bind:title="user.userName" style="justify-content: space-between !important; height: 100%;">
             <img class="image is-64x64 is-circle" v-bind:src="user.avatar" v-bind:alt="user.userName" style="margin-right: 7px;" />
             <span class="is-doted-end is-size-5">{{user.userName}}</span>
@@ -68,7 +68,7 @@
         <button class="button" v-bind:title="user.followed?'Unfollow':'Follow'" v-bind:class="{'is-accent-button': !user.followed}" v-on:click="user.followed?disfollow(user):follow(user)"><i class="fas fa-user-plus" v-bind:class="user.followed?'fa-user-times':'fa-user-plus'"></i></button>
     </article>
         
-    <article class="card is-responsive" v-for="post in photosTab.photos" v-if="photosTab.active && photosTab.photos != null">
+    <article class="card is-responsive" v-for="post in photosTab.photos" v-if="photosTab.active && photosTab.photos != null" v-cloak>
         <header class="card-header">
             <p class="card-header-title">
                 <a class="has-text-grey-darker has-text-left has-text-justified" v-bind:href="`/users/${post.owner.userName}`" v-bind:title="post.owner.userName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" v-bind:src="post.owner.avatar" v-bind:alt="post.owner.userName" /></a>
@@ -238,17 +238,17 @@
     </div>
 
     <!-- Empty users -->
-    <div class="empty-container" v-if="!usersTab.incallback && usersTab.active && (usersTab.users == null || usersTab.users.length <= 0)">
+    <div class="empty-container" v-cloak v-if="!usersTab.incallback && usersTab.active && (usersTab.users == null || usersTab.users.length <= 0)">
         <p>Can't find user</p>
     </div>
         
     <!-- Empty photos -->
-    <div class="empty-container" v-if="!photosTab.incallback && photosTab.active && (photosTab.photos == null || photosTab.photos.length <= 0)">
+    <div class="empty-container" v-cloak v-if="!photosTab.incallback && photosTab.active && (photosTab.photos == null || photosTab.photos.length <= 0)">
         <p>Can't find photo</p>
     </div>
         
     <!-- Empty tags -->
-    <div class="empty-container" v-if="tagsTab.active && (tagsTab.tags == null || tagsTab.tags.length <= 0 || filteredTags.length <= 0)">
+    <div class="empty-container" v-cloak v-if="tagsTab.active && (tagsTab.tags == null || tagsTab.tags.length <= 0 || filteredTags.length <= 0)">
         <p>Can't find tag</p>
     </div>
 

@@ -116,15 +116,36 @@ namespace PhotoHub.DAL.Data
             new Photo { Path = "example5.jpg", FilterId = 9, Description = "Fifth example", Iso = 6000, Aperture = 16, Exposure = 0.00625, FocalLength = 21 },
             new Photo { Path = "example1.jpg", FilterId = 11, Description = "Sixth example", Iso = 70000, Aperture = 12, Exposure = 0.00625, FocalLength = 14 }
         };
-        List<Tag> _tags = new List<Tag>(7)
+        List<Tag> _tags = new List<Tag>(28)
         {
-            new Tag { Name = "HiRes" },
-            new Tag { Name = "Widescreen" },
-            new Tag { Name = "Horizontal" },
-            new Tag { Name = "Vertical" },
-            new Tag { Name = "Space" },
-            new Tag { Name = "Nature" },
-            new Tag { Name = "City" },
+            new Tag { Name = "sunset" },
+            new Tag { Name = "beach" },
+            new Tag { Name = "water" },
+            new Tag { Name = "sky" },
+            new Tag { Name = "red" },
+            new Tag { Name = "flower" },
+            new Tag { Name = "nature" },
+            new Tag { Name = "blue" },
+            new Tag { Name = "night" },
+            new Tag { Name = "white" },
+            new Tag { Name = "tree" },
+            new Tag { Name = "green" },
+            new Tag { Name = "flowers" },
+            new Tag { Name = "portrait" },
+            new Tag { Name = "art" },
+            new Tag { Name = "light" },
+            new Tag { Name = "snow" },
+            new Tag { Name = "dog" },
+            new Tag { Name = "cat" },
+            new Tag { Name = "street" },
+            new Tag { Name = "landscape" },
+            new Tag { Name = "hires" },
+            new Tag { Name = "widescreen" },
+            new Tag { Name = "horizontal" },
+            new Tag { Name = "vertical" },
+            new Tag { Name = "space" },
+            new Tag { Name = "nature" },
+            new Tag { Name = "city" },
         };
         #endregion
 

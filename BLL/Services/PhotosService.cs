@@ -68,7 +68,7 @@ namespace PhotoHub.BLL.Services
         public IEnumerable<PhotoDTO> GetAll(int page, int pageSize)
         {
             User currentUser = CurrentUser;
-            IEnumerable<Photo> photos = _unitOfWork.Photos.GetAll(page, pageSize).OrderByDescending(p => p.Likes.Count);
+            IEnumerable<Photo> photos = _unitOfWork.Photos.GetAll().OrderByDescending(p => p.Likes.Count).Skip(page * pageSize).Take(pageSize);
 
             List<PhotoDTO> photoDTOs = new List<PhotoDTO>(pageSize);
 
@@ -658,7 +658,7 @@ namespace PhotoHub.BLL.Services
             IEnumerable<Photo> photos;
             if (String.IsNullOrEmpty(search))
             {
-                photos = _unitOfWork.Photos.GetAll(page, pageSize).OrderByDescending(p => p.Likes.Count);
+                photos = _unitOfWork.Photos.GetAll().OrderByDescending(p => p.Likes.Count).Skip(page * pageSize).Take(pageSize);
             }
             else
             {

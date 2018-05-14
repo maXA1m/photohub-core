@@ -100,6 +100,8 @@ namespace PhotoHub.WEB
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+            services.AddSession(s => s.IdleTimeout = TimeSpan.FromMinutes(30));
+
             services.AddMvc();
         }
 
@@ -120,6 +122,8 @@ namespace PhotoHub.WEB
             app.UseStaticFiles();
 
             app.UseAuthentication();
+
+            app.UseSession();
 
             app.UseMvc(routes =>
             {

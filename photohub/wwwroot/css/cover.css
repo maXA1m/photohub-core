@@ -180,6 +180,15 @@
     color: #fff;
 }
 
+html,
+body,
+button,
+input,
+select,
+textarea {
+    font-family: 'Montserrat', sans-serif !important;
+}
+
 body,
 html {
     background-image: url("/images/cover-background-4.jpg");

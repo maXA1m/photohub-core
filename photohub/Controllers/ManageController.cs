@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Text;
+using Microsoft.AspNetCore.Http;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -19,6 +20,7 @@ using PhotoHub.WEB.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 #endregion
 
 namespace PhotoHub.WEB.Controllers
@@ -62,7 +64,7 @@ namespace PhotoHub.WEB.Controllers
         public string StatusMessage { get; set; }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             UserDetailsViewModel user = _usersMapper.Map(_usersService.Get(User.Identity.Name));
             if (user == null)
@@ -70,6 +72,7 @@ namespace PhotoHub.WEB.Controllers
 
             var model = new IndexViewModel
             {
+                Avatar = user.Avatar,
                 RealName = user.RealName,
                 Username = user.UserName,
                 About = user.About,
@@ -180,7 +183,43 @@ namespace PhotoHub.WEB.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangeTheme(int theme, int accent)
+        public async Task<IActionResult> ChangeAvatar(IFormFile avatar, string userName)
+        {
+            if(avatar != null && avatar.Length > 1)
+            {
+                UserDetailsViewModel user = _usersMapper.Map(_usersService.Get(User.Identity.Name ?? userName));
+
+                string fileName = "avatar" + Path.GetExtension(ContentDispositionHeaderValue.Parse(avatar.ContentDisposition).FileName.Trim('"'));
+
+                user.Avatar = fileName;
+
+                fileName = Path.Combine(_environment.WebRootPath, "data/avatars") + $@"/{User.Identity.Name}/{fileName}";
+
+                string dir = Path.Combine(_environment.WebRootPath, "data/avatars") + $@"/{User.Identity.Name}";
+                if (!Directory.Exists(dir))
+                    Directory.CreateDirectory(dir);
+
+                using (FileStream fs = System.IO.File.Create(fileName))
+                {
+                    await avatar.CopyToAsync(fs);
+                    await fs.FlushAsync();
+                }
+
+                await _usersService.EditAsync(user.UserName, user.RealName, user.About, user.WebSite, user.Gender, user.Avatar);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public IActionResult ChangeTheme()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ChangeTheme(int theme, int accent)
         {
             ThemeColorViewModel themeColor = new ThemeColorViewModel();
             switch (theme)
@@ -201,7 +240,7 @@ namespace PhotoHub.WEB.Controllers
                 case 4: accentColor.Color = "#FF2B56"; accentColor.CssClass = "is-danger-accent"; break;
                 case 5: accentColor.Color = "#00C4A7"; accentColor.CssClass = "is-primary-accent"; break;
 
-                default: accentColor.Color = "#FFDB4A"; accentColor.CssClass = "is-warning-accent"; break;
+                default: accentColor.Color = "#1496ED"; accentColor.CssClass = "is-info-accent"; break;
             }
 
             string root = _environment.WebRootPath;
@@ -214,10 +253,13 @@ namespace PhotoHub.WEB.Controllers
             using (StreamWriter sw = System.IO.File.CreateText(file))
             {
                 JsonSerializer serializer = new JsonSerializer();
-                serializer.Serialize(sw, new UserSettingsViewModel() { AccentColor = accentColor, ThemeColor = themeColor });
+                UserSettingsViewModel userSettings = new UserSettingsViewModel() { AccentColor = accentColor, ThemeColor = themeColor };
+
+                serializer.Serialize(sw, userSettings);
+                HttpContext.Session.SetString("APP_THEME", JsonConvert.SerializeObject(userSettings));
             }
 
-            return RedirectToAction(nameof(Index));
+            return View();
         }
 
         [HttpGet]

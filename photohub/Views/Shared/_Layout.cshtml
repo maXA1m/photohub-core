@@ -1,32 +1,57 @@
 ﻿@using System.IO;
 @using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
 @{
+    #region Getting application theme from file or from session
     if (User.Identity.IsAuthenticated)
     {
-        string root = Directory.GetCurrentDirectory();
-        string dir = String.Format("{0}\\wwwroot\\data\\settings\\{1}", root, User.Identity.Name);
-        string file = String.Format("{0}\\config.json", dir);
-
-        if (Directory.Exists(dir) && File.Exists(file))
+        string sessionJson = HttpContextAccessor.HttpContext.Session.GetString("APP_THEME");
+        if (String.IsNullOrEmpty(sessionJson))
         {
-            using (StreamReader r = new StreamReader(file))
+
+            string root = Directory.GetCurrentDirectory();
+            string dir = String.Format("{0}\\wwwroot\\data\\settings\\{1}", root, User.Identity.Name);
+            string file = String.Format("{0}\\config.json", dir);
+
+            if (Directory.Exists(dir) && File.Exists(file))
             {
-                var json = r.ReadToEnd();
-                UserSettingsViewModel setting = JsonConvert.DeserializeObject<UserSettingsViewModel>(json);
-
-                if(setting != null && setting.ThemeColor != null)
+                using (StreamReader r = new StreamReader(file))
                 {
-                    ViewBag.ThemeClass = setting.ThemeColor.CssClass;
-                }
+                    var json = r.ReadToEnd();
+                    UserSettingsViewModel setting = JsonConvert.DeserializeObject<UserSettingsViewModel>(json);
+                    HttpContextAccessor.HttpContext.Session.SetString("APP_THEME", json);
 
-                if (setting != null && setting.AccentColor != null)
-                {
-                    ViewBag.AccentClass = setting.AccentColor.CssClass;
-                    ViewBag.AccentColor = setting.AccentColor.Color;
+                    if (setting != null && setting.ThemeColor != null)
+                    {
+                        ViewBag.ThemeClass = setting.ThemeColor.CssClass;
+                    }
+
+                    if (setting != null && setting.AccentColor != null)
+                    {
+                        ViewBag.AccentClass = setting.AccentColor.CssClass;
+                        ViewBag.AccentColor = setting.AccentColor.Color;
+                    }
                 }
             }
         }
+        else if(sessionJson != null)
+        {
+            UserSettingsViewModel setting = JsonConvert.DeserializeObject<UserSettingsViewModel>(sessionJson);
+
+            if (setting != null && setting.ThemeColor != null)
+            {
+                ViewBag.ThemeClass = setting.ThemeColor.CssClass;
+            }
+
+            if (setting != null && setting.AccentColor != null)
+            {
+                ViewBag.AccentClass = setting.AccentColor.CssClass;
+                ViewBag.AccentColor = setting.AccentColor.Color;
+            }
+        }
     }
+    #endregion
 }
 <!DOCTYPE html>
 <html>
@@ -39,7 +64,7 @@
 
     <title>@ViewBag.Title &#8729; PhotoHub</title>
 
-    <meta name="theme-color" content="@(ViewBag.AccentColor != null ? ViewBag.AccentColor : "#FFDB4A")">
+    <meta name="theme-color" content="@(ViewBag.AccentColor != null ? ViewBag.AccentColor : "#1496ED")">
 
     <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
     <link rel="icon" type="image/png" href="/favicon-24x24.png" sizes="24x24">
@@ -50,6 +75,7 @@
     <link rel="icon" type="image/png" href="/favicon-512x512.png" sizes="512x512">
 
     <link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 
     <link href="~/css/filters.css" rel="stylesheet" />
     <link href="~/css/app.css" rel="stylesheet" />
@@ -64,7 +90,7 @@
     @RenderSection("Scripts", required: false)
 
 </head>
-<body id="body" class="@( ViewBag.ThemeClass != null ? ViewBag.ThemeClass : "is-white-background" ) @( ViewBag.AccentClass != null ? ViewBag.AccentClass : "is-warning-accent" )" data-app-user="@( User.Identity.IsAuthenticated ? User.Identity.Name : "" )">
+<body id="body" class="@( ViewBag.ThemeClass != null ? ViewBag.ThemeClass : "is-white-background" ) @( ViewBag.AccentClass != null ? ViewBag.AccentClass : "is-info-accent" )" data-app-user="@( User.Identity.IsAuthenticated ? User.Identity.Name : "" )">
 
     <!--  Preloader  -->
     <div id="preloader" data-hidden="true">

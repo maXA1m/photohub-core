@@ -107,18 +107,25 @@
 
         showMetadata() {
             this.metadataActive = true;
+            document.documentElement.classList.add('is-clipped');
+            document.body.classList.add('is-clipped');
         },
         closeMetadata() {
             this.metadataActive = false;
+            document.documentElement.classList.remove('is-clipped');
+            document.body.classList.remove('is-clipped');
         },
 
         showAddTag() {
-            this.addTagActive = true;
-            console.log(document.getElementById('findTagInput'));
+            this.addTagActive = true
             document.getElementById('findTagInput').focus();
+            document.documentElement.classList.add('is-clipped');
+            document.body.classList.add('is-clipped');
         },
         closeAddTag() {
             this.addTagActive = false;
+            document.documentElement.classList.remove('is-clipped');
+            document.body.classList.remove('is-clipped');
         },
     }
 });

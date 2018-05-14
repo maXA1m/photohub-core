@@ -64,15 +64,15 @@
                     <div>
                         @if (User.Identity.IsAuthenticated)
                 {
-                    <button class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-on:click="post.liked?dislike():like()" v-bind:title="post.liked?'Dislike':'Like'" v-if="currentAppUserName"><i class="fa-heart" v-bind:class="post.liked?'fas':'far'"></i></button>
+                    <button class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-on:click="post.liked?dislike():like()" v-bind:title="post.liked?'Dislike':'Like'" v-if="post && currentAppUserName"><i class="fa-heart" v-bind:class="post.liked?'fas':'far'"></i></button>
         }
-                        <button v-if="post.likes.length > 0" class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-on:click="modalLikes()" title="Likes list">{{ post.likes.length }}</button>
+                        <button v-if="post && post.likes.length > 0" class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-on:click="showLikes" title="Likes list">{{ post.likes.length }}</button>
                     </div>
                     <div>
                         <button class="button is-white" title="Show metadata" v-on:click="showMetadata(post)"><i class="fab fa-medapps"></i></button>
                         @if (User.Identity.IsAuthenticated)
                 {
-                    <button class="button bookmark-button" v-bind:class="post.bookmarked?'is-light':'is-white'" title="Save to bookmarks" v-on:click="post.bookmarked?disbookmark(post):bookmark(post)"><i class="fa-bookmark" v-bind:class="post.bookmarked?'fas':'far'"></i></button>
+                    <button class="button bookmark-button" v-if="post" v-bind:class="post.bookmarked?'is-light':'is-white'" title="Save to bookmarks" v-on:click="post.bookmarked?disbookmark(post):bookmark(post)"><i class="fa-bookmark" v-bind:class="post.bookmarked?'fas':'far'"></i></button>
         }
                     </div>
                 </div>
@@ -80,7 +80,7 @@
 
             <footer class="card-footer" v-cloak>
                 <div class="content" style="width: 100%;">
-                    <div class="content" id="content-photo-details" v-if="post.comments.length">
+                    <div class="content" id="content-photo-details" v-if="post && post.comments.length">
                         <div class="media" v-for="comment in post.comments" :key="comment.$id">
                             <div class="media-left is-flex is-flex-column">
                                 <a v-bind:href="`/users/${comment.owner.userName}`" class="has-text-black" v-bind:title="comment.owner.userName"><b>{{ comment.owner.userName }}</b></a>
@@ -91,7 +91,7 @@
                                 {{comment.text}}
                             </div>
 
-                            <div class="media-right" v-if="comment.$id && (currentAppUserName == comment.owner.userName || current.owner.userName == currentAppUserName)">
+                            <div class="media-right" v-if="comment.$id && (currentAppUserName == comment.owner.userName || comment.owner.userName == currentAppUserName)">
                                 <a class="close-button" v-on:click="deleteComment(comment)" title="Delete comment"><i class="fas fa-trash"></i></a>
                             </div>
                         </div>
@@ -112,13 +112,13 @@
 
     <!-- Modal Likes -->
     <div class="modal" v-bind:class="{'is-active': modals.likeActive}">
-        <div class="modal-background modal-custom-background" v-on:click="modalLikes"></div>
+        <div class="modal-background modal-custom-background" v-on:click="closeLikes"></div>
         <div class="modal-card modal-card-custom">
             <header class="modal-card-head">
                 <p class="modal-card-title is-uppercase">Likes</p>
-                <a class="close-button" v-on:click="modalLikes" title="Close modal"><i class="fas fa-times"></i></a>
+                <a class="close-button" v-on:click="closeLikes" title="Close modal"><i class="fas fa-times"></i></a>
             </header>
-            <section class="modal-card-body" v-if="post.likes != null && post.likes.length > 0">
+            <section class="modal-card-body" v-if="post && post.likes != null && post.likes.length > 0">
                 <div class="media" v-for="like in post.likes" :key="like.$id">
                     <div class="media-left">
                         <a v-bind:href="`/users/${like.owner.userName}`" class="has-text-black is-doted-end" v-bind:title="like.owner.userName"><b>{{ like.owner.userName }}</b></a>
@@ -133,17 +133,17 @@
                     </div>
                 </div>
             </section>
-            <section class="modal-card-body" style="overflow-x: hidden; overflow-y: auto;" v-if="post.likes == null || post.likes.length <= 0">
+            <section class="modal-card-body" style="overflow-x: hidden; overflow-y: auto;" v-if="post && (post.likes == null || post.likes.length <= 0)">
                 <div class="empty-container-modal">
                     <p>Like it first</p>
                 </div>
             </section>
-            <a class="button is-white close-modal-mobile-button" title="Close modal" v-on:click="modalLikes">Close</a>
+            <a class="button is-white close-modal-mobile-button" title="Close modal" v-on:click="closeLikes">Close</a>
         </div>
     </div>
 
     <!-- Modal Metadata -->
-    <div class="modal" v-bind:class="{'is-active': modals.metadataActive}">
+    <div class="modal" v-bind:class="{'is-active': modals.metadataActive}" v-if="post">
         <div class="modal-background modal-custom-background" v-on:click="closeMetadata"></div>
         <div class="modal-card modal-card-custom modal-card-custom-metadata">
             <header class="modal-card-head">
