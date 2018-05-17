@@ -46,7 +46,7 @@ namespace PhotoHub.WEB.Mappers
                 Manufacturer = String.IsNullOrEmpty(item.Manufacturer) ? "Unknown" : item.Manufacturer,
                 Model = String.IsNullOrEmpty(item.Model) ? "Unknown" : item.Model,
                 Iso = item.Iso != null ? item.Iso.ToString() : "Unknown",
-                Exposure = item.Exposure != null ? item.Exposure.ToString() + " sec" : "Unknown",
+                Exposure = item.Exposure != null ? String.Format("{0:0.00000}", item.Exposure) + " sec" : "Unknown",
                 Aperture = item.Aperture != null ? "f/" + item.Aperture.ToString() : "Unknown",
                 FocalLength = item.FocalLength != null ? item.FocalLength.ToString() + "mm" : "Unknown",
 
@@ -80,7 +80,7 @@ namespace PhotoHub.WEB.Mappers
                     Manufacturer = String.IsNullOrEmpty(item.Manufacturer) ? "Unknown" : item.Manufacturer,
                     Model = String.IsNullOrEmpty(item.Model) ? "Unknown" : item.Model,
                     Iso = item.Iso != null ? item.Iso.ToString() : "Unknown",
-                    Exposure = item.Exposure != null ? item.Exposure.ToString() + " sec" : "Unknown",
+                    Exposure = item.Exposure != null ? String.Format("{0:0.00000}", item.Exposure) + " sec" : "Unknown",
                     Aperture = item.Aperture != null ? "f/" + item.Aperture.ToString() : "Unknown",
                     FocalLength = item.FocalLength != null ? item.FocalLength.ToString() + "mm" : "Unknown",
 
