@@ -47,7 +47,7 @@
             <input type="hidden" v-bind:value="metadata.focalLength" name="FocalLength" id="FocalLength"  v-if="metadata.focalLength"  />
         </div>
 
-        <input class="file-input" type="file" id="file" name="file" accept="image/*" v-on:change="filePreview($event)" required>
+        <input class="file-input" type="file" id="file" name="file" accept="image/*" v-on:change="filePreview($event)" style="display: none;" required>
 
         <div class="is-filters-picker" v-bind:class="{'is-display-none': submited}" v-dragscroll.x="true" v-dragscroll.y="false">
             @foreach (var filter in ViewBag.Filters)

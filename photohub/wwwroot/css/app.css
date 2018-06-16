@@ -70,15 +70,62 @@
 /*  Changes text selection styles  */
 ::-moz-selection {
     text-shadow: none;
-    color: #000;
-    background: #FFF9CD;
+    background: #aaa;
 }
 ::selection {
     text-shadow: none;
-    color: #000;
-    background: #FFF9CD;
+    background: #aaa;
 }
 
+.is-primary-accent *::-moz-selection {
+    background: #00d1b2 !important;
+    color: #fff !important;
+}
+
+.is-primary-accent *::selection {
+    background: #00d1b2 !important;
+    color: #fff !important;
+}
+.is-warning-accent *::-moz-selection {
+    background: #ffdd57 !important;
+    color: #333 !important;
+}
+.is-warning-accent *::selection {
+    background: #ffdd57 !important;
+    color: #333 !important;
+}
+.is-link-accent *::-moz-selection {
+    background: #3273dc !important;
+    color: #fff !important;
+}
+.is-link-accent *::selection {
+    background: #3273dc !important;
+    color: #fff !important;
+}
+.is-danger-accent *::-moz-selection {
+    background: #ff3860 !important;
+    color: #fff !important;
+}
+.is-danger-accent *::selection {
+    background: #ff3860 !important;
+    color: #fff !important;
+}
+.is-info-accent *::-moz-selection {
+    background: #209cee !important;
+    color: #fff !important;
+}
+.is-info-accent *::selection {
+    background: #209cee !important;
+    color: #fff !important;
+}
+.is-success-accent *::-moz-selection {
+    background: #23d160 !important;
+    color: #fff !important;
+}
+.is-success-accent *::selection {
+    background: #23d160 !important;
+    color: #fff !important;
+}
 /*  Base styles  */
 html,
 body,
@@ -103,8 +150,8 @@ h3,
 h4,
 h5,
 h6 {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 h1,
