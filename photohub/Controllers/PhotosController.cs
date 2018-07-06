@@ -34,6 +34,7 @@ namespace PhotoHub.WEB.Controllers
     {
         private readonly IPhotosService _photosService;
         private readonly IHostingEnvironment _environment;
+        private readonly ICurrentUserService _currentUserService;
         #region private readonly mappers
         private readonly UsersMapper _usersMapper;
         private readonly PhotosMapper _photosMapper;
@@ -41,10 +42,11 @@ namespace PhotoHub.WEB.Controllers
         private readonly TagsMapper _tagsMapper;
         #endregion
 
-        public PhotosController(IPhotosService photosService, IHostingEnvironment environment)
+        public PhotosController(IPhotosService photosService, IHostingEnvironment environment, ICurrentUserService currentUserService)
         {
             _photosService = photosService;
             _environment = environment;
+            _currentUserService = currentUserService;
             _usersMapper = new UsersMapper();
             _filtersMapper = new FiltersMapper();
             _photosMapper = new PhotosMapper();
@@ -63,7 +65,7 @@ namespace PhotoHub.WEB.Controllers
             PhotoViewModel item = _photosMapper.Map(await _photosService.GetAsync(id));
 
             if (User.Identity.IsAuthenticated)
-                ViewBag.CurrentUser = _usersMapper.Map(_photosService.CurrentUserDTO);
+                ViewBag.CurrentUser = _usersMapper.Map(_currentUserService.GetDTO);
 
             return View(item);
         }
@@ -74,7 +76,7 @@ namespace PhotoHub.WEB.Controllers
             ViewBag.Filters = _filtersMapper.MapRange(_photosService.Filters);
             //ViewBag.Tags = _tagsMapper.MapRange(_photosService.Tags);
 
-            return View(_usersMapper.Map(_photosService.CurrentUserDTO));
+            return View(_usersMapper.Map(_currentUserService.GetDTO));
         }
         
         [Authorize, HttpPost, ValidateAntiForgeryToken, Route("photos/create")]
@@ -184,7 +186,7 @@ namespace PhotoHub.WEB.Controllers
         [Authorize, HttpGet, Route("photos/edit/{id}")]
         public async Task<ActionResult> Edit(int id)
         {
-            UserDTO user = _photosService.CurrentUserDTO;
+            UserDTO user = _currentUserService.GetDTO;
 
             PhotoDTO item = await _photosService.GetAsync(id);
 
@@ -212,7 +214,7 @@ namespace PhotoHub.WEB.Controllers
         [Authorize, HttpPost, Route("photos/delete/{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            UserViewModel user = _usersMapper.Map(_photosService.CurrentUserDTO);
+            UserViewModel user = _usersMapper.Map(_currentUserService.GetDTO);
 
             PhotoDTO item = await _photosService.GetAsync(id);
 

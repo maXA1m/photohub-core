@@ -31,7 +31,24 @@ namespace PhotoHub.WEB
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        public void AddApplicationServices(IServiceCollection services)
+        {
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<ApplicationDbContextSeeder>();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddScoped<ICommentsService, CommentsService>();
+            services.AddScoped<ILikesService, LikesService>();
+            services.AddScoped<IPhotosService, PhotosService>();
+            services.AddScoped<IUsersService, UsersService>();
+            services.AddScoped<ITagsService, TagsService>();
+
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -85,27 +102,14 @@ namespace PhotoHub.WEB
                 options.SlidingExpiration = true;
                 options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
             });
-
-            // Add application services.
-            services.AddTransient<IEmailSender, EmailSender>();
-            services.AddTransient<ApplicationDbContextSeeder>();
-
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-            services.AddScoped<ICommentsService, CommentsService>();
-            services.AddScoped<ILikesService, LikesService>();
-            services.AddScoped<IPhotosService, PhotosService>();
-            services.AddScoped<IUsersService, UsersService>();
-            services.AddScoped<ITagsService, TagsService>();
-
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            
+            AddApplicationServices(services);
 
             services.AddSession(s => s.IdleTimeout = TimeSpan.FromMinutes(30));
 
             services.AddMvc();
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, ApplicationDbContextSeeder seeder) 
         {
             if (env.IsDevelopment())

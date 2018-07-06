@@ -26,23 +26,6 @@ namespace PhotoHub.BLL.Services
         private readonly TagsMapper _tagsMapper;
         #endregion
 
-        public User CurrentUser => _unitOfWork.Users.Find(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name).FirstOrDefault();
-        public UserDTO CurrentUserDTO
-        {
-            get
-            {
-                User user = CurrentUser;
-
-                return _usersMapper.Map(
-                    user,
-                    _unitOfWork.Confirmations.Find(c => c.UserId == user.Id).FirstOrDefault() != null,
-                    _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id && f.UserId == user.Id).FirstOrDefault() != null,
-                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.Id && b.UserId == user.Id).FirstOrDefault() != null,
-                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.Id && b.UserId == user.Id).FirstOrDefault() != null
-                );
-            }
-        }
-
         public TagsService(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
         {
             _unitOfWork = unitOfWork;

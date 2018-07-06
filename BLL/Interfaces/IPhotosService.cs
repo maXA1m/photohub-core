@@ -7,7 +7,7 @@ using PhotoHub.BLL.DTO;
 
 namespace PhotoHub.BLL.Interfaces
 {
-    public interface IPhotosService : IDisposable, IReturnUser
+    public interface IPhotosService : IDisposable
     {
         List<FilterDTO> Filters { get; }
         List<TagDTO> Tags { get; }

@@ -17,14 +17,16 @@ namespace PhotoHub.WEB.Controllers
     public class TagsController : Controller
     {
         private readonly ITagsService _tagsService;
+        private readonly ICurrentUserService _currentUserService;
         #region private readonly mappers
         private readonly UsersMapper _usersMapper;
         private readonly TagsMapper _tagsMapper;
         #endregion
 
-        public TagsController(ITagsService tagsService)
+        public TagsController(ITagsService tagsService, ICurrentUserService currentUserService)
         {
             _tagsService = tagsService;
+            _currentUserService = currentUserService;
             _usersMapper = new UsersMapper();
             _tagsMapper = new TagsMapper();
         }
@@ -35,7 +37,7 @@ namespace PhotoHub.WEB.Controllers
             TagViewModel item = _tagsMapper.Map(_tagsService.Get(name));
 
             if (User.Identity.IsAuthenticated)
-                ViewBag.CurrentUser = _usersMapper.Map(_tagsService.CurrentUserDTO);
+                ViewBag.CurrentUser = _usersMapper.Map(_currentUserService.GetDTO);
 
             return View(item);
         }

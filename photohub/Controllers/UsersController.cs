@@ -10,14 +10,16 @@ namespace PhotoHub.WEB.Controllers
     public class UsersController : Controller
     {
         private readonly IUsersService _usersService;
+        private readonly ICurrentUserService _currentUserService;
         #region private readonly mappers
         private readonly UsersDetailsMapper _usersDetailsMapper;
         private readonly UsersMapper _usersMapper;
         #endregion
 
-        public UsersController(IUsersService usersService)
+        public UsersController(IUsersService usersService, ICurrentUserService currentUserService)
         {
             _usersService = usersService;
+            _currentUserService = currentUserService;
             _usersDetailsMapper = new UsersDetailsMapper();
             _usersMapper = new UsersMapper();
         }
@@ -28,7 +30,7 @@ namespace PhotoHub.WEB.Controllers
             UserViewModel item = _usersDetailsMapper.Map(_usersService.Get(userName));
 
             if (User.Identity.IsAuthenticated)
-                ViewBag.CurrentUser = _usersMapper.Map(_usersService.CurrentUserDTO);
+                ViewBag.CurrentUser = _usersMapper.Map(_currentUserService.GetDTO);
 
             return View(item);
         }

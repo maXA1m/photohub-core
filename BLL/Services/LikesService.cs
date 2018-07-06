@@ -21,35 +21,20 @@ namespace PhotoHub.BLL.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UsersMapper _usersMapper;
-
-        public User CurrentUser => _unitOfWork.Users.Find(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name).FirstOrDefault();
-        public UserDTO CurrentUserDTO
-        {
-            get
-            {
-                User user = CurrentUser;
-
-                return _usersMapper.Map(
-                    user,
-                    _unitOfWork.Confirmations.Find(c => c.UserId == user.Id).FirstOrDefault() != null,
-                    _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id && f.UserId == user.Id).FirstOrDefault() != null,
-                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.Id && b.UserId == user.Id).FirstOrDefault() != null,
-                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.Id && b.UserId == user.Id).FirstOrDefault() != null
-                );
-            }
-        }
+        private readonly ICurrentUserService _currentUserService;
 
         public LikesService(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
         {
             _unitOfWork = unitOfWork;
             _httpContextAccessor = httpContextAccessor;
             _usersMapper = new UsersMapper();
+            _currentUserService = new CurrentUserService(unitOfWork, httpContextAccessor);
         }
 
         public void Add(int photoId)
         {
             Photo photo = _unitOfWork.Photos.Get(photoId);
-            User user = CurrentUser;
+            User user = _currentUserService.Get;
             Like like = _unitOfWork.Likes.Find(l => l.OwnerId == user.Id && l.PhotoId == photo.Id).FirstOrDefault();
 
             if (photo != null && user != null && like == null)
@@ -69,7 +54,7 @@ namespace PhotoHub.BLL.Services
         public async Task AddAsync(int photoId)
         {
             Photo photo = await _unitOfWork.Photos.GetAsync(photoId);
-            User user = CurrentUser;
+            User user = _currentUserService.Get;
             Like like = _unitOfWork.Likes.Find(l => l.OwnerId == user.Id && l.PhotoId == photo.Id).FirstOrDefault();
 
             if (photo != null && user != null && like == null)
@@ -89,7 +74,7 @@ namespace PhotoHub.BLL.Services
         public void Delete(int photoId)
         {
             Photo photo = _unitOfWork.Photos.Get(photoId);
-            User user = CurrentUser;
+            User user = _currentUserService.Get;
             Like like = _unitOfWork.Likes.Find(l => l.OwnerId == user.Id && l.PhotoId == photo.Id).FirstOrDefault();
 
             if (photo != null && user != null && like != null)
@@ -101,7 +86,7 @@ namespace PhotoHub.BLL.Services
         public async Task DeleteAsync(int photoId)
         {
             Photo photo = await _unitOfWork.Photos.GetAsync(photoId);
-            User user = CurrentUser;
+            User user = _currentUserService.Get;
             Like like = _unitOfWork.Likes.Find(l => l.OwnerId == user.Id && l.PhotoId == photo.Id).FirstOrDefault();
 
             if (photo != null && user != null && like != null)

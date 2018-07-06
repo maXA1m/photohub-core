@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace PhotoHub.BLL.Interfaces
 {
-    public interface ILikesService : IDisposable, IReturnUser
+    public interface ILikesService : IDisposable
     {
         void Add(int photoId);
         Task AddAsync(int photoId);

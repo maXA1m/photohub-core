@@ -8,7 +8,7 @@ using PhotoHub.BLL.DTO;
 
 namespace PhotoHub.BLL.Interfaces
 {
-    public interface IUsersService : IDisposable, IReturnUser
+    public interface IUsersService : IDisposable
     {
         IEnumerable<UserDTO> GetAll(int page, int pageSize);
 

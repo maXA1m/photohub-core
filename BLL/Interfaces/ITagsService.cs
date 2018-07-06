@@ -7,7 +7,7 @@ using PhotoHub.BLL.DTO;
 
 namespace PhotoHub.BLL.Interfaces
 {
-    public interface ITagsService : IDisposable, IReturnUser
+    public interface ITagsService : IDisposable
     {
         IEnumerable<TagDTO> GetAll();
 

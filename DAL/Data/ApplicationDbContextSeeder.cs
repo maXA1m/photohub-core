@@ -163,7 +163,7 @@ namespace PhotoHub.DAL.Data
             await _context.SaveChangesAsync();
 
             foreach (ApplicationUser u in _identity)
-                await _userManager.CreateAsync(u, "somehash123A");
+                await _userManager.CreateAsync(u, "password123A");
             await _context.SaveChangesAsync();
             
             await _context.AddRangeAsync(_users);
