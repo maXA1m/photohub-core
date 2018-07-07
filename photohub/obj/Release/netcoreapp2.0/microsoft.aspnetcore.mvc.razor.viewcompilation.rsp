@@ -15,6 +15,9 @@ C:\Users\maxmi\Desktop\photohub-core\photohub
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Account\ResetPassword.cshtml
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Account\ResetPasswordConfirmation.cshtml
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Account\SignedOut.cshtml
+--file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Admin\Index.cshtml
+--file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Admin\Stats.cshtml
+--file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Admin\Users.cshtml
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Home\About.cshtml
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Home\Cover.cshtml
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Home\Index.cshtml
@@ -40,6 +43,7 @@ C:\Users\maxmi\Desktop\photohub-core\photohub
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Photos\Edit.cshtml
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Photos\Index.cshtml
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Shared\Error.cshtml
+--file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Shared\_Admin.cshtml
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Shared\_Layout.cshtml
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Tags\Details.cshtml
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Users\Details.cshtml

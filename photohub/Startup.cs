@@ -109,8 +109,8 @@ namespace PhotoHub.WEB
 
             services.AddMvc();
         }
-        
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, ApplicationDbContextSeeder seeder) 
+
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IServiceProvider services, ApplicationDbContextSeeder seeder) 
         {
             if (env.IsDevelopment())
             {
@@ -137,6 +137,7 @@ namespace PhotoHub.WEB
             });
 
             //seeder.Seed().Wait();
+            //seeder.CreateUserRoles(services).Wait();
         }
     }
 }

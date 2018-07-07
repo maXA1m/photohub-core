@@ -86,7 +86,7 @@ namespace PhotoHub.BLL.Services
             Comment comment = _unitOfWork.Comments.Get(id);
             Photo photo = _unitOfWork.Photos.Get(comment.PhotoId);
 
-            if (user != null && (photo.OwnerId == user.Id || comment.OwnerId == user.Id))
+            if (user != null && (photo.OwnerId == user.Id || comment.OwnerId == user.Id || _httpContextAccessor.HttpContext.User.IsInRole("Admin")))
             {
                 _unitOfWork.Comments.Delete(id);
                 _unitOfWork.Save();
@@ -98,7 +98,7 @@ namespace PhotoHub.BLL.Services
             Comment comment = _unitOfWork.Comments.Get(id);
             Photo photo = _unitOfWork.Photos.Get(comment.PhotoId);
 
-            if (user != null && (photo.OwnerId == user.Id || comment.OwnerId == user.Id))
+            if (user != null && (photo.OwnerId == user.Id || comment.OwnerId == user.Id || _httpContextAccessor.HttpContext.User.IsInRole("Admin")))
             {
                 await _unitOfWork.Comments.DeleteAsync(id);
                 await _unitOfWork.SaveAsync();

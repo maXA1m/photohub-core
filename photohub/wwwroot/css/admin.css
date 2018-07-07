@@ -1,0 +1,166 @@
+﻿body,
+html {
+    font-family: 'Open Sans', sans-serif;
+}
+
+/*  Preloader animation  */
+@-webkit-keyframes loading {
+    from {
+        left: 50%;
+        width: 0;
+        z-index: 1000;
+    }
+
+    33.3333% {
+        left: 0;
+        width: 100%;
+        z-index: 100;
+    }
+
+    to {
+        left: 0;
+        width: 100%;
+        z-index: 20;
+    }
+}
+
+@keyframes loading {
+    from {
+        left: 50%;
+        width: 0;
+        z-index: 1000;
+    }
+
+    33.3333% {
+        left: 0;
+        width: 100%;
+        z-index: 100;
+    }
+
+    to {
+        left: 0;
+        width: 100%;
+        z-index: 20;
+    }
+}
+
+/*  Styles for unloaded vue js components  */
+[v-cloak] {
+    display: none !important;
+}
+
+/*  Peloader style  */
+#preloader[data-hidden="true"],
+#preloader {
+    display: none;
+}
+
+#preloader[data-hidden="false"] {
+    display: block !important;
+}
+
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 4px;
+    z-index: 1200;
+    background-color: #fff;
+}
+
+#preloader > .bar {
+    content: "";
+    display: inline;
+    position: fixed;
+    width: 0;
+    top: 0;
+    height: 4px;
+    left: 50%;
+    text-align: center;
+}
+
+#preloader > .bar:nth-child(1) {
+    background-color: rgba(255, 255, 255, .7);
+    -webkit-animation: loading 1s linear infinite;
+            animation: loading 1s linear infinite;
+}
+
+#preloader > .bar:nth-child(2) {
+    background-color: rgba(0, 0, 0, .7);
+    -webkit-animation: loading 1s linear .33s infinite;
+    animation: loading 1s linear .33s infinite;
+}
+
+#preloader > .bar:nth-child(3) {
+    -webkit-animation: loading 1s linear .7s infinite;
+            animation: loading 1s linear .7s infinite;
+}
+
+#preloader > .bar:nth-child(3) {
+    background-color: #808080;
+}
+
+.is-display-none {
+    display: none;
+}
+
+#primaryContainer {
+    margin: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 35px 15px 35px 15px;
+    width: 80%;
+}
+
+#desktopNavbar {
+    width: 20%;
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    padding: 15px;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+#desktopNavbar button,
+#desktopNavbar a {
+    width: 200px;
+    margin-top: 15px;
+}
+
+#mobileNavbar {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: none;
+    flex-direction: row;
+    justify-content: space-around;
+    align-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+
+@media (max-width: 736px) {
+    #primaryContainer {
+        position: initial;
+        width: 100%;
+        padding: 35px 5px 35px 5px;
+    }
+
+    #desktopNavbar {
+        display: none;
+    }
+
+    #mobileNavbar {
+        display: flex;
+    }
+}

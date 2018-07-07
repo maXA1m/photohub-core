@@ -36,4 +36,4 @@ C:\Users\maxmi\Desktop\photohub-core\DAL\obj\Debug\netcoreapp2.0\PhotoHub.DAL.As
 C:\Users\maxmi\Desktop\photohub-core\DAL\obj\Debug\netcoreapp2.0\PhotoHub.DAL.AssemblyInfo.cs
 C:\Users\maxmi\Desktop\photohub-core\DAL\obj\Debug\netcoreapp2.0\PhotoHub.DAL.dll
 C:\Users\maxmi\Desktop\photohub-core\DAL\obj\Debug\netcoreapp2.0\PhotoHub.DAL.pdb
-C:\Users\maxmi\Desktop\photohub-core\DAL\obj\Debug\netcoreapp2.0\PhotoHub.DAL.csprojResolveAssemblyReference.cache
+C:\Users\maxmi\Desktop\photohub-core\DAL\obj\Debug\netcoreapp2.0\PhotoHub.DAL.csproj.CopyComplete

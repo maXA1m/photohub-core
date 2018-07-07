@@ -118,6 +118,10 @@
             <div>
                 <a class="navbar-item" title="Updates" href="/"><i class="fas fa-hand-peace"></i></a>
                 <a class="navbar-item" title="Create new photo" href="/photos/create"><i class="fas fa-plus"></i></a>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a class="navbar-item" href="/admin" title="Admin panel" rel="nofollow"><i class="fas fa-tasks"></i></a>
+                }
                 <a class="navbar-item" title="@User.Identity.Name" href="/users/@User.Identity.Name"><i class="fas fa-user-circle"></i></a>
             </div>
         }
@@ -137,17 +141,21 @@
     <nav class="mobile-navbar" id="mobileNavbar" v-bind:class="{'is-hidden-mobile-navbar': isHidden}" v-if="width <= 736">
         @if (User.Identity.IsAuthenticated)
         {
-            <a class="button is-white is-mobile-nav-item" href="/photos" title="All photos"><i class="fas fa-home"></i></a>
-            <a class="button is-white is-mobile-nav-item" href="/" title="Updates"><i class="fas fa-hand-peace"></i></a>
-            <a class="button is-white is-mobile-nav-item" href="/photos/create" title="Create new photo"><i class="fas fa-plus"></i></a>
-            <a class="button is-white is-mobile-nav-item" href="/search" title="Search"><i class="fas fa-search"></i></a>
-            <a class="button is-white is-mobile-nav-item" href="/users/@User.Identity.Name" title="@User.Identity.Name"><i class="fas fa-user"></i></a>
+            <a class="button is-white is-mobile-nav-item is-medium" href="/photos" title="Explore"><i class="fas fa-home"></i></a>
+            <a class="button is-white is-mobile-nav-item is-medium" href="/" title="Updates"><i class="fas fa-hand-peace"></i></a>
+            <a class="button is-white is-mobile-nav-item is-medium" href="/photos/create" title="Create new photo"><i class="fas fa-plus"></i></a>
+            <a class="button is-white is-mobile-nav-item is-medium" href="/search" title="Search"><i class="fas fa-search"></i></a>
+            @if (User.IsInRole("Admin"))
+            {
+                <a class="button is-white is-mobile-nav-item is-medium" href="/admin" title="Admin panel" rel="nofollow"><i class="fas fa-tasks"></i></a>
+            }
+            <a class="button is-white is-mobile-nav-item is-medium" href="/users/@User.Identity.Name" title="@User.Identity.Name"><i class="fas fa-user"></i></a>
         }
         else
         {
-            <a id="registerLink" class="button is-white is-mobile-nav-item" href="/account/register" title="Sign up"><i class="fas fa-address-book"></i></a>
-            <a class="button is-white" href="/photos" title="All photos"><i class="fas fa-home"></i></a>
-            <a id="loginLink" class="button is-white is-mobile-nav-item" href="/account/login" title="Log in"><i class="fas fa-sign-in-alt"></i></a>
+            <a id="registerLink" class="button is-white is-mobile-nav-item is-medium" href="/account/register" title="Sign up"><i class="fas fa-address-book"></i></a>
+            <a class="button is-white is-medium" href="/photos" title="Explore"><i class="fas fa-home"></i></a>
+            <a id="loginLink" class="button is-white is-mobile-nav-item is-medium" href="/account/login" title="Log in"><i class="fas fa-sign-in-alt"></i></a>
         }
     </nav>
 

@@ -33,6 +33,7 @@ namespace PhotoHub.WEB.Controllers
     public class PhotosController : Controller
     {
         private readonly IPhotosService _photosService;
+        private readonly IUsersService _usersService;
         private readonly IHostingEnvironment _environment;
         private readonly ICurrentUserService _currentUserService;
         #region private readonly mappers
@@ -42,7 +43,7 @@ namespace PhotoHub.WEB.Controllers
         private readonly TagsMapper _tagsMapper;
         #endregion
 
-        public PhotosController(IPhotosService photosService, IHostingEnvironment environment, ICurrentUserService currentUserService)
+        public PhotosController(IPhotosService photosService, ICurrentUserService currentUserService, IUsersService usersService, IHostingEnvironment environment)
         {
             _photosService = photosService;
             _environment = environment;
@@ -51,6 +52,7 @@ namespace PhotoHub.WEB.Controllers
             _filtersMapper = new FiltersMapper();
             _photosMapper = new PhotosMapper();
             _tagsMapper = new TagsMapper();
+            _usersService = usersService;
         }
 
         [HttpGet, Route("photos")]
@@ -186,11 +188,10 @@ namespace PhotoHub.WEB.Controllers
         [Authorize, HttpGet, Route("photos/edit/{id}")]
         public async Task<ActionResult> Edit(int id)
         {
-            UserDTO user = _currentUserService.GetDTO;
-
             PhotoDTO item = await _photosService.GetAsync(id);
+            UserViewModel user = _usersMapper.Map(_usersService.Get(item.Owner.UserName));
 
-            if(item != null && user != null && user.UserName == item.Owner.UserName)
+            if (item != null && user != null && (user.UserName == item.Owner.UserName || User.IsInRole("Admin")))
             {
                 ViewBag.LikesCount = item.Likes.Count();
                 ViewBag.Filters = _filtersMapper.MapRange(_photosService.Filters);
@@ -214,11 +215,10 @@ namespace PhotoHub.WEB.Controllers
         [Authorize, HttpPost, Route("photos/delete/{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            UserViewModel user = _usersMapper.Map(_currentUserService.GetDTO);
-
             PhotoDTO item = await _photosService.GetAsync(id);
+            UserViewModel user = _usersMapper.Map(_usersService.Get(item.Owner.UserName));
 
-            if (item != null && user.UserName == item.Owner.UserName)
+            if (item != null && (user.UserName == item.Owner.UserName || User.IsInRole("Admin")))
             {
                 var filePath = Path.Combine(_environment.WebRootPath, "data/photos") + $@"/{user.UserName}/{item.Path}";
                 if (System.IO.File.Exists(filePath))

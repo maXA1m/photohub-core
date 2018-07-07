@@ -1,7 +1,9 @@
 ﻿#region using System/Microsoft
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 #endregion
 using PhotoHub.DAL.Entities;
 
@@ -11,7 +13,7 @@ namespace PhotoHub.DAL.Data
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        #region entities to seed
+        #region Entities to seed
         List<Filter> _filters = new List<Filter>(14)
         {
             new Filter { Name = "pure" },
@@ -29,7 +31,7 @@ namespace PhotoHub.DAL.Data
             new Filter { Name = "walden" },
             new Filter { Name = "xpro" }
         };
-        List<ApplicationUser> _identity = new List<ApplicationUser>(6)
+        List<ApplicationUser> _identity = new List<ApplicationUser>(7)
         {
             new ApplicationUser()
             {
@@ -60,9 +62,14 @@ namespace PhotoHub.DAL.Data
             {
                 UserName = "Jeka_Karpiv",
                 Email = "Jeka.Karpiv@gmail.com"
+            },
+            new ApplicationUser()
+            {
+                UserName = "photohub_admin",
+                Email = "photohub.admin@gmail.com"
             }
         };
-        List<User> _users = new List<User>(6)
+        List<User> _users = new List<User>(7)
         {
             new User()
             {
@@ -105,6 +112,12 @@ namespace PhotoHub.DAL.Data
                 UserName = "Jeka_Karpiv",
                 Avatar = "user6.jpg",
                 About = "SixTh User"
+            },
+            new User()//admin
+            {
+                RealName = "PhotoHub Admin",
+                UserName = "photohub_admin",
+                About = "Official admin"
             }
         };
         List<Photo> _photos = new List<Photo>(6)
@@ -159,6 +172,7 @@ namespace PhotoHub.DAL.Data
         {
             await _context.AddRangeAsync(_filters);
             await _context.SaveChangesAsync();
+
             await _context.AddRangeAsync(_tags);
             await _context.SaveChangesAsync();
 
@@ -174,6 +188,21 @@ namespace PhotoHub.DAL.Data
 
             _context.AddRange(_photos);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task CreateUserRoles(IServiceProvider serviceProvider)
+        {
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+            var adminRoleCheck = await RoleManager.RoleExistsAsync("Admin");
+
+            if (!adminRoleCheck)
+                await RoleManager.CreateAsync(new IdentityRole("Admin"));
+
+            ApplicationUser user = await UserManager.FindByNameAsync("photohub_admin");
+
+            await UserManager.AddToRoleAsync(user, "Admin");
         }
     }
 }

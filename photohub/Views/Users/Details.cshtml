@@ -42,6 +42,10 @@
                                 }
                                 else
                                 {
+                                    if (User.IsInRole("Admin"))
+                                    {
+                                        <a class="button is-light" href="/admin" title="Admin panel" rel="nofollow"><i class="fas fa-tasks"></i></a>
+                                    }
                                     <a href="/manage/index" class="button is-accent-button" title="Manage Account">Manage Account</a>
                                     <a href="/manage/bookmarks" class="button is-light" title="Show bookmarks"><i class="fas fa-bookmark"></i></a>
                                 }
