@@ -2,6 +2,7 @@
     el: '#posts',
     data: {
         currentAppUserName: document.querySelector('#body').dataset.appUser,
+        appPermission: document.querySelector('#body').dataset.appPermisson,
         currentTagName: document.querySelector('#posts').dataset.curTag,
         preloader: document.querySelector('#preloader'),
         message: {
@@ -20,7 +21,6 @@
         commenting: false,
         modals: {
             likeActive: false,
-            commentActive: false,
             metadataActive: false
         }
     },
@@ -118,11 +118,11 @@
                 });
             }
         },
-        comment() {
+        comment(post) {
             if (!this.currentAppUserName)
                 return -1;
 
-            const text = document.querySelector('#comment').value;
+            const text = document.querySelector(`#comment${post.$id}`).value;
 
             if (text == '' || text.length < 1)
                 return -1;
@@ -140,8 +140,8 @@
             }
 
             if (ok) {
-                this.$http.post(`/api/comments/add?photoId=${this.current.$id}&text=${text}`).then(response => response.json()).then(json => {
-                    this.current.comments.push({
+                this.$http.post(`/api/comments/add?photoId=${post.$id}&text=${text}`).then(response => response.json()).then(json => {
+                    post.comments.push({
                         $id: json,
                         text: text,
                         date: this.getCurrentDate(),
@@ -150,7 +150,7 @@
                         }
                     });
 
-                    document.querySelector('#comment').value = '';
+                    document.querySelector(`#comment${post.$id}`).value = '';
                     this.commenting = false;
                     this.preloader.setAttribute('data-hidden', 'true');
                 }, response => {
@@ -158,6 +158,7 @@
                     this.message.element.setAttribute('data-message-type', 'error');
                     this.message.element.setAttribute('data-hidden', 'false');
                     setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
+
                     this.commenting = false;
                     this.preloader.setAttribute('data-hidden', 'true');
                 });
@@ -167,13 +168,13 @@
                 this.commenting = false;
             }
         },
-        deleteComment(comment) {
-            if (this.currentAppUserName == comment.owner.userName || this.current.owner.userName == this.currentAppUserName) {
+        deleteComment(comment, post) {
+            if (this.currentAppUserName == comment.owner.userName || post.owner.userName == this.currentAppUserName || this.appPermission) {
                 this.preloader.setAttribute('data-hidden', 'false');
                 this.$http.post(`/api/comments/delete/${comment.$id}`).then(response => {
-                    for (let i in this.current.comments) {
-                        if (this.current.comments[i].$id == comment.$id)
-                            this.current.comments.splice(i, 1);
+                    for (let i in post.comments) {
+                        if (post.comments[i].$id == comment.$id)
+                            post.comments.splice(i, 1);
                     }
                     this.preloader.setAttribute('data-hidden', 'true');
                 }, response => {
@@ -264,10 +265,7 @@
             document.body.classList.add('is-clipped');
         },
         showComments(post) {
-            this.modals.commentActive = true;
-            this.current = post;
-            document.documentElement.classList.add('is-clipped');
-            document.body.classList.add('is-clipped');
+            post.commentActive = post.commentActive ? false : true;
         },
         showMetadata(post) {
             this.modals.metadataActive = true;
@@ -278,11 +276,6 @@
 
         closeLikes() {
             this.modals.likeActive = false;
-            document.documentElement.classList.remove('is-clipped');
-            document.body.classList.remove('is-clipped');
-        },
-        closeComments() {
-            this.modals.commentActive = false;
             document.documentElement.classList.remove('is-clipped');
             document.body.classList.remove('is-clipped');
         },

@@ -5501,6 +5501,7 @@ a.navbar-link.is-active {
 
 .card-content {
     padding-top: 5px;
+    padding-bottom: 15px;
 }
 
 .card-loading .is-filters-picker, 

@@ -5,6 +5,11 @@ namespace PhotoHub.WEB.ViewModels
 {
     public class PhotoViewModel
     {
+        public PhotoViewModel()
+        {
+            CommentActive = false;
+        }
+
         [JsonProperty("$id")]
         public int Id { get; set; }
         [JsonProperty("path")]
@@ -37,6 +42,9 @@ namespace PhotoHub.WEB.ViewModels
         public string Aperture { get; set; }
         [JsonProperty("focalLength")]
         public string FocalLength { get; set; }
+
+        [JsonProperty("commentActive")]
+        public bool CommentActive { get; set; }
 
         [JsonProperty("likes")]
         public List<LikeViewModel> Likes { get; set; }

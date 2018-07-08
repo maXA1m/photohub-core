@@ -90,7 +90,7 @@
     @RenderSection("Scripts", required: false)
 
 </head>
-<body id="body" class="@( ViewBag.ThemeClass != null ? ViewBag.ThemeClass : "is-white-background" ) @( ViewBag.AccentClass != null ? ViewBag.AccentClass : "is-info-accent" )" data-app-user="@( User.Identity.IsAuthenticated ? User.Identity.Name : "" )">
+<body id="body" class="@( ViewBag.ThemeClass != null ? ViewBag.ThemeClass : "is-white-background" ) @( ViewBag.AccentClass != null ? ViewBag.AccentClass : "is-info-accent" )" data-app-user="@( User.Identity.IsAuthenticated ? User.Identity.Name : "" )" data-app-permission="@User.IsInRole("Admin")">
 
     <!--  Preloader  -->
     <div id="preloader" data-hidden="true">
@@ -122,7 +122,7 @@
                 {
                     <a class="navbar-item" href="/admin" title="Admin panel" rel="nofollow"><i class="fas fa-tasks"></i></a>
                 }
-                <a class="navbar-item" title="@User.Identity.Name" href="/users/@User.Identity.Name"><i class="fas fa-user-circle"></i></a>
+                <a class="navbar-item" title="@User.Identity.Name" href="/users/@User.Identity.Name">@User.Identity.Name</a>
             </div>
         }
         else

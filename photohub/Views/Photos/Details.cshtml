@@ -91,7 +91,7 @@
                                 {{comment.text}}
                             </div>
 
-                            <div class="media-right" v-if="comment.$id && (currentAppUserName == comment.owner.userName || comment.owner.userName == currentAppUserName)">
+                            <div class="media-right" v-if="comment.$id && (currentAppUserName == comment.owner.userName || comment.owner.userName == currentAppUserName || appPermission)">
                                 <a class="close-button" v-on:click="deleteComment(comment)" title="Delete comment"><i class="fas fa-trash"></i></a>
                             </div>
                         </div>

@@ -2,6 +2,7 @@
     el: '#photosDetails',
     data: {
         currentAppUserName: document.querySelector('#body').dataset.appUser,
+        appPermission: document.querySelector('#body').dataset.appPermisson,
         preloader: document.querySelector('#preloader'),
         id: document.querySelector('#photosDetails').dataset.postId,
         message: {
@@ -149,7 +150,7 @@
             }
         },
         deleteComment(comment) {
-            if (this.currentAppUserName == comment.owner.userName || this.current.owner.userName == this.currentAppUserName) {
+            if (this.currentAppUserName == comment.owner.userName || this.current.owner.userName == this.currentAppUserName || this.appPermission) {
                 this.preloader.setAttribute('data-hidden', 'false');
                 this.$http.post(`/api/comments/delete/${comment.$id}`).then(response => {
                     for (let i in this.post.comments) {

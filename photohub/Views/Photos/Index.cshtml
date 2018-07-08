@@ -60,6 +60,36 @@
                     <button class="button bookmark-button" v-bind:class="post.bookmarked?'is-light':'is-white'" title="Save to bookmarks" v-if="currentAppUserName" v-on:click="post.bookmarked?disbookmark(post):bookmark(post)"><i class="fa-bookmark" v-bind:class="post.bookmarked?'fas':'far'"></i></button>
                 </div>
             </div>
+
+            <footer class="card-footer" v-bind:class="{'is-hidden': !post.commentActive}">
+                <div class="content" style="width: 100%;">
+                    <div class="content" id="content-photo-details" v-if="post && post.comments.length">
+                        <div class="media" v-for="comment in post.comments" :key="comment.$id">
+                            <div class="media-left is-flex is-flex-column">
+                                <a v-bind:href="`/users/${comment.owner.userName}`" class="has-text-black" v-bind:title="comment.owner.userName"><b>{{ comment.owner.userName }}</b></a>
+                                <small class="has-text-grey">{{ comment.date }}</small>
+                            </div>
+
+                            <div class="media-content is-doted-end" v-bind:title="comment.text">
+                                {{comment.text}}
+                            </div>
+
+                            <div class="media-right" v-if="comment.$id && (currentAppUserName == comment.owner.userName || comment.owner.userName == currentAppUserName || appPermission)">
+                                <a class="close-button" v-on:click="deleteComment(comment, post)" title="Delete comment"><i class="fas fa-trash"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="control">
+                            <input class="input" v-bind:id="`comment${post.$id}`" type="text" placeholder="Comment photo" v-on:keyup.enter="comment(post)">
+                            <div class="is-flex is-flex-centered" style="margin: 10px 0 5px 0">
+                                <button class="button is-accent-button" v-bind:class="{'is-loading': commenting}" v-on:click="comment(post)" title="Comment photo">Comment</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </footer>
         </div>
     </article>
 
@@ -92,47 +122,6 @@
                 </div>
             </section>
             <a class="button is-white close-modal-mobile-button" title="Close modal" v-on:click="closeLikes">Close</a>
-        </div>
-    </div>
-
-    <!-- Modal Comments -->
-    <div class="modal" v-bind:class="{'is-active': modals.commentActive}" v-if="current">
-        <div class="modal-background modal-custom-background" v-on:click="closeComments"></div>
-        <div class="modal-card modal-card-custom">
-            <header class="modal-card-head">
-                <p class="modal-card-title is-uppercase">comments</p>
-                <a class="close-button" v-on:click="closeComments" title="Close modal"><i class="fas fa-times"></i></a>
-            </header>
-            <section class="modal-card-body" v-if="current.comments != null && current.comments.length > 0">
-                <div class="content">
-                    <div class="media" v-for="comment in current.comments" :key="comment.$id">
-                        <div class="media-left is-flex is-flex-column">
-                            <a v-bind:href="`/users/${comment.owner.userName}`" class="has-text-black" v-bind:title="comment.owner.userName"><b>{{ comment.owner.userName }}</b></a>
-                            <small class="has-text-grey">{{ comment.date }}</small>
-                        </div>
-
-                        <div class="media-content is-doted-end" v-bind:title="comment.text">
-                            {{comment.text}}
-                        </div>
-
-                        <div class="media-right" v-if="comment.$id && (currentAppUserName == comment.owner.userName || current.owner.userName == currentAppUserName)">
-                            <a class="close-button" v-on:click="deleteComment(comment)" title="Delete comment"><i class="fas fa-trash"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section class="modal-card-body" style="overflow-x: hidden; overflow-y: auto;" v-if="current.comments == null || current.comments.length <= 0">
-                <div class="empty-container-modal">
-                    <p>Comment it first</p>
-                </div>
-            </section>
-            <footer class="modal-card-foot is-flex is-flex-centered is-flex-wrap" v-if="currentAppUserName">
-                <div class="control" v-if="currentAppUserName" style="width: 100%;">
-                    <input class="input" id="comment" type="text" placeholder="Comment photo" v-on:keyup.enter="comment">
-                </div>
-                <button class="button is-accent-button" v-bind:class="{'is-loading': commenting}" style="margin-top: 5px;" title="Comment photo" v-if="currentAppUserName" v-on:click="comment">Comment</button>
-            </footer>
-            <a class="button is-white close-modal-mobile-button" title="Close modal" v-on:click="closeComments">Close</a>
         </div>
     </div>
 

@@ -16,6 +16,7 @@ C:\Users\maxmi\Desktop\photohub-core\photohub
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Account\ResetPasswordConfirmation.cshtml
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Account\SignedOut.cshtml
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Admin\Index.cshtml
+--file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Admin\Reports.cshtml
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Admin\Stats.cshtml
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Admin\Users.cshtml
 --file=C:\Users\maxmi\Desktop\photohub-core\photohub\Views\Home\About.cshtml
