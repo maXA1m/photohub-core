@@ -2,7 +2,7 @@
     el: '#posts',
     data: {
         currentAppUserName: document.querySelector('#body').dataset.appUser,
-        appPermission: document.querySelector('#body').dataset.appPermisson,
+        appPermission: document.querySelector('#body').dataset.appPermission,
         currentTagName: document.querySelector('#posts').dataset.curTag,
         preloader: document.querySelector('#preloader'),
         message: {
@@ -195,6 +195,16 @@
             const successful = document.execCommand('copy');
 
             document.body.removeChild(copyTextArea);
+
+            const icon = document.querySelector(`i[data-copy-id="${id}"]`);
+
+            icon.classList.remove('far');
+            icon.classList.remove('fa-clipboard');
+            icon.classList.remove('fas');
+            icon.classList.remove('fa-clipboard-check');
+
+            icon.classList.add('fas');
+            icon.classList.add('fa-clipboard-check');
         },
         autoFetchPhotos() {
             const scrollTop = document.documentElement.scrollTop;

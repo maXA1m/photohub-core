@@ -17,7 +17,7 @@
     <link rel="icon" type="image/png" href="/favicon-256x256.png" sizes="256x256">
     <link rel="icon" type="image/png" href="/favicon-512x512.png" sizes="512x512">
 
-    <link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css" />
 
@@ -31,6 +31,8 @@
     <script defer src="~/js/admin.js"></script>
 
     @RenderSection("Scripts", required: false)
+
+    @*<script defer src="~/js/registerServiceWorker.js"></script>*@
 
 </head>
 <body id="body" class="has-background-dark">
@@ -55,7 +57,7 @@
     <nav id="mobileNavbar" class="has-background-dark">
         <a class="button is-dark is-medium" href="/photos" title="Home"><i class="fas fa-home"></i></a>
         <a class="button is-dark is-medium" href="/admin/users" title="Users"><i class="fas fa-address-book"></i></a>
-        <a class="button is-white is-medium" href="/admin/reports" title="Reported photos"><i class="fas fa-angry"></i></a>
+        <a class="button is-dark is-medium" href="/admin/reports" title="Reported photos"><i class="fas fa-angry"></i></a>
         <a class="button is-dark is-medium" href="/admin/stats" title="Statistics"><i class="fas fa-chart-pie"></i></a>
         <a class="button is-dark is-medium" href="/admin" title="Dashboard"><i class="fas fa-tasks"></i></a>
     </nav>

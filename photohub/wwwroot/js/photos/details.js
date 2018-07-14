@@ -2,7 +2,7 @@
     el: '#photosDetails',
     data: {
         currentAppUserName: document.querySelector('#body').dataset.appUser,
-        appPermission: document.querySelector('#body').dataset.appPermisson,
+        appPermission: document.querySelector('#body').dataset.appPermission,
         preloader: document.querySelector('#preloader'),
         id: document.querySelector('#photosDetails').dataset.postId,
         message: {
@@ -216,6 +216,16 @@
             const successful = document.execCommand('copy');
 
             document.body.removeChild(copyTextArea);
+
+            const icon = document.querySelector(`i[data-copy-id="${this.post.$id}"]`);
+
+            icon.classList.remove('far');
+            icon.classList.remove('fa-clipboard');
+            icon.classList.remove('fas');
+            icon.classList.remove('fa-clipboard-check');
+
+            icon.classList.add('fas');
+            icon.classList.add('fa-clipboard-check');
         },
         sharePhoto() {
             if (this.canShare) {
