@@ -98,15 +98,15 @@ namespace PhotoHub.DAL.Repositories
 
         public void Delete(int id)
         {
-            Photo photo = _context.Photos.Find(id);
-            if (photo != null)
-                _context.Photos.Remove(photo);
+            Photo item = _context.Photos.Find(id);
+            if (item != null)
+                _context.Photos.Remove(item);
         }
         public async Task DeleteAsync(int id)
         {
-            Photo photo = await _context.Photos.FindAsync(id);
-            if (photo != null)
-                _context.Photos.Remove(photo);
+            Photo item = await _context.Photos.FindAsync(id);
+            if (item != null)
+                _context.Photos.Remove(item);
         }
     }
 }

@@ -345,6 +345,28 @@ namespace PhotoHub.DAL.Migrations
                     b.ToTable("Photos");
                 });
 
+            modelBuilder.Entity("PhotoHub.DAL.Entities.PhotoReport", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<int>("PhotoId");
+
+                    b.Property<string>("Text");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PhotoId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PhotoReports");
+                });
+
             modelBuilder.Entity("PhotoHub.DAL.Entities.Tag", b =>
                 {
                     b.Property<int>("Id")
@@ -399,6 +421,28 @@ namespace PhotoHub.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AppUsers");
+                });
+
+            modelBuilder.Entity("PhotoHub.DAL.Entities.UserReport", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<int>("ReportedUserId");
+
+                    b.Property<string>("Text");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReportedUserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserReports");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -537,6 +581,19 @@ namespace PhotoHub.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("PhotoHub.DAL.Entities.PhotoReport", b =>
+                {
+                    b.HasOne("PhotoHub.DAL.Entities.Photo", "Photo")
+                        .WithMany()
+                        .HasForeignKey("PhotoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("PhotoHub.DAL.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("PhotoHub.DAL.Entities.Taging", b =>
                 {
                     b.HasOne("PhotoHub.DAL.Entities.Photo", "Photo")
@@ -547,6 +604,19 @@ namespace PhotoHub.DAL.Migrations
                     b.HasOne("PhotoHub.DAL.Entities.Tag", "Tag")
                         .WithMany()
                         .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("PhotoHub.DAL.Entities.UserReport", b =>
+                {
+                    b.HasOne("PhotoHub.DAL.Entities.User", "ReportedUser")
+                        .WithMany()
+                        .HasForeignKey("ReportedUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("PhotoHub.DAL.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

@@ -33,6 +33,9 @@ namespace PhotoHub.BLL.Interfaces
         void DismissBookmark(int id);
         Task DismissBookmarkAsync(int id);
 
+        void Report(int id, string text);
+        Task ReportAsync(int id, string text);
+
         int Create(string filter, string description, string path, string manufacturer, string model, int? iso, double? exposure, double? aperture, double? focalLength, string tags);
         ValueTask<int> CreateAsync(string filter, string description, string path, string manufacturer, string model, int? iso, double? exposure, double? aperture, double? focalLength, string tags);
 

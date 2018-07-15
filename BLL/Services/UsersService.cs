@@ -214,6 +214,41 @@ namespace PhotoHub.BLL.Services
             }
         }
 
+        public void Report(string userName, string text)
+        {
+            User currentUser = _currentUserService.Get;
+            User reportedUser = _unitOfWork.Users.Find(u => u.UserName == userName).FirstOrDefault();
+
+            if (currentUser != null && reportedUser != null && currentUser.UserName != userName && _unitOfWork.UserReports.Find(b => b.UserId == currentUser.Id && b.ReportedUserId == reportedUser.Id).FirstOrDefault() == null)
+            {
+                _unitOfWork.UserReports.Create(new UserReport()
+                {
+                    UserId = currentUser.Id,
+                    ReportedUserId = reportedUser.Id,
+                    Text = text
+                });
+
+                _unitOfWork.Save();
+            }
+        }
+        public async Task ReportAsync(string userName, string text)
+        {
+            User currentUser = _currentUserService.Get;
+            User reportedUser = _unitOfWork.Users.Find(u => u.UserName == userName).FirstOrDefault();
+
+            if (currentUser != null && reportedUser != null && currentUser.UserName != userName && _unitOfWork.UserReports.Find(b => b.UserId == currentUser.Id && b.ReportedUserId == reportedUser.Id).FirstOrDefault() == null)
+            {
+                _unitOfWork.UserReports.Create(new UserReport()
+                {
+                    UserId = currentUser.Id,
+                    ReportedUserId = reportedUser.Id,
+                    Text = text
+                });
+
+                await _unitOfWork.SaveAsync();
+            }
+        }
+
         public ApplicationUser Create(string userName, string email, string password)
         {
             PasswordHasher<ApplicationUser> passwordHasher = new PasswordHasher<ApplicationUser>();

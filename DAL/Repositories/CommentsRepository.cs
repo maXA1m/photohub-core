@@ -62,15 +62,15 @@ namespace PhotoHub.DAL.Repositories
 
         public void Delete(int id)
         {
-            Comment comment = _context.Comments.Find(id);
-            if (comment != null)
-                _context.Comments.Remove(comment);
+            Comment item = _context.Comments.Find(id);
+            if (item != null)
+                _context.Comments.Remove(item);
         }
         public async Task DeleteAsync(int id)
         {
-            Comment comment = await _context.Comments.FindAsync(id);
-            if (comment != null)
-                _context.Comments.Remove(comment);
+            Comment item = await _context.Comments.FindAsync(id);
+            if (item != null)
+                _context.Comments.Remove(item);
         }
     }
 }

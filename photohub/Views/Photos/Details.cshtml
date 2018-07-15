@@ -27,6 +27,7 @@
                         </form>
                         <a class="button is-white has-text-grey-darker" href="/photos/edit/@Model.Id" title="Edit photo"><i class="far fa-edit"></i></a>
                     }
+                    <a class="button is-white" title="Report photo" v-on:click="reportPhoto(post.$id)"><i class="fas fa-exclamation-circle" v-bind:data-report-id="post.$id"></i></a>
                     <a class="button is-white" title="Share" v-on:click="sharePhoto(post)" v-if="canShare"><i class="fas fa-share-alt"></i></a>
                     <a class="button is-white" title="Copy link to clipboard" v-on:click="copyToClipboard"><i class="far fa-clipboard" v-bind:data-copy-id="post.$id"></i></a>
                 </div>

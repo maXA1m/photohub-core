@@ -13,18 +13,18 @@ using PhotoHub.DAL.Entities;
 
 namespace PhotoHub.DAL.Repositories
 {
-    public class BookmarksRepository : IRepository<Bookmark>
+    public class PhotoReportsRepository : IRepository<PhotoReport>
     {
         private readonly ApplicationDbContext _context;
 
-        public BookmarksRepository(ApplicationDbContext context)
+        public PhotoReportsRepository(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public IEnumerable<Bookmark> GetAll()
+        public IEnumerable<PhotoReport> GetAll()
         {
-            return _context.Bookmarks
+            return _context.PhotoReports
                     .Include(b => b.User)
                     .Include(b => b.Photo)
                         .ThenInclude(p => p.Comments)
@@ -36,9 +36,9 @@ namespace PhotoHub.DAL.Repositories
                         .ThenInclude(p => p.Filter);
         }
 
-        public IEnumerable<Bookmark> GetAll(int page, int pageSize)
+        public IEnumerable<PhotoReport> GetAll(int page, int pageSize)
         {
-            return _context.Bookmarks
+            return _context.PhotoReports
                     .Include(b => b.User)
                     .Include(b => b.Photo)
                         .ThenInclude(p => p.Comments)
@@ -51,9 +51,9 @@ namespace PhotoHub.DAL.Repositories
                     .Skip(page * pageSize).Take(pageSize);
         }
 
-        public Bookmark Get(int id)
+        public PhotoReport Get(int id)
         {
-            return _context.Bookmarks
+            return _context.PhotoReports
                     .Include(b => b.User)
                     .Include(b => b.Photo)
                         .ThenInclude(p => p.Comments)
@@ -65,10 +65,10 @@ namespace PhotoHub.DAL.Repositories
                         .ThenInclude(p => p.Filter)
                     .Where(b => b.Id == id).FirstOrDefault();
         }
-        public async Task<Bookmark> GetAsync(int id)
+        public async Task<PhotoReport> GetAsync(int id)
         {
-            return await _context.Bookmarks
-                            .Include(b => b.User)
+            return await _context.PhotoReports
+                                    .Include(b => b.User)
                             .Include(b => b.Photo)
                                 .ThenInclude(p => p.Comments)
                             .Include(b => b.Photo)
@@ -80,9 +80,9 @@ namespace PhotoHub.DAL.Repositories
                             .Where(b => b.Id == id).FirstOrDefaultAsync();
         }
 
-        public IEnumerable<Bookmark> Find(Func<Bookmark, bool> predicate)
+        public IEnumerable<PhotoReport> Find(Func<PhotoReport, bool> predicate)
         {
-            return _context.Bookmarks
+            return _context.PhotoReports
                     .Include(b => b.User)
                     .Include(b => b.Photo)
                         .ThenInclude(p => p.Comments)
@@ -95,31 +95,31 @@ namespace PhotoHub.DAL.Repositories
                     .Where(predicate);
         }
 
-        public void Create(Bookmark item)
+        public void Create(PhotoReport item)
         {
-            _context.Bookmarks.Add(item);
+            _context.PhotoReports.Add(item);
         }
-        public async Task CreateAsync(Bookmark item)
+        public async Task CreateAsync(PhotoReport item)
         {
-            await _context.Bookmarks.AddAsync(item);
+            await _context.PhotoReports.AddAsync(item);
         }
 
-        public void Update(Bookmark item)
+        public void Update(PhotoReport item)
         {
             _context.Entry(item).State = EntityState.Modified;
         }
 
         public void Delete(int id)
         {
-            Bookmark item = _context.Bookmarks.Find(id);
+            PhotoReport item = _context.PhotoReports.Find(id);
             if (item != null)
-                _context.Bookmarks.Remove(item);
+                _context.PhotoReports.Remove(item);
         }
         public async Task DeleteAsync(int id)
         {
-            Bookmark item = await _context.Bookmarks.FindAsync(id);
+            PhotoReport item = await _context.PhotoReports.FindAsync(id);
             if (item != null)
-                _context.Bookmarks.Remove(item);
+                _context.PhotoReports.Remove(item);
         }
     }
 }

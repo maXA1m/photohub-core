@@ -74,15 +74,15 @@ namespace PhotoHub.DAL.Repositories
 
         public void Delete(int id)
         {
-            Following following = _context.Followings.Find(id);
-            if (following != null)
-                _context.Followings.Remove(following);
+            Following item = _context.Followings.Find(id);
+            if (item != null)
+                _context.Followings.Remove(item);
         }
         public async Task DeleteAsync(int id)
         {
-            Following following = await _context.Followings.FindAsync(id);
-            if (following != null)
-                _context.Followings.Remove(following);
+            Following item = await _context.Followings.FindAsync(id);
+            if (item != null)
+                _context.Followings.Remove(item);
         }
     }
 }

@@ -19,6 +19,8 @@ namespace PhotoHub.DAL.Data
         public DbSet<Confirmed> Confirmed { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Taging> Tagings { get; set; }
+        public DbSet<PhotoReport> PhotoReports { get; set; }
+        public DbSet<UserReport> UserReports { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

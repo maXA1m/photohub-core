@@ -30,6 +30,9 @@ namespace PhotoHub.BLL.Interfaces
         void DismissBlock(string block);
         Task DismissBlockAsync(string block);
 
+        void Report(string userName, string text);
+        Task ReportAsync(string userName, string text);
+
         ApplicationUser Create(string userName, string email, string password);
         Task<ApplicationUser> CreateAsync(string userName, string email, string password);
 

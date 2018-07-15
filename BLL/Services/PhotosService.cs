@@ -239,6 +239,41 @@ namespace PhotoHub.BLL.Services
             }
         }
 
+        public void Report(int id, string text)
+        {
+            User currentUser = _currentUserService.Get;
+            Photo reportedPhoto = _unitOfWork.Photos.Find(p => p.Id == id).FirstOrDefault();
+
+            if (currentUser != null && reportedPhoto != null && _unitOfWork.PhotoReports.Find(pr => pr.UserId == currentUser.Id && pr.PhotoId == id).FirstOrDefault() == null)
+            {
+                _unitOfWork.PhotoReports.Create(new PhotoReport()
+                {
+                    UserId = currentUser.Id,
+                    PhotoId = reportedPhoto.Id,
+                    Text = text
+                });
+
+                _unitOfWork.Save();
+            }
+        }
+        public async Task ReportAsync(int id, string text)
+        {
+            User currentUser = _currentUserService.Get;
+            Photo reportedPhoto = _unitOfWork.Photos.Find(p => p.Id == id).FirstOrDefault();
+
+            if (currentUser != null && reportedPhoto != null && _unitOfWork.PhotoReports.Find(pr => pr.UserId == currentUser.Id && pr.PhotoId == id).FirstOrDefault() == null)
+            {
+                _unitOfWork.PhotoReports.Create(new PhotoReport()
+                {
+                    UserId = currentUser.Id,
+                    PhotoId = reportedPhoto.Id,
+                    Text = text
+                });
+
+                await _unitOfWork.SaveAsync();
+            }
+        }
+
         public int Create(string filter, string description, string path, string manufacturer, string model, int? iso, double? exposure, double? aperture, double? focalLength, string tags)
         {
             Photo photo = new Photo()

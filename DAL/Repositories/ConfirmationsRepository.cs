@@ -73,15 +73,15 @@ namespace PhotoHub.DAL.Repositories
 
         public void Delete(int id)
         {
-            Confirmed confirmation = _context.Confirmed.Find(id);
-            if (confirmation != null)
-                _context.Confirmed.Remove(confirmation);
+            Confirmed item = _context.Confirmed.Find(id);
+            if (item != null)
+                _context.Confirmed.Remove(item);
         }
         public async Task DeleteAsync(int id)
         {
-            Confirmed confirmation = await _context.Confirmed.FindAsync(id);
-            if (confirmation != null)
-                _context.Confirmed.Remove(confirmation);
+            Confirmed item = await _context.Confirmed.FindAsync(id);
+            if (item != null)
+                _context.Confirmed.Remove(item);
         }
     }
 }

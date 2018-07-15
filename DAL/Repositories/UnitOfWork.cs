@@ -14,49 +14,40 @@ namespace PhotoHub.DAL.Repositories
     {
         private readonly ApplicationDbContext _context;
 
-        private readonly IRepository<ApplicationUser> _usersIdentityRepository;
-        private readonly IRepository<User> _usersRepository;
-        private readonly IRepository<Photo> _photosRepository;
-        private readonly IRepository<Comment> _commentsRepository;
-        private readonly IRepository<Like> _likesRepository;
-        private readonly IRepository<Following> _followingsRepository;
-        private readonly IRepository<BlackList> _blockingRepository;
-        private readonly IRepository<Confirmed> _confirmationsRepository;
-        private readonly IRepository<Bookmark> _bookmarksRepository;
-        private readonly IRepository<Filter> _filtersRepository;
-        private readonly IRepository<Taging> _tagingsRepository;
-        private readonly IRepository<Tag> _tagsRepository;
+        public IRepository<ApplicationUser> IdentityUsers { get; protected set; }
+        public IRepository<User> Users { get; protected set; }
+        public IRepository<Photo> Photos { get; protected set; }
+        public IRepository<Comment> Comments { get; protected set; }
+        public IRepository<Like> Likes { get; protected set; }
+        public IRepository<Confirmed> Confirmations { get; protected set; }
+        public IRepository<Following> Followings { get; protected set; }
+        public IRepository<BlackList> Blockings { get; protected set; }
+        public IRepository<Bookmark> Bookmarks { get; protected set; }
+        public IRepository<Filter> Filters { get; protected set; }
+        public IRepository<Taging> Tagings { get; protected set; }
+        public IRepository<Tag> Tags { get; protected set; }
+        public IRepository<PhotoReport> PhotoReports { get; protected set; }
+        public IRepository<UserReport> UserReports { get; protected set; }
 
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
 
-            _usersIdentityRepository = new UsersIdentityRepository(context);
-            _usersRepository = new UsersRepository(context);
-            _photosRepository = new PhotosRepository(context);
-            _commentsRepository = new CommentsRepository(context);
-            _likesRepository = new LikesRepository(context);
-            _followingsRepository = new FollowingsRepository(context);
-            _blockingRepository = new BlockingsRepository(context);
-            _confirmationsRepository = new ConfirmationsRepository(context);
-            _bookmarksRepository = new BookmarksRepository(context);
-            _filtersRepository = new FiltersRepository(context);
-            _tagingsRepository = new TagingsRepository(context);
-            _tagsRepository = new TagsRepository(context);
+            IdentityUsers = new UsersIdentityRepository(context);
+            Users = new UsersRepository(context);
+            Photos = new PhotosRepository(context);
+            Comments = new CommentsRepository(context);
+            Likes = new LikesRepository(context);
+            Followings = new FollowingsRepository(context);
+            Blockings = new BlockingsRepository(context);
+            Confirmations = new ConfirmationsRepository(context);
+            Bookmarks = new BookmarksRepository(context);
+            Filters = new FiltersRepository(context);
+            Tagings = new TagingsRepository(context);
+            Tags = new TagsRepository(context);
+            PhotoReports = new PhotoReportsRepository(context);
+            UserReports = new UserReportsRepository(context);
         }
-
-        public IRepository<ApplicationUser> IdentityUsers => _usersIdentityRepository;
-        public IRepository<User> Users => _usersRepository;
-        public IRepository<Photo> Photos => _photosRepository;
-        public IRepository<Comment> Comments => _commentsRepository;
-        public IRepository<Like> Likes => _likesRepository;
-        public IRepository<Confirmed> Confirmations => _confirmationsRepository;
-        public IRepository<Following> Followings => _followingsRepository;
-        public IRepository<BlackList> Blockings => _blockingRepository;
-        public IRepository<Bookmark> Bookmarks => _bookmarksRepository;
-        public IRepository<Filter> Filters => _filtersRepository;
-        public IRepository<Taging> Tagings => _tagingsRepository;
-        public IRepository<Tag> Tags => _tagsRepository;
 
         public void Save() => _context.SaveChanges();
         public async Task SaveAsync() => await _context.SaveChangesAsync();

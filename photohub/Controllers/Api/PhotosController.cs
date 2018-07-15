@@ -76,6 +76,12 @@ namespace PhotoHub.WEB.Controllers.Api
             await _photosService.BookmarkAsync(id);
         }
 
+        [Authorize, HttpPost, Route("report/{id}")]
+        public async Task Report(int id, string text)
+        {
+            await _photosService.ReportAsync(id, text);
+        }
+
         [Authorize, HttpPost, Route("dismiss/bookmark/{id}")]
         public async Task DismissBookmark(int id)
         {

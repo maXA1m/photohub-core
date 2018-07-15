@@ -110,12 +110,8 @@ namespace PhotoHub.DAL.Migrations
                         name: "FK_BlackLists_AppUsers_BlockedUserId",
                         column: x => x.BlockedUserId,
                         principalTable: "AppUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_BlackLists_AppUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AppUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -131,15 +127,11 @@ namespace PhotoHub.DAL.Migrations
                 {
                     table.PrimaryKey("PK_Confirmed", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Confirmed_AppUsers_AdminId",
-                        column: x => x.AdminId,
-                        principalTable: "AppUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_Confirmed_AppUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AppUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -155,15 +147,33 @@ namespace PhotoHub.DAL.Migrations
                 {
                     table.PrimaryKey("PK_Followings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Followings_AppUsers_FollowedUserId",
-                        column: x => x.FollowedUserId,
-                        principalTable: "AppUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_Followings_AppUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AppUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserReports",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Date = table.Column<DateTime>(nullable: false),
+                    ReportedUserId = table.Column<int>(nullable: false),
+                    Text = table.Column<string>(nullable: true),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserReports", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserReports_AppUsers_ReportedUserId",
+                        column: x => x.ReportedUserId,
+                        principalTable: "AppUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -325,12 +335,8 @@ namespace PhotoHub.DAL.Migrations
                         name: "FK_Bookmarks_Photos_PhotoId",
                         column: x => x.PhotoId,
                         principalTable: "Photos",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Bookmarks_AppUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AppUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -348,15 +354,11 @@ namespace PhotoHub.DAL.Migrations
                 {
                     table.PrimaryKey("PK_Comments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comments_AppUsers_OwnerId",
-                        column: x => x.OwnerId,
-                        principalTable: "AppUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_Comments_Photos_PhotoId",
                         column: x => x.PhotoId,
                         principalTable: "Photos",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -373,15 +375,33 @@ namespace PhotoHub.DAL.Migrations
                 {
                     table.PrimaryKey("PK_Likes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Likes_AppUsers_OwnerId",
-                        column: x => x.OwnerId,
-                        principalTable: "AppUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_Likes_Photos_PhotoId",
                         column: x => x.PhotoId,
                         principalTable: "Photos",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PhotoReports",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Date = table.Column<DateTime>(nullable: false),
+                    PhotoId = table.Column<int>(nullable: false),
+                    Text = table.Column<string>(nullable: true),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PhotoReports", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PhotoReports_Photos_PhotoId",
+                        column: x => x.PhotoId,
+                        principalTable: "Photos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -400,12 +420,14 @@ namespace PhotoHub.DAL.Migrations
                         name: "FK_Tagings_Photos_PhotoId",
                         column: x => x.PhotoId,
                         principalTable: "Photos",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Tagings_Tags_TagId",
                         column: x => x.TagId,
                         principalTable: "Tags",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -508,6 +530,16 @@ namespace PhotoHub.DAL.Migrations
                 column: "PhotoId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PhotoReports_PhotoId",
+                table: "PhotoReports",
+                column: "PhotoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PhotoReports_UserId",
+                table: "PhotoReports",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Photos_FilterId",
                 table: "Photos",
                 column: "FilterId");
@@ -526,6 +558,16 @@ namespace PhotoHub.DAL.Migrations
                 name: "IX_Tagings_TagId",
                 table: "Tagings",
                 column: "TagId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserReports_ReportedUserId",
+                table: "UserReports",
+                column: "ReportedUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserReports_UserId",
+                table: "UserReports",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -564,7 +606,13 @@ namespace PhotoHub.DAL.Migrations
                 name: "Likes");
 
             migrationBuilder.DropTable(
+                name: "PhotoReports");
+
+            migrationBuilder.DropTable(
                 name: "Tagings");
+
+            migrationBuilder.DropTable(
+                name: "UserReports");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

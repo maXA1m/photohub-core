@@ -205,6 +205,22 @@
             icon.classList.add('fas');
             icon.classList.add('fa-clipboard-check');
         },
+        reportPhoto(id) {
+            let text = '';
+
+            const icon = document.querySelector(`i[data-report-id="${id}"]`);
+
+            this.$http.post(`/api/photos/report/${id}?text=${text}`).then(response => {
+                icon.classList.remove('fas');
+                icon.classList.remove('fa-exclamation-circle');
+                icon.classList.remove('fa-check-circle');
+
+                icon.classList.add('fas');
+                icon.classList.add('fa-check-circle');
+            }, response => {
+
+            });
+        },
         autoFetchPhotos() {
             const scrollTop = document.documentElement.scrollTop;
             const windowHeight = window.innerHeight;

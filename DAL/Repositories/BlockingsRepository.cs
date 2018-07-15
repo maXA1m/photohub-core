@@ -76,15 +76,15 @@ namespace PhotoHub.DAL.Repositories
 
         public void Delete(int id)
         {
-            BlackList blocking = _context.BlackLists.Find(id);
-            if (blocking != null)
-                _context.BlackLists.Remove(blocking);
+            BlackList item = _context.BlackLists.Find(id);
+            if (item != null)
+                _context.BlackLists.Remove(item);
         }
         public async Task DeleteAsync(int id)
         {
-            BlackList blocking = await _context.BlackLists.FindAsync(id);
-            if (blocking != null)
-                _context.BlackLists.Remove(blocking);
+            BlackList item = await _context.BlackLists.FindAsync(id);
+            if (item != null)
+                _context.BlackLists.Remove(item);
         }
     }
 }

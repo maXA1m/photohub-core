@@ -22,6 +22,8 @@ namespace PhotoHub.DAL.Interfaces
         IRepository<Filter> Filters { get; }
         IRepository<Tag> Tags { get; }
         IRepository<Taging> Tagings { get; }
+        IRepository<PhotoReport> PhotoReports { get; }
+        IRepository<UserReport> UserReports { get; }
 
         void Save();
         Task SaveAsync();

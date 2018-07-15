@@ -62,15 +62,15 @@ namespace PhotoHub.DAL.Repositories
 
         public void Delete(int id)
         {
-            Like like = _context.Likes.Find(id);
-            if (like != null)
-                _context.Likes.Remove(like);
+            Like item = _context.Likes.Find(id);
+            if (item != null)
+                _context.Likes.Remove(item);
         }
         public async Task DeleteAsync(int id)
         {
-            Like like = await _context.Likes.FindAsync(id);
-            if (like != null)
-                _context.Likes.Remove(like);
+            Like item = await _context.Likes.FindAsync(id);
+            if (item != null)
+                _context.Likes.Remove(item);
         }
     }
 }

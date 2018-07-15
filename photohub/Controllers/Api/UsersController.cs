@@ -80,6 +80,12 @@ namespace PhotoHub.WEB.Controllers.Api
             await _usersService.DismissBlockAsync(block);
         }
 
+        [Authorize, HttpPost, Route("report/{report}")]
+        public async Task Report(string report, string text)
+        {
+            await _usersService.ReportAsync(report, text);
+        }
+
         protected override void Dispose(bool disposing)
         {
             _usersService.Dispose();
