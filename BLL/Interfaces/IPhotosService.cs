@@ -21,6 +21,8 @@ namespace PhotoHub.BLL.Interfaces
 
         IEnumerable<PhotoDTO> GetForUser(int page, string userName, int pageSize);
 
+        IEnumerable<PhotoDTO> GetForTag(string tagName, int pageSize);
+
         IEnumerable<PhotoDTO> GetBookmarks(int page, int pageSize);
 
         IEnumerable<PhotoDTO> GetTags(int tagId, int page, int pageSize);

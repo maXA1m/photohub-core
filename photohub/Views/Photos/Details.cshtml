@@ -11,177 +11,194 @@
 }
 
 <div class="content" id="photosDetails" data-post-id="@Model.Id">
-    <div class="is-flex is-flex-centered">
-        <article class="card is-responsive">
-            <header class="card-header">
-                <p class="card-header-title">
-                    <a class="has-text-grey-darker has-text-left has-text-justified" href="/users/@Model.Owner.UserName" title="@Model.Owner.UserName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" src="@Model.Owner.Avatar" alt="@Model.Owner.UserName" /></a>
-                    <a class="has-text-grey-darker has-text-left has-text-justified" href="/users/@Model.Owner.UserName" title="@Model.Owner.UserName">@Model.Owner.UserName</a>
-                </p>
+    <div class="content">
+        <div class="is-flex is-flex-centered">
+            <article class="card is-responsive">
+                <header class="card-header">
+                    <p class="card-header-title">
+                        <a class="has-text-grey-darker has-text-left has-text-justified" href="/users/@Model.Owner.UserName" title="@Model.Owner.UserName" style="margin-right: 3px;"><img class="image is-32x32 is-circle" src="@Model.Owner.Avatar" alt="@Model.Owner.UserName" /></a>
+                        <a class="has-text-grey-darker has-text-left has-text-justified" href="/users/@Model.Owner.UserName" title="@Model.Owner.UserName">@Model.Owner.UserName</a>
+                    </p>
         
-                <div class="card-header-icon">
-                    @if (Model.Owner.UserName == User.Identity.Name)
+                    <div class="card-header-icon">
+                        @if (Model.Owner.UserName == User.Identity.Name)
+                        {
+                            <form action="/photos/delete/@Model.Id" method="post">
+                                <button type="submit" class="button is-danger" title="Delete"><i class="far fa-trash-alt"></i></button>
+                            </form>
+                            <a class="button is-white has-text-grey-darker" href="/photos/edit/@Model.Id" title="Edit photo"><i class="far fa-edit"></i></a>
+                        }
+                        <a class="button is-white" title="Report photo" v-on:click="reportPhoto(post.$id)" v-if="post != null"><i class="fas fa-exclamation-circle" v-bind:data-report-id="post.$id"></i></a>
+                        <a class="button is-white" title="Share" v-on:click="sharePhoto(post)" v-if="post != null && canShare"><i class="fas fa-share-alt"></i></a>
+                        <a class="button is-white" title="Copy link to clipboard" v-on:click="copyToClipboard" v-if="post != null"><i class="far fa-clipboard" v-bind:data-copy-id="post.$id"></i></a>
+                    </div>
+                </header>
+
+                <div class="card-image is-unselectable" v-on:dblclick="like">
+                    <figure class="is-card-image filter @Model.Filter" style="margin: 0;">
+                        <img src="/data/photos/@Model.Owner.UserName/@Model.Path" alt="@Model.Owner.UserName's photo">
+                    </figure>
+                </div>
+
+                <div class="card-tags-panel">
+                    @foreach(var tag in Model.Tags)
                     {
-                        <form action="/photos/delete/@Model.Id" method="post">
-                            <button type="submit" class="button is-danger" title="Delete"><i class="far fa-trash-alt"></i></button>
-                        </form>
-                        <a class="button is-white has-text-grey-darker" href="/photos/edit/@Model.Id" title="Edit photo"><i class="far fa-edit"></i></a>
+                        <a class="button is-small is-light" href="/tag/@tag.Name" title="@tag.Name">@tag.Name</a>
                     }
-                    <a class="button is-white" title="Report photo" v-on:click="reportPhoto(post.$id)"><i class="fas fa-exclamation-circle" v-bind:data-report-id="post.$id"></i></a>
-                    <a class="button is-white" title="Share" v-on:click="sharePhoto(post)" v-if="canShare"><i class="fas fa-share-alt"></i></a>
-                    <a class="button is-white" title="Copy link to clipboard" v-on:click="copyToClipboard"><i class="far fa-clipboard" v-bind:data-copy-id="post.$id"></i></a>
-                </div>
-            </header>
-
-            <div class="card-image is-unselectable" v-on:dblclick="like">
-                <figure class="is-card-image filter @Model.Filter" style="margin: 0;">
-                    <img src="/data/photos/@Model.Owner.UserName/@Model.Path" alt="@Model.Owner.UserName's photo">
-                </figure>
-            </div>
-
-            <div class="card-tags-panel">
-                @foreach(var tag in Model.Tags)
-                {
-                    <a class="button is-small is-light" href="/tag/@tag.Name" title="@tag.Name">@tag.Name</a>
-                }
-            </div>
-
-            <div class="card-content">
-                <div class="media">
-                    <div class="media-left">
-                        @Model.Description
-                    </div>
-
-                    <div class="media-content">
-
-                    </div>
-
-                    <div class="media-right">
-                        <time datetime="@Model.Date">@Model.Date</time>
-                    </div>
                 </div>
 
-                <div class="content card-button-panel" v-cloak>
-                    <div>
-                        @if (User.Identity.IsAuthenticated)
-                {
-                    <button class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-on:click="post.liked?dislike():like()" v-bind:title="post.liked?'Dislike':'Like'" v-if="post && currentAppUserName"><i class="fa-heart" v-bind:class="post.liked?'fas':'far'"></i></button>
-        }
-                        <button v-if="post && post.likes.length > 0" class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-on:click="showLikes" title="Likes list">{{ post.likes.length }}</button>
-                    </div>
-                    <div>
-                        <button class="button is-white" title="Show metadata" v-on:click="showMetadata(post)"><i class="fab fa-medapps"></i></button>
-                        @if (User.Identity.IsAuthenticated)
-                {
-                    <button class="button bookmark-button" v-if="post" v-bind:class="post.bookmarked?'is-light':'is-white'" title="Save to bookmarks" v-on:click="post.bookmarked?disbookmark(post):bookmark(post)"><i class="fa-bookmark" v-bind:class="post.bookmarked?'fas':'far'"></i></button>
-        }
-                    </div>
-                </div>
-            </div>
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-left">
+                            @Model.Description
+                        </div>
 
-            <footer class="card-footer" v-cloak>
-                <div class="content" style="width: 100%;">
-                    <div class="content" id="content-photo-details" v-if="post && post.comments.length">
-                        <div class="media" v-for="comment in post.comments" :key="comment.$id">
-                            <div class="media-left is-flex is-flex-column">
-                                <a v-bind:href="`/users/${comment.owner.userName}`" class="has-text-black" v-bind:title="comment.owner.userName"><b>{{ comment.owner.userName }}</b></a>
-                                <small class="has-text-grey">{{ comment.date }}</small>
-                            </div>
+                        <div class="media-content">
 
-                            <div class="media-content is-doted-end" v-bind:title="comment.text">
-                                {{comment.text}}
-                            </div>
+                        </div>
 
-                            <div class="media-right" v-if="comment.$id && (currentAppUserName == comment.owner.userName || post.owner.userName == currentAppUserName || appPermission == 'True')">
-                                <a class="close-button" v-on:click="deleteComment(comment)" title="Delete comment"><i class="fas fa-trash"></i></a>
-                            </div>
+                        <div class="media-right">
+                            <time datetime="@Model.Date">@Model.Date</time>
                         </div>
                     </div>
-                    @if (User.Identity.IsAuthenticated)
-            {
-                <div class="control" style="margin: 15px 15px 0 15px">
-                    <input class="input" id="comment" type="text" placeholder="Comment photo" v-on:keyup.enter="comment">
-                    <div class="is-flex is-flex-centered" style="margin: 10px 0 10px 0">
-                        <button class="button is-accent-button" v-bind:class="{'is-loading': commenting}" v-on:click="comment" title="Comment photo">Comment</button>
+
+                    <div class="content card-button-panel" v-cloak>
+                        <div>
+                            @if (User.Identity.IsAuthenticated)
+                    {
+                        <button class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-on:click="post.liked?dislike():like()" v-bind:title="post.liked?'Dislike':'Like'" v-if="post && currentAppUserName"><i class="fa-heart" v-bind:class="post.liked?'fas':'far'"></i></button>
+            }
+                            <button v-if="post && post.likes.length > 0" class="button is-danger is-unselectable" v-bind:class="post.liked?'':'is-outlined'" v-on:click="showLikes" title="Likes list">{{ post.likes.length }}</button>
+                        </div>
+                        <div>
+                            <button class="button is-white" title="Show metadata" v-on:click="showMetadata(post)"><i class="fab fa-medapps"></i></button>
+                            @if (User.Identity.IsAuthenticated)
+                    {
+                        <button class="button bookmark-button" v-if="post" v-bind:class="post.bookmarked?'is-light':'is-white'" title="Save to bookmarks" v-on:click="post.bookmarked?disbookmark(post):bookmark(post)"><i class="fa-bookmark" v-bind:class="post.bookmarked?'fas':'far'"></i></button>
+            }
+                        </div>
                     </div>
                 </div>
-    }
-                </div>
-            </footer>
-        </article>
-    </div>
 
-    <!-- Modal Likes -->
-    <div class="modal" v-bind:class="{'is-active': modals.likeActive}">
-        <div class="modal-background modal-custom-background" v-on:click="closeLikes"></div>
-        <div class="modal-card modal-card-custom">
-            <header class="modal-card-head">
-                <p class="modal-card-title is-uppercase">Likes</p>
-                <a class="close-button" v-on:click="closeLikes" title="Close modal"><i class="fas fa-times"></i></a>
-            </header>
-            <section class="modal-card-body" v-if="post && post.likes != null && post.likes.length > 0">
-                <div class="media" v-for="like in post.likes" :key="like.$id">
-                    <div class="media-left">
-                        <a v-bind:href="`/users/${like.owner.userName}`" class="has-text-black is-doted-end" v-bind:title="like.owner.userName"><b>{{ like.owner.userName }}</b></a>
+                <footer class="card-footer" v-cloak>
+                    <div class="content" style="width: 100%;">
+                        <div class="content" id="content-photo-details" v-if="post && post.comments.length">
+                            <div class="media" v-for="comment in post.comments" :key="comment.$id">
+                                <div class="media-left is-flex is-flex-column">
+                                    <a v-bind:href="`/users/${comment.owner.userName}`" class="has-text-black" v-bind:title="comment.owner.userName"><b>{{ comment.owner.userName }}</b></a>
+                                    <small class="has-text-grey">{{ comment.date }}</small>
+                                </div>
+
+                                <div class="media-content is-doted-end" v-bind:title="comment.text">
+                                    {{comment.text}}
+                                </div>
+
+                                <div class="media-right" v-if="comment.$id && (currentAppUserName == comment.owner.userName || post.owner.userName == currentAppUserName || appPermission == 'True')">
+                                    <a class="close-button" v-on:click="deleteComment(comment)" title="Delete comment"><i class="fas fa-trash"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="control" style="margin: 15px 15px 0 15px">
+                        <input class="input" id="comment" type="text" placeholder="Comment photo" v-on:keyup.enter="comment">
+                        <div class="is-flex is-flex-centered" style="margin: 10px 0 10px 0">
+                            <button class="button is-accent-button" v-bind:class="{'is-loading': commenting}" v-on:click="comment" title="Comment photo">Comment</button>
+                        </div>
                     </div>
-
-                    <div class="media-content">
-
+        }
                     </div>
+                </footer>
+            </article>
+        </div>
 
-                    <div class="media-right">
-                        <small class="has-text-grey">{{ like.date }}</small>
+        <!-- Modal Likes -->
+        <div class="modal" v-bind:class="{'is-active': modals.likeActive}">
+            <div class="modal-background modal-custom-background" v-on:click="closeLikes"></div>
+            <div class="modal-card modal-card-custom">
+                <header class="modal-card-head">
+                    <p class="modal-card-title is-uppercase">Likes</p>
+                    <a class="close-button" v-on:click="closeLikes" title="Close modal"><i class="fas fa-times"></i></a>
+                </header>
+                <section class="modal-card-body" v-if="post && post.likes != null && post.likes.length > 0">
+                    <div class="media" v-for="like in post.likes" :key="like.$id">
+                        <div class="media-left">
+                            <a v-bind:href="`/users/${like.owner.userName}`" class="has-text-black is-doted-end" v-bind:title="like.owner.userName"><b>{{ like.owner.userName }}</b></a>
+                        </div>
+
+                        <div class="media-content">
+
+                        </div>
+
+                        <div class="media-right">
+                            <small class="has-text-grey">{{ like.date }}</small>
+                        </div>
                     </div>
-                </div>
-            </section>
-            <section class="modal-card-body" style="overflow-x: hidden; overflow-y: auto;" v-if="post && (post.likes == null || post.likes.length <= 0)">
-                <div class="empty-container-modal">
-                    <p>Like it first</p>
-                </div>
-            </section>
-            <a class="button is-white close-modal-mobile-button" title="Close modal" v-on:click="closeLikes">Close</a>
+                </section>
+                <section class="modal-card-body" style="overflow-x: hidden; overflow-y: auto;" v-if="post && (post.likes == null || post.likes.length <= 0)">
+                    <div class="empty-container-modal">
+                        <p>Like it first</p>
+                    </div>
+                </section>
+                <a class="button is-white close-modal-mobile-button" title="Close modal" v-on:click="closeLikes">Close</a>
+            </div>
+        </div>
+
+        <!-- Modal Metadata -->
+        <div class="modal" v-bind:class="{'is-active': modals.metadataActive}" v-if="post">
+            <div class="modal-background modal-custom-background" v-on:click="closeMetadata"></div>
+            <div class="modal-card modal-card-custom modal-card-custom-metadata">
+                <header class="modal-card-head">
+                    <p class="modal-card-title is-uppercase">info</p>
+                    <a class="close-button" v-on:click="closeMetadata" title="Close modal"><i class="fas fa-times"></i></a>
+                </header>
+                <section class="modal-card-body modal-card-body-metadata">
+                    <div>
+                        <p>Brand</p>
+                        <p>{{post.manufacturer}}</p>
+                    </div>
+                    <div>
+                        <p>Model</p>
+                        <p>{{post.model}}</p>
+                    </div>
+                    <div>
+                        <p>ISO</p>
+                        <p>{{post.iso}}</p>
+                    </div>
+                    <div>
+                        <p>Exposure</p>
+                        <p>{{post.exposure}}</p>
+                    </div>
+                    <div>
+                        <p>Aperture</p>
+                        <p>{{post.aperture}}</p>
+                    </div>
+                    <div>
+                        <p>Focal length</p>
+                        <p>{{post.focalLength}}</p>
+                    </div>
+                    <div>
+                        <p>Filter</p>
+                        <p>{{post.filter}}</p>
+                    </div>
+                    <a class="button is-white has-text-grey-darker" title="Close modal" v-on:click="closeMetadata">Close</a>
+                </section>
+            </div>
         </div>
     </div>
 
-    <!-- Modal Metadata -->
-    <div class="modal" v-bind:class="{'is-active': modals.metadataActive}" v-if="post">
-        <div class="modal-background modal-custom-background" v-on:click="closeMetadata"></div>
-        <div class="modal-card modal-card-custom modal-card-custom-metadata">
-            <header class="modal-card-head">
-                <p class="modal-card-title is-uppercase">info</p>
-                <a class="close-button" v-on:click="closeMetadata" title="Close modal"><i class="fas fa-times"></i></a>
-            </header>
-            <section class="modal-card-body modal-card-body-metadata">
-                <div>
-                    <p>Brand</p>
-                    <p>{{post.manufacturer}}</p>
+    <div class="content" id="recommendations" v-if="recommendations != null">
+        <h3 class="is-spaced is-uppercase has-text-centered has-text-weight-bold is-doted-end">Recommendations</h3>
+        <h4 class="is-spaced is-uppercase has-text-centered has-text-weight-bold is-doted-end">{{post.tags[0].name}} tag</h4>
+
+        <div class="content photo-recommendation-container">
+            <a v-bind:href="`/photos/${post.$id}`" class="photo-recommendation" v-for="post in recommendations">
+                <div class="card-image is-unselectable">
+                    <figure class="is-card-image filter" v-bind:class="post.filter" style="margin: 0;">
+                        <img v-bind:src="`/data/photos/${post.owner.userName}/${post.path}`" v-bind:alt="`${post.owner.userName}'s photo`">
+                    </figure>
                 </div>
-                <div>
-                    <p>Model</p>
-                    <p>{{post.model}}</p>
-                </div>
-                <div>
-                    <p>ISO</p>
-                    <p>{{post.iso}}</p>
-                </div>
-                <div>
-                    <p>Exposure</p>
-                    <p>{{post.exposure}}</p>
-                </div>
-                <div>
-                    <p>Aperture</p>
-                    <p>{{post.aperture}}</p>
-                </div>
-                <div>
-                    <p>Focal length</p>
-                    <p>{{post.focalLength}}</p>
-                </div>
-                <div>
-                    <p>Filter</p>
-                    <p>{{post.filter}}</p>
-                </div>
-                <a class="button is-white has-text-grey-darker" title="Close modal" v-on:click="closeMetadata">Close</a>
-            </section>
+            </a>
         </div>
     </div>
 </div>

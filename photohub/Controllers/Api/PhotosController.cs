@@ -21,6 +21,7 @@ namespace PhotoHub.WEB.Controllers.Api
         private const int _getAllPageSize = 8;
         private const int _getHomePageSize = 8;
         private const int _getForUserPageSize = 4;
+        private const int _getForTagPageSize = 16;
 
         public PhotosController(IPhotosService photosService)
         {
@@ -50,6 +51,12 @@ namespace PhotoHub.WEB.Controllers.Api
         public IEnumerable<PhotoViewModel> GetForUser(int page, string userName)
         {
             return _photosMapper.MapRange(_photosService.GetForUser(page, userName, _getForUserPageSize));
+        }
+
+        [HttpGet, Route("tag/{tagName}")]
+        public IEnumerable<PhotoViewModel> GetForTag(string tagName)
+        {
+            return _photosMapper.MapRange(_photosService.GetForTag(tagName, _getForTagPageSize));
         }
 
         [HttpGet, Route("bookmarks/{page}")]

@@ -118,6 +118,29 @@ namespace PhotoHub.BLL.Services
             return photoDTOs;
         }
 
+        public IEnumerable<PhotoDTO> GetForTag(string tagName, int pageSize)
+        {
+            if (String.IsNullOrEmpty(tagName))
+                return null;
+
+            User currentUser = _currentUserService.Get;
+            Tag tag = _unitOfWork.Tags.Find(t => t.Name.ToLower() == tagName.ToLower()).FirstOrDefault();
+
+            if (tag == null)
+                return null;
+
+            IEnumerable<Taging> tagings = _unitOfWork.Tagings.Find(t => t.TagId == tag.Id).OrderByDescending(t => t.Photo.Date);
+
+            IEnumerable<Photo> photos = tagings.Select(t => t.Photo).Skip(0).Take(pageSize);
+
+            List<PhotoDTO> photoDTOs = new List<PhotoDTO>(pageSize);
+
+            foreach (Photo photo in photos)
+                photoDTOs.Add(MapPhoto(photo));
+
+            return photoDTOs;
+        }
+
         public IEnumerable<PhotoDTO> GetBookmarks(int page, int pageSize)
         {
             User currentUser = _currentUserService.Get;

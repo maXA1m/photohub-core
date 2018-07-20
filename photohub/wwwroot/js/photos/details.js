@@ -11,6 +11,7 @@
         },
 
         post: null,
+        recommendations: null,
 
         canShare: navigator.share,
 
@@ -33,11 +34,32 @@
             this.$http.get(`/api/photos/details/${this.id}`).then(response => response.json()).then(json => {
                 this.post = json;
 
+                this.fetchPhotosForTag();
+
                 this.preloader.setAttribute('data-hidden', 'true');
             },
             error => {
                 this.preloader.setAttribute('data-hidden', 'true');
                 this.message.text.innerHTML = 'Error while loading photos';
+                this.message.element.setAttribute('data-message-type', 'error');
+                this.message.element.setAttribute('data-hidden', 'false');
+                setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);
+            });
+        },
+        fetchPhotosForTag() {
+            if (!this.post.tags || !this.post.tags.length)
+                return -1;
+
+            this.preloader.setAttribute('data-hidden', 'false');
+
+            this.$http.get(`/api/photos/tag/${this.post.tags[0].name}`).then(response => response.json()).then(json => {
+                this.recommendations = json;
+
+                this.preloader.setAttribute('data-hidden', 'true');
+            },
+            error => {
+                this.preloader.setAttribute('data-hidden', 'true');
+                this.message.text.innerHTML = 'Error while loading recommendations';
                 this.message.element.setAttribute('data-message-type', 'error');
                 this.message.element.setAttribute('data-hidden', 'false');
                 setTimeout(() => { this.message.element.setAttribute('data-hidden', 'true'); }, 5000);

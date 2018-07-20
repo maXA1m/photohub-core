@@ -5670,6 +5670,53 @@ label[for="turquoise-accent-picker"] div {
     font-size: 0.9rem;
 }
 
+#recommendations {
+    margin-top: 15px;
+}
+
+.photo-recommendation-container {
+    display: flex;
+    justify-content: space-around;
+    align-content: space-around;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.photo-recommendation {
+    width: 256px !important;
+    height: 256px !important;
+    border-radius: 3px !important;
+    overflow: hidden !important;
+    
+    -webkit-box-shadow: 0 0 2px rgba(38,50,56,.2), 0 4px 14px 0 rgba(0,0,0,.2);
+            box-shadow: 0 0 2px rgba(38,50,56,.2), 0 4px 14px 0 rgba(0,0,0,.2);
+
+    -webkit-transition: all .3s cubic-bezier(.4,0,.2,1);
+    -o-transition: all .3s cubic-bezier(.4,0,.2,1);
+    transition: all .3s cubic-bezier(.4,0,.2,1);
+}
+
+.photo-recommendation img {
+    width: 256px !important;
+    height: 256px !important;
+    border-radius: 5px  !important;
+    overflow: hidden !important;
+}
+
+.photo-recommendation .card-image,
+.photo-recommendation .is-card-image {
+    width: 256px !important;
+    height: 256px !important;
+    border-radius: 5px  !important;
+}
+
+.photo-recommendation:hover {
+    -webkit-box-shadow: 0 0 2px rgba(38,50,56,.2), 0 8px 44px 0 rgba(0,0,0,.2);
+            box-shadow: 0 0 2px rgba(38,50,56,.2), 0 8px 44px 0 rgba(0,0,0,.2);
+    transform: translateY(-7px);
+}
+
 .card-button-panel {
     display: -webkit-box !important;
     display: -ms-flexbox !important;
