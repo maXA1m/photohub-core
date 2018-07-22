@@ -52,7 +52,14 @@
 
             this.preloader.setAttribute('data-hidden', 'false');
 
-            this.$http.get(`/api/photos/tag/${this.post.tags[0].name}`).then(response => response.json()).then(json => {
+            const tagName = this.post.tags[0].name;
+
+            if ((this.post.tags.length - 1) > 0) {
+                const index = Math.floor(Math.random() * this.post.tags.length);
+                tagName = this.post.tags[index].name;
+            }
+
+            this.$http.get(`/api/photos/tag/${tagName}`).then(response => response.json()).then(json => {
                 this.recommendations = json;
 
                 this.preloader.setAttribute('data-hidden', 'true');
