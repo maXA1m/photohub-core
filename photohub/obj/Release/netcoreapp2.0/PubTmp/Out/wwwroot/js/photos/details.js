@@ -12,6 +12,7 @@
 
         post: null,
         recommendations: null,
+        recommendedTagName: null,
 
         canShare: navigator.share,
 
@@ -52,8 +53,20 @@
 
             this.preloader.setAttribute('data-hidden', 'false');
 
-            this.$http.get(`/api/photos/tag/${this.post.tags[0].name}`).then(response => response.json()).then(json => {
+            this.recommendedTagName = this.post.tags[0].name;
+
+            if ((this.post.tags.length - 1) > 0) {
+                const index = Math.floor(Math.random() * this.post.tags.length);
+                this.recommendedTagName = this.post.tags[index].name;
+            }
+
+            this.$http.get(`/api/photos/tag/${this.recommendedTagName}`).then(response => response.json()).then(json => {
                 this.recommendations = json;
+
+                for (let i in this.recommendations) {
+                    if (this.recommendations[i].$id == this.post.$id)
+                        this.recommendations.splice(i, 1);
+                }
 
                 this.preloader.setAttribute('data-hidden', 'true');
             },

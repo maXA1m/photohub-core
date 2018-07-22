@@ -187,9 +187,9 @@
         </div>
     </div>
 
-    <div class="content" id="recommendations" v-if="recommendations != null">
+    <div class="content" id="recommendations" v-if="recommendations != null && recommendations.length > 0">
         <h3 class="is-spaced is-uppercase has-text-centered has-text-weight-bold is-doted-end">Recommendations</h3>
-        <h4 class="is-spaced is-uppercase has-text-centered has-text-weight-bold is-doted-end">{{post.tags[0].name}} tag</h4>
+        <h4 class="is-spaced is-uppercase has-text-centered has-text-weight-bold is-doted-end">{{recommendedTagName}} tag</h4>
 
         <div class="content photo-recommendation-container">
             <a v-bind:href="`/photos/${post.$id}`" class="photo-recommendation" v-for="post in recommendations">
