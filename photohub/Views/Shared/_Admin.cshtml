@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html style="background-color: #363636;">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -46,7 +46,7 @@
 
     <!--  Desktop Navbar  -->
     <nav id="desktopNavbar" class="has-background-dark">
-        <a class="button is-white is-medium" href="/photos" title="Home">Home</a>
+        <a class="button is-dark is-medium" href="/photos" title="Home">Home</a>
         <a class="button is-white is-medium" href="/admin" title="Dashboard">Dashboard</a>
         <a class="button is-white is-medium" href="/admin/stats" title="Statistics">Statistics</a>
         <a class="button is-white is-medium" href="/admin/reports" title="Reported photos">Reports</a>
@@ -57,14 +57,14 @@
     <nav id="mobileNavbar" class="has-background-dark">
         <a class="button is-dark is-medium" href="/photos" title="Home"><i class="fas fa-home"></i></a>
         <a class="button is-dark is-medium" href="/admin/users" title="Users"><i class="fas fa-address-book"></i></a>
-        <a class="button is-dark is-medium" href="/admin/reports" title="Reported photos"><i class="fas fa-angry"></i></a>
+        <a class="button is-dark is-medium" href="/admin/reports" title="Reported photos"><i class="fas fa-thumbs-down"></i></a>
         <a class="button is-dark is-medium" href="/admin/stats" title="Statistics"><i class="fas fa-chart-pie"></i></a>
         <a class="button is-dark is-medium" href="/admin" title="Dashboard"><i class="fas fa-tasks"></i></a>
     </nav>
 
     <!--  Main content  -->
     <main id="primaryContainer" class="has-background-dark">
-        <h1 class="title is-spaced is-2 is-uppercase has-text-left has-text-weight-bold has-text-white" title="@ViewBag.Title">@ViewBag.Title</h1>
+        <h1 class="title is-spaced is-2 is-uppercase has-text-centered has-text-weight-bold has-text-white" title="@ViewBag.Title">@ViewBag.Title</h1>
         @RenderBody()
     </main>
 </body>
