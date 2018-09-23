@@ -1,32 +1,44 @@
-﻿using System.Collections.Generic;
-using PhotoHub.DAL.Entities;
-#region using PhotoHub.BLL
+﻿using PhotoHub.DAL.Entities;
 using PhotoHub.BLL.DTO;
-using PhotoHub.BLL.Interfaces;
-#endregion
 
 namespace PhotoHub.BLL.Mappers
 {
-    public class LikesMapper : IMapper<LikeDTO, Like>
+    /// <summary>
+    /// Methods for mapping like entities to like data transfer objects.
+    /// </summary>
+    public static class LikesMapper
     {
-        public LikeDTO Map(Like item)
+        #region Logic
+
+        /// <summary>
+        /// Maps like entity to like DTO without owner.
+        /// </summary>
+        public static LikeDTO Map(Like item)
         {
             if (item == null)
+            {
                 return null;
+            }
 
-            return new LikeDTO()
+            return new LikeDTO
             {
                 Id = item.Id,
                 Owner = null,
                 Date = item.Date
             };
         }
-        public LikeDTO Map(Like item, UserDTO owner)
+
+        /// <summary>
+        /// Maps like entity to like DTO with owner.
+        /// </summary>
+        public static LikeDTO Map(Like item, UserDTO owner)
         {
             if (item == null)
+            {
                 return null;
+            }
 
-            return new LikeDTO()
+            return new LikeDTO
             {
                 Id = item.Id,
                 Owner = owner,
@@ -34,13 +46,6 @@ namespace PhotoHub.BLL.Mappers
             };
         }
 
-
-        public List<LikeDTO> MapRange(IEnumerable<Like> items)
-        {
-            if (items == null)
-                return null;
-
-            return null;
-        }
+        #endregion
     }
 }

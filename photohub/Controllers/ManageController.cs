@@ -1,5 +1,4 @@
-﻿#region using System/Microsoft
-using System;
+﻿using System;
 using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Http;
@@ -9,10 +8,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-#endregion
 using PhotoHub.DAL.Entities;
 using PhotoHub.BLL.Interfaces;
-#region using PhotoHub.WEB
 using PhotoHub.WEB.Extensions;
 using PhotoHub.WEB.ViewModels.Manage;
 using PhotoHub.WEB.Mappers;
@@ -21,7 +18,6 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
-#endregion
 
 namespace PhotoHub.WEB.Controllers
 {
@@ -29,6 +25,8 @@ namespace PhotoHub.WEB.Controllers
     [Route("[controller]/[action]")]
     public class ManageController : Controller
     {
+        #region Fields
+
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
@@ -36,10 +34,13 @@ namespace PhotoHub.WEB.Controllers
         private readonly UrlEncoder _urlEncoder;
         private readonly IUsersService _usersService;
         private readonly IHostingEnvironment _environment;
-        private readonly UsersDetailsMapper _usersMapper;
 
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
         private const string RecoveryCodesKey = nameof(RecoveryCodesKey);
+
+        #endregion
+
+        #region .ctors
 
         public ManageController(
           UserManager<ApplicationUser> userManager,
@@ -57,16 +58,23 @@ namespace PhotoHub.WEB.Controllers
             _urlEncoder = urlEncoder;
             _usersService = usersService;
             _environment = environment;
-            _usersMapper = new UsersDetailsMapper();
         }
+
+        #endregion
+
+        #region Properties
 
         [TempData]
         public string StatusMessage { get; set; }
 
+        #endregion
+
+        #region Logic
+
         [HttpGet]
         public IActionResult Index()
         {
-            UserDetailsViewModel user = _usersMapper.Map(_usersService.Get(User.Identity.Name));
+            UserDetailsViewModel user = UsersDetailsMapper.Map(_usersService.Get(User.Identity.Name));
             if (user == null)
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
@@ -187,9 +195,9 @@ namespace PhotoHub.WEB.Controllers
         {
             if(avatar != null && avatar.Length > 1)
             {
-                UserDetailsViewModel user = _usersMapper.Map(_usersService.Get(User.Identity.Name ?? userName));
+                UserDetailsViewModel user = UsersDetailsMapper.Map(_usersService.Get(User.Identity.Name ?? userName));
 
-                string fileName = "avatar" + Path.GetExtension(ContentDispositionHeaderValue.Parse(avatar.ContentDisposition).FileName.Trim('"'));
+                string fileName = $"avatar{Path.GetExtension(ContentDispositionHeaderValue.Parse(avatar.ContentDisposition).FileName.Trim('"'))}";
 
                 user.Avatar = fileName;
 
@@ -221,7 +229,7 @@ namespace PhotoHub.WEB.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ChangeTheme(int theme, int accent)
         {
-            ThemeColorViewModel themeColor = new ThemeColorViewModel();
+            var themeColor = new ThemeColorViewModel();
             switch (theme)
             {
                 case 0: themeColor.Color = "#fff"; themeColor.CssClass = "is-white-background"; break;
@@ -230,7 +238,7 @@ namespace PhotoHub.WEB.Controllers
                 default: themeColor.Color = "#fff"; themeColor.CssClass = "is-white-background"; break;
             }
 
-            ThemeColorViewModel accentColor = new ThemeColorViewModel();
+            var accentColor = new ThemeColorViewModel();
             switch (accent)
             {
                 case 0: accentColor.Color = "#FFDB4A"; accentColor.CssClass = "is-warning-accent"; break;
@@ -244,16 +252,16 @@ namespace PhotoHub.WEB.Controllers
             }
 
             string root = _environment.WebRootPath;
-            string dir = String.Format("{0}\\data\\settings\\{1}", root, User.Identity.Name);
-            string file = String.Format("{0}\\config.json", dir);
+            string dir = $"{root}\\data\\settings\\{User.Identity.Name}";
+            string file = $"{dir}\\config.json";
 
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
 
             using (StreamWriter sw = System.IO.File.CreateText(file))
             {
-                JsonSerializer serializer = new JsonSerializer();
-                UserSettingsViewModel userSettings = new UserSettingsViewModel() { AccentColor = accentColor, ThemeColor = themeColor };
+                var serializer = new JsonSerializer();
+                var userSettings = new UserSettingsViewModel() { AccentColor = accentColor, ThemeColor = themeColor };
 
                 serializer.Serialize(sw, userSettings);
                 HttpContext.Session.SetString("APP_THEME", JsonConvert.SerializeObject(userSettings));
@@ -574,6 +582,8 @@ namespace PhotoHub.WEB.Controllers
 
             return View(nameof(ShowRecoveryCodes), model);
         }
+
+        #endregion
 
         #region Helpers
 

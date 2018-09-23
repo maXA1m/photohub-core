@@ -1,48 +1,59 @@
 ﻿using System.Collections.Generic;
-#region using PhotoHub.BLL
 using PhotoHub.BLL.DTO;
-using PhotoHub.BLL.Interfaces;
-#endregion
 using PhotoHub.WEB.ViewModels;
 
 namespace PhotoHub.WEB.Mappers
 {
-    public class LikesMapper : IMapper<LikeViewModel, LikeDTO>
+    /// <summary>
+    /// Methods for mapping like DTOs to like view models.
+    /// </summary>
+    public static class LikesMapper
     {
-        private readonly UsersMapper _usersMapper;
+        #region Logic
 
-        public LikesMapper() => _usersMapper = new UsersMapper();
-
-        public LikeViewModel Map(LikeDTO item)
+        /// <summary>
+        /// Maps like DTO to like view model.
+        /// </summary>
+        public static LikeViewModel Map(LikeDTO item)
         {
             if (item == null)
+            {
                 return null;
+            }
 
-            return new LikeViewModel()
+            return new LikeViewModel
             {
                 Id = item.Id,
                 Date = item.Date.ToString("MMMM dd, yyyy"),
-                Owner = _usersMapper.Map(item.Owner)
+                Owner = UsersMapper.Map(item.Owner)
             };
         }
 
-        public List<LikeViewModel> MapRange(IEnumerable<LikeDTO> items)
+        /// <summary>
+        /// Maps like DTOs to like view models.
+        /// </summary>
+        public static List<LikeViewModel> MapRange(IEnumerable<LikeDTO> items)
         {
             if (items == null)
-                return null;
-
-            List<LikeViewModel> likes = new List<LikeViewModel>();
-            foreach (LikeDTO item in items)
             {
-                likes.Add(new LikeViewModel()
+                return null;
+            }
+
+            var likes = new List<LikeViewModel>();
+
+            foreach (var item in items)
+            {
+                likes.Add(new LikeViewModel
                 {
                     Id = item.Id,
                     Date = item.Date.ToString("MMMM dd, yyyy"),
-                    Owner = _usersMapper.Map(item.Owner)
+                    Owner = UsersMapper.Map(item.Owner)
                 });
             }
 
             return likes;
         }
+
+        #endregion
     }
 }

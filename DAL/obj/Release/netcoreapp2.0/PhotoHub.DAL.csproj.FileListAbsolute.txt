@@ -11,4 +11,3 @@ C:\Users\maxmi\Desktop\photohub-core\DAL\obj\Release\netcoreapp2.0\PhotoHub.DAL.
 C:\Users\maxmi\Desktop\photohub-core\DAL\obj\Release\netcoreapp2.0\PhotoHub.DAL.csproj.CopyComplete
 C:\Users\maxmi\Desktop\photohub-core\DAL\obj\Release\netcoreapp2.0\PhotoHub.DAL.dll
 C:\Users\maxmi\Desktop\photohub-core\DAL\obj\Release\netcoreapp2.0\PhotoHub.DAL.pdb
-C:\Users\maxmi\Desktop\photohub-core\DAL\obj\Release\netcoreapp2.0\PhotoHub.DAL.csprojAssemblyReference.cache

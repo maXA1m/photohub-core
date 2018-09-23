@@ -1,41 +1,57 @@
 ﻿using System.Collections.Generic;
-#region using PhotoHub.BLL
 using PhotoHub.BLL.DTO;
-using PhotoHub.BLL.Interfaces;
-#endregion
 using PhotoHub.WEB.ViewModels;
 
 namespace PhotoHub.WEB.Mappers
 {
-    public class TagsMapper : IMapper<TagViewModel, TagDTO>
+    /// <summary>
+    /// Methods for mapping tag DTOs to tag view models.
+    /// </summary>
+    public static class TagsMapper
     {
-        public TagViewModel Map(TagDTO item)
+        #region Logic
+
+        /// <summary>
+        /// Maps tag DTO to tag view model.
+        /// </summary>
+        public static TagViewModel Map(TagDTO item)
         {
             if (item == null)
+            {
                 return null;
+            }
 
-            return new TagViewModel()
+            return new TagViewModel
             {
                 Id = item.Id,
                 Name = item.Name
             };
         }
 
-        public List<TagViewModel> MapRange(IEnumerable<TagDTO> items)
+        /// <summary>
+        /// Maps tag DTOs to tag view models.
+        /// </summary>
+        public static List<TagViewModel> MapRange(IEnumerable<TagDTO> items)
         {
             if (items == null)
-                return null;
-
-            List<TagViewModel> tags = new List<TagViewModel>();
-            foreach (TagDTO item in items)
             {
-                tags.Add(new TagViewModel()
+                return null;
+            }
+
+            var tags = new List<TagViewModel>();
+
+            foreach (var item in items)
+            {
+                tags.Add(new TagViewModel
                 {
                     Id = item.Id,
                     Name = item.Name
                 });
             }
+
             return tags;
         }
+
+        #endregion
     }
 }

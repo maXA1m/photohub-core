@@ -1,27 +1,31 @@
-﻿#region using System
-using System;
-using System.Collections.Generic;
-#endregion
-#region using PhotoHub.BLL
+﻿using System.Collections.Generic;
 using PhotoHub.BLL.DTO;
-using PhotoHub.BLL.Interfaces;
-#endregion
 using PhotoHub.WEB.ViewModels;
 
 namespace PhotoHub.WEB.Mappers
 {
-    public class UsersMapper : IMapper<UserViewModel, UserDTO>
+    /// <summary>
+    /// Methods for mapping user DTOs to user view models.
+    /// </summary>
+    public static class UsersMapper
     {
-        public UserViewModel Map(UserDTO item)
+        #region Logic
+
+        /// <summary>
+        /// Maps user DTO to user view model.
+        /// </summary>
+        public static UserViewModel Map(UserDTO item)
         {
             if (item == null)
+            {
                 return null;
+            }
 
-            return new UserViewModel()
+            return new UserViewModel
             {
                 RealName = item.RealName,
                 UserName = item.UserName,
-                Avatar = item.Avatar != null ? String.Format("/data/avatars/{0}/{1}", item.UserName, item.Avatar) : String.IsNullOrEmpty(item.Gender) || item.Gender == "Male"? "/images/defaults/def-male-logo.png" : "/images/defaults/def-female-logo.png",
+                Avatar = item.Avatar != null ? $"/data/avatars/{item.UserName}/{item.Avatar}" : string.IsNullOrEmpty(item.Gender) || item.Gender == "Male" ? "/images/defaults/def-male-logo.png" : "/images/defaults/def-female-logo.png",
                 Date = item.Date.ToString("MMMM dd, yyyy"),
                 Confirmed = item.Confirmed,
                 Followed = item.Followed,
@@ -30,19 +34,26 @@ namespace PhotoHub.WEB.Mappers
                 IBlocked = item.IBlocked
             };
         }
-        public List<UserViewModel> MapRange(IEnumerable<UserDTO> items)
+
+        /// <summary>
+        /// Maps user DTOs to user view models.
+        /// </summary>
+        public static List<UserViewModel> MapRange(IEnumerable<UserDTO> items)
         {
             if (items == null)
-                return null;
-
-            List<UserViewModel> users = new List<UserViewModel>();
-            foreach (UserDTO item in items)
             {
-                users.Add(new UserViewModel()
+                return null;
+            }
+
+            var users = new List<UserViewModel>();
+
+            foreach (var item in items)
+            {
+                users.Add(new UserViewModel
                 {
                     RealName = item.RealName,
                     UserName = item.UserName,
-                    Avatar = item.Avatar != null ? String.Format("/data/avatars/{0}/{1}", item.UserName, item.Avatar) : String.IsNullOrEmpty(item.Gender) || item.Gender == "Male" ? "/images/defaults/def-male-logo.png" : "/images/defaults/def-female-logo.png",
+                    Avatar = item.Avatar != null ? $"/data/avatars/{item.UserName}/{item.Avatar}" : string.IsNullOrEmpty(item.Gender) || item.Gender == "Male" ? "/images/defaults/def-male-logo.png" : "/images/defaults/def-female-logo.png",
                     Date = item.Date.ToString("MMMM dd, yyyy"),
                     Confirmed = item.Confirmed,
                     Followed = item.Followed,
@@ -54,5 +65,7 @@ namespace PhotoHub.WEB.Mappers
 
             return users;
         }
+
+        #endregion
     }
 }

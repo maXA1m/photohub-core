@@ -1,13 +1,13 @@
-﻿#region using System/Microsoft
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-#endregion
 
 namespace PhotoHub.WEB.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
+        #region Logic
+
         [HttpGet, Route("admin")]
         public IActionResult Index()
         {
@@ -28,5 +28,7 @@ namespace PhotoHub.WEB.Controllers
         {
             return View();
         }
+
+        #endregion
     }
 }

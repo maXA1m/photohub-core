@@ -1,41 +1,57 @@
 ﻿using System.Collections.Generic;
 using PhotoHub.DAL.Entities;
-#region using PhotoHub.BLL
 using PhotoHub.BLL.DTO;
-using PhotoHub.BLL.Interfaces;
-#endregion
 
 namespace PhotoHub.BLL.Mappers
 {
-    public class FiltersMapper : IMapper<FilterDTO, Filter>
+    /// <summary>
+    /// Methods for mapping filter entities to filter data transfer objects.
+    /// </summary>
+    public static class FiltersMapper
     {
-        public FilterDTO Map(Filter item)
+        #region Logic
+
+        /// <summary>
+        /// Maps filter entity to filter DTO.
+        /// </summary>
+        public static FilterDTO Map(Filter item)
         {
             if (item == null)
+            {
                 return null;
+            }
 
-            return new FilterDTO()
+            return new FilterDTO
             {
                 Id = item.Id,
                 Name = item.Name
             };
         }
 
-        public List<FilterDTO> MapRange(IEnumerable<Filter> items)
+        /// <summary>
+        /// Maps filter entities to filter DTOs.
+        /// </summary>
+        public static List<FilterDTO> MapRange(IEnumerable<Filter> items)
         {
             if (items == null)
-                return null;
-
-            List<FilterDTO> filters = new List<FilterDTO>();
-            foreach (Filter filter in items)
             {
-                filters.Add(new FilterDTO()
+                return null;
+            }
+
+            var filters = new List<FilterDTO>();
+
+            foreach (var filter in items)
+            {
+                filters.Add(new FilterDTO
                 {
                     Id = filter.Id,
                     Name = filter.Name
                 });
             }
+
             return filters;
         }
+
+        #endregion
     }
 }

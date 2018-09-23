@@ -1,35 +1,39 @@
-﻿#region using System/Microsoft
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-#endregion
-#region using PhotoHub.WEB
 using PhotoHub.WEB.ViewModels;
 using PhotoHub.WEB.Mappers;
-#endregion
 using PhotoHub.BLL.Interfaces;
 
 namespace PhotoHub.WEB.Controllers
 {
     public class HomeController : Controller
     {
+        #region Fields
+
         private readonly IPhotosService _photosService;
-        #region private readonly mappers
-        private readonly TagsMapper _tagsMapper;
+
         #endregion
+
+        #region .ctors
 
         public HomeController(IPhotosService photosService)
         {
             _photosService = photosService;
-            _tagsMapper = new TagsMapper();
         }
+
+        #endregion
+
+        #region Logic
 
         [Route("")]
         public IActionResult Index()
         {
             if (User.Identity.IsAuthenticated)
+            {
                 return View();
+            }
 
             return View("Cover");
         }
@@ -37,7 +41,7 @@ namespace PhotoHub.WEB.Controllers
         [Authorize, Route("search")]
         public IActionResult Search()
         { 
-            ViewBag.Tags = _tagsMapper.MapRange(_photosService.Tags);
+            ViewBag.Tags = TagsMapper.MapRange(_photosService.Tags);
 
             return View();
         }
@@ -52,5 +56,7 @@ namespace PhotoHub.WEB.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        #endregion
     }
 }

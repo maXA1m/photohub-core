@@ -1,20 +1,27 @@
 ﻿using System.Collections.Generic;
 using PhotoHub.DAL.Entities;
-#region using PhotoHub.BLL
 using PhotoHub.BLL.DTO;
-using PhotoHub.BLL.Interfaces;
-#endregion
 
 namespace PhotoHub.BLL.Mappers
 {
-    public class PhotosMapper : IMapper<PhotoDTO, Photo>
+    /// <summary>
+    /// Methods for mapping photo entities to photo data transfer objects.
+    /// </summary>
+    public static class PhotosMapper
     {
-        public PhotoDTO Map(Photo item)
+        #region Logic
+
+        /// <summary>
+        /// Maps photo entity to photo DTO.
+        /// </summary>
+        public static PhotoDTO Map(Photo item)
         {
             if (item == null)
+            {
                 return null;
+            }
 
-            return new PhotoDTO()
+            return new PhotoDTO
             {
                 Id = item.Id,
                 Path = item.Path,
@@ -39,12 +46,18 @@ namespace PhotoHub.BLL.Mappers
                 Tags = null
             };
         }
-        public PhotoDTO Map(Photo item, bool liked, bool bookmarked, UserDTO owner, ICollection<LikeDTO> likes, ICollection<CommentDTO> comments, ICollection<TagDTO> tags)
+
+        /// <summary>
+        /// Maps photo entity to photo DTO.
+        /// </summary>
+        public static PhotoDTO Map(Photo item, bool liked, bool bookmarked, UserDTO owner, ICollection<LikeDTO> likes, ICollection<CommentDTO> comments, ICollection<TagDTO> tags)
         {
             if (item == null)
+            {
                 return null;
+            }
 
-            return new PhotoDTO()
+            return new PhotoDTO
             {
                 Id = item.Id,
                 Path = item.Path,
@@ -70,12 +83,6 @@ namespace PhotoHub.BLL.Mappers
             };
         }
 
-        public List<PhotoDTO> MapRange(IEnumerable<Photo> items)
-        {
-            if (items == null)
-                return null;
-
-            return null;
-        }
+        #endregion
     }
 }

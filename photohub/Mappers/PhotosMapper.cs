@@ -1,96 +1,95 @@
-﻿#region using System
-using System;
-using System.Collections.Generic;
-#endregion
-#region using PhotoHub.BLL
+﻿using System.Collections.Generic;
 using PhotoHub.BLL.DTO;
-using PhotoHub.BLL.Interfaces;
-#endregion
 using PhotoHub.WEB.ViewModels;
 
 namespace PhotoHub.WEB.Mappers
 {
-    public class PhotosMapper
+    /// <summary>
+    /// Methods for mapping comment DTOs to comment view models.
+    /// </summary>
+    public static class PhotosMapper
     {
-        private readonly UsersMapper _usersMapper;
-        private readonly CommentsMapper _commentsMapper;
-        private readonly LikesMapper _likesMapper;
-        private readonly TagsMapper _tagsMapper;
+        #region Logic
 
-        public PhotosMapper()
-        {
-            _usersMapper = new UsersMapper();
-            _commentsMapper = new CommentsMapper();
-            _likesMapper = new LikesMapper();
-            _tagsMapper = new TagsMapper();
-        }
-
-        public PhotoViewModel Map(PhotoDTO item)
+        /// <summary>
+        /// Maps photo DTO to photo view model.
+        /// </summary>
+        public static PhotoViewModel Map(PhotoDTO item)
         {
             if (item == null)
+            {
                 return null;
+            }
 
-            return new PhotoViewModel()
+            return new PhotoViewModel
             {
                 Id = item.Id,
                 Path = item.Path,
                 Filter = item.Filter,
                 Description = item.Description,
                 Date = item.Date.ToString("MMMM dd, yyyy"),
-                Owner = _usersMapper.Map(item.Owner),
+                Owner = UsersMapper.Map(item.Owner),
                 CountViews = item.CountViews,
 
                 Liked = item.Liked,
                 Bookmarked = item.Bookmarked,
 
-                Manufacturer = String.IsNullOrEmpty(item.Manufacturer) ? "Unknown" : item.Manufacturer,
-                Model = String.IsNullOrEmpty(item.Model) ? "Unknown" : item.Model,
+                Manufacturer = string.IsNullOrEmpty(item.Manufacturer) ? "Unknown" : item.Manufacturer,
+                Model = string.IsNullOrEmpty(item.Model) ? "Unknown" : item.Model,
                 Iso = item.Iso != null ? item.Iso.ToString() : "Unknown",
-                Exposure = item.Exposure != null ? String.Format("{0:0.00000}", item.Exposure) + " sec" : "Unknown",
-                Aperture = item.Aperture != null ? "f/" + item.Aperture.ToString() : "Unknown",
-                FocalLength = item.FocalLength != null ? item.FocalLength.ToString() + "mm" : "Unknown",
+                Exposure = item.Exposure != null ? $"{string.Format("{0:0.00000}", item.Exposure)} sec" : "Unknown",
+                Aperture = item.Aperture != null ? $"f/{item.Aperture.ToString()}" : "Unknown",
+                FocalLength = item.FocalLength != null ? $"{item.FocalLength.ToString()}mm" : "Unknown",
 
-                Likes = _likesMapper.MapRange(item.Likes),
-                Comments = _commentsMapper.MapRange(item.Comments),
-                Tags = _tagsMapper.MapRange(item.Tags)
+                Likes = LikesMapper.MapRange(item.Likes),
+                Comments = CommentsMapper.MapRange(item.Comments),
+                Tags = TagsMapper.MapRange(item.Tags)
             };
         }
 
-        public List<PhotoViewModel> MapRange(IEnumerable<PhotoDTO> items)
+        /// <summary>
+        /// Maps photo DTOs to photo view models.
+        /// </summary>
+        public static List<PhotoViewModel> MapRange(IEnumerable<PhotoDTO> items)
         {
             if (items == null)
-                return null;
-
-            List<PhotoViewModel> photos = new List<PhotoViewModel>();
-            foreach(PhotoDTO item in items)
             {
-                photos.Add(new PhotoViewModel()
+                return null;
+            }
+
+            var photos = new List<PhotoViewModel>();
+
+            foreach(var item in items)
+            {
+                photos.Add(new PhotoViewModel
                 {
                     Id = item.Id,
                     Path = item.Path,
                     Filter = item.Filter,
                     Description = item.Description,
                     Date = item.Date.ToString("MMMM dd, yyyy"),
-                    Owner = _usersMapper.Map(item.Owner),
+                    Owner = UsersMapper.Map(item.Owner),
                     CountViews = item.CountViews,
 
                     Liked = item.Liked,
                     Bookmarked = item.Bookmarked,
 
-                    Manufacturer = String.IsNullOrEmpty(item.Manufacturer) ? "Unknown" : item.Manufacturer,
-                    Model = String.IsNullOrEmpty(item.Model) ? "Unknown" : item.Model,
+                    Manufacturer = string.IsNullOrEmpty(item.Manufacturer) ? "Unknown" : item.Manufacturer,
+                    Model = string.IsNullOrEmpty(item.Model) ? "Unknown" : item.Model,
                     Iso = item.Iso != null ? item.Iso.ToString() : "Unknown",
-                    Exposure = item.Exposure != null ? String.Format("{0:0.00000}", item.Exposure) + " sec" : "Unknown",
-                    Aperture = item.Aperture != null ? "f/" + item.Aperture.ToString() : "Unknown",
-                    FocalLength = item.FocalLength != null ? item.FocalLength.ToString() + "mm" : "Unknown",
+                    Exposure = item.Exposure != null ? $"{string.Format("{0:0.00000}", item.Exposure)} sec" : "Unknown",
+                    Aperture = item.Aperture != null ? $"f/{item.Aperture.ToString()}" : "Unknown",
+                    FocalLength = item.FocalLength != null ? $"{item.FocalLength.ToString()}mm" : "Unknown",
 
-                    Likes = _likesMapper.MapRange(item.Likes),
-                    Comments = _commentsMapper.MapRange(item.Comments),
-                    Tags = _tagsMapper.MapRange(item.Tags)
+                    Likes = LikesMapper.MapRange(item.Likes),
+                    Comments = CommentsMapper.MapRange(item.Comments),
+                    Tags = TagsMapper.MapRange(item.Tags)
                 });
             }
 
             return photos;
         }
+
+        #endregion
     }
 }

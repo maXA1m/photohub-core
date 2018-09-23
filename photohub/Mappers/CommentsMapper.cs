@@ -1,50 +1,61 @@
 ﻿using System.Collections.Generic;
-#region using PhotoHub.BLL
 using PhotoHub.BLL.DTO;
-using PhotoHub.BLL.Interfaces;
-#endregion
 using PhotoHub.WEB.ViewModels;
 
 namespace PhotoHub.WEB.Mappers
 {
-    public class CommentsMapper : IMapper<CommentViewModel, CommentDTO>
+    /// <summary>
+    /// Methods for mapping comment DTOs to comment view models.
+    /// </summary>
+    public static class CommentsMapper
     {
-        private readonly UsersMapper _usersMapper;
+        #region Logic
 
-        public CommentsMapper() => _usersMapper = new UsersMapper();
-
-        public CommentViewModel Map(CommentDTO item)
+        /// <summary>
+        /// Maps comment DTO to comment view model.
+        /// </summary>
+        public static CommentViewModel Map(CommentDTO item)
         {
             if (item == null)
+            {
                 return null;
+            }
 
-            return new CommentViewModel()
+            return new CommentViewModel
             {
                 Id = item.Id,
                 Text = item.Text,
                 Date = item.Date.ToString("MMMM dd, yyyy"),
-                Owner = _usersMapper.Map(item.Owner)
+                Owner = UsersMapper.Map(item.Owner)
             };
         }
 
-        public List<CommentViewModel> MapRange(IEnumerable<CommentDTO> items)
+        /// <summary>
+        /// Maps comment DTOs to comment view models.
+        /// </summary>
+        public static List<CommentViewModel> MapRange(IEnumerable<CommentDTO> items)
         {
             if (items == null)
-                return null;
-
-            List<CommentViewModel> comments = new List<CommentViewModel>();
-            foreach (CommentDTO item in items)
             {
-                comments.Add(new CommentViewModel()
+                return null;
+            }
+
+            var comments = new List<CommentViewModel>();
+
+            foreach (var item in items)
+            {
+                comments.Add(new CommentViewModel
                 {
                     Id = item.Id,
                     Text = item.Text,
                     Date = item.Date.ToString("MMMM dd, yyyy"),
-                    Owner = _usersMapper.Map(item.Owner)
+                    Owner = UsersMapper.Map(item.Owner)
                 });
             }
 
             return comments;
         }
+
+        #endregion
     }
 }

@@ -1,5 +1,4 @@
-﻿#region using System/Microsoft
-using System;
+﻿using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -7,13 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-#endregion
 using PhotoHub.DAL.Entities;
 using PhotoHub.BLL.Interfaces;
-#region using PhotoHub.WEB
-using PhotoHub.WEB.Extensions;
 using PhotoHub.WEB.ViewModels.Account;
-#endregion
 
 namespace PhotoHub.WEB.Controllers
 {
@@ -21,11 +16,17 @@ namespace PhotoHub.WEB.Controllers
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
+        #region Fields
+
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly IUsersService _usersService;
+
+        #endregion
+
+        #region .ctors
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
@@ -41,8 +42,16 @@ namespace PhotoHub.WEB.Controllers
             _usersService = usersService;
         }
 
+        #endregion
+
+        #region Properties
+
         [TempData]
         public string ErrorMessage { get; set; }
+
+        #endregion
+
+        #region Logic
 
         [HttpGet]
         [AllowAnonymous]
@@ -301,7 +310,7 @@ namespace PhotoHub.WEB.Controllers
                 var email = info.Principal.FindFirstValue(ClaimTypes.Email);
 
                 string userName = "";
-                if (!String.IsNullOrEmpty(email))
+                if (!string.IsNullOrEmpty(email))
                     userName = EmailToUserName(email);
 
                 return View("ExternalLogin", new ExternalLoginViewModel { Email = email, UserName = userName });
@@ -447,6 +456,8 @@ namespace PhotoHub.WEB.Controllers
         {
             return View();
         }
+
+        #endregion
 
         #region Helpers
 

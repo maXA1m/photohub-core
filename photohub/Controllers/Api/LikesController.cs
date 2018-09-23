@@ -1,9 +1,6 @@
-﻿#region using System/Microsoft
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-#endregion
 using PhotoHub.BLL.Interfaces;
 
 namespace PhotoHub.WEB.Controllers.Api
@@ -11,12 +8,22 @@ namespace PhotoHub.WEB.Controllers.Api
     [Route("api/likes")]
     public class LikesController : Controller
     {
+        #region Fields
+
         private readonly ILikesService _likesService;
+
+        #endregion
+
+        #region .ctors
 
         public LikesController(ILikesService likesService)
         {
             _likesService = likesService;
         }
+
+        #endregion
+
+        #region Logic
 
         [Authorize, HttpPost, Route("add/{photoId}")]
         public async Task Add(int photoId)
@@ -30,10 +37,16 @@ namespace PhotoHub.WEB.Controllers.Api
             await _likesService.DeleteAsync(photoId);
         }
 
+        #endregion
+
+        #region Disposing
+
         protected override void Dispose(bool disposing)
         {
             _likesService.Dispose();
             base.Dispose(disposing);
         }
+
+        #endregion
     }
 }

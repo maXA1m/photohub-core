@@ -1,23 +1,27 @@
-﻿#region using System
-using System;
-using System.Collections.Generic;
-#endregion
+﻿using System.Collections.Generic;
 using PhotoHub.DAL.Entities;
-#region using PhotoHub.BLL
 using PhotoHub.BLL.DTO;
-using PhotoHub.BLL.Interfaces;
-#endregion
 
 namespace PhotoHub.BLL.Mappers
 {
-    public class UsersDetailsMapper : IMapper<UserDetailsDTO, User>
+    /// <summary>
+    /// Methods for mapping user entities to user data transfer objects.
+    /// </summary>
+    public static class UsersDetailsMapper
     {
-        public UserDetailsDTO Map(User item)
+        #region Logic
+
+        /// <summary>
+        /// Maps user entity to user details DTO.
+        /// </summary>
+        public static UserDetailsDTO Map(User item)
         {
             if (item == null)
+            {
                 return null;
+            }
 
-            return new UserDetailsDTO()
+            return new UserDetailsDTO
             {
                 RealName = item.RealName,
                 UserName = item.UserName,
@@ -36,12 +40,18 @@ namespace PhotoHub.BLL.Mappers
                 Mutuals = null
             };
         }
-        public UserDetailsDTO Map(User item, bool confirmed, bool followed, bool blocked, bool iBlocked, ICollection<UserDTO> followings, ICollection<UserDTO> followers, ICollection<UserDTO> mutuals)
+
+        /// <summary>
+        /// Maps user entity to user details DTO.
+        /// </summary>
+        public static UserDetailsDTO Map(User item, bool confirmed, bool followed, bool blocked, bool iBlocked, ICollection<UserDTO> followings, ICollection<UserDTO> followers, ICollection<UserDTO> mutuals)
         {
             if (item == null)
+            {
                 return null;
+            }
 
-            return new UserDetailsDTO()
+            return new UserDetailsDTO
             {
                 RealName = item.RealName,
                 UserName = item.UserName,
@@ -61,12 +71,6 @@ namespace PhotoHub.BLL.Mappers
             };
         }
 
-        public List<UserDetailsDTO> MapRange(IEnumerable<User> items)
-        {
-            if (items == null)
-                return null;
-
-            return null;
-        }
+        #endregion
     }
 }

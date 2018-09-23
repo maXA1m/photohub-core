@@ -1,44 +1,53 @@
-﻿#region using System/Microsoft
-using System;
-using System.Linq;
+﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-#endregion
-#region using PhotoHub.DAL
 using PhotoHub.DAL.Interfaces;
 using PhotoHub.DAL.Entities;
-#endregion
-#region using PhotoHub.BLL
 using PhotoHub.BLL.Interfaces;
-using PhotoHub.BLL.DTO;
-using PhotoHub.BLL.Mappers;
-#endregion
 
 namespace PhotoHub.BLL.Services
 {
+    /// <summary>
+    /// Contains methods with comments processing logic.
+    /// Realization of ICommentsService.
+    /// </summary>
     public class CommentsService : ICommentsService
     {
+        #region Fields
+
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly UsersMapper _usersMapper;
         private readonly ICurrentUserService _currentUserService;
 
+        #endregion
+
+        #region .ctors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommentsService"/>.
+        /// </summary>
         public CommentsService(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
         {
             _unitOfWork = unitOfWork;
             _httpContextAccessor = httpContextAccessor;
-            _usersMapper = new UsersMapper();
             _currentUserService = new CurrentUserService(unitOfWork, httpContextAccessor);
         }
 
+        #endregion
+
+        #region Logic
+
+        /// <summary>
+        /// Adds comment by commented photo id and comment text.
+        /// </summary>
         public int? Add(int photoId, string text)
         {
             User user = _currentUserService.Get;
             Photo photo = _unitOfWork.Photos.Get(photoId);
 
-            if (!String.IsNullOrEmpty(text) && user != null && photo != null)
+            if (!string.IsNullOrEmpty(text) && user != null && photo != null)
             {
-                Comment comment = new Comment()
+                var comment = new Comment
                 {
                     Text = text,
                     OwnerId = user.Id,
@@ -55,14 +64,18 @@ namespace PhotoHub.BLL.Services
 
             return null;
         }
+
+        /// <summary>
+        /// Async adds comment by commented photo id and comment text.
+        /// </summary>
         public async Task<int?> AddAsync(int photoId, string text)
         {
             User user = _currentUserService.Get;
             Photo photo = await _unitOfWork.Photos.GetAsync(photoId);
 
-            if(!String.IsNullOrEmpty(text) && user != null && photo != null)
+            if(!string.IsNullOrEmpty(text) && user != null && photo != null)
             {
-                Comment comment = new Comment()
+                var comment = new Comment
                 {
                     Text = text,
                     OwnerId = user.Id,
@@ -80,6 +93,9 @@ namespace PhotoHub.BLL.Services
             return null;
         }
 
+        /// <summary>
+        /// Deletes comment by comment id.
+        /// </summary>
         public void Delete(int id)
         {
             User user = _currentUserService.Get;
@@ -92,6 +108,10 @@ namespace PhotoHub.BLL.Services
                 _unitOfWork.Save();
             }
         }
+
+        /// <summary>
+        /// Async deletes comment by comment id.
+        /// </summary>
         public async Task DeleteAsync(int id)
         {
             User user = _currentUserService.Get;
@@ -105,10 +125,16 @@ namespace PhotoHub.BLL.Services
             }
         }
 
+        #endregion
+
+        #region Disposing
+
         public void Dispose()
         {
             _unitOfWork.Dispose();
             GC.SuppressFinalize(this);
         }
+
+        #endregion
     }
 }

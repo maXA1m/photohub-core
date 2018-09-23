@@ -1,5 +1,4 @@
-﻿#region using System/Microsoft
-using System;
+﻿using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -8,28 +7,33 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-#endregion
-#region using PhotoHub.DAL
 using PhotoHub.DAL.Data;
 using PhotoHub.DAL.Entities;
 using PhotoHub.DAL.Interfaces;
 using PhotoHub.DAL.Repositories;
-#endregion
-#region using PhotoHub.BLL
 using PhotoHub.BLL.Interfaces;
 using PhotoHub.BLL.Services;
-#endregion
 
 namespace PhotoHub.WEB
 {
     public class Startup
     {
+        #region Properties
+
+        public IConfiguration Configuration { get; }
+
+        #endregion
+
+        #region .ctors
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        #endregion
+
+        #region Logic
 
         public void AddApplicationServices(IServiceCollection services)
         {
@@ -139,5 +143,7 @@ namespace PhotoHub.WEB
             //seeder.Seed().Wait();
             //seeder.CreateUserRoles(services).Wait();
         }
+
+        #endregion
     }
 }

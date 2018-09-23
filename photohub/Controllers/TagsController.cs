@@ -1,53 +1,59 @@
-﻿#region using System/Microsoft
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-#endregion
-#region using PhotoHub.BLL
 using PhotoHub.BLL.Interfaces;
-using PhotoHub.BLL.DTO;
-#endregion
-#region using PhotoHub.WEB
 using PhotoHub.WEB.ViewModels;
 using PhotoHub.WEB.Mappers;
-#endregion
 
 namespace PhotoHub.WEB.Controllers
 {
     public class TagsController : Controller
     {
+        #region Fields
+
         private readonly ITagsService _tagsService;
         private readonly ICurrentUserService _currentUserService;
-        #region private readonly mappers
-        private readonly UsersMapper _usersMapper;
-        private readonly TagsMapper _tagsMapper;
+
         #endregion
+
+        #region .ctors
 
         public TagsController(ITagsService tagsService, ICurrentUserService currentUserService)
         {
             _tagsService = tagsService;
             _currentUserService = currentUserService;
-            _usersMapper = new UsersMapper();
-            _tagsMapper = new TagsMapper();
         }
+
+        #endregion
+
+        #region Logic
 
         [Authorize, HttpGet, Route("tag/{name}")]
         public ActionResult Details(string name)
         {
-            TagViewModel item = _tagsMapper.Map(_tagsService.Get(name));
+            TagViewModel item = TagsMapper.Map(_tagsService.Get(name));
 
             if (User.Identity.IsAuthenticated)
-                ViewBag.CurrentUser = _usersMapper.Map(_currentUserService.GetDTO);
+            {
+                ViewBag.CurrentUser = UsersMapper.Map(_currentUserService.GetDTO);
+            }
 
             return View(item);
         }
 
+        #endregion
+
+        #region Disposing
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
+            {
                 _tagsService.Dispose();
+            }
 
             base.Dispose(disposing);
         }
+
+        #endregion
     }
 }

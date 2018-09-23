@@ -1,23 +1,29 @@
-﻿#region using System/Microsoft
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-#endregion
 using PhotoHub.BLL.Interfaces;
-using PhotoHub.WEB.ViewModels;
 
 namespace PhotoHub.WEB.Controllers.Api
 {
     [Route("api/comments")]
     public class CommentsController : Controller
     {
+        #region Fields
+
         private readonly ICommentsService _commentsService;
+
+        #endregion
+
+        #region .ctors
 
         public CommentsController(ICommentsService commentsService)
         {
             _commentsService = commentsService;
         }
+
+        #endregion
+
+        #region Logic
 
         [Authorize, HttpPost, Route("add")]
         public async Task<int?> Add(int photoId, string text)
@@ -31,10 +37,16 @@ namespace PhotoHub.WEB.Controllers.Api
             await _commentsService.DeleteAsync(id);
         }
 
+        #endregion
+
+        #region Disposing
+
         protected override void Dispose(bool disposing)
         {
             _commentsService.Dispose();
             base.Dispose(disposing);
         }
+
+        #endregion
     }
 }

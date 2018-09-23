@@ -1,24 +1,26 @@
-﻿#region using System
-using System;
-using System.Collections.Generic;
-#endregion
-using PhotoHub.DAL.Entities;
-#region using PhotoHub.BLL
+﻿using PhotoHub.DAL.Entities;
 using PhotoHub.BLL.DTO;
-using PhotoHub.BLL.Interfaces;
-#endregion
 
 namespace PhotoHub.BLL.Mappers
 {
-    public class UsersMapper : IMapper<UserDTO, User>
+    /// <summary>
+    /// Methods for mapping user entities to user data transfer objects.
+    /// </summary>
+    public static class UsersMapper
     {
+        #region Logic
 
-        public UserDTO Map(User item)
+        /// <summary>
+        /// Maps user entity to user DTO.
+        /// </summary>
+        public static UserDTO Map(User item)
         {
             if (item == null)
+            {
                 return null;
+            }
 
-            return new UserDTO()
+            return new UserDTO
             {
                 RealName = item.RealName,
                 UserName = item.UserName,
@@ -33,12 +35,18 @@ namespace PhotoHub.BLL.Mappers
                 IBlocked = false
             };
         }
-        public UserDTO Map(User item, bool confirmed, bool followed, bool blocked, bool iBlocked)
+
+        /// <summary>
+        /// Maps user entity to user DTO.
+        /// </summary>
+        public static UserDTO Map(User item, bool confirmed, bool followed, bool blocked, bool iBlocked)
         {
             if (item == null)
+            {
                 return null;
+            }
 
-            return new UserDTO()
+            return new UserDTO
             {
                 RealName = item.RealName,
                 UserName = item.UserName,
@@ -54,12 +62,6 @@ namespace PhotoHub.BLL.Mappers
             };
         }
 
-        public List<UserDTO> MapRange(IEnumerable<User> items)
-        {
-            if (items == null)
-                return null;
-
-            return null;
-        }
+        #endregion
     }
 }

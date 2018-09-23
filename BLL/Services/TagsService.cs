@@ -1,57 +1,76 @@
-﻿#region using System/Microsoft
-using System;
+﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-#endregion
-#region using PhotoHub.DAL
 using PhotoHub.DAL.Interfaces;
 using PhotoHub.DAL.Entities;
-#endregion
-#region using PhotoHub.BLL
 using PhotoHub.BLL.Interfaces;
 using PhotoHub.BLL.DTO;
 using PhotoHub.BLL.Mappers;
 using System.Collections.Generic;
-#endregion
 
 namespace PhotoHub.BLL.Services
 {
+    /// <summary>
+    /// Contains methods with tags processing logic.
+    /// Realization of ITagsService.
+    /// </summary>
     public class TagsService : ITagsService
     {
+        #region Fields
+
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        #region private readonly mappers
-        private readonly UsersMapper _usersMapper;
-        private readonly TagsMapper _tagsMapper;
+
         #endregion
 
+        #region .ctors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TagsService"/>.
+        /// </summary>
         public TagsService(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
         {
             _unitOfWork = unitOfWork;
             _httpContextAccessor = httpContextAccessor;
-            _usersMapper = new UsersMapper();
-            _tagsMapper = new TagsMapper();
         }
 
+        #endregion
+
+        #region Logic
+
+        /// <summary>
+        /// Loads all tags and returns collection of tag DTOs.
+        /// </summary>
         public IEnumerable<TagDTO> GetAll()
         {
-            return _tagsMapper.MapRange(_unitOfWork.Tags.GetAll());
+            return TagsMapper.MapRange(_unitOfWork.Tags.GetAll());
         }
 
+        /// <summary>
+        /// Loads tag by name and returns tag DTO.
+        /// </summary>
         public TagDTO Get(string name)
         {
             Tag tag = _unitOfWork.Tags.Find(t => t.Name == name).FirstOrDefault();
+
             if (tag != null)
-                return _tagsMapper.Map(tag);
+            {
+                return TagsMapper.Map(tag);
+            }
 
             return null;
         }
+
+        #endregion
+
+        #region Disposing
 
         public void Dispose()
         {
             _unitOfWork.Dispose();
             GC.SuppressFinalize(this);
         }
+
+        #endregion
     }
 }

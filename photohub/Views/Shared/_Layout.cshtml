@@ -11,12 +11,12 @@
         {
 
             string root = Directory.GetCurrentDirectory();
-            string dir = String.Format("{0}\\wwwroot\\data\\settings\\{1}", root, User.Identity.Name);
-            string file = String.Format("{0}\\config.json", dir);
+            var dir = $"{root}\\wwwroot\\data\\settings\\{User.Identity.Name}";
+            var file = $"{dir}\\config.json";
 
             if (Directory.Exists(dir) && File.Exists(file))
             {
-                using (StreamReader r = new StreamReader(file))
+                using (var r = new StreamReader(file))
                 {
                     var json = r.ReadToEnd();
                     UserSettingsViewModel setting = JsonConvert.DeserializeObject<UserSettingsViewModel>(json);

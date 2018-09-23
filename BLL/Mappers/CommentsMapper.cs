@@ -1,20 +1,26 @@
-﻿using System.Collections.Generic;
-using PhotoHub.DAL.Entities;
-#region using PhotoHub.BLL
+﻿using PhotoHub.DAL.Entities;
 using PhotoHub.BLL.DTO;
-using PhotoHub.BLL.Interfaces;
-#endregion
 
 namespace PhotoHub.BLL.Mappers
 {
-    public class CommentsMapper : IMapper<CommentDTO, Comment>
+    /// <summary>
+    /// Methods for mapping comment entities to comment data transfer objects.
+    /// </summary>
+    public static class CommentsMapper
     {
-        public CommentDTO Map(Comment item)
+        #region Logic
+
+        /// <summary>
+        /// Maps comment entity to comment DTO without owner.
+        /// </summary>
+        public static CommentDTO Map(Comment item)
         {
             if (item == null)
+            {
                 return null;
+            }
 
-            return new CommentDTO()
+            return new CommentDTO
             {
                 Id = item.Id,
                 Text = item.Text,
@@ -22,12 +28,18 @@ namespace PhotoHub.BLL.Mappers
                 Date = item.Date
             };
         }
-        public CommentDTO Map(Comment item, UserDTO owner)
+
+        /// <summary>
+        /// Maps comment entity to comment DTO with owner.
+        /// </summary>
+        public static CommentDTO Map(Comment item, UserDTO owner)
         {
             if (item == null)
+            {
                 return null;
+            }
 
-            return new CommentDTO()
+            return new CommentDTO
             {
                 Id = item.Id,
                 Text = item.Text,
@@ -36,12 +48,6 @@ namespace PhotoHub.BLL.Mappers
             };
         }
 
-        public List<CommentDTO> MapRange(IEnumerable<Comment> items)
-        {
-            if (items == null)
-                return null;
-
-            return null;
-        }
+        #endregion
     }
 }

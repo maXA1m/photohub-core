@@ -1,41 +1,57 @@
 ﻿using System.Collections.Generic;
 using PhotoHub.DAL.Entities;
-#region using PhotoHub.BLL
 using PhotoHub.BLL.DTO;
-using PhotoHub.BLL.Interfaces;
-#endregion
 
 namespace PhotoHub.BLL.Mappers
 {
-    public class TagsMapper : IMapper<TagDTO, Tag>
+    /// <summary>
+    /// Methods for mapping tag entities to tag data transfer objects.
+    /// </summary>
+    public static class TagsMapper
     {
-        public TagDTO Map(Tag item)
+        #region Logic
+
+        /// <summary>
+        /// Maps tag entity to tag DTO.
+        /// </summary>
+        public static TagDTO Map(Tag item)
         {
             if (item == null)
+            {
                 return null;
+            }
 
-            return new TagDTO()
+            return new TagDTO
             {
                 Id = item.Id,
                 Name = item.Name
             };
         }
 
-        public List<TagDTO> MapRange(IEnumerable<Tag> items)
+        /// <summary>
+        /// Maps tag entities to tag DTOs.
+        /// </summary>
+        public static List<TagDTO> MapRange(IEnumerable<Tag> items)
         {
             if (items == null)
-                return null;
-
-            List<TagDTO> tags = new List<TagDTO>();
-            foreach (Tag tag in items)
             {
-                tags.Add(new TagDTO()
+                return null;
+            }
+
+            var tags = new List<TagDTO>();
+
+            foreach (var tag in items)
+            {
+                tags.Add(new TagDTO
                 {
                     Id = tag.Id,
                     Name = tag.Name
                 });
             }
+
             return tags;
         }
+
+        #endregion
     }
 }
