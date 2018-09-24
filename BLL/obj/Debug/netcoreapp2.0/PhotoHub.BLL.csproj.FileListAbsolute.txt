@@ -31,12 +31,8 @@ C:\Users\maxmi\Desktop\photohub-n-layer\BLL\bin\Debug\netcoreapp2.0\Microsoft.As
 C:\Users\maxmi\Desktop\photohub-core\BLL\bin\Debug\netcoreapp2.0\PhotoHub.BLL.deps.json
 C:\Users\maxmi\Desktop\photohub-core\BLL\bin\Debug\netcoreapp2.0\PhotoHub.BLL.dll
 C:\Users\maxmi\Desktop\photohub-core\BLL\bin\Debug\netcoreapp2.0\PhotoHub.BLL.pdb
-C:\Users\maxmi\Desktop\photohub-core\BLL\bin\Debug\netcoreapp2.0\Microsoft.AspNetCore.Http.Abstractions.dll
 C:\Users\maxmi\Desktop\photohub-core\BLL\bin\Debug\netcoreapp2.0\PhotoHub.DAL.dll
-C:\Users\maxmi\Desktop\photohub-core\BLL\bin\Debug\netcoreapp2.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 C:\Users\maxmi\Desktop\photohub-core\BLL\bin\Debug\netcoreapp2.0\PhotoHub.DAL.pdb
-C:\Users\maxmi\Desktop\photohub-core\BLL\bin\Debug\netcoreapp2.0\Microsoft.AspNetCore.Http.Abstractions.xml
-C:\Users\maxmi\Desktop\photohub-core\BLL\bin\Debug\netcoreapp2.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.xml
 C:\Users\maxmi\Desktop\photohub-core\BLL\obj\Debug\netcoreapp2.0\PhotoHub.BLL.csproj.CoreCompileInputs.cache
 C:\Users\maxmi\Desktop\photohub-core\BLL\obj\Debug\netcoreapp2.0\PhotoHub.BLL.AssemblyInfoInputs.cache
 C:\Users\maxmi\Desktop\photohub-core\BLL\obj\Debug\netcoreapp2.0\PhotoHub.BLL.AssemblyInfo.cs
