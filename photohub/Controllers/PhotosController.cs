@@ -11,9 +11,6 @@ using PhotoHub.BLL.Interfaces;
 using PhotoHub.BLL.DTO;
 using PhotoHub.WEB.ViewModels;
 using PhotoHub.WEB.Mappers;
-//using System.Drawing;
-//using System.Drawing.Imaging;
-//using System.Text;
 using ImageMagick;
 
 namespace PhotoHub.WEB.Controllers
@@ -26,6 +23,8 @@ namespace PhotoHub.WEB.Controllers
         private readonly IUsersService _usersService;
         private readonly IHostingEnvironment _environment;
         private readonly ICurrentUserService _currentUserService;
+
+        private bool _disposed;
 
         #endregion
 
@@ -66,7 +65,6 @@ namespace PhotoHub.WEB.Controllers
         public ActionResult Create()
         {
             ViewBag.Filters = FiltersMapper.MapRange(_photosService.Filters);
-            //ViewBag.Tags = _tagsMapper.MapRange(_photosService.Tags);
 
             return View(UsersMapper.Map(_currentUserService.GetDTO));
         }
@@ -100,16 +98,12 @@ namespace PhotoHub.WEB.Controllers
 
                 if(manufacturer == null || model == null)
                 {
-                    // Read image from file
                     using (var image = new MagickImage(fileName))
                     {
-                        // Retrieve the exif information
                         ExifProfile profile = image.GetExifProfile();
-
-                        // Check if image contains an exif profile
+                        
                         if (profile != null)
                         {
-                            // Write all values to the console
                             foreach (var value in profile.Values)
                             {
                                 if (value.Tag == ExifTag.Make && manufacturer == null)
@@ -143,7 +137,6 @@ namespace PhotoHub.WEB.Controllers
             {
                 ViewBag.LikesCount = item.Likes.Count();
                 ViewBag.Filters = FiltersMapper.MapRange(_photosService.Filters);
-                //ViewBag.Tags = _tagsMapper.MapRange(_photosService.Tags);
 
                 return View(PhotosMapper.Map(item));
             }
@@ -185,16 +178,21 @@ namespace PhotoHub.WEB.Controllers
 
         #endregion
 
-        #region Logic
+        #region Disposing
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
+            if (!_disposed)
             {
-                _photosService.Dispose();
-            }
+                if (disposing)
+                {
+                    _photosService.Dispose();
+                    _usersService.Dispose();
+                    _currentUserService.Dispose();
+                }
 
-            base.Dispose(disposing);
+                base.Dispose(disposing);
+            }
         }
 
         #endregion

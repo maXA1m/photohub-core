@@ -4282,11 +4282,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\maxmi\\Desktop\\photohub-core\\DAL\\PhotoHub.DAL.csproj",
+      "projectUniqueName": "D:\\Projects\\photohub-core\\DAL\\PhotoHub.DAL.csproj",
       "projectName": "PhotoHub.DAL",
-      "projectPath": "C:\\Users\\maxmi\\Desktop\\photohub-core\\DAL\\PhotoHub.DAL.csproj",
+      "projectPath": "D:\\Projects\\photohub-core\\DAL\\PhotoHub.DAL.csproj",
       "packagesPath": "C:\\Users\\maxmi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\maxmi\\Desktop\\photohub-core\\DAL\\obj\\",
+      "outputPath": "D:\\Projects\\photohub-core\\DAL\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

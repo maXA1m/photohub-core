@@ -24,6 +24,8 @@ namespace PhotoHub.WEB.Controllers
         private readonly ILogger _logger;
         private readonly IUsersService _usersService;
 
+        private bool _disposed;
+
         #endregion
 
         #region .ctors
@@ -493,6 +495,24 @@ namespace PhotoHub.WEB.Controllers
             }
 
             return result;
+        }
+
+        #endregion
+
+        #region Disposing
+
+        protected override void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _userManager.Dispose();
+                    _usersService.Dispose();
+                }
+
+                base.Dispose(disposing);
+            }
         }
 
         #endregion

@@ -13,6 +13,7 @@ namespace PhotoHub.WEB.Controllers
         #region Fields
 
         private readonly IPhotosService _photosService;
+        private bool _disposed;
 
         #endregion
 
@@ -55,6 +56,23 @@ namespace PhotoHub.WEB.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        #endregion
+
+        #region Disposing
+
+        protected override void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _photosService.Dispose();
+                }
+
+                base.Dispose(disposing);
+            }
         }
 
         #endregion

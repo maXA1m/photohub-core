@@ -13,6 +13,8 @@ namespace PhotoHub.WEB.Controllers
         private readonly ITagsService _tagsService;
         private readonly ICurrentUserService _currentUserService;
 
+        private bool _disposed;
+
         #endregion
 
         #region .ctors
@@ -46,12 +48,16 @@ namespace PhotoHub.WEB.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
+            if (!_disposed)
             {
-                _tagsService.Dispose();
-            }
+                if (disposing)
+                {
+                    _tagsService.Dispose();
+                    _currentUserService.Dispose();
+                }
 
-            base.Dispose(disposing);
+                base.Dispose(disposing);
+            }
         }
 
         #endregion

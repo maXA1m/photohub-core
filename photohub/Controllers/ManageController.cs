@@ -38,6 +38,8 @@ namespace PhotoHub.WEB.Controllers
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
         private const string RecoveryCodesKey = nameof(RecoveryCodesKey);
 
+        private bool _disposed;
+
         #endregion
 
         #region .ctors
@@ -632,6 +634,24 @@ namespace PhotoHub.WEB.Controllers
 
             model.SharedKey = FormatKey(unformattedKey);
             model.AuthenticatorUri = GenerateQrCodeUri(user.Email, unformattedKey);
+        }
+
+        #endregion
+
+        #region Disposing
+
+        protected override void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _userManager.Dispose();
+                    _usersService.Dispose();
+                }
+
+                base.Dispose(disposing);
+            }
         }
 
         #endregion

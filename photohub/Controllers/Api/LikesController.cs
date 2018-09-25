@@ -12,6 +12,8 @@ namespace PhotoHub.WEB.Controllers.Api
 
         private readonly ILikesService _likesService;
 
+        private bool _disposed;
+
         #endregion
 
         #region .ctors
@@ -43,8 +45,15 @@ namespace PhotoHub.WEB.Controllers.Api
 
         protected override void Dispose(bool disposing)
         {
-            _likesService.Dispose();
-            base.Dispose(disposing);
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _likesService.Dispose();
+                }
+
+                base.Dispose(disposing);
+            }
         }
 
         #endregion

@@ -10,3 +10,15 @@ C:\Users\maxmi\Desktop\photohub-core\BLL\obj\Release\netcoreapp2.0\PhotoHub.BLL.
 C:\Users\maxmi\Desktop\photohub-core\BLL\obj\Release\netcoreapp2.0\PhotoHub.BLL.dll
 C:\Users\maxmi\Desktop\photohub-core\BLL\obj\Release\netcoreapp2.0\PhotoHub.BLL.pdb
 C:\Users\maxmi\Desktop\photohub-core\BLL\obj\Release\netcoreapp2.0\PhotoHub.BLL.csprojAssemblyReference.cache
+D:\Projects\photohub-core\BLL\bin\Release\netcoreapp2.0\PhotoHub.BLL.deps.json
+D:\Projects\photohub-core\BLL\bin\Release\netcoreapp2.0\PhotoHub.BLL.dll
+D:\Projects\photohub-core\BLL\bin\Release\netcoreapp2.0\PhotoHub.BLL.pdb
+D:\Projects\photohub-core\BLL\bin\Release\netcoreapp2.0\PhotoHub.DAL.dll
+D:\Projects\photohub-core\BLL\bin\Release\netcoreapp2.0\PhotoHub.DAL.pdb
+D:\Projects\photohub-core\BLL\obj\Release\netcoreapp2.0\PhotoHub.BLL.csprojAssemblyReference.cache
+D:\Projects\photohub-core\BLL\obj\Release\netcoreapp2.0\PhotoHub.BLL.csproj.CoreCompileInputs.cache
+D:\Projects\photohub-core\BLL\obj\Release\netcoreapp2.0\PhotoHub.BLL.AssemblyInfoInputs.cache
+D:\Projects\photohub-core\BLL\obj\Release\netcoreapp2.0\PhotoHub.BLL.AssemblyInfo.cs
+D:\Projects\photohub-core\BLL\obj\Release\netcoreapp2.0\PhotoHub.BLL.csproj.CopyComplete
+D:\Projects\photohub-core\BLL\obj\Release\netcoreapp2.0\PhotoHub.BLL.dll
+D:\Projects\photohub-core\BLL\obj\Release\netcoreapp2.0\PhotoHub.BLL.pdb

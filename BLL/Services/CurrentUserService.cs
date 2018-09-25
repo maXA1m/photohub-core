@@ -20,6 +20,8 @@ namespace PhotoHub.BLL.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
+        private bool _disposed;
+
         #endregion
 
         #region Properties
@@ -73,8 +75,26 @@ namespace PhotoHub.BLL.Services
 
         public void Dispose()
         {
-            _unitOfWork.Dispose();
+            Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _unitOfWork.Dispose();
+                }
+
+                _disposed = true;
+            }
+        }
+
+        ~CurrentUserService()
+        {
+            Dispose(false);
         }
 
         #endregion

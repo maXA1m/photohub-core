@@ -20,6 +20,8 @@ namespace PhotoHub.WEB.Controllers.Api
         private const int _getForUserPageSize = 4;
         private const int _getForTagPageSize = 16;
 
+        private bool _disposed;
+
         #endregion
 
         #region .ctors
@@ -105,8 +107,15 @@ namespace PhotoHub.WEB.Controllers.Api
 
         protected override void Dispose(bool disposing)
         {
-            _photosService.Dispose();
-            base.Dispose(disposing);
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _photosService.Dispose();
+                }
+
+                base.Dispose(disposing);
+            }
         }
 
         #endregion

@@ -6,3 +6,12 @@ C:\Users\maxmi\Desktop\photohub-core\DAL\obj\Release\netcoreapp2.0\PhotoHub.DAL.
 C:\Users\maxmi\Desktop\photohub-core\DAL\obj\Release\netcoreapp2.0\PhotoHub.DAL.AssemblyInfo.cs
 C:\Users\maxmi\Desktop\photohub-core\DAL\obj\Release\netcoreapp2.0\PhotoHub.DAL.dll
 C:\Users\maxmi\Desktop\photohub-core\DAL\obj\Release\netcoreapp2.0\PhotoHub.DAL.pdb
+D:\Projects\photohub-core\DAL\bin\Release\netcoreapp2.0\PhotoHub.DAL.deps.json
+D:\Projects\photohub-core\DAL\bin\Release\netcoreapp2.0\PhotoHub.DAL.dll
+D:\Projects\photohub-core\DAL\bin\Release\netcoreapp2.0\PhotoHub.DAL.pdb
+D:\Projects\photohub-core\DAL\obj\Release\netcoreapp2.0\PhotoHub.DAL.csprojAssemblyReference.cache
+D:\Projects\photohub-core\DAL\obj\Release\netcoreapp2.0\PhotoHub.DAL.csproj.CoreCompileInputs.cache
+D:\Projects\photohub-core\DAL\obj\Release\netcoreapp2.0\PhotoHub.DAL.AssemblyInfoInputs.cache
+D:\Projects\photohub-core\DAL\obj\Release\netcoreapp2.0\PhotoHub.DAL.AssemblyInfo.cs
+D:\Projects\photohub-core\DAL\obj\Release\netcoreapp2.0\PhotoHub.DAL.dll
+D:\Projects\photohub-core\DAL\obj\Release\netcoreapp2.0\PhotoHub.DAL.pdb
