@@ -53,6 +53,8 @@ namespace PhotoHub.WEB.Controllers.Api
                     _tagsService.Dispose();
                 }
 
+                _disposed = true;
+
                 base.Dispose(disposing);
             }
         }

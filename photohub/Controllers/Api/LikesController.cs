@@ -52,6 +52,8 @@ namespace PhotoHub.WEB.Controllers.Api
                     _likesService.Dispose();
                 }
 
+                _disposed = true;
+
                 base.Dispose(disposing);
             }
         }

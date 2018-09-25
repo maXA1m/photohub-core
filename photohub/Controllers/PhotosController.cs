@@ -191,6 +191,8 @@ namespace PhotoHub.WEB.Controllers
                     _currentUserService.Dispose();
                 }
 
+                _disposed = true;
+
                 base.Dispose(disposing);
             }
         }

@@ -114,6 +114,8 @@ namespace PhotoHub.WEB.Controllers.Api
                     _photosService.Dispose();
                 }
 
+                _disposed = true;
+
                 base.Dispose(disposing);
             }
         }
