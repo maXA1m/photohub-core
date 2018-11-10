@@ -9,8 +9,6 @@ namespace PhotoHub.DAL.Interfaces
     /// </summary>
     public interface IRepository<T> where T : class
     {
-        #region Methods
-
         /// <summary>
         /// Method for fetching all data from table.
         /// </summary>
@@ -60,7 +58,5 @@ namespace PhotoHub.DAL.Interfaces
         /// Async method for deleting entity.
         /// </summary>
         Task DeleteAsync(int id);
-
-        #endregion
     }
 }

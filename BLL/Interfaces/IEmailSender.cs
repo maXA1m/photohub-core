@@ -7,13 +7,9 @@ namespace PhotoHub.BLL.Interfaces
     /// </summary>
     public interface IEmailSender
     {
-        #region Methods
-
         /// <summary>
         /// Async sends email.
         /// </summary>
         Task SendEmailAsync(string email, string subject, string message);
-
-        #endregion
     }
 }

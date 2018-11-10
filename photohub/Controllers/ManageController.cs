@@ -12,8 +12,6 @@ using PhotoHub.DAL.Entities;
 using PhotoHub.BLL.Interfaces;
 using PhotoHub.WEB.Extensions;
 using PhotoHub.WEB.ViewModels.Manage;
-using PhotoHub.WEB.Mappers;
-using PhotoHub.WEB.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Newtonsoft.Json;
@@ -38,7 +36,7 @@ namespace PhotoHub.WEB.Controllers
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
         private const string RecoveryCodesKey = nameof(RecoveryCodesKey);
 
-        private bool _disposed;
+        private bool _isDisposed;
 
         #endregion
 
@@ -76,8 +74,7 @@ namespace PhotoHub.WEB.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            UserDetailsViewModel user = UsersDetailsMapper.Map(_usersService.Get(User.Identity.Name));
-            if (user == null)
+            var user = _usersService.Get(User.Identity.Name).ToViewModel() ??
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
             var model = new IndexViewModel
@@ -99,7 +96,9 @@ namespace PhotoHub.WEB.Controllers
         public async Task<IActionResult> Index(IndexViewModel model)
         {
             if (!ModelState.IsValid)
+            {
                 return View(model);
+            }
 
             await _usersService.EditAsync(User.Identity.Name, model.RealName, model.About, model.WebSite, model.Gender);
 
@@ -128,11 +127,8 @@ namespace PhotoHub.WEB.Controllers
                 return View(model);
             }
 
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
+            var user = await _userManager.GetUserAsync(User) ?? 
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
 
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
@@ -146,11 +142,8 @@ namespace PhotoHub.WEB.Controllers
         [HttpGet]
         public async Task<IActionResult> ChangePassword()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
+            var user = await _userManager.GetUserAsync(User) ?? 
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
 
             var hasPassword = await _userManager.HasPasswordAsync(user);
             if (!hasPassword)
@@ -171,11 +164,8 @@ namespace PhotoHub.WEB.Controllers
                 return View(model);
             }
 
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
+            var user = await _userManager.GetUserAsync(User) ?? 
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
 
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
             if (!changePasswordResult.Succeeded)
@@ -197,19 +187,21 @@ namespace PhotoHub.WEB.Controllers
         {
             if(avatar != null && avatar.Length > 1)
             {
-                UserDetailsViewModel user = UsersDetailsMapper.Map(_usersService.Get(User.Identity.Name ?? userName));
+                var user = _usersService.Get(User.Identity.Name ?? userName).ToViewModel();
 
-                string fileName = $"avatar{Path.GetExtension(ContentDispositionHeaderValue.Parse(avatar.ContentDisposition).FileName.Trim('"'))}";
+                var fileName = $"avatar{Path.GetExtension(ContentDispositionHeaderValue.Parse(avatar.ContentDisposition).FileName.Trim('"'))}";
 
                 user.Avatar = fileName;
 
                 fileName = Path.Combine(_environment.WebRootPath, "data/avatars") + $@"/{User.Identity.Name}/{fileName}";
 
-                string dir = Path.Combine(_environment.WebRootPath, "data/avatars") + $@"/{User.Identity.Name}";
+                var dir = Path.Combine(_environment.WebRootPath, "data/avatars") + $@"/{User.Identity.Name}";
                 if (!Directory.Exists(dir))
+                {
                     Directory.CreateDirectory(dir);
+                }
 
-                using (FileStream fs = System.IO.File.Create(fileName))
+                using (var fs = System.IO.File.Create(fileName))
                 {
                     await avatar.CopyToAsync(fs);
                     await fs.FlushAsync();
@@ -258,9 +250,11 @@ namespace PhotoHub.WEB.Controllers
             string file = $"{dir}\\config.json";
 
             if (!Directory.Exists(dir))
+            {
                 Directory.CreateDirectory(dir);
+            }
 
-            using (StreamWriter sw = System.IO.File.CreateText(file))
+            using (var sw = System.IO.File.CreateText(file))
             {
                 var serializer = new JsonSerializer();
                 var userSettings = new UserSettingsViewModel() { AccentColor = accentColor, ThemeColor = themeColor };
@@ -275,11 +269,8 @@ namespace PhotoHub.WEB.Controllers
         [HttpGet]
         public async Task<IActionResult> SetPassword()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
+            var user = await _userManager.GetUserAsync(User) ??
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
 
             var hasPassword = await _userManager.HasPasswordAsync(user);
 
@@ -301,11 +292,8 @@ namespace PhotoHub.WEB.Controllers
                 return View(model);
             }
 
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
+            var user = await _userManager.GetUserAsync(User) ??
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
 
             var addPasswordResult = await _userManager.AddPasswordAsync(user, model.NewPassword);
             if (!addPasswordResult.Succeeded)
@@ -323,11 +311,8 @@ namespace PhotoHub.WEB.Controllers
         [HttpGet]
         public async Task<IActionResult> ExternalLogins()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
+            var user = await _userManager.GetUserAsync(User) ?? 
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
 
             var model = new ExternalLoginsViewModel { CurrentLogins = await _userManager.GetLoginsAsync(user) };
             model.OtherLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync())
@@ -339,56 +324,12 @@ namespace PhotoHub.WEB.Controllers
             return View(model);
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> LinkLogin(string provider)
-        //{
-        //    // Clear the existing external cookie to ensure a clean login process
-        //    await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-
-        //    // Request a redirect to the external login provider to link a login for the current user
-        //    var redirectUrl = Url.Action(nameof(LinkLoginCallback));
-        //    var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl, _userManager.GetUserId(User));
-        //    return new ChallengeResult(provider, properties);
-        //}
-
-        //[HttpGet]
-        //public async Task<IActionResult> LinkLoginCallback()
-        //{
-        //    var user = await _userManager.GetUserAsync(User);
-        //    if (user == null)
-        //    {
-        //        throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-        //    }
-
-        //    var info = await _signInManager.GetExternalLoginInfoAsync(user.Id);
-        //    if (info == null)
-        //    {
-        //        throw new ApplicationException($"Unexpected error occurred loading external login info for user with ID '{user.Id}'.");
-        //    }
-
-        //    var result = await _userManager.AddLoginAsync(user, info);
-        //    if (!result.Succeeded)
-        //    {
-        //        throw new ApplicationException($"Unexpected error occurred adding external login for user with ID '{user.Id}'.");
-        //    }
-
-        //    // Clear the existing external cookie to ensure a clean login process
-        //    await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-
-        //    StatusMessage = "The external login was added.";
-        //    return RedirectToAction(nameof(ExternalLogins));
-        //}
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveLogin(RemoveLoginViewModel model)
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
+            var user = await _userManager.GetUserAsync(User) ?? 
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
 
             var result = await _userManager.RemoveLoginAsync(user, model.LoginProvider, model.ProviderKey);
             if (!result.Succeeded)
@@ -404,11 +345,8 @@ namespace PhotoHub.WEB.Controllers
         [HttpGet]
         public async Task<IActionResult> TwoFactorAuthentication()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
+            var user = await _userManager.GetUserAsync(User) ??
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
 
             var model = new TwoFactorAuthenticationViewModel
             {
@@ -423,11 +361,8 @@ namespace PhotoHub.WEB.Controllers
         [HttpGet]
         public async Task<IActionResult> Disable2faWarning()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
+            var user = await _userManager.GetUserAsync(User) ?? 
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
 
             if (!user.TwoFactorEnabled)
             {
@@ -441,11 +376,8 @@ namespace PhotoHub.WEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Disable2fa()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
+            var user = await _userManager.GetUserAsync(User) ?? 
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
 
             var disable2faResult = await _userManager.SetTwoFactorEnabledAsync(user, false);
             if (!disable2faResult.Succeeded)
@@ -460,11 +392,8 @@ namespace PhotoHub.WEB.Controllers
         [HttpGet]
         public async Task<IActionResult> EnableAuthenticator()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
+            var user = await _userManager.GetUserAsync(User) ?? 
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
 
             var model = new EnableAuthenticatorViewModel();
             await LoadSharedKeyAndQrCodeUriAsync(user, model);
@@ -476,11 +405,8 @@ namespace PhotoHub.WEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EnableAuthenticator(EnableAuthenticatorViewModel model)
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
+            var user = await _userManager.GetUserAsync(User) ??
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
 
             if (!ModelState.IsValid)
             {
@@ -532,11 +458,8 @@ namespace PhotoHub.WEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ResetAuthenticator()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
+            var user = await _userManager.GetUserAsync(User) ?? 
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
 
             await _userManager.SetTwoFactorEnabledAsync(user, false);
             await _userManager.ResetAuthenticatorKeyAsync(user);
@@ -548,11 +471,8 @@ namespace PhotoHub.WEB.Controllers
         [HttpGet]
         public async Task<IActionResult> GenerateRecoveryCodesWarning()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
+            var user = await _userManager.GetUserAsync(User) ?? 
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
 
             if (!user.TwoFactorEnabled)
             {
@@ -566,11 +486,8 @@ namespace PhotoHub.WEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> GenerateRecoveryCodes()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
+            var user = await _userManager.GetUserAsync(User) ?? 
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
 
             if (!user.TwoFactorEnabled)
             {
@@ -642,7 +559,7 @@ namespace PhotoHub.WEB.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            if (!_disposed)
+            if (!_isDisposed)
             {
                 if (disposing)
                 {
@@ -650,7 +567,7 @@ namespace PhotoHub.WEB.Controllers
                     _usersService.Dispose();
                 }
 
-                _disposed = true;
+                _isDisposed = true;
 
                 base.Dispose(disposing);
             }

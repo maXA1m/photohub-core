@@ -9,8 +9,6 @@ namespace PhotoHub.BLL.Interfaces
     /// </summary>
     public interface ILikesService : IDisposable
     {
-        #region Methods
-
         /// <summary>
         /// Adds like by liked photo id.
         /// </summary>
@@ -30,7 +28,5 @@ namespace PhotoHub.BLL.Interfaces
         /// Async deletes like by photo id.
         /// </summary>
         Task DeleteAsync(int photoId);
-
-        #endregion
     }
 }

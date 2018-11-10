@@ -5,13 +5,13 @@ using PhotoHub.DAL.Interfaces;
 using PhotoHub.DAL.Entities;
 using PhotoHub.BLL.Interfaces;
 using PhotoHub.BLL.DTO;
-using PhotoHub.BLL.Mappers;
+using PhotoHub.BLL.Extensions;
 
 namespace PhotoHub.BLL.Services
 {
     /// <summary>
     /// Contains properties that returns current user.
-    /// Realization of ICurrentUserService.
+    /// Realization of <see cref="ICurrentUserService"/>.
     /// </summary>
     public class CurrentUserService : ICurrentUserService
     {
@@ -20,7 +20,7 @@ namespace PhotoHub.BLL.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        private bool _disposed;
+        private bool _isDisposed;
 
         #endregion
 
@@ -29,13 +29,7 @@ namespace PhotoHub.BLL.Services
         /// <returns>
         /// Returns current user entity.
         /// </returns>
-        public User Get
-        {
-            get
-            {
-                return _unitOfWork.Users.Find(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name).FirstOrDefault();
-            }
-        }
+        public User Get => _unitOfWork.Users.Find(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name).FirstOrDefault();
 
         /// <returns>
         /// Returns current user data transfer object.
@@ -44,15 +38,12 @@ namespace PhotoHub.BLL.Services
         {
             get
             {
-                User user = Get;
+                var user = Get;
 
-                return UsersMapper.Map(
-                    user,
-                    _unitOfWork.Confirmations.Find(c => c.UserId == user.Id).FirstOrDefault() != null,
-                    _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id && f.UserId == user.Id).FirstOrDefault() != null,
-                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.Id && b.UserId == user.Id).FirstOrDefault() != null,
-                    _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.Id && b.UserId == user.Id).FirstOrDefault() != null
-                );
+                return user.ToDTO(_unitOfWork.Confirmations.Find(c => c.UserId == user.Id).FirstOrDefault() != null,
+                                  _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id && f.UserId == user.Id).FirstOrDefault() != null,
+                                  _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.Id && b.UserId == user.Id).FirstOrDefault() != null,
+                                  _unitOfWork.Blockings.Find(b => b.BlockedUserId == user.Id && b.UserId == user.Id).FirstOrDefault() != null);
             }
         }
 
@@ -81,14 +72,14 @@ namespace PhotoHub.BLL.Services
 
         public virtual void Dispose(bool disposing)
         {
-            if (!_disposed)
+            if (!_isDisposed)
             {
                 if (disposing)
                 {
                     _unitOfWork.Dispose();
                 }
 
-                _disposed = true;
+                _isDisposed = true;
             }
         }
 

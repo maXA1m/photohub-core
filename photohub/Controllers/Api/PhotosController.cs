@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PhotoHub.BLL.Interfaces;
-using PhotoHub.WEB.Mappers;
+using PhotoHub.WEB.Extensions;
 using PhotoHub.WEB.ViewModels;
 
 namespace PhotoHub.WEB.Controllers.Api
@@ -20,7 +20,7 @@ namespace PhotoHub.WEB.Controllers.Api
         private const int _getForUserPageSize = 4;
         private const int _getForTagPageSize = 16;
 
-        private bool _disposed;
+        private bool _isDisposed;
 
         #endregion
 
@@ -38,49 +38,49 @@ namespace PhotoHub.WEB.Controllers.Api
         [HttpGet, Route("{page}")]
         public IEnumerable<PhotoViewModel> GetAll(int page)
         {
-            return PhotosMapper.MapRange(_photosService.GetAll(page, _getAllPageSize));
+            return _photosService.GetAll(page, _getAllPageSize).ToViewModels();
         }
         
         [HttpGet, Route("details/{id}")]
         public async Task<PhotoViewModel> Get(int id)
         {
-            return PhotosMapper.Map(await _photosService.GetAsync(id));
+            return (await _photosService.GetAsync(id)).ToViewModel();
         }
         
         [HttpGet, Route("home/{page}")]
         public IEnumerable<PhotoViewModel> GetPhotosHome(int page)
         {
-            return PhotosMapper.MapRange(_photosService.GetPhotosHome(page, _getHomePageSize));
+            return _photosService.GetPhotosHome(page, _getHomePageSize).ToViewModels();
         }
         
         [HttpGet, Route("user/{userName}/{page}")]
         public IEnumerable<PhotoViewModel> GetForUser(int page, string userName)
         {
-            return PhotosMapper.MapRange(_photosService.GetForUser(page, userName, _getForUserPageSize));
+            return _photosService.GetForUser(page, userName, _getForUserPageSize).ToViewModels();
         }
 
         [HttpGet, Route("tag/{tagName}")]
         public IEnumerable<PhotoViewModel> GetForTag(string tagName)
         {
-            return PhotosMapper.MapRange(_photosService.GetForTag(tagName, _getForTagPageSize));
+            return _photosService.GetForTag(tagName, _getForTagPageSize).ToViewModels();
         }
 
         [HttpGet, Route("bookmarks/{page}")]
         public IEnumerable<PhotoViewModel> GetBookmarks(int page)
         {
-            return PhotosMapper.MapRange(_photosService.GetBookmarks(page, _getAllPageSize));
+            return _photosService.GetBookmarks(page, _getAllPageSize).ToViewModels();
         }
 
         [HttpGet, Route("tags/{tagId}/{page}")]
         public IEnumerable<PhotoViewModel> GetTags(int tagId, int page)
         {
-            return PhotosMapper.MapRange(_photosService.GetTags(tagId, page, _getAllPageSize));
+            return _photosService.GetTags(tagId, page, _getAllPageSize).ToViewModels();
         }
 
         [HttpGet, Route("search")]
         public IEnumerable<PhotoViewModel> Search(int page, string search, int? iso, double? exposure, double? aperture, double? focalLength)
         {
-            return PhotosMapper.MapRange(_photosService.Search(page, search, _getHomePageSize, iso, exposure, aperture, focalLength));
+            return _photosService.Search(page, search, _getHomePageSize, iso, exposure, aperture, focalLength).ToViewModels();
         }
 
         [Authorize, HttpPost, Route("bookmark/{id}")]
@@ -107,14 +107,14 @@ namespace PhotoHub.WEB.Controllers.Api
 
         protected override void Dispose(bool disposing)
         {
-            if (!_disposed)
+            if (!_isDisposed)
             {
                 if (disposing)
                 {
                     _photosService.Dispose();
                 }
 
-                _disposed = true;
+                _isDisposed = true;
 
                 base.Dispose(disposing);
             }

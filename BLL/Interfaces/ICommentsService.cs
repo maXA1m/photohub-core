@@ -9,8 +9,6 @@ namespace PhotoHub.BLL.Interfaces
     /// </summary>
     public interface ICommentsService : IDisposable
     {
-        #region Methods
-
         /// <summary>
         /// Adds comment by commented photo id and comment text.
         /// </summary>
@@ -30,7 +28,5 @@ namespace PhotoHub.BLL.Interfaces
         /// Async deletes comment by comment id.
         /// </summary>
         Task DeleteAsync(int id);
-
-        #endregion
     }
 }

@@ -8,9 +8,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using PhotoHub.BLL.Interfaces;
-using PhotoHub.BLL.DTO;
 using PhotoHub.WEB.ViewModels;
-using PhotoHub.WEB.Mappers;
+using PhotoHub.WEB.Extensions;
 using ImageMagick;
 
 namespace PhotoHub.WEB.Controllers
@@ -24,7 +23,7 @@ namespace PhotoHub.WEB.Controllers
         private readonly IHostingEnvironment _environment;
         private readonly ICurrentUserService _currentUserService;
 
-        private bool _disposed;
+        private bool _isDisposed;
 
         #endregion
 
@@ -51,22 +50,22 @@ namespace PhotoHub.WEB.Controllers
         [HttpGet, Route("photos/{id}")]
         public async Task<ActionResult> Details(int id)
         {
-            PhotoViewModel item = PhotosMapper.Map(await _photosService.GetAsync(id));
+            var item = await _photosService.GetAsync(id);
 
             if (User.Identity.IsAuthenticated)
             {
-                ViewBag.CurrentUser = UsersMapper.Map(_currentUserService.GetDTO);
+                ViewBag.CurrentUser = _currentUserService.GetDTO;
             }
 
-            return View(item);
+            return View(item.ToViewModel());
         }
         
         [Authorize, HttpGet, Route("photos/create")]
         public ActionResult Create()
         {
-            ViewBag.Filters = FiltersMapper.MapRange(_photosService.Filters);
+            ViewBag.Filters = _photosService.Filters.ToViewModels();
 
-            return View(UsersMapper.Map(_currentUserService.GetDTO));
+            return View(_currentUserService.GetDTO.ToViewModel());
         }
         
         [Authorize, HttpPost, ValidateAntiForgeryToken, Route("photos/create")]
@@ -74,33 +73,33 @@ namespace PhotoHub.WEB.Controllers
         {
             if (ModelState.IsValid && file.Length > 0)
             {
-                string fileName = Convert.ToString(Guid.NewGuid()) + Path.GetExtension(ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"'));
+                var fileName = Convert.ToString(Guid.NewGuid()) + Path.GetExtension(ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"'));
 
                 item.Path = fileName;
 
                 fileName = Path.Combine(_environment.WebRootPath, "data/photos") + $@"/{User.Identity.Name}/{fileName}";
 
-                string dir = Path.Combine(_environment.WebRootPath, "data/photos") + $@"/{User.Identity.Name}";
+                var dir = Path.Combine(_environment.WebRootPath, "data/photos") + $@"/{User.Identity.Name}";
 
                 if (!Directory.Exists(dir))
                 {
                     Directory.CreateDirectory(dir);
                 }
 
-                using (FileStream fs = System.IO.File.Create(fileName))
+                using (var fs = System.IO.File.Create(fileName))
                 {
                     await file.CopyToAsync(fs);
                     await fs.FlushAsync();
                 }
 
-                string manufacturer = Brand;
-                string model = Model;
+                var manufacturer = Brand;
+                var model = Model;
 
                 if(manufacturer == null || model == null)
                 {
                     using (var image = new MagickImage(fileName))
                     {
-                        ExifProfile profile = image.GetExifProfile();
+                        var profile = image.GetExifProfile();
                         
                         if (profile != null)
                         {
@@ -130,15 +129,15 @@ namespace PhotoHub.WEB.Controllers
         [Authorize, HttpGet, Route("photos/edit/{id}")]
         public async Task<ActionResult> Edit(int id)
         {
-            PhotoDTO item = await _photosService.GetAsync(id);
-            UserViewModel user = UsersMapper.Map(_usersService.Get(item.Owner.UserName));
+            var item = await _photosService.GetAsync(id);
+            var user = _usersService.Get(item.Owner.UserName).ToViewModel();
 
             if (item != null && user != null && (user.UserName == item.Owner.UserName || User.IsInRole("Admin")))
             {
                 ViewBag.LikesCount = item.Likes.Count();
-                ViewBag.Filters = FiltersMapper.MapRange(_photosService.Filters);
+                ViewBag.Filters = _photosService.Filters.ToViewModels();
 
-                return View(PhotosMapper.Map(item));
+                return View(item.ToViewModel());
             }
 
             return RedirectToAction("Details", "Photos", new { id = item.Id });
@@ -158,8 +157,8 @@ namespace PhotoHub.WEB.Controllers
         [Authorize, HttpPost, Route("photos/delete/{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            PhotoDTO item = await _photosService.GetAsync(id);
-            UserViewModel user = UsersMapper.Map(_usersService.Get(item.Owner.UserName));
+            var item = await _photosService.GetAsync(id);
+            var user = _usersService.Get(item.Owner.UserName).ToViewModel();
 
             if (item != null && (user.UserName == item.Owner.UserName || User.IsInRole("Admin")))
             {
@@ -182,7 +181,7 @@ namespace PhotoHub.WEB.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            if (!_disposed)
+            if (!_isDisposed)
             {
                 if (disposing)
                 {
@@ -191,7 +190,7 @@ namespace PhotoHub.WEB.Controllers
                     _currentUserService.Dispose();
                 }
 
-                _disposed = true;
+                _isDisposed = true;
 
                 base.Dispose(disposing);
             }

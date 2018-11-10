@@ -8,8 +8,6 @@ namespace PhotoHub.BLL.DTO
     /// </summary>
     public class UserDetailsDTO : UserDTO
     {
-        #region Properties
-
         /// <summary>
         /// Gets and sets user about.
         /// </summary>
@@ -34,7 +32,5 @@ namespace PhotoHub.BLL.DTO
         /// Gets and sets followers collection of user follower DTOs.
         /// </summary>
         public IEnumerable<UserDTO> Followers { get; set; }
-
-        #endregion
     }
 }

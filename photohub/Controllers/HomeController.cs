@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using PhotoHub.WEB.ViewModels;
-using PhotoHub.WEB.Mappers;
+using PhotoHub.WEB.Extensions;
 using PhotoHub.BLL.Interfaces;
 
 namespace PhotoHub.WEB.Controllers
@@ -13,7 +13,8 @@ namespace PhotoHub.WEB.Controllers
         #region Fields
 
         private readonly IPhotosService _photosService;
-        private bool _disposed;
+
+        private bool _isDisposed;
 
         #endregion
 
@@ -42,7 +43,7 @@ namespace PhotoHub.WEB.Controllers
         [Authorize, Route("search")]
         public IActionResult Search()
         { 
-            ViewBag.Tags = TagsMapper.MapRange(_photosService.Tags);
+            ViewBag.Tags = _photosService.Tags.ToViewModels();
 
             return View();
         }
@@ -64,14 +65,14 @@ namespace PhotoHub.WEB.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            if (!_disposed)
+            if (!_isDisposed)
             {
                 if (disposing)
                 {
                     _photosService.Dispose();
                 }
 
-                _disposed = true;
+                _isDisposed = true;
 
                 base.Dispose(disposing);
             }

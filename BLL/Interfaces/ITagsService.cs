@@ -10,8 +10,6 @@ namespace PhotoHub.BLL.Interfaces
     /// </summary>
     public interface ITagsService : IDisposable
     {
-        #region Methods
-
         /// <summary>
         /// Loads all tags and returns collection of tag DTOs.
         /// </summary>
@@ -21,7 +19,5 @@ namespace PhotoHub.BLL.Interfaces
         /// Loads tag by name and returns tag DTO.
         /// </summary>
         TagDTO Get(string name);
-
-        #endregion
     }
 }

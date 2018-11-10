@@ -9,8 +9,6 @@ namespace PhotoHub.BLL.Interfaces
     /// </summary>
     public interface ICurrentUserService : IDisposable
     {
-        #region Properties
-
         /// <summary>
         /// Gets current user entity.
         /// </summary>
@@ -20,7 +18,5 @@ namespace PhotoHub.BLL.Interfaces
         /// Gets current user data transfer object.
         /// </summary>
         UserDTO GetDTO { get; }
-
-        #endregion
     }
 }

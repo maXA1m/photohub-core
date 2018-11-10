@@ -8,8 +8,6 @@ namespace PhotoHub.BLL.DTO
     /// </summary>
     public class CommentDTO
     {
-        #region Properties
-
         /// <summary>
         /// Gets and sets comment id.
         /// </summary>
@@ -29,7 +27,5 @@ namespace PhotoHub.BLL.DTO
         /// Gets and sets comment owner DTO.
         /// </summary>
         public UserDTO Owner { get; set; }
-
-        #endregion
     }
 }

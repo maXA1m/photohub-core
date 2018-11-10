@@ -9,7 +9,7 @@ namespace PhotoHub.BLL.Services
 {
     /// <summary>
     /// Contains methods with comments processing logic.
-    /// Realization of ICommentsService.
+    /// Realization of <see cref="ICommentsService"/>.
     /// </summary>
     public class CommentsService : ICommentsService
     {
@@ -19,7 +19,7 @@ namespace PhotoHub.BLL.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ICurrentUserService _currentUserService;
 
-        private bool _disposed;
+        private bool _isDisposed;
 
         #endregion
 
@@ -44,8 +44,8 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public int? Add(int photoId, string text)
         {
-            User user = _currentUserService.Get;
-            Photo photo = _unitOfWork.Photos.Get(photoId);
+            var user = _currentUserService.Get;
+            var photo = _unitOfWork.Photos.Get(photoId);
 
             if (!string.IsNullOrEmpty(text) && user != null && photo != null)
             {
@@ -58,7 +58,6 @@ namespace PhotoHub.BLL.Services
                 };
 
                 _unitOfWork.Comments.Create(comment);
-
                 _unitOfWork.Save();
 
                 return comment.Id;
@@ -72,8 +71,8 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public async Task<int?> AddAsync(int photoId, string text)
         {
-            User user = _currentUserService.Get;
-            Photo photo = await _unitOfWork.Photos.GetAsync(photoId);
+            var user = _currentUserService.Get;
+            var photo = await _unitOfWork.Photos.GetAsync(photoId);
 
             if(!string.IsNullOrEmpty(text) && user != null && photo != null)
             {
@@ -100,9 +99,9 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public void Delete(int id)
         {
-            User user = _currentUserService.Get;
-            Comment comment = _unitOfWork.Comments.Get(id);
-            Photo photo = _unitOfWork.Photos.Get(comment.PhotoId);
+            var user = _currentUserService.Get;
+            var comment = _unitOfWork.Comments.Get(id);
+            var photo = _unitOfWork.Photos.Get(comment.PhotoId);
 
             if (user != null && (photo.OwnerId == user.Id || comment.OwnerId == user.Id || _httpContextAccessor.HttpContext.User.IsInRole("Admin")))
             {
@@ -116,9 +115,9 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public async Task DeleteAsync(int id)
         {
-            User user = _currentUserService.Get;
-            Comment comment = _unitOfWork.Comments.Get(id);
-            Photo photo = _unitOfWork.Photos.Get(comment.PhotoId);
+            var user = _currentUserService.Get;
+            var comment = _unitOfWork.Comments.Get(id);
+            var photo = _unitOfWork.Photos.Get(comment.PhotoId);
 
             if (user != null && (photo.OwnerId == user.Id || comment.OwnerId == user.Id || _httpContextAccessor.HttpContext.User.IsInRole("Admin")))
             {
@@ -139,7 +138,7 @@ namespace PhotoHub.BLL.Services
 
         public virtual void Dispose(bool disposing)
         {
-            if (!_disposed)
+            if (!_isDisposed)
             {
                 if (disposing)
                 {
@@ -147,7 +146,7 @@ namespace PhotoHub.BLL.Services
                     _currentUserService.Dispose();
                 }
 
-                _disposed = true;
+                _isDisposed = true;
             }
         }
 

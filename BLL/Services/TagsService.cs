@@ -5,14 +5,14 @@ using PhotoHub.DAL.Interfaces;
 using PhotoHub.DAL.Entities;
 using PhotoHub.BLL.Interfaces;
 using PhotoHub.BLL.DTO;
-using PhotoHub.BLL.Mappers;
+using PhotoHub.BLL.Extensions;
 using System.Collections.Generic;
 
 namespace PhotoHub.BLL.Services
 {
     /// <summary>
     /// Contains methods with tags processing logic.
-    /// Realization of ITagsService.
+    /// Realization of <see cref="ITagsService"/>.
     /// </summary>
     public class TagsService : ITagsService
     {
@@ -21,7 +21,7 @@ namespace PhotoHub.BLL.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        private bool _disposed;
+        private bool _isDisposed;
 
         #endregion
 
@@ -45,7 +45,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public IEnumerable<TagDTO> GetAll()
         {
-            return TagsMapper.MapRange(_unitOfWork.Tags.GetAll());
+            return _unitOfWork.Tags.GetAll().ToDTOs();
         }
 
         /// <summary>
@@ -53,11 +53,11 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public TagDTO Get(string name)
         {
-            Tag tag = _unitOfWork.Tags.Find(t => t.Name == name).FirstOrDefault();
+            var tag = _unitOfWork.Tags.Find(t => t.Name == name).FirstOrDefault();
 
             if (tag != null)
             {
-                return TagsMapper.Map(tag);
+                return tag.ToDTO();
             }
 
             return null;
@@ -75,14 +75,14 @@ namespace PhotoHub.BLL.Services
 
         public virtual void Dispose(bool disposing)
         {
-            if (!_disposed)
+            if (!_isDisposed)
             {
                 if (disposing)
                 {
                     _unitOfWork.Dispose();
                 }
 
-                _disposed = true;
+                _isDisposed = true;
             }
         }
 

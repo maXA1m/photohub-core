@@ -6,8 +6,6 @@
     /// </summary>
     public class FilterDTO
     {
-        #region Properties
-
         /// <summary>
         /// Gets and sets filter id.
         /// </summary>
@@ -17,7 +15,5 @@
         /// Gets and sets filter name.
         /// </summary>
         public string Name { get; set; }
-
-        #endregion
     }
 }

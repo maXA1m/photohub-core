@@ -24,7 +24,7 @@ namespace PhotoHub.WEB.Controllers
         private readonly ILogger _logger;
         private readonly IUsersService _usersService;
 
-        private bool _disposed;
+        private bool _isDisposed;
 
         #endregion
 
@@ -235,7 +235,7 @@ namespace PhotoHub.WEB.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                ApplicationUser user =  await _usersService.CreateAsync(model.UserName, model.Email, model.Password);
+                var user =  await _usersService.CreateAsync(model.UserName, model.Email, model.Password);
 
                 if(user == null)
                 {
@@ -327,11 +327,9 @@ namespace PhotoHub.WEB.Controllers
             if (ModelState.IsValid)
             {
                 // Get the information about the user from the external login provider
-                var info = await _signInManager.GetExternalLoginInfoAsync();
-                if (info == null)
-                {
+                var info = await _signInManager.GetExternalLoginInfoAsync() ??
                     throw new ApplicationException("Error loading external login information during confirmation.");
-                }
+
                 var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
@@ -359,11 +357,9 @@ namespace PhotoHub.WEB.Controllers
             {
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
+            var user = await _userManager.FindByIdAsync(userId) ??
                 throw new ApplicationException($"Unable to load user with ID '{userId}'.");
-            }
+
             var result = await _userManager.ConfirmEmailAsync(user, code);
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
@@ -388,9 +384,7 @@ namespace PhotoHub.WEB.Controllers
                     // Don't reveal that the user does not exist or is not confirmed
                     return RedirectToAction(nameof(ForgotPasswordConfirmation));
                 }
-
-                // For more information on how to enable account confirmation and password reset please
-                // visit https://go.microsoft.com/fwlink/?LinkID=532713
+                
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
                 await _emailSender.SendEmailAsync(model.Email, "Reset Password",
@@ -503,7 +497,7 @@ namespace PhotoHub.WEB.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            if (!_disposed)
+            if (!_isDisposed)
             {
                 if (disposing)
                 {
@@ -511,7 +505,7 @@ namespace PhotoHub.WEB.Controllers
                     _usersService.Dispose();
                 }
 
-                _disposed = true;
+                _isDisposed = true;
 
                 base.Dispose(disposing);
             }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PhotoHub.BLL.Interfaces;
-using PhotoHub.WEB.Mappers;
-using PhotoHub.WEB.ViewModels;
+using PhotoHub.WEB.Extensions;
 
 namespace PhotoHub.WEB.Controllers
 {
@@ -12,7 +11,7 @@ namespace PhotoHub.WEB.Controllers
         private readonly IUsersService _usersService;
         private readonly ICurrentUserService _currentUserService;
 
-        private bool _disposed;
+        private bool _isDisposed;
 
         #endregion
 
@@ -31,11 +30,11 @@ namespace PhotoHub.WEB.Controllers
         [HttpGet, Route("users/{userName}")]
         public ActionResult Details(string userName)
         {
-            UserViewModel item = UsersDetailsMapper.Map(_usersService.Get(userName));
+            var item = _usersService.Get(userName).ToViewModel();
 
             if (User.Identity.IsAuthenticated)
             {
-                ViewBag.CurrentUser = UsersMapper.Map(_currentUserService.GetDTO);
+                ViewBag.CurrentUser = _currentUserService.GetDTO.ToViewModel();
             }
 
             return View(item);
@@ -47,7 +46,7 @@ namespace PhotoHub.WEB.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            if (!_disposed)
+            if (!_isDisposed)
             {
                 if (disposing)
                 {
@@ -55,7 +54,7 @@ namespace PhotoHub.WEB.Controllers
                     _currentUserService.Dispose();
                 }
 
-                _disposed = true;
+                _isDisposed = true;
 
                 base.Dispose(disposing);
             }

@@ -15,8 +15,6 @@ namespace PhotoHub.BLL.Interfaces
     /// </remarks>
     public interface IUsersService : IDisposable
     {
-        #region Methods
-
         /// <summary>
         /// Loads all users with paggination, returns collection of user DTOs.
         /// </summary>
@@ -106,7 +104,5 @@ namespace PhotoHub.BLL.Interfaces
         /// Async edits user.
         /// </summary>
         Task EditAsync(string userName, string realName, string about, string webSite, string gender, string avatar = null);
-
-        #endregion
     }
 }

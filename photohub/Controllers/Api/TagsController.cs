@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PhotoHub.BLL.Interfaces;
 using PhotoHub.WEB.ViewModels;
-using PhotoHub.WEB.Mappers;
+using PhotoHub.WEB.Extensions;
 
 namespace PhotoHub.WEB.Controllers.Api
 {
@@ -13,7 +13,7 @@ namespace PhotoHub.WEB.Controllers.Api
 
         private readonly ITagsService _tagsService;
 
-        private bool _disposed;
+        private bool _isDisposed;
 
         #endregion
 
@@ -31,13 +31,13 @@ namespace PhotoHub.WEB.Controllers.Api
         [HttpGet, Route("")]
         public IEnumerable<TagViewModel> GetAll()
         {
-            return TagsMapper.MapRange(_tagsService.GetAll());
+            return _tagsService.GetAll().ToViewModels();
         }
 
         [HttpGet, Route("{name}")]
         public TagViewModel Get(string name)
         {
-            return TagsMapper.Map(_tagsService.Get(name));
+            return _tagsService.Get(name).ToViewModel();
         }
 
         #endregion
@@ -46,14 +46,14 @@ namespace PhotoHub.WEB.Controllers.Api
 
         protected override void Dispose(bool disposing)
         {
-            if (!_disposed)
+            if (!_isDisposed)
             {
                 if (disposing)
                 {
                     _tagsService.Dispose();
                 }
 
-                _disposed = true;
+                _isDisposed = true;
 
                 base.Dispose(disposing);
             }

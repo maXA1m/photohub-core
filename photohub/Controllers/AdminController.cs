@@ -6,8 +6,6 @@ namespace PhotoHub.WEB.Controllers
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
-        #region Logic
-
         [HttpGet, Route("admin")]
         public IActionResult Index()
         {
@@ -28,7 +26,5 @@ namespace PhotoHub.WEB.Controllers
         {
             return View();
         }
-
-        #endregion
     }
 }

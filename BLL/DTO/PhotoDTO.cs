@@ -9,8 +9,6 @@ namespace PhotoHub.BLL.DTO
     /// </summary>
     public class PhotoDTO
     {
-        #region Properties
-
         /// <summary>
         /// Gets and sets photo id.
         /// </summary>
@@ -100,7 +98,5 @@ namespace PhotoHub.BLL.DTO
         /// Gets and sets collection of photo tags.
         /// </summary>
         public IEnumerable<TagDTO> Tags { get; set; }
-
-        #endregion
     }
 }

@@ -16,7 +16,7 @@ namespace PhotoHub.DAL.Repositories
 
         private readonly ApplicationDbContext _context;
 
-        private bool _disposed;
+        private bool _isDisposed;
 
         #endregion
 
@@ -151,14 +151,14 @@ namespace PhotoHub.DAL.Repositories
 
         public virtual void Dispose(bool disposing)
         {
-            if (!_disposed)
+            if (!_isDisposed)
             {
                 if (disposing)
                 {
                     _context.Dispose();
                 }
 
-                _disposed = true;
+                _isDisposed = true;
             }
         }
 

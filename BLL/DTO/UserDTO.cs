@@ -8,8 +8,6 @@ namespace PhotoHub.BLL.DTO
     /// </summary>
     public class UserDTO
     {
-        #region Properties
-
         /// <summary>
         /// Gets and sets user real name.
         /// </summary>
@@ -59,7 +57,5 @@ namespace PhotoHub.BLL.DTO
         /// Gets and sets user block current user state.
         /// </summary>
         public bool IBlocked { get; set; }
-
-        #endregion
     }
 }

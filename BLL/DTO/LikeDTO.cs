@@ -8,8 +8,6 @@ namespace PhotoHub.BLL.DTO
     /// </summary>
     public class LikeDTO
     {
-        #region Properties
-
         /// <summary>
         /// Gets and sets like id.
         /// </summary>
@@ -24,7 +22,5 @@ namespace PhotoHub.BLL.DTO
         /// Gets and sets like owner DTO.
         /// </summary>
         public UserDTO Owner { get; set; }
-
-        #endregion
     }
 }

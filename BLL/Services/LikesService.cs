@@ -10,7 +10,7 @@ namespace PhotoHub.BLL.Services
 {
     /// <summary>
     /// Contains methods with likes processing logic.
-    /// Realization of ILikesService.
+    /// Realization of <see cref="ILikesService"/>.
     /// </summary>
     public class LikesService : ILikesService
     {
@@ -20,7 +20,7 @@ namespace PhotoHub.BLL.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ICurrentUserService _currentUserService;
 
-        private bool _disposed;
+        private bool _isDisposed;
 
         #endregion
 
@@ -45,9 +45,9 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public void Add(int photoId)
         {
-            Photo photo = _unitOfWork.Photos.Get(photoId);
-            User user = _currentUserService.Get;
-            Like like = _unitOfWork.Likes.Find(l => l.OwnerId == user.Id && l.PhotoId == photo.Id).FirstOrDefault();
+            var photo = _unitOfWork.Photos.Get(photoId);
+            var user = _currentUserService.Get;
+            var like = _unitOfWork.Likes.Find(l => l.OwnerId == user.Id && l.PhotoId == photo.Id).FirstOrDefault();
 
             if (photo != null && user != null && like == null)
             {
@@ -69,9 +69,9 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public async Task AddAsync(int photoId)
         {
-            Photo photo = await _unitOfWork.Photos.GetAsync(photoId);
-            User user = _currentUserService.Get;
-            Like like = _unitOfWork.Likes.Find(l => l.OwnerId == user.Id && l.PhotoId == photo.Id).FirstOrDefault();
+            var photo = await _unitOfWork.Photos.GetAsync(photoId);
+            var user = _currentUserService.Get;
+            var like = _unitOfWork.Likes.Find(l => l.OwnerId == user.Id && l.PhotoId == photo.Id).FirstOrDefault();
 
             if (photo != null && user != null && like == null)
             {
@@ -93,9 +93,9 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public void Delete(int photoId)
         {
-            Photo photo = _unitOfWork.Photos.Get(photoId);
-            User user = _currentUserService.Get;
-            Like like = _unitOfWork.Likes.Find(l => l.OwnerId == user.Id && l.PhotoId == photo.Id).FirstOrDefault();
+            var photo = _unitOfWork.Photos.Get(photoId);
+            var user = _currentUserService.Get;
+            var like = _unitOfWork.Likes.Find(l => l.OwnerId == user.Id && l.PhotoId == photo.Id).FirstOrDefault();
 
             if (photo != null && user != null && like != null)
             {
@@ -109,9 +109,9 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public async Task DeleteAsync(int photoId)
         {
-            Photo photo = await _unitOfWork.Photos.GetAsync(photoId);
-            User user = _currentUserService.Get;
-            Like like = _unitOfWork.Likes.Find(l => l.OwnerId == user.Id && l.PhotoId == photo.Id).FirstOrDefault();
+            var photo = await _unitOfWork.Photos.GetAsync(photoId);
+            var user = _currentUserService.Get;
+            var like = _unitOfWork.Likes.Find(l => l.OwnerId == user.Id && l.PhotoId == photo.Id).FirstOrDefault();
 
             if (photo != null && user != null && like != null)
             {
@@ -132,7 +132,7 @@ namespace PhotoHub.BLL.Services
 
         public virtual void Dispose(bool disposing)
         {
-            if (!_disposed)
+            if (!_isDisposed)
             {
                 if (disposing)
                 {
@@ -140,7 +140,7 @@ namespace PhotoHub.BLL.Services
                     _currentUserService.Dispose();
                 }
 
-                _disposed = true;
+                _isDisposed = true;
             }
         }
 
