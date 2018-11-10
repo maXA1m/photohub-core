@@ -16,6 +16,21 @@ namespace PhotoHub.DAL.Repositories
 
         private readonly ApplicationDbContext _context;
 
+        private IRepository<ApplicationUser> _identityUsersRepository;
+        private IRepository<User> _usersRepository;
+        private IRepository<Photo> _photosRepository;
+        private IRepository<Comment> _commentsRepository;
+        private IRepository<Like> _likesRepository;
+        private IRepository<Confirmed> _confirmationsRepository;
+        private IRepository<Following> _followingsRepository;
+        private IRepository<BlackList> _blockingsRepository;
+        private IRepository<Bookmark> _bookmarksRepository;
+        private IRepository<Filter> _filtersRepository; 
+        private IRepository<Taging> _tagingsRepository; 
+        private IRepository<Tag> _tagsRepository;
+        private IRepository<PhotoReport> _photoReportsRepository;
+        private IRepository<UserReport> _userReportsRepository;
+
         private bool _isDisposed;
 
         #endregion
@@ -25,72 +40,72 @@ namespace PhotoHub.DAL.Repositories
         /// <summary>
         /// Gets application user repository.
         /// </summary>
-        public IRepository<ApplicationUser> IdentityUsers { get; protected set; }
+        public IRepository<ApplicationUser> IdentityUsers => _identityUsersRepository ?? (_identityUsersRepository = new UsersIdentityRepository(_context));
 
         /// <summary>
         /// Gets user repository.
         /// </summary>
-        public IRepository<User> Users { get; protected set; }
+        public IRepository<User> Users => _usersRepository ?? (_usersRepository = new UsersRepository(_context));
 
         /// <summary>
         /// Gets photo repository.
         /// </summary>
-        public IRepository<Photo> Photos { get; protected set; }
+        public IRepository<Photo> Photos => _photosRepository ?? (_photosRepository = new PhotosRepository(_context));
 
         /// <summary>
         /// Gets comment repository.
         /// </summary>
-        public IRepository<Comment> Comments { get; protected set; }
+        public IRepository<Comment> Comments => _commentsRepository ?? (_commentsRepository = new CommentsRepository(_context));
 
         /// <summary>
         /// Gets like repository.
         /// </summary>
-        public IRepository<Like> Likes { get; protected set; }
+        public IRepository<Like> Likes => _likesRepository ?? (_likesRepository = new LikesRepository(_context));
 
         /// <summary>
         /// Gets confirmed repository.
         /// </summary>
-        public IRepository<Confirmed> Confirmations { get; protected set; }
+        public IRepository<Confirmed> Confirmations => _confirmationsRepository ?? (_confirmationsRepository = new ConfirmationsRepository(_context));
 
         /// <summary>
         /// Gets following repository.
         /// </summary>
-        public IRepository<Following> Followings { get; protected set; }
+        public IRepository<Following> Followings => _followingsRepository ??(_followingsRepository = new FollowingsRepository(_context));
 
         /// <summary>
         /// Gets blacklist repository.
         /// </summary>
-        public IRepository<BlackList> Blockings { get; protected set; }
+        public IRepository<BlackList> Blockings => _blockingsRepository ?? (_blockingsRepository = new BlockingsRepository(_context));
 
         /// <summary>
         /// Gets bookmark repository.
         /// </summary>
-        public IRepository<Bookmark> Bookmarks { get; protected set; }
+        public IRepository<Bookmark> Bookmarks => _bookmarksRepository ?? (_bookmarksRepository = new BookmarksRepository(_context));
 
         /// <summary>
         /// Gets filter repository.
         /// </summary>
-        public IRepository<Filter> Filters { get; protected set; }
+        public IRepository<Filter> Filters => _filtersRepository ?? (_filtersRepository = new FiltersRepository(_context));
 
         /// <summary>
         /// Gets taging repository.
         /// </summary>
-        public IRepository<Taging> Tagings { get; protected set; }
+        public IRepository<Taging> Tagings => _tagingsRepository ?? (_tagingsRepository = new TagingsRepository(_context));
 
         /// <summary>
         /// Gets tag repository.
         /// </summary>
-        public IRepository<Tag> Tags { get; protected set; }
+        public IRepository<Tag> Tags => _tagsRepository ?? (_tagsRepository = new TagsRepository(_context));
 
         /// <summary>
         /// Gets photo report repository.
         /// </summary>
-        public IRepository<PhotoReport> PhotoReports { get; protected set; }
+        public IRepository<PhotoReport> PhotoReports => _photoReportsRepository ?? (_photoReportsRepository = new PhotoReportsRepository(_context));
 
         /// <summary>
         /// Gets user report repository.
         /// </summary>
-        public IRepository<UserReport> UserReports { get; protected set; }
+        public IRepository<UserReport> UserReports => _userReportsRepository ?? (_userReportsRepository = new UserReportsRepository(_context));
 
         #endregion
 
@@ -102,21 +117,6 @@ namespace PhotoHub.DAL.Repositories
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
-
-            IdentityUsers = new UsersIdentityRepository(context);
-            Users = new UsersRepository(context);
-            Photos = new PhotosRepository(context);
-            Comments = new CommentsRepository(context);
-            Likes = new LikesRepository(context);
-            Followings = new FollowingsRepository(context);
-            Blockings = new BlockingsRepository(context);
-            Confirmations = new ConfirmationsRepository(context);
-            Bookmarks = new BookmarksRepository(context);
-            Filters = new FiltersRepository(context);
-            Tagings = new TagingsRepository(context);
-            Tags = new TagsRepository(context);
-            PhotoReports = new PhotoReportsRepository(context);
-            UserReports = new UserReportsRepository(context);
         }
 
         #endregion

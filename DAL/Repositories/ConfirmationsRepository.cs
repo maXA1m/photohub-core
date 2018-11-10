@@ -40,9 +40,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public IEnumerable<Confirmed> GetAll()
         {
-            return _context.Confirmed
-                            .Include(c => c.Admin)
-                            .Include(c => c.User);
+            return _context.Confirmed;
         }
 
         /// <summary>
@@ -50,10 +48,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public IEnumerable<Confirmed> GetAll(int page, int pageSize)
         {
-            return _context.Confirmed
-                            .Include(c => c.Admin)
-                            .Include(c => c.User)
-                            .Skip(page * pageSize).Take(pageSize);
+            return _context.Confirmed.Skip(page * pageSize).Take(pageSize);
         }
 
         /// <summary>
@@ -61,10 +56,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public Confirmed Get(int id)
         {
-            return _context.Confirmed
-                    .Include(c => c.Admin)
-                    .Include(c => c.User)
-                    .Where(c => c.Id == id).FirstOrDefault();
+            return _context.Confirmed.Where(c => c.Id == id).FirstOrDefault();
         }
 
         /// <summary>
@@ -72,10 +64,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public async Task<Confirmed> GetAsync(int id)
         {
-            return await _context.Confirmed
-                            .Include(c => c.Admin)
-                            .Include(c => c.User)
-                            .Where(c => c.Id == id).FirstOrDefaultAsync();
+            return await _context.Confirmed.Where(c => c.Id == id).FirstOrDefaultAsync();
         }
 
         /// <summary>

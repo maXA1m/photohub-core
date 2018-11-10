@@ -6,12 +6,10 @@
     /// </summary>
     public class Taging : BaseEntity
     {
-        #region Properties
-
         /// <summary>
         /// Gets and sets photo entity by foreign key.
         /// </summary>
-        public Photo Photo { get; set; }
+        public virtual Photo Photo { get; set; }
 
         /// <summary>
         /// Gets and sets foreign key to photo by id.
@@ -21,13 +19,11 @@
         /// <summary>
         /// Gets and sets tag entity by foreign key.
         /// </summary>
-        public Tag Tag { get; set; }
+        public virtual Tag Tag { get; set; }
 
         /// <summary>
         /// Gets and sets foreign key to tag by id.
         /// </summary>
         public int TagId { get; set; }
-
-        #endregion
     }
 }

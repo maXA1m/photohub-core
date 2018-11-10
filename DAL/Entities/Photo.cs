@@ -69,7 +69,7 @@ namespace PhotoHub.DAL.Entities
         /// <summary>
         /// Gets and sets user entity by foreign key.
         /// </summary>
-        public User Owner { get; set; }
+        public virtual User Owner { get; set; }
 
         /// <summary>
         /// Gets and sets foreign key to filter by id.
@@ -79,17 +79,17 @@ namespace PhotoHub.DAL.Entities
         /// <summary>
         /// Gets and sets filter entity by foreign key.
         /// </summary>
-        public Filter Filter { get; set; }
+        public virtual Filter Filter { get; set; }
 
         /// <summary>
         /// Gets and sets collection with likes.
         /// </summary>
-        public ICollection<Like> Likes { get; set; }
+        public virtual ICollection<Like> Likes { get; set; }
 
         /// <summary>
         /// Gets and sets collection with comments.
         /// </summary>
-        public ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
 
         #endregion
 

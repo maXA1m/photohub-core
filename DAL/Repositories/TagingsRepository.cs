@@ -40,17 +40,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public IEnumerable<Taging> GetAll()
         {
-            return _context.Tagings
-                            .Include(b => b.Photo)
-                                .ThenInclude(p => p.Comments)
-                            .Include(b => b.Photo)
-                                .ThenInclude(p => p.Likes)
-                            .Include(b => b.Photo)
-                                .ThenInclude(p => p.Owner)
-                            .Include(b => b.Photo)
-                                .ThenInclude(p => p.Filter)
-                            .Include(t => t.Tag)
-                            .OrderBy(i => i.Id);
+            return _context.Tagings.OrderBy(i => i.Id);
         }
 
         /// <summary>
@@ -58,18 +48,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public IEnumerable<Taging> GetAll(int page, int pageSize)
         {
-            return _context.Tagings
-                            .Include(b => b.Photo)
-                                .ThenInclude(p => p.Comments)
-                            .Include(b => b.Photo)
-                                .ThenInclude(p => p.Likes)
-                            .Include(b => b.Photo)
-                                .ThenInclude(p => p.Owner)
-                            .Include(b => b.Photo)
-                                .ThenInclude(p => p.Filter)
-                            .Include(t => t.Tag)
-                            .OrderBy(i => i.Id)
-                            .Skip(page * pageSize).Take(pageSize);
+            return _context.Tagings.OrderBy(i => i.Id).Skip(page * pageSize).Take(pageSize);
         }
 
         /// <summary>
@@ -77,18 +56,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public IEnumerable<Taging> Find(Func<Taging, bool> predicate)
         {
-            return _context.Tagings
-                            .Include(b => b.Photo)
-                                .ThenInclude(p => p.Comments)
-                            .Include(b => b.Photo)
-                                .ThenInclude(p => p.Likes)
-                            .Include(b => b.Photo)
-                                .ThenInclude(p => p.Owner)
-                            .Include(b => b.Photo)
-                                .ThenInclude(p => p.Filter)
-                            .Include(t => t.Tag)
-                            .OrderBy(i => i.Id)
-                            .Where(predicate);
+            return _context.Tagings.OrderBy(i => i.Id).Where(predicate);
         }
 
         /// <summary>
@@ -96,18 +64,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public Taging Get(int id)
         {
-            return _context.Tagings
-                            .Include(b => b.Photo)
-                                .ThenInclude(p => p.Comments)
-                            .Include(b => b.Photo)
-                                .ThenInclude(p => p.Likes)
-                            .Include(b => b.Photo)
-                                .ThenInclude(p => p.Owner)
-                            .Include(b => b.Photo)
-                                .ThenInclude(p => p.Filter)
-                            .Include(t => t.Tag)
-                            .Where(c => c.Id == id)
-                            .FirstOrDefault();
+            return _context.Tagings.Where(c => c.Id == id).FirstOrDefault();
         }
 
         /// <summary>
@@ -115,18 +72,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public async Task<Taging> GetAsync(int id)
         {
-            return await _context.Tagings
-                            .Include(b => b.Photo)
-                                .ThenInclude(p => p.Comments)
-                            .Include(b => b.Photo)
-                                .ThenInclude(p => p.Likes)
-                            .Include(b => b.Photo)
-                                .ThenInclude(p => p.Owner)
-                            .Include(b => b.Photo)
-                                .ThenInclude(p => p.Filter)
-                            .Include(t => t.Tag)
-                            .Where(c => c.Id == id)
-                            .FirstOrDefaultAsync();
+            return await _context.Tagings.Where(c => c.Id == id).FirstOrDefaultAsync();
         }
 
         /// <summary>

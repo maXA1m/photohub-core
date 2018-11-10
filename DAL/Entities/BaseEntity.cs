@@ -6,13 +6,9 @@
     /// </summary>
     public class BaseEntity
     {
-        #region Properties
-
         /// <summary>
         /// Gets and sets id.
         /// </summary>
         public int Id { get; set; }
-
-        #endregion
     }
 }

@@ -40,9 +40,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public IEnumerable<UserReport> GetAll()
         {
-            return _context.UserReports
-                    .Include(b => b.User)
-                    .Include(b => b.ReportedUser);
+            return _context.UserReports;
         }
 
         /// <summary>
@@ -50,10 +48,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public IEnumerable<UserReport> GetAll(int page, int pageSize)
         {
-            return _context.UserReports
-                    .Include(b => b.User)
-                    .Include(b => b.ReportedUser)
-                    .Skip(page * pageSize).Take(pageSize);
+            return _context.UserReports.Skip(page * pageSize).Take(pageSize);
         }
 
         /// <summary>
@@ -61,10 +56,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public UserReport Get(int id)
         {
-            return _context.UserReports
-                    .Include(b => b.User)
-                    .Include(b => b.ReportedUser)
-                    .Where(b => b.Id == id).FirstOrDefault();
+            return _context.UserReports.Where(b => b.Id == id).FirstOrDefault();
         }
 
         /// <summary>
@@ -72,10 +64,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public async Task<UserReport> GetAsync(int id)
         {
-            return await _context.UserReports
-                            .Include(b => b.User)
-                            .Include(b => b.ReportedUser)
-                            .Where(b => b.Id == id).FirstOrDefaultAsync();
+            return await _context.UserReports.Where(b => b.Id == id).FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -83,10 +72,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public IEnumerable<UserReport> Find(Func<UserReport, bool> predicate)
         {
-            return _context.UserReports
-                    .Include(b => b.User)
-                    .Include(b => b.ReportedUser)
-                    .Where(predicate);
+            return _context.UserReports.Where(predicate);
         }
 
         /// <summary>

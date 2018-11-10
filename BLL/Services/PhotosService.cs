@@ -110,7 +110,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public IEnumerable<PhotoDTO> GetPhotosHome(int page, int pageSize)
         {
-            var currentUser = _currentUserService.Get;
+            var currentUser = _currentUserService.CurrentUser;
             var followings = _unitOfWork.Followings.Find(f => f.UserId == currentUser.Id);
             var photos = new List<Photo>();
 
@@ -137,7 +137,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public IEnumerable<PhotoDTO> GetForUser(int page, string userName, int pageSize)
         {
-            var currentUser = _currentUserService.Get;
+            var currentUser = _currentUserService.CurrentUser;
             var user = _unitOfWork.Users.Find(u => u.UserName == userName).FirstOrDefault();
 
             var photos = _unitOfWork.Photos.Find(p => p.OwnerId == user.Id).OrderByDescending(p => p.Date).Skip(page * pageSize).Take(pageSize);
@@ -162,7 +162,7 @@ namespace PhotoHub.BLL.Services
                 return null;
             }
 
-            var currentUser = _currentUserService.Get;
+            var currentUser = _currentUserService.CurrentUser;
             var tag = _unitOfWork.Tags.Find(t => t.Name.ToLower() == tagName.ToLower()).FirstOrDefault();
 
             if (tag == null)
@@ -189,7 +189,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public IEnumerable<PhotoDTO> GetBookmarks(int page, int pageSize)
         {
-            var currentUser = _currentUserService.Get;
+            var currentUser = _currentUserService.CurrentUser;
             var photos = _unitOfWork.Bookmarks.Find(b => b.UserId == currentUser.Id).OrderByDescending(b => b.Date).Select(b => b.Photo).Skip(page * pageSize).Take(pageSize);
 
             var photoDTOs = new List<PhotoDTO>(pageSize);
@@ -207,7 +207,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public IEnumerable<PhotoDTO> GetTags(int tagId, int page, int pageSize)
         {
-            var currentUser = _currentUserService.Get;
+            var currentUser = _currentUserService.CurrentUser;
 
             if (_unitOfWork.Tags.Find(t => t.Id == tagId).FirstOrDefault() == null)
             {
@@ -231,7 +231,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public IEnumerable<PhotoDTO> Search(int page, string search, int pageSize, int? iso, double? exposure, double? aperture, double? focalLength)
         {
-            var currentUser = _currentUserService.Get;
+            var currentUser = _currentUserService.CurrentUser;
             IEnumerable<Photo> photos;
 
             if (string.IsNullOrEmpty(search))
@@ -282,7 +282,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public void Bookmark(int id)
         {
-            var currentUser = _currentUserService.Get;
+            var currentUser = _currentUserService.CurrentUser;
             var bookmarkedPhoto = _unitOfWork.Photos.Find(p => p.Id == id).FirstOrDefault();
 
             if (currentUser != null && bookmarkedPhoto != null && _unitOfWork.Bookmarks.Find(b => b.UserId == currentUser.Id && b.PhotoId == id).FirstOrDefault() == null)
@@ -302,7 +302,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public async Task BookmarkAsync(int id)
         {
-            var currentUser = _currentUserService.Get;
+            var currentUser = _currentUserService.CurrentUser;
             var bookmarkedPhoto = _unitOfWork.Photos.Find(p => p.Id == id).FirstOrDefault();
 
             if (currentUser != null && bookmarkedPhoto != null && _unitOfWork.Bookmarks.Find(b => b.UserId == currentUser.Id && b.PhotoId == id).FirstOrDefault() == null)
@@ -322,7 +322,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public void DismissBookmark(int id)
         {
-            var currentUser = _currentUserService.Get;
+            var currentUser = _currentUserService.CurrentUser;
             var bookmarkedPhoto = _unitOfWork.Photos.Find(p => p.Id == id).FirstOrDefault();
             var bookmark = _unitOfWork.Bookmarks.Find(b => b.UserId == currentUser.Id && b.PhotoId == id).FirstOrDefault();
 
@@ -338,7 +338,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public async Task DismissBookmarkAsync(int id)
         {
-            var currentUser = _currentUserService.Get;
+            var currentUser = _currentUserService.CurrentUser;
             var bookmarkedPhoto = _unitOfWork.Photos.Find(p => p.Id == id).FirstOrDefault();
             var bookmark = _unitOfWork.Bookmarks.Find(b => b.UserId == currentUser.Id && b.PhotoId == id).FirstOrDefault();
 
@@ -354,7 +354,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public void Report(int id, string text)
         {
-            var currentUser = _currentUserService.Get;
+            var currentUser = _currentUserService.CurrentUser;
             var reportedPhoto = _unitOfWork.Photos.Find(p => p.Id == id).FirstOrDefault();
 
             if (currentUser != null && reportedPhoto != null && _unitOfWork.PhotoReports.Find(pr => pr.UserId == currentUser.Id && pr.PhotoId == id).FirstOrDefault() == null)
@@ -375,7 +375,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public async Task ReportAsync(int id, string text)
         {
-            var currentUser = _currentUserService.Get;
+            var currentUser = _currentUserService.CurrentUser;
             var reportedPhoto = _unitOfWork.Photos.Find(p => p.Id == id).FirstOrDefault();
 
             if (currentUser != null && reportedPhoto != null && _unitOfWork.PhotoReports.Find(pr => pr.UserId == currentUser.Id && pr.PhotoId == id).FirstOrDefault() == null)
@@ -401,7 +401,7 @@ namespace PhotoHub.BLL.Services
                 FilterId = _unitOfWork.Filters.Find(f => f.Name == filter).FirstOrDefault().Id,
                 Description = description,
                 Path = path,
-                OwnerId = _currentUserService.Get.Id,
+                OwnerId = _currentUserService.CurrentUser.Id,
                 CountViews = 0,
 
                 Manufacturer = manufacturer,
@@ -451,7 +451,7 @@ namespace PhotoHub.BLL.Services
                 FilterId = _unitOfWork.Filters.Find(f => f.Name == filter).FirstOrDefault().Id,
                 Description = description,
                 Path = path,
-                OwnerId = _currentUserService.Get.Id,
+                OwnerId = _currentUserService.CurrentUser.Id,
                 CountViews = 0,
 
                 Manufacturer = manufacturer,
@@ -684,7 +684,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         protected PhotoDTO MapPhoto(Photo photo)
         {
-            var currentUser = _currentUserService.Get;
+            var currentUser = _currentUserService.CurrentUser;
 
             if (currentUser == null)
             {

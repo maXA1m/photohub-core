@@ -40,9 +40,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public IEnumerable<Following> GetAll()
         {
-            return _context.Followings
-                            .Include(c => c.FollowedUser)
-                            .Include(c => c.User);
+            return _context.Followings;
         }
 
         /// <summary>
@@ -50,10 +48,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public IEnumerable<Following> GetAll(int page, int pageSize)
         {
-            return _context.Followings
-                            .Include(c => c.FollowedUser)
-                            .Include(c => c.User)
-                            .Skip(page * pageSize).Take(pageSize);
+            return _context.Followings.Skip(page * pageSize).Take(pageSize);
         }
 
         /// <summary>
@@ -61,10 +56,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public Following Get(int id)
         {
-            return _context.Followings
-                    .Include(c => c.FollowedUser)
-                    .Include(c => c.User)
-                    .Where(c => c.Id == id).FirstOrDefault();
+            return _context.Followings.Where(c => c.Id == id).FirstOrDefault();
         }
 
         /// <summary>
@@ -72,10 +64,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public async Task<Following> GetAsync(int id)
         {
-            return await _context.Followings
-                            .Include(c => c.FollowedUser)
-                            .Include(c => c.User)
-                            .Where(c => c.Id == id).FirstOrDefaultAsync();
+            return await _context.Followings.Where(c => c.Id == id).FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -83,9 +72,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public IEnumerable<Following> Find(Func<Following, bool> predicate)
         {
-            return _context.Followings
-                            .Include(c => c.FollowedUser)
-                            .Include(c => c.User).Where(predicate);
+            return _context.Followings.Where(predicate);
         }
 
         /// <summary>

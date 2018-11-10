@@ -40,16 +40,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public IEnumerable<Bookmark> GetAll()
         {
-            return _context.Bookmarks
-                    .Include(b => b.User)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Comments)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Likes)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Owner)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Filter);
+            return _context.Bookmarks;
         }
 
         /// <summary>
@@ -57,17 +48,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public IEnumerable<Bookmark> GetAll(int page, int pageSize)
         {
-            return _context.Bookmarks
-                    .Include(b => b.User)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Comments)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Likes)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Owner)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Filter)
-                    .Skip(page * pageSize).Take(pageSize);
+            return _context.Bookmarks.Skip(page * pageSize).Take(pageSize);
         }
 
         /// <summary>
@@ -75,17 +56,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public Bookmark Get(int id)
         {
-            return _context.Bookmarks
-                    .Include(b => b.User)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Comments)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Likes)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Owner)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Filter)
-                    .Where(b => b.Id == id).FirstOrDefault();
+            return _context.Bookmarks.Where(b => b.Id == id).FirstOrDefault();
         }
 
         /// <summary>
@@ -93,17 +64,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public async Task<Bookmark> GetAsync(int id)
         {
-            return await _context.Bookmarks
-                            .Include(b => b.User)
-                            .Include(b => b.Photo)
-                                .ThenInclude(p => p.Comments)
-                            .Include(b => b.Photo)
-                                .ThenInclude(p => p.Likes)
-                            .Include(b => b.Photo)
-                                .ThenInclude(p => p.Owner)
-                            .Include(b => b.Photo)
-                                .ThenInclude(p => p.Filter)
-                            .Where(b => b.Id == id).FirstOrDefaultAsync();
+            return await _context.Bookmarks.Where(b => b.Id == id).FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -111,17 +72,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public IEnumerable<Bookmark> Find(Func<Bookmark, bool> predicate)
         {
-            return _context.Bookmarks
-                    .Include(b => b.User)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Comments)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Likes)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Owner)
-                    .Include(b => b.Photo)
-                        .ThenInclude(p => p.Filter)
-                    .Where(predicate);
+            return _context.Bookmarks.Where(predicate);
         }
 
         /// <summary>

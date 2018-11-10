@@ -40,7 +40,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public IEnumerable<Comment> GetAll()
         {
-            return _context.Comments.Include(c => c.Owner).OrderBy(c => c.Date);
+            return _context.Comments.OrderBy(c => c.Date);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public IEnumerable<Comment> GetAll(int page, int pageSize)
         {
-            return _context.Comments.Include(c => c.Owner).OrderBy(c => c.Date).Skip(page * pageSize).Take(pageSize);
+            return _context.Comments.OrderBy(c => c.Date).Skip(page * pageSize).Take(pageSize);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public IEnumerable<Comment> Find(Func<Comment, bool> predicate)
         {
-            return _context.Comments.Include(c => c.Owner).Where(predicate);
+            return _context.Comments.Where(predicate);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public Comment Get(int id)
         {
-            return _context.Comments.Include(c => c.Owner).Where(c => c.Id == id).FirstOrDefault();
+            return _context.Comments.Where(c => c.Id == id).FirstOrDefault();
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public async Task<Comment> GetAsync(int id)
         {
-            return await _context.Comments.Include(c => c.Owner).Where(c => c.Id == id).FirstOrDefaultAsync();
+            return await _context.Comments.Where(c => c.Id == id).FirstOrDefaultAsync();
         }
 
         /// <summary>

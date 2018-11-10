@@ -44,7 +44,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public int? Add(int photoId, string text)
         {
-            var user = _currentUserService.Get;
+            var user = _currentUserService.CurrentUser;
             var photo = _unitOfWork.Photos.Get(photoId);
 
             if (!string.IsNullOrEmpty(text) && user != null && photo != null)
@@ -71,7 +71,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public async Task<int?> AddAsync(int photoId, string text)
         {
-            var user = _currentUserService.Get;
+            var user = _currentUserService.CurrentUser;
             var photo = await _unitOfWork.Photos.GetAsync(photoId);
 
             if(!string.IsNullOrEmpty(text) && user != null && photo != null)
@@ -99,7 +99,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public void Delete(int id)
         {
-            var user = _currentUserService.Get;
+            var user = _currentUserService.CurrentUser;
             var comment = _unitOfWork.Comments.Get(id);
             var photo = _unitOfWork.Photos.Get(comment.PhotoId);
 
@@ -115,7 +115,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public async Task DeleteAsync(int id)
         {
-            var user = _currentUserService.Get;
+            var user = _currentUserService.CurrentUser;
             var comment = _unitOfWork.Comments.Get(id);
             var photo = _unitOfWork.Photos.Get(comment.PhotoId);
 

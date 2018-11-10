@@ -23,14 +23,14 @@
 
     <link href="~/css/admin.css" rel="stylesheet" />
 
-    @RenderSection("Styles", required: false)
+    @await RenderSectionAsync("Styles", required: false)
 
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.4"></script>
 
     <script defer src="~/js/admin.js"></script>
 
-    @RenderSection("Scripts", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
 
     @*<script defer src="~/js/registerServiceWorker.js"></script>*@
 

@@ -40,7 +40,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public IEnumerable<Like> GetAll()
         {
-            return _context.Likes.Include(l => l.Owner).OrderBy(l => l.Date);
+            return _context.Likes.OrderBy(l => l.Date);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public IEnumerable<Like> GetAll(int page, int pageSize)
         {
-            return _context.Likes.Include(l => l.Owner).OrderBy(l => l.Date).Skip(page * pageSize).Take(pageSize);
+            return _context.Likes.OrderBy(l => l.Date).Skip(page * pageSize).Take(pageSize);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public Like Get(int id)
         {
-            return _context.Likes.Include(l => l.Owner).Where(l => l.Id == id).FirstOrDefault();
+            return _context.Likes.Where(l => l.Id == id).FirstOrDefault();
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public async Task<Like> GetAsync(int id)
         {
-            return await _context.Likes.Include(l => l.Owner).Where(l => l.Id == id).FirstOrDefaultAsync();
+            return await _context.Likes.Where(l => l.Id == id).FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public IEnumerable<Like> Find(Func<Like, bool> predicate)
         {
-            return _context.Likes.Include(l => l.Owner).Where(predicate);
+            return _context.Likes.Where(predicate);
         }
 
         /// <summary>

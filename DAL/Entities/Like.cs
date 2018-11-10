@@ -23,7 +23,7 @@ namespace PhotoHub.DAL.Entities
         /// <summary>
         /// Gets and sets photo entity by foreign key.
         /// </summary>
-        public Photo Photo { get; set; }
+        public virtual Photo Photo { get; set; }
 
         /// <summary>
         /// Gets and sets foreign key to owner by id.
@@ -33,7 +33,7 @@ namespace PhotoHub.DAL.Entities
         /// <summary>
         /// Gets and sets user entity by foreign key.
         /// </summary>
-        public User Owner { get; set; }
+        public virtual User Owner { get; set; }
 
         #endregion
 

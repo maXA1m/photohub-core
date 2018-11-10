@@ -18,7 +18,7 @@ namespace PhotoHub.DAL.Entities
         /// <summary>
         /// Gets and sets user by <see cref="UserId"/> foreign key.
         /// </summary>
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
         /// <summary>
         /// Gets and sets foreign key to photo by id.
@@ -28,7 +28,7 @@ namespace PhotoHub.DAL.Entities
         /// <summary>
         /// Gets and sets photo by <see cref="PhotoId"/> foreign key.
         /// </summary>
-        public Photo Photo { get; set; }
+        public virtual Photo Photo { get; set; }
 
         /// <summary>
         /// Gets and sets date bookmark was made.

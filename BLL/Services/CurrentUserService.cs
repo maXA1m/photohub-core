@@ -29,16 +29,16 @@ namespace PhotoHub.BLL.Services
         /// <returns>
         /// Returns current user entity.
         /// </returns>
-        public User Get => _unitOfWork.Users.Find(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name).FirstOrDefault();
+        public User CurrentUser => _unitOfWork.Users.Find(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name).FirstOrDefault();
 
         /// <returns>
         /// Returns current user data transfer object.
         /// </returns>
-        public UserDTO GetDTO
+        public UserDTO CurrentUserDTO
         {
             get
             {
-                var user = Get;
+                var user = CurrentUser;
 
                 return user.ToDTO(_unitOfWork.Confirmations.Find(c => c.UserId == user.Id).FirstOrDefault() != null,
                                   _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id && f.UserId == user.Id).FirstOrDefault() != null,

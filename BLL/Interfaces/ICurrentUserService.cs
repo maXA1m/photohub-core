@@ -12,11 +12,11 @@ namespace PhotoHub.BLL.Interfaces
         /// <summary>
         /// Gets current user entity.
         /// </summary>
-        User Get { get; }
+        User CurrentUser { get; }
 
         /// <summary>
         /// Gets current user data transfer object.
         /// </summary>
-        UserDTO GetDTO { get; }
+        UserDTO CurrentUserDTO { get; }
     }
 }

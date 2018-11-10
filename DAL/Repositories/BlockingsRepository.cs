@@ -40,9 +40,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public IEnumerable<BlackList> GetAll()
         {
-            return _context.BlackLists
-                            .Include(c => c.BlockedUser)
-                            .Include(c => c.User);
+            return _context.BlackLists;
         }
 
         /// <summary>
@@ -50,10 +48,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public IEnumerable<BlackList> GetAll(int page, int pageSize)
         {
-            return _context.BlackLists
-                            .Include(c => c.BlockedUser)
-                            .Include(c => c.User)
-                            .Skip(page * pageSize).Take(pageSize);
+            return _context.BlackLists.Skip(page * pageSize).Take(pageSize);
         }
 
         /// <summary>
@@ -61,10 +56,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public BlackList Get(int id)
         {
-            return _context.BlackLists
-                    .Include(c => c.BlockedUser)
-                    .Include(c => c.User)
-                    .Where(c => c.Id == id).FirstOrDefault();
+            return _context.BlackLists.Where(c => c.Id == id).FirstOrDefault();
         }
 
         /// <summary>
@@ -72,10 +64,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public async Task<BlackList> GetAsync(int id)
         {
-            return await _context.BlackLists
-                            .Include(c => c.BlockedUser)
-                            .Include(c => c.User)
-                            .Where(c => c.Id == id).FirstOrDefaultAsync();
+            return await _context.BlackLists.Where(c => c.Id == id).FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -83,10 +72,7 @@ namespace PhotoHub.DAL.Repositories
         /// </summary>
         public IEnumerable<BlackList> Find(Func<BlackList, bool> predicate)
         {
-            return _context.BlackLists
-                    .Include(c => c.BlockedUser)
-                    .Include(c => c.User)
-                    .Where(predicate);
+            return _context.BlackLists.Where(predicate);
         }
 
         /// <summary>

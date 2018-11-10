@@ -16,7 +16,7 @@
         /// <summary>
         /// Gets and sets user entity by foreign key.
         /// </summary>
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
         /// <summary>
         /// Gets and sets foreign key to followed user by id.
@@ -26,7 +26,7 @@
         /// <summary>
         /// Gets and sets user entity by foreign key.
         /// </summary>
-        public User FollowedUser { get; set; }
+        public virtual User FollowedUser { get; set; }
 
         #endregion
     }

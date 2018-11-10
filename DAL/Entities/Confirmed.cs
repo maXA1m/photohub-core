@@ -16,7 +16,7 @@
         /// <summary>
         /// Gets and sets user by <see cref="UserId"/> foreign key.
         /// </summary>
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
         /// <summary>
         /// Gets and sets foreign key to admin by id.
@@ -26,7 +26,7 @@
         /// <summary>
         /// Gets and sets admin by <see cref="AdminId"/> foreign key.
         /// </summary>
-        public User Admin { get; set; }
+        public virtual User Admin { get; set; }
 
         #endregion
     }

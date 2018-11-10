@@ -56,7 +56,8 @@ namespace PhotoHub.WEB
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseLazyLoadingProxies()
+                       .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -118,13 +119,13 @@ namespace PhotoHub.WEB
         {
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
-            else
+            else if(env.IsProduction())
             {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseHttpsRedirection();
             }
 
             app.UseStaticFiles();

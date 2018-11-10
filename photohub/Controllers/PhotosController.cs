@@ -54,7 +54,7 @@ namespace PhotoHub.WEB.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                ViewBag.CurrentUser = _currentUserService.GetDTO;
+                ViewBag.CurrentUser = _currentUserService.CurrentUserDTO;
             }
 
             return View(item.ToViewModel());
@@ -65,7 +65,7 @@ namespace PhotoHub.WEB.Controllers
         {
             ViewBag.Filters = _photosService.Filters.ToViewModels();
 
-            return View(_currentUserService.GetDTO.ToViewModel());
+            return View(_currentUserService.CurrentUserDTO.ToViewModel());
         }
         
         [Authorize, HttpPost, ValidateAntiForgeryToken, Route("photos/create")]

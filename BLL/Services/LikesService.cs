@@ -46,7 +46,7 @@ namespace PhotoHub.BLL.Services
         public void Add(int photoId)
         {
             var photo = _unitOfWork.Photos.Get(photoId);
-            var user = _currentUserService.Get;
+            var user = _currentUserService.CurrentUser;
             var like = _unitOfWork.Likes.Find(l => l.OwnerId == user.Id && l.PhotoId == photo.Id).FirstOrDefault();
 
             if (photo != null && user != null && like == null)
@@ -70,7 +70,7 @@ namespace PhotoHub.BLL.Services
         public async Task AddAsync(int photoId)
         {
             var photo = await _unitOfWork.Photos.GetAsync(photoId);
-            var user = _currentUserService.Get;
+            var user = _currentUserService.CurrentUser;
             var like = _unitOfWork.Likes.Find(l => l.OwnerId == user.Id && l.PhotoId == photo.Id).FirstOrDefault();
 
             if (photo != null && user != null && like == null)
@@ -94,7 +94,7 @@ namespace PhotoHub.BLL.Services
         public void Delete(int photoId)
         {
             var photo = _unitOfWork.Photos.Get(photoId);
-            var user = _currentUserService.Get;
+            var user = _currentUserService.CurrentUser;
             var like = _unitOfWork.Likes.Find(l => l.OwnerId == user.Id && l.PhotoId == photo.Id).FirstOrDefault();
 
             if (photo != null && user != null && like != null)
@@ -110,7 +110,7 @@ namespace PhotoHub.BLL.Services
         public async Task DeleteAsync(int photoId)
         {
             var photo = await _unitOfWork.Photos.GetAsync(photoId);
-            var user = _currentUserService.Get;
+            var user = _currentUserService.CurrentUser;
             var like = _unitOfWork.Likes.Find(l => l.OwnerId == user.Id && l.PhotoId == photo.Id).FirstOrDefault();
 
             if (photo != null && user != null && like != null)

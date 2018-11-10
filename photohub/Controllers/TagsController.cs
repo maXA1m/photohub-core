@@ -35,7 +35,7 @@ namespace PhotoHub.WEB.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                ViewBag.CurrentUser = _currentUserService.GetDTO.ToViewModel();
+                ViewBag.CurrentUser = _currentUserService.CurrentUserDTO.ToViewModel();
             }
 
             return View(item);

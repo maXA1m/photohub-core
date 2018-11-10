@@ -18,7 +18,7 @@ namespace PhotoHub.DAL.Entities
         /// <summary>
         /// Gets and sets collection with photos.
         /// </summary>
-        public ICollection<Photo> Photos { get; set; }
+        public virtual ICollection<Photo> Photos { get; set; }
 
         #endregion
     }

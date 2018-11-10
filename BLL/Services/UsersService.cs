@@ -75,7 +75,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public IEnumerable<UserDTO> GetBlocked(int page, int pageSize)
         {
-            var blacklists = _unitOfWork.Blockings.Find(b => b.UserId == _currentUserService.Get.Id);
+            var blacklists = _unitOfWork.Blockings.Find(b => b.UserId == _currentUserService.CurrentUser.Id);
             var users = new List<User>();
 
             foreach(var blocking in blacklists)
@@ -98,7 +98,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public IEnumerable<UserDTO> Search(int page, string search, int pageSize)
         {
-            var currentUser = _currentUserService.Get;
+            var currentUser = _currentUserService.CurrentUser;
             IEnumerable<User> users;
 
             if (string.IsNullOrEmpty(search))
@@ -130,7 +130,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public void Follow(string follow)
         {
-            var currentUser = _currentUserService.Get;
+            var currentUser = _currentUserService.CurrentUser;
             var followedUser = _unitOfWork.Users.Find(u => u.UserName == follow).FirstOrDefault();
 
             if (currentUser != null && followedUser != null && currentUser.UserName != follow && _unitOfWork.Followings.Find(f => f.UserId == currentUser.Id && f.FollowedUserId == followedUser.Id).FirstOrDefault() == null)
@@ -150,7 +150,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public async Task FollowAsync(string follow)
         {
-            var currentUser = _currentUserService.Get;
+            var currentUser = _currentUserService.CurrentUser;
             var followedUser = _unitOfWork.Users.Find(u => u.UserName == follow).FirstOrDefault();
 
             if (currentUser != null && followedUser != null && currentUser.UserName != follow && _unitOfWork.Followings.Find(f => f.UserId == currentUser.Id && f.FollowedUserId == followedUser.Id).FirstOrDefault() == null)
@@ -170,7 +170,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public void DismissFollow(string follow)
         {
-            var currentUser = _currentUserService.Get;
+            var currentUser = _currentUserService.CurrentUser;
             var followedUser = _unitOfWork.Users.Find(u => u.UserName == follow).FirstOrDefault();
             var following = _unitOfWork.Followings.Find(f => f.UserId == currentUser.Id && f.FollowedUserId == followedUser.Id).FirstOrDefault();
 
@@ -187,7 +187,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public async Task DismissFollowAsync(string follow)
         {
-            var currentUser = _currentUserService.Get;
+            var currentUser = _currentUserService.CurrentUser;
             var followedUser = _unitOfWork.Users.Find(u => u.UserName == follow).FirstOrDefault();
             var following = _unitOfWork.Followings.Find(f => f.UserId == currentUser.Id && f.FollowedUserId == followedUser.Id).FirstOrDefault();
 
@@ -204,7 +204,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public void Block(string block)
         {
-            var currentUser = _currentUserService.Get;
+            var currentUser = _currentUserService.CurrentUser;
             var blockedUser = _unitOfWork.Users.Find(u => u.UserName == block).FirstOrDefault();
 
             if (currentUser != null && blockedUser != null && currentUser.UserName != block && _unitOfWork.Blockings.Find(b => b.UserId == currentUser.Id && b.BlockedUserId == blockedUser.Id).FirstOrDefault() == null)
@@ -224,7 +224,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public async Task BlockAsync(string block)
         {
-            var currentUser = _currentUserService.Get;
+            var currentUser = _currentUserService.CurrentUser;
             var blockedUser = _unitOfWork.Users.Find(u => u.UserName == block).FirstOrDefault();
 
             if (currentUser != null && blockedUser != null && currentUser.UserName != block && _unitOfWork.Blockings.Find(b => b.UserId == currentUser.Id && b.BlockedUserId == blockedUser.Id).FirstOrDefault() == null)
@@ -244,7 +244,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public void DismissBlock(string block)
         {
-            var currentUser = _currentUserService.Get;
+            var currentUser = _currentUserService.CurrentUser;
             var blockedUser = _unitOfWork.Users.Find(u => u.UserName == block).FirstOrDefault();
             var blocking = _unitOfWork.Blockings.Find(b => b.UserId == currentUser.Id && b.BlockedUserId == blockedUser.Id).FirstOrDefault();
 
@@ -260,7 +260,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public async Task DismissBlockAsync(string block)
         {
-            var currentUser = _currentUserService.Get;
+            var currentUser = _currentUserService.CurrentUser;
             var blockedUser = _unitOfWork.Users.Find(u => u.UserName == block).FirstOrDefault();
             var blocking = _unitOfWork.Blockings.Find(b => b.UserId == currentUser.Id && b.BlockedUserId == blockedUser.Id).FirstOrDefault();
 
@@ -276,7 +276,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public void Report(string userName, string text)
         {
-            var currentUser = _currentUserService.Get;
+            var currentUser = _currentUserService.CurrentUser;
             var reportedUser = _unitOfWork.Users.Find(u => u.UserName == userName).FirstOrDefault();
 
             if (currentUser != null && reportedUser != null && currentUser.UserName != userName && _unitOfWork.UserReports.Find(b => b.UserId == currentUser.Id && b.ReportedUserId == reportedUser.Id).FirstOrDefault() == null)
@@ -297,7 +297,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         public async Task ReportAsync(string userName, string text)
         {
-            var currentUser = _currentUserService.Get;
+            var currentUser = _currentUserService.CurrentUser;
             var reportedUser = _unitOfWork.Users.Find(u => u.UserName == userName).FirstOrDefault();
 
             if (currentUser != null && reportedUser != null && currentUser.UserName != userName && _unitOfWork.UserReports.Find(b => b.UserId == currentUser.Id && b.ReportedUserId == reportedUser.Id).FirstOrDefault() == null)
@@ -474,7 +474,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         protected UserDTO MapUser(User user)
         {
-            var currentUser = _currentUserService.Get;
+            var currentUser = _currentUserService.CurrentUser;
 
             return user.ToDTO(_unitOfWork.Confirmations.Find(c => c.UserId == user.Id).FirstOrDefault() != null,
                               _unitOfWork.Followings.Find(f => f.FollowedUserId == user.Id && f.UserId == currentUser.Id).FirstOrDefault() != null,
@@ -487,7 +487,7 @@ namespace PhotoHub.BLL.Services
         /// </summary>
         protected UserDetailsDTO MapUserDetails(User user)
         {
-            var currentUser = _currentUserService.Get;
+            var currentUser = _currentUserService.CurrentUser;
 
             var followings = new List<UserDTO>();
             var followers = new List<UserDTO>();

@@ -6,8 +6,6 @@
     /// </summary>
     public class BlackList : BaseEntity
     {
-        #region Properties
-
         /// <summary>
         /// Gets and sets foreign key to user by id.
         /// </summary>
@@ -16,7 +14,7 @@
         /// <summary>
         /// Gets and sets user entity by foreign key.
         /// </summary>
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
         /// <summary>
         /// Gets and sets foreign key to blocked user by id.
@@ -26,8 +24,6 @@
         /// <summary>
         /// Gets and sets user entity by BlockedUserId foreign key.
         /// </summary>
-        public User BlockedUser { get; set; }
-
-        #endregion
+        public virtual User BlockedUser { get; set; }
     }
 }

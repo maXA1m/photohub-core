@@ -1,5 +1,4 @@
-﻿//#region Const variables
-// Const for files cache name
+﻿// Const for files cache name
 const FILES_CACHE = 'cache-files-v1';
 // Array with file paths to cache
 const FILES_TO_CACHE = [
@@ -15,9 +14,7 @@ const FILES_TO_CACHE = [
     '/images/defaults/def-male-logo.png',
     '/images/defaults/def-photo.png'
 ];
-//#endregion Const variables
 
-//#region Event handlers
 // 'Install' event handler, here is caching static assets
 self.addEventListener('install', (event) => {
     event.waitUntil(
@@ -32,9 +29,7 @@ self.addEventListener('fetch', (event) => {
     // `respondWith()` for response without waiting for server
     event.respondWith(fromCache(event.request));
 });
-//#endregion Event handlers
 
-//#region Functions
 // Loading assets from cache
 function fromCache(request) {
     return caches.open(FILES_CACHE).then((cache) =>
@@ -42,4 +37,3 @@ function fromCache(request) {
             matching || Promise.reject('no-match')
         ));
 }
-//#endregion Functions

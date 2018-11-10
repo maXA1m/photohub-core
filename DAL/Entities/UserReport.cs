@@ -18,7 +18,7 @@ namespace PhotoHub.DAL.Entities
         /// <summary>
         /// Gets and sets user entity by foreign key.
         /// </summary>
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
         /// <summary>
         /// Gets and sets foreign key to user by id.
@@ -28,7 +28,7 @@ namespace PhotoHub.DAL.Entities
         /// <summary>
         /// Gets and sets user entity by foreign key.
         /// </summary>
-        public User ReportedUser { get; set; }
+        public virtual User ReportedUser { get; set; }
 
         /// <summary>
         /// Gets and sets report text.
