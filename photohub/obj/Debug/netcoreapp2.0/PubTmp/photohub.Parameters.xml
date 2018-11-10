@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<parameters>
-  <parameter name="IIS Web Application Name" description="" value="PhotoHub" tags="IisApp">
-    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\maxmi\\Desktop\\photohub-core-2\.0\\photohub\\obj\\Debug\\netcoreapp2\.0\\PubTmp\\Out\\$" />
-  </parameter>
-</parameters>
