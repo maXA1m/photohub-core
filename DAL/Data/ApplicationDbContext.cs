@@ -9,8 +9,6 @@ namespace PhotoHub.DAL.Data
     /// </summary>
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        #region Properties
-
         /// <summary>
         /// Gets and sets <see cref="DbSet"/> of <see cref="User"/>(not identity) entities.
         /// </summary>
@@ -76,10 +74,6 @@ namespace PhotoHub.DAL.Data
         /// </summary>
         public DbSet<UserReport> UserReports { get; set; }
 
-        #endregion
-
-        #region .ctors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ApplicationDbContext"/>.
         /// </summary>
@@ -89,15 +83,9 @@ namespace PhotoHub.DAL.Data
 
         }
 
-        #endregion
-
-        #region Logic
-        
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
         }
-
-        #endregion
     }
 }

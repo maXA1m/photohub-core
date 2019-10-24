@@ -141,8 +141,9 @@ namespace PhotoHub.WEB
                     template: "{controller=Home}/{action=Cover}/{id?}");
             });
 
-            //seeder.Seed().Wait();
-            //seeder.CreateUserRoles(services).Wait();
+            // For first run you need to apply migrations (PM> Update-Database), also check connection string in appsettings.json
+            seeder.Seed().Wait();
+            seeder.CreateUserRoles(services).Wait();
         }
 
         #endregion
